@@ -1,0 +1,36 @@
+{
+  "name": "sc-date-time",
+  "version": "1.1.6",
+  "main": [
+    "./dist/sc-date-time.js",
+    "./dist/sc-date-time.css"
+  ],
+  "description": "An implementation of the Material Design Date-Time picker for Angular-Material and bootstrap",
+  "keywords": [
+    "angular"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test*",
+    "demo*",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "^1.2.x",
+    "font-awesome": "^4.2.0"
+  },
+  "license": "MIT",
+  "homepage": "http://simeonc.github.io/sc-date-time",
+  "_release": "1.1.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.6",
+    "commit": "31d7a20bf57b7de2c7d89adcf17062e715cf1de6"
+  },
+  "_source": "git://github.com/SimeonC/sc-date-time.git",
+  "_target": "1.1.6",
+  "_originalSource": "sc-date-time"
+}

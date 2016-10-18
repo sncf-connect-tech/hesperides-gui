@@ -1,0 +1,61 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="30">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>{{ 'properties.module.add' | translate }}</h2>
+            <md-content layout-padding class="autoScroll">
+                <form name="searchModuleForm" novalidate
+                      ng-submit="searchModuleForm.$valid && $add(moduleSearched)">
+                    <!--<md-input-container class="md-block">-->
+                        <label><strong>{{ 'placeholder.search' | translate }}</strong></label>
+                        <br/>
+                        <md-autocomplete
+                                required
+                                id="search-module_module-autocomplete"
+                                md-input-id="search-module_input-module-autocomplete"
+                                ng-model="newVersion"
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="module in find_modules_by_name(ctrl.searchText)"
+                                md-item-text="module.name + ' ' + module.version + ' ' + ((module.is_working_copy) ? '(working copy)' : '')"
+                                md-selected-item-change="(module) ? moduleSearched = module : false"
+                                md-min-length="0"
+                                md-autoselect="true"
+                                md-autofocus="true"
+                                placeholder="{{ 'properties.module.search.placeholder' | translate }}">
+                            <span md-highlight-text="ctrl.searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
+                            <span md-highlight-text="ctrl.searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>
+                        </md-autocomplete>
+                    <!--</md-input-container>-->
+                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                </form>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button id="search-module_add-module-button" class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
+                       ng-click="$add(moduleSearched)" ng-hide="isReadOnly">{{ 'button.modal.add' | translate }}</md-button>
+            <md-button id="search-module_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

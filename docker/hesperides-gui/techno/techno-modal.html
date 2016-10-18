@@ -1,0 +1,34 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="auto">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>{{ 'techno.associateProperties.title' | translate : {name:techno.name} }}</h2>
+            <md-content layout-padding class="autoScroll">
+                <hesperides-model model="model"></hesperides-model>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button id="techno-modal_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

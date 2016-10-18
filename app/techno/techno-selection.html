@@ -1,0 +1,44 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<h4>Technos:</h4>
+<ul class="list-inline padding-left-20px" >
+    <li ng-repeat="techno in technos_namespaces track by $index">
+        <button class="btn btn-default btn-sm" ng-mouseenter="hover = true"
+                ng-mouseleave="hover = false">{{techno.name}}, version
+            {{techno.version}}
+        </button>
+        <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
+                ng-really-message="Supprimer la techno '{{techno.name}}'"
+                ng-really-click="del_techno(techno, editing_unit)" class="btn btn-danger btn-sm padding-left-20px padding-right-20px"><span
+                class="glyphicon glyphicon-trash"></span></button>
+    </li>
+    <li class="vertical-align-middle">
+        <button ng-click="show_input = true;focus_choose_techno()" ng-hide="show_input"
+                class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <input id="chooseTechnoInput" type="text"
+               ng-show="show_input" ng-blur="show_input=false; asyncTechnoSelected=''"
+               ng-model="asyncTechnoSelected" placeholder="Rechercher une techno"
+               typeahead-on-select="add_techno(asyncTechnoSelected, editing_unit); asyncTechnoSelected=''; show_input=false"
+               typeahead="techno as techno.title for techno in get_technos($viewValue, editing_unit.technos)"/>
+    </li>
+</ul>

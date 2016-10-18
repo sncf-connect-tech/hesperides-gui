@@ -1,0 +1,51 @@
+---
+backendVersion: 1.0.0
+apiVersion: 1.0.0
+elasticSearchConfiguration:
+  host: elasticsearch
+  port: 9200
+  index: hesperides
+  reindexOnStartup: true
+  retry: 5
+  waitBeforeRetryMs: 5000
+redisConfiguration:
+  type: REDIS
+  host: redis
+  port: 6379
+  retry: 5
+  waitBeforeRetryMs: 20000
+authenticatorType: none
+useDefaultUserWhenAuthentFails: true
+ldapConfiguration:
+  uri: ldap://ambria.groupevsc.com:389
+  adDomain: groupevsc
+  connectTimeout: 1000ms
+  readTimeout: 1000ms
+  userNameAttribute: sAMAccountName
+  userSearchBase: dc=groupevsc,dc=com
+  roleSearchBase: ou=ARCHITECTURE,dc=groupevsc,dc=com
+  prodGroupName: GG_A_HESPERIDES_PROD
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
+    bindHost: 0.0.0.0
+logging:
+  level: INFO
+  loggers:
+    com.vsct.dt.hesperides: DEBUG
+  appenders:
+    - type: console
+httpClientConfiguration:
+  timeout: 2000ms
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
+eventsConfiguration:
+  poolMinSize: 1
+  poolMaxSize: 1
+  queueCapacity: 255
+assets:
+  overrides:
+    /: /hesperides-gui

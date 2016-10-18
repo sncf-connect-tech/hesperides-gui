@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Jasmine Spec Runner v2.0.0</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.0.0/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-2.0.0/jasmine.css">
+
+  <script type="text/javascript" src="lib/jasmine-2.0.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.0/boot.js"></script>
+</head>
+
+<body>
+  <form>
+    <button id='jQueryBtn' type="submit" name="withoutjQuery" value="true">Run tests without jQuery</button>
+  </form>
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="../src/libs/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="withoutjQuery.js"></script>
+  <script type="text/javascript" src="../src/arrive.js"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="spec/arriveSpec.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
+<head>
+    <title>Hesperides Docs - Release notes</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+    <link rel="shortcut icon" href="favicon.ico">  
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">   
+    <!-- Plugins CSS -->    
+    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/lightbox/dist/ekko-lightbox.min.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+</head> 
+
+<body>
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon_documents_alt icon"></span>
+                            <span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span>
+                        </a>
+                    </h1>
+                </div><!--//branding-->
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Release Notes</li>
+                </ol>
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><span aria-hidden="true" class="icon fa fa-newspaper-o"></span> Release notes</h1>
+                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: oct.12, 2016 - 16:25:12</div>
+                </div><!--//doc-header-->
+                <div class="doc-body">
+                    <div class="doc-content">
+                        <div class="content-inner">
+                            <section id="ares" class="doc-section">
+                                <h2 class="section-title">ARES</h2>
+                                <div class="section-block">
+                                    <p>First open-sourced version of Hesperides. New key features :
+                                    <ul>
+                                        <li>Events</li>
+                                        <li>Passwords hidden for non authorized-users</li>
+                                        <li>Users settings</li>
+                                    </ul></p>
+                                </div>
+                                <div class="section-block">
+                                    <h3  id="ares_2">back 1.0.0 - front 1.0.2 [NEW]</h3>
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-235] global properties are not displayed well (after scrolling) <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          If you have a lot of global properties, when you scroll the display has not a good behavior.
+                                        </div>
+                                    </div>
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-236] Problem for message displayed when module does not exist <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          Sometimes the message "At least one empty module has been detected on the current platform." does not appear well.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-238] Users settings : you should not be able to add empty applications <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          It should be forbidden to add an empty appliaction.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-246] Toggle switch "Show unfiled properties" stay enabled <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          When you toggle "Show unfiled properties" on a module with unfilled properties and then switch to another whose does not have unfilled properties, the switch stays enabled and locked. You have to swith to the previous one and disable the switch to see module props.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-247] link top left does not work on firefox <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          If you click on "Hesperides" top left on the screen, you should go on welcome page : OK for Chrome, KO for firefox
+                                        </div>
+                                    </div><!--//section-block-->
+                                </div><!--//section-block-->
+                                <div class="section-block">
+                                    <h3  id="ares_1">back 1.0.0 [NEW] - front 1.0.0 [NEW]</h3>
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-115] Stuck in loop in diff mode when the platform doesn't exist <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          The start diff buton will remain inactive while the application name doesn't have any platform, but also while the choosen plateform doesn't belong to clickable list.<br>
+                                          In order to improve the browsing experience, a previous button has been added during the diff between module to avoid "Cancel and start again" actions.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-130] Writing a comment when editing the valuation of properties <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          From now on, when the valuation of properties changes, writing a comment will be mandatory, in the same way we fill out comments on versionning tools. The added value of this feature is the ability of retrieving a comment from the platform history, and automatically ease the task of finding out what have been edited.
+                                          
+                                          In case of that there is no changes but still trying to save properties, a warning pop-up inform that no changes have been detected.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-133] Obtain information about number of applications/platforms/modules <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          The pupose is to create a REST service to obtain different kind of stats around hesperides.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-144] Saving users preferences <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          A user preferences system has been put in motion to memorize some parameter in order to customize web interface for each user. These parameters are stored locally. Its allows to :
+                                          <ul>
+                                            <li>Memorize the default language</li>
+                                            <li>Setup default type of view between tree and bloc mode</li>
+                                            <li>Configure the color of platforms </li>
+                                            <li>Define favorites apps to access them in a single clic from the home page Hesperides</li>
+                                          </ul>
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-149] Hide password properties in production platform <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          For a production platform, if you are a non authorized user, properties with "@password" annotation should be displayed with "********". (be careful to consider front and back access).
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-153] Find applications using a particular module <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          From the module editing screen, it is now possible to visualize which applications are using this module, making their access easier by clicking a link. It also allows to see which applications will be impacted by changes on the module.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-154] Show / Hide the platform ribbon on the application view <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          The platform ribbon can be hidden or displayed in order to save space on screen for small devices or simply for applications holding a lots of platforms.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-165] Activating Nexus Mode <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          The Nexus mode allows, at the application level, to apply a delivery note configuration. This action will find the module present at the same time on the application and the delivery note, and applies to each of them the corresponding module version number specified in the delivery note<br>
+                                          
+                                          A SNAPSHOT delivery note will force the usage of a working copy of the module, while in the opposite case, it will apply a released one.<br>
+
+                                          The nexus mode can apply module version number that aren't already created or even deleted, in this case a red indicator will help you find them. The valuation of the deleted modules appear as "deleted", but to retrieved them all, you only have to create the targeted module.<br>
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-171] Add button "Clean useless valuation" on the in the instance properties <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          A button has been added to delete useless valuation. This button was only at the module level, from now on we can use it at the instance level.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-175] Filter displaying only deleted properties <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          The deleted properties filter was already displaying deletes ones, but instead of displaying only the deleted properties, they were displayed among the other as crossed. Now, this filter behave as its peer of non filled properties, meaning, displaying only the corresponding properties.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-176] Find global properties usage <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          When we display global properties, it is now possible to see where these properties are used in the valuation. A small eyes icon appears next to the remove icon if this properties is used. Obviously, when this icon isn't displayed it mean that is properties isn't not used among the application. Clicking the eyes icon drop down the list of usage location.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-178] Preview of generated files path <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          Until now in the preview of generated files a small bug was preventing the path from displaying. This bug has been fix, the path is now displayed correctly.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-179] Event filtering in platform history <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          Two new filters has been added : 
+                                          <ul>
+                                            <li>Search input : this field allow to filter on authors, modules, versions, dates and titles</li>
+                                            <li>"My History" checkbox : when activated, are visible only the events of the connected user</li>
+                                          </ul>
+                                          For performances reasons, filters are cleared when the user request more event through the button "More".
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-180] Wording change on the platform save event in history <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          Before, in the history, no module name was displayed, only "XXX modified platform properties". From now on, the module name is also displayed to ease the readability.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-185] Confirmation popup added before running "Clean useless valuation" <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          A confirmation pop has been added before cleanning useless valuation to prevent unwanted actions. Be carefull, it is mandatory to save properties in order to apply definetly these modifications.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-186] Fix applications auto-complete <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          After a research from the auto-complete, we were left with residual string name of the application, therefor
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-187] Do not copy events when you copy a platform from another <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          When created a platform from another, the new platform contains all the events of the old. And events are recorded at the date and time of creation of the platform.<br>
+                                          It is preferable to have a new event to get the old events.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-188] Open diff in a new tab <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          Open diff a new new tab to easily go back to the valuation screen.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-189] Compare two events <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          Possibility to compare two events to know exactly what was the modification of valuation.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-190] bug when we want to change platform version with nexus mode <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          When you want to change the value of a platform version, Hesperides proposes to extract and apply the Hesperides versions of modules corresponding NDL.<br/>
+                                          When the NDL contains packages with defined HesperidesVersion and different from the version of the package, Hesperides applies package version and not the HesperidesVersion.<br/>
+                                          Hesperides must apply version hesperides module in this case.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-193] When we run a diff, properties containing a templated value are not displayed <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          Templated values are not considered well when we compare two platforms.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-194] go back to the right screen after a diff <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          Duplicates [HES-144].
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-195] impossible to use diff with date picker <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          Date picker does not considered well the today's date to allow a diff at an earlier date.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-196] quick access to display entirely the platform tree <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          With tree mode, it would be nice in one click to open trre entirely.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-203] regression for autocomplete engine <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                            Regression seen on new version : autocomplete with a dash (particularly) does not return right results.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-205] add id for web element  <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                            To create protractor tests, we have to add id on web elements.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-207] Sort button for global properties is visible even if global properties are hidden <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          The sort button for global properties have to be visibleonly if global properties are displayed.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-210] [PREVIEW] impossible to preview files if a global property contains "$" <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          If a global property contains "$FOO", it's then impossible to preview files. An error message appears : "illegal group reference".
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-211] Impossible to use a global property on instance level <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          A global property is not recognize on instance level : so it's not possible to use this feature.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-212] [SWAGGER] some services are not well documented <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          bug about documentation of swagger.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-213] Add protractor tests <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          For main features, add some protractor tests.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-221] Switch "show unfilled properties" does not work like other switch <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          When switch "show unfilled properties" is on and you start to fulfill a property, this property disappears because the system assumes that the property is not fulfilled.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-223] "save global property" button does not work like "save" in module or instance level <span class="label label-warning">Bug Fix</span></h4>
+                                        <div class="answer">
+                                          Currently, to save global property you press "enter" and to save a removal you click on "save" button. Those behavior should be aligned with module/instance level.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-224] Display which pattern is used when you valuate properties <span class="label label-info">New Feature</span></h4>
+                                        <div class="answer">
+                                          Currently, to save global property you press "enter" and to save a removal you click on "save" button. Those behavior should be aligned with module/instance level.
+                                        </div>
+                                    </div><!--//section-block-->
+                                    <div class="section-block">
+                                        <h4 class="question"><i class="fa fa-info-circle"></i> [HES-229] [PRODUCTION MODE] prohibit an unauthorized user to create a platform from a production platform <span class="label label-success">Improvement</span></h4>
+                                        <div class="answer">
+                                          a non authorized user should not be able to create a platform from a production platform  to prevent the recovery passwords.
+                                        </div>
+                                    </div><!--//section-block-->
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->                                             
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar">
+                        <nav id="doc-nav">
+                            <ul id="doc-menu" class="nav doc-menu hidden-xs" data-spy="affix">
+                                <li>
+                                    <a class="scrollto" href="#ares">ARES</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#ares_2">back 1.0.0 - front 1.0.2</a></li>
+                                        <li><a class="scrollto" href="#ares_1">back 1.0.0 - front 1.0.0</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                            </ul><!--//doc-menu-->
+                        </nav>
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->              
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->        
+    </div><!--//page-wrapper-->
+    
+    <footer class="footer text-center">
+        <div class="container">
+            <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
+            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
+            
+        </div><!--//container-->
+    </footer><!--//footer-->
+    
+     
+    <!-- Main Javascript -->          
+    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>    
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>  
+    <script type="text/javascript" src="assets/plugins/lightbox/dist/ekko-lightbox.min.js"></script>                                                                
+    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+    
+</body>
+</html> 
+

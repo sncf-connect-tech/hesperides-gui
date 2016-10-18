@@ -1,0 +1,105 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<!-- Displaying instance properties -->
+<form name="technoForm" ng-submit="technoForm.$valid" editable-form>
+
+    <!-- Filtring contents -->
+    <div layout="row">
+        <div flex="none" class="margin-right-2pc">
+            <toggle-sort-properties sort-order="order"></toggle-sort-properties>
+        </div>
+        <div flex="none" class="margin-right-2pc">
+            <toggle-deleted-properties key-value-properties="instance.key_values"
+                                       toggle="displayDeletedProperties"></toggle-deleted-properties>
+        </div>
+        <div flex="none">
+            <toggle-unspecified-properties key-value-properties="instance.key_values"
+                                           toggle="displayUnspecified"></toggle-unspecified-properties>
+        </div>
+    </div>
+    <!--End filtring contents-->
+
+    <!-- List of properties -->
+    <md-content layout="column" class="height-500px">
+        <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
+        <md-virtual-repeat-container id="vertical-container" class="height-500px ">
+            <div md-virtual-repeat="key_value_property in instance.key_values | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | displayProperties:displayDeletedProperties | orderBy:'name':order"
+                 class="repeated-item height-20px " flex >
+                <!-- Non Global Properties -->
+                <div layout="row"
+                     ng_if="!key_value_property.inGlobal"
+                     class="margin-1pc">
+                    <div layout="column" flex="50">
+                        <div class="truncate-ellipsis">
+                            <label id="instance-properties_key-property-label-{{key_value_property.name}}" class="property-label"
+                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
+                            >{{key_value_property.name}}</label><span ng-show="key_value_property.required"class="property-required">*</span>
+                            <md-tooltip md-direction="top">
+                                {{key_value_property.name}}
+                            </md-tooltip>
+                        </div>
+                    </div>
+                    <div layout="column" flex>
+                        <input id="instances-properties_value-property-input-{{key_value_property.name}}"
+                               ng-model="key_value_property.value"
+                               ng-trim="true"
+                               ng-readonly="!key_value_property.inModel"
+                               ng-focus="focusthis = true"
+                               ng-blur="focusthis = false"
+                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
+                               ng-pattern="key_value_property.pattern"
+                               class="property-value">
+                    </div>
+                </div>
+
+                <!-- Global Properties -->
+                <div layout="row"
+                     ng_if="key_value_property.inGlobal"
+                     class="margin-1pc">
+                    <div layout="column" flex="50">
+                        <div class="truncate-ellipsis">
+                            <label class="property-label"
+                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
+                            >{{key_value_property.name}}</label>
+                            <md-tooltip md-direction="top">
+                                {{key_value_property.name}}
+                            </md-tooltip>
+                        </div>
+                    </div>
+                    <div layout="column" flex>
+                        <input ng-model="key_value_property.value"
+                               ng-trim="true"
+                               ng-readonly="true"
+                               class="property-value">
+                        <md-tooltip md-direction="top">
+                            <!-- <br/> do not work in tooltip -->
+                            {{ 'properties.module.editProperties.simpleProperties.global' | translate }}
+                        </md-tooltip>
+
+                    </div>
+                </div>
+            </div>
+        </md-virtual-repeat-container>
+    </md-content>
+</form>
+<!-- End list of properties -->

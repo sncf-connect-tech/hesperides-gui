@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
+<head>
+    <title>Hesperides Docs - Best practices</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+    <link rel="shortcut icon" href="favicon.ico">  
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">   
+    <!-- Plugins CSS -->    
+    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+    
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+</head> 
+
+<body class="body-orange">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon_documents_alt icon"></span>
+                            <span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span>
+                        </a>
+                    </h1>
+                </div><!--//branding-->
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Best Practices</li>
+                </ol>
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><i class="icon fa fa-star"></i> Best Practices</h1>
+                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: oct.11, 2016 - 14:58:45</div>
+                </div><!--//doc-header-->
+                <div class="doc-body">
+                    <div class="doc-content">
+                        <div class="content-inner">
+                            <section id="overview" class="doc-section">
+                                <h2 class="section-title">Overview</h2>
+                                <div class="section-block">
+                                    <p>In this section you will find some right ways to use Hesperides and some very useful tips that can help you to go faster.</p>
+                                </div>
+                            </section><!--//doc-section-->
+                            <section id="best-practices" class="doc-section">
+                                <h2 class="section-title">Best practices</h2>
+                                <div id="best-practice-techno-module"  class="section-block">
+                                    <h3 class="block-title">Module and techno</h3>
+                                    <p>If you have several modules with common templates, it is recommended to create a techno that contains thoses templates, and to inherits techno in each module.</p>
+                                    <p>For example, instead of creating three modules that contain two identical templates, create rather a techno that will be inherited on all three modules.</p>
+                                </div><!--//section-block-->
+                                <div id="best-practice-templates"  class="section-block">
+                                    <h3 class="block-title">Templates</h3>
+                                    <p>Hesperides is not made for storing large files, particularly for static files (without mustache inside). </p>
+                                    <div class="callout-block callout-warning">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Be careful !</h4>
+                                            <p>As Hesperides replays events, if you store a template with a lot of data, it can increase the response time dangerously.</p>
+                                        </div><!--//content-->
+                                    </div><!--//callout-block-->
+                                </div><!--//section-block-->
+                                <div id="best-practice-user-settings"  class="section-block">
+                                    <h3 class="block-title">User settings</h3>
+                                    <p>You can customize settings that can make you the most suitable use by clicking on the icon top right of the screen : <img class="img-responsive" src="assets/images/screenshots/icon_user_settings.png"/></p>
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-4 col-xs-12">
+                                            <img class="img-responsive" src="assets/images/screenshots/user_settings_modal.png"/>
+                                        </div>
+                                        <div class="col-md-4 col-sm-8 col-xs-12">
+                                            <ol>
+                                                <li>Your preferred mode will be open by default</li>
+                                                <li>Your preferred language will be open by default</li>
+                                                <li>When you upgrade a module version in your platform, your default choice will be this one</li>
+                                                <li>You can activate color code for platform tags when you edit an application (the library considers the the first three letters and generate a color code from a RVB base code)</li>
+                                                <li>You can modify the level of RVB</li>
+                                                <li>You can note what your RVB base code would change the color of the platform tags</li>
+                                                <li>You can search application you want to appear on the welcome screen to have quick access to edit them</li>
+                                                <li>Don't forget to add the application by clicking on the "+" button</li>
+                                            </ol>
+                                        </div>
+                                    </div><!--//row-->
+                                    <div class="callout-block callout-success">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Change language instantly</h4>
+                                            <p>At any moment you can choose english or french language with the top right icons  <img class="img-responsive" src="assets/images/screenshots/icon_choose_language.png"/></p>
+                                        </div><!--//content-->
+                                    </div><!--//section-block-->
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->   
+                            <section id="tips" class="doc-section">
+                                <h2 class="section-title">Tips</h2>
+                                <div id="tip-autocomplete"  class="section-block">
+                                    <h3 class="block-title">Autocomplete</h3>
+                                    <p>Autocomplete is used in several parts of Hesperides. It has a classic usage, a.k.a it gives users the option of completing words or forms by a shorthand method on the basis of what has been typed before.</p>
+                                    <div class="callout-block callout-success">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Specially for modules</h4>
+                                            <p>You can then type a part of module name and a part of the module version (separated by a blank)</p>
+                                        </div><!--//content-->
+                                    </div><!--//section-block-->
+                                    <p>For example if we have created those three modules :</p>
+                                    <ul>
+                                        <li>myfoo1 - version 1.0</li>
+                                        <li>myfoo1 - version 2.0</li>
+                                        <li>myfoo2 - version 1.0</li>
+                                    </ul>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">Name starting with "myf"</th>
+                                                <th style="text-align:center">Exact name of module</th>
+                                                <th style="text-align:center">Name sarting with "myf" and version starting with "2"</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><img class="img-responsive" src="assets/images/screenshots/autocomplete_ex_1.png"/></td>
+                                                <td><img class="img-responsive" src="assets/images/screenshots/autocomplete_ex_2.png"/></td>
+                                                <td><img class="img-responsive" src="assets/images/screenshots/autocomplete_ex_3.png"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="callout-block callout-success">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Tip of tip !</h4>
+                                            <p>You can use "*" : for example m*1 to return myfoo1</p>
+                                        </div><!--//content-->
+                                    </div><!--//section-block-->
+                                </div><!--//section-block-->
+                                <div id="tip-surf-on-tree" class="section-block">
+                                    <h3 class="block-title">Surf on tree</h3>
+                                    <p>Tree mode when you edit platform is very useful because it allows you to surf your platform</p>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center">Tip</th>
+                                                    <th style="text-align:center">Operation</th>
+                                                    <th style="text-align:center">Result</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">Quick extend</th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_quick_extend.png"/></td>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_quick_extend_2.png"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" style="vertical-align:middle">Filter</th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_filter.png"/></td>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_filter_2.png"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    <div class="callout-block callout-success">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Filtering rules :</h4>
+                                            <p>The filtering string will be apply on every stage of your tree : logic group, module name, instance name</p>
+                                        </div><!--//content-->
+                                    </div><!--//section-block-->
+                                </div>
+                                <div id="tip-platform-using-module" class="section-block">
+                                    <h3 class="block-title">Platforms using module</h3>
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-4 col-xs-12">
+                                            <img class="img-responsive" src="assets/images/screenshots/tip_which_platform_uses_module.png"/>
+                                        </div>
+                                        <div class="col-md-4 col-sm-8 col-xs-12">
+                                            <ol>
+                                                <li>The "List of platform using this module" section lists every platform using your module in this version</li>
+                                                <li>You can click on the platform to edit it</li>
+                                            </ol>
+                                        </div>
+                                    </div><!--//row-->
+                                </div><!--//section-block-->
+                                <div id="tip-alert-non-existing-module" class="section-block">
+                                    <h3 class="block-title">Alert non existing module</h3>
+                                    <p>Hesperides will alert you in two ways if your platform uses a module that does not exists.</p>
+                                    <ul>
+                                        <li>The module and logic groups containing module will appear in red</li>
+                                        <li>A message will appear below the title "Logic representation of XXX" : <img class="img-responsive" src="assets/images/screenshots/alert_module_does_not_exist.png"/></li>
+                                    </ul>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar hidden-xs">
+                        <nav id="doc-nav">
+                            <ul id="doc-menu" class="nav doc-menu" data-spy="affix">
+                                <li><a class="scrollto" href="#overview">Overview</a></li>
+                                <li>
+                                    <a class="scrollto" href="#best-practices">Best practices</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#best-practice-techno-module">Module and techno</a></li>
+                                        <li><a class="scrollto" href="#best-practice-templates">Templates size</a></li>
+                                        <li><a class="scrollto" href="#best-practice-user-settings">User settings</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#tips">Tips</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#tip-autocomplete">Autocomplete</a></li>
+                                        <li><a class="scrollto" href="#tip-surf-on-tree">Surf on tree</a></li>
+                                        <li><a class="scrollto" href="#tip-platform-using-module">Platforms using module</a>
+                                        <li><a class="scrollto" href="#tip-alert-non-existing-module">Alert non existing module</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                            </ul><!--//doc-menu-->
+                        </nav>
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->              
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->
+    </div><!--//page-wrapper-->
+    
+    <footer class="footer text-center">
+        <div class="container">
+            <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
+            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
+            
+        </div><!--//container-->
+    </footer><!--//footer-->
+    
+     
+    <!-- Main Javascript -->          
+    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>    
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>                                                                
+    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+    
+</body>
+</html> 

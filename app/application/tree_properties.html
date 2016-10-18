@@ -1,0 +1,141 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<div layout="row" layout-wrap>
+    <div flex="30">
+        <!-- Filtre sur l'arbre -->
+        <div>
+            <md-input-container class="md-block margin-inherit">
+                <label>{{ 'properties.treeMode.title' | translate }}</label>
+                <!-- Add ngModelOptions for big tree, to prevent key press hang -->
+                <input type="text" ng-trim="true" ng-model="searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" />
+            </md-input-container>
+        </div>
+
+        <!-- Element root de l'arbre -->
+        <div id="header" layout="row">
+            <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' | translate }}</h3></div>
+            <div flex="grow" layout="row" layout-align="none center">
+                <md-button id="tree-properties_add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
+                    <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
+                    <i class="fa fa-inbox"></i>
+                </md-button>
+                <md-button id="tree-properties_display-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                    <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
+                    <i class="fa fa-list"></i>
+                </md-button>
+                <md-button id="tree-properties_compare-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diff_global_properties(platform)">
+                    <md-tooltip>{{ 'properties.platform.globalProperties.compare' | translate }}</md-tooltip>
+                    <i class="fa fa-exchange"></i>
+                </md-button>
+                <md-button id="tree-properties_quick-display-button" class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
+                    <md-tooltip>{{ 'properties.platform.quickDisplay' | translate }}</md-tooltip>
+                    <i class="fa fa-bolt" ng-class="{'fa-rotate-270': quickOpen}"></i>
+                </md-button>
+            </div>
+        </div>
+
+        <!-- Elements enfants -->
+        <div>
+            <div
+                 ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:searchInTree"
+                 ng-include="'application/tree_renderer.html'"/>
+            </div>
+        </div>
+    </div>
+
+<div flex="70">
+    <div id="propertiesDivHolder">
+        <!-- Bouton sauvegarder -->
+        <div layout="row" layout-align="end start" ng-show="showGlobalProperties">
+            <md-button id="tree-properties_save-global-properties-button" class="md-raised md-primary"
+                       ng-click="save_global_properties(platform.global_properties, true)">
+                <i class="fa fa-check"></i>
+                {{ 'properties.platform.globalProperties.save' | translate }}
+            </md-button>
+
+            <toggle-sort-properties sort-order="order"></toggle-sort-properties>
+        </div>
+        <div layout="row" ng-show="showGlobalProperties" flex="100">
+            <div flex="100">
+                <form>
+                    <properties-globales-tree platform="platform" sort-order="order"/>
+                </form>
+            </div>
+        </div>
+        <div class="margin-top-5px" layout="row" ng-show="properties">
+            <div class="has_model_{{selected_module.has_model}}">
+                <h3><span>{{ 'properties.module.editProperties.title' | translate }} <strong>{{selected_module.path.split('#').join('
+                    | ')}} | {{selected_module.title}}</strong></span>
+                </h3>
+            </div>
+        </div>
+        <div class="margin-top-5px" layout="row" ng-show="properties">
+            <div>
+                <md-button id="tree-properties_clean-module-properties-button" class="md-raised"
+                           ng-really-click="clean_properties(properties)"
+                           ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
+                    <i class="fa fa-trash"></i>
+                    <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
+                </md-button>
+                <md-button id="tree-properties_save-module-properties-button"
+                           ng-click="save_properties(properties, selected_module)"
+                           class="md-raised md-primary">
+                    <i class="fa fa-check"></i>
+                    <span>{{ 'properties.module.editProperties.save' | translate }}</span>
+                </md-button>
+            </div>
+        </div>
+
+        <div layout="row" ng-show="properties">
+            <div flex="100">
+                <properties-list properties="properties" properties-model="model" platform="platform"></properties-list>
+            </div>
+        </div>
+
+        <div layout="row" ng-show="instance">
+            <div >
+                <h3 class="margin-top-0px">
+                    <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }}
+                        <strong>
+                            <a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a>
+                        </strong>
+                    </span>
+                </h3>
+
+                <md-button id="tree-properties_clean-instance-properties-button" class="md-raised"
+                           ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
+                           ng-really-click="clean_instance_properties(instance)">
+                    <i class="fa fa-trash"></i>
+                    <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
+                </md-button>
+
+                <md-button id="tree-properties_save-instance-properties-button" ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
+                    <i class="fa fa-check"></i>
+                    <span>{{ 'properties.module.editProperties.save' | translate }}</span>
+                </md-button>
+
+                <!-- Showing instance properties -->
+                <instance-properties instance="instance"></instance-properties>
+            </div>
+        </div>
+    </div>
+</div>

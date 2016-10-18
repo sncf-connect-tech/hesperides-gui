@@ -1,0 +1,71 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<div>
+    <section class="file-header">
+        <div layout="row" flex="100">
+            <div flex>
+                <md-button id="properties-list_display-simple-properties-button" ng-click="open(1)" class="file-title">{{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{(properties.key_value_properties | displayProperties:false).length}} )</md-button>
+            </div>
+            <!-- Error tooltip text -->
+            <md-tooltip>{{ 'properties.module.editProperties.simpleProperties.tooltip' | translate }}</md-tooltip>
+        </div>
+
+        <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
+        <div ng-show="1 === isOpen" class="file-content ng-hide" layout="column" flex="100">
+            <simple-properties-list properties = "properties.key_value_properties"></simple-properties-list>
+        </div>
+    </section>
+
+    <section class="file-header">
+        <div layout="row" flex="100">
+            <div flex>
+                <md-button id="properties-list_display-iterable-properties-button" ng-click="open(2)" class="file-title">{{ 'properties.module.editProperties.iterableProperties.title' | translate }} ( {{properties.iterable_properties.length}} )</md-button>
+            </div>
+            <!-- Error tooltip text -->
+            <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.tooltip' | translate }}</md-tooltip>
+        </div>
+
+        <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
+        <div ng-show="2 === isOpen" class="file-content ng-hide" layout="column" flex="100">
+
+            <!-- Filter toggles -->
+            <div layout="row">
+                <div flex="none"><toggle-deleted-iterable-properties iterable-properties="properties.iterable_properties" toggle="displayIterableDeletedProperties"></toggle-deleted-iterable-properties></div>
+                <div flex="none"><toggle-unspecified-iterable-properties iterable-properties="properties.iterable_properties"  toggle="displayIterableUnspecifiedProperties"></toggle-unspecified-iterable-properties></div>
+            </div>
+
+            <!-- Value filter -->
+            <div layout="row">
+                <div flex="90">
+                    <md-input-container class="md-block">
+                        <label>{{ 'properties.module.editProperties.iterableProperties.filter' | translate }}</label>
+                        <input type="text" ng-trim="true" ng-model="iterablePropertiesValueFilter" aria-label="{{ 'properties.module.editProperties.iterableProperties.filter' | translate }}" />
+                    </md-input-container>
+                </div>
+            </div>
+
+            <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-values="iterablePropertiesValueFilter"></iterable-properties-list>
+
+        </div>
+    </section>
+</div>
+

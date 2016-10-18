@@ -1,0 +1,130 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="50">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>{{ 'settings.title' | translate }}</h2>
+            <p>{{ 'settings.introduction' | translate }}</p>
+            <md-content layout-padding class="autoScroll">
+                <div class="modal-body">
+                    <p><strong>{{ 'settings.display' | translate }} :</strong> </p>
+
+                    <md-radio-group ng-model="settings_display" layout="row">
+                        <md-radio-button value="arbre">
+                            {{ 'settings.tree' | translate }}
+                        </md-radio-button>
+                        <md-radio-button value="bloc">
+                            {{ 'settings.bloc' | translate }}
+                        </md-radio-button>
+                    </md-radio-group>
+
+                    <p><strong>{{ 'settings.language' | translate }} :</strong> </p>
+
+                    <md-radio-group ng-model="settings_language" layout="row">
+                        <md-radio-button value="fr">
+                            {{ 'settings.french' | translate }}
+                        </md-radio-button>
+                        <md-radio-button value="en">
+                            {{ 'settings.english' | translate }}
+                        </md-radio-button>
+                    </md-radio-group>
+
+                    <md-switch class="md-primary" ng-model="settings_copy" class="md-block">
+                        <strong>{{ 'settings.copy' | translate }}</strong>
+                    </md-switch>
+                    <md-switch class="md-primary" ng-model="settings_color" class="md-block">
+                        <strong>{{ 'settings.color' | translate }}</strong>
+                    </md-switch>
+                    <div ng-show="settings_color">
+
+                        <div layout="">
+                            <div flex="10" layout="" layout-align="center center">
+                                <span class="md-body-1">R</span>
+                            </div>
+                            <md-slider flex="" min="0" max="255" ng-model="color.red" aria-label="red" id="red-slider" class="md-primary">
+                            </md-slider>
+                            <div flex="20" layout="" layout-align="center center">
+                                <input flex="" type="number" ng-model="color.red" aria-label="red" aria-controls="red-slider">
+                            </div>
+                        </div>
+
+                        <div layout="">
+                            <div flex="10" layout="" layout-align="center center">
+                                <span class="md-body-1">G</span>
+                            </div>
+                            <md-slider flex="" ng-model="color.green" min="0" max="255" aria-label="green" id="green-slider" class="md-primary">
+                            </md-slider>
+                            <div flex="20" layout="" layout-align="center center">
+                                <input flex="" type="number" ng-model="color.green" aria-label="green" aria-controls="green-slider">
+                            </div>
+                        </div>
+
+                        <div layout="">
+                            <div flex="10" layout="" layout-align="center center">
+                                <span class="md-body-1">B</span>
+                            </div>
+                            <md-slider flex="" ng-model="color.blue" min="0" max="255" aria-label="blue" id="blue-slider" class="md-primary">
+                            </md-slider>
+                            <div flex="20" layout="" layout-align="center center">
+                                <input flex="" type="number" ng-model="color.blue" aria-label="blue" aria-controls="blue-slider">
+                            </div>
+                        </div>
+                        <ul class="shared-list-inline">
+                        <li ng-repeat="item in items">
+                            <button class="md-button md-ink-ripple" type="button" ng-mouseenter="hover = true" ng-mouseleave="hover = false"  ng-style="{'background-color': backgroundColor(item)}" style="{'background-color': backgroundColor(item)};" aria-label="item.name">
+                                <span class="ng-binding ng-scope">{{item.name}}
+                                </span>
+                            </button>
+                        </li>
+                        </ul>
+                    </div>
+                    <p><strong>{{ 'settings.access' | translate }} :</strong> </p>
+                    <div layout="row" flex="100">
+                        <md-autocomplete
+                                flex="75"
+                                required
+                                ng-trim="true"
+                                ng-model="app"
+                                md-no-cache="true"
+                                md-selected-item="selectedItem"
+                                md-search-text="searchText"
+                                md-items="application in find_applications_by_name(searchText)"
+                                md-item-text="application.name"
+                                md-selected-item-change="addApplication(application)"
+                                md-min-length="0"
+                                md-autoselect="true"
+                                placeholder="{{'placeholder.application.name' | translate}}">
+                            <span md-highlight-text="searchText">{{application.name}}</span>
+                        </md-autocomplete>
+                    </div>
+                    <br/>
+                    <md-chips ng-model="applications" readonly="false" disable-editing></md-chips>
+
+                </div>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-click="closeDialog()" class="md-raised md-warn">{{ 'settings.close' | translate }}</md-button>
+            <md-button ng-click="saveSettings()" class="md-raised md-primary">{{ 'settings.save' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

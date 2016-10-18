@@ -1,0 +1,60 @@
+#!/bin/bash 
+
+return_value=0
+result=0
+
+current_branch=`git rev-parse --abbrev-ref HEAD`
+if [ $current_branch != "master" ]; then
+	echo "Not on branch 'master' -> skip validation!"
+	exit 0
+fi
+FILES_TO_CHECK=`git diff HEAD --name-only`
+
+function validate_file(){
+	local html_to_update=$1
+
+	# Test de présence fichier 
+    if [ ! -f $html_to_update ]; then
+		echo "Unable to find ${html_to_update} -> no validation"
+		result_value=1
+		return
+	fi
+
+    DATE=$(date +%d-%m-%Y" "%H:%M:%S);
+
+    sed -i "s/i> Last updated:.*</i> Last updated: $(date +"%b%d, %Y - %H:%M:%S")</g" ${html_to_update}
+	
+}
+
+function check_file(){
+  local html_to_update=$1
+  local return_check=0
+  
+  if [ ${html_to_update: -5} == ".html" ]; then
+    if [ ${html_to_update} != "index.html" ]; then
+      return_check=1
+    fi
+  fi
+  
+  echo $return_check
+}
+
+
+for file_to_check in $FILES_TO_CHECK
+do
+    if [ $(check_file $file_to_check) == 1 ]; then
+      validate_file $file_to_check
+    fi
+done
+
+FILES_TO_CHECK=`git diff HEAD --name-only`
+for file_to_check in $FILES_TO_CHECK
+do
+  if [ $(check_file $file_to_check) == 1 ]; then
+    git add $file_to_check
+    echo "Updated : $file_to_check"
+  fi
+
+done
+
+exit $return_value

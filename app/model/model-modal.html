@@ -1,0 +1,61 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="auto">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>{{ 'model.modal.title' | translate : {name:module.name} }}</h2>
+            <md-content layout-padding class="autoScroll" layout="column">
+
+                <div ng-show="(!model.key_value_properties || model.key_value_properties.length == 0) && (!model.iterable_properties || model.iterable_properties.length == 0)">
+                    <h2 class="no-entries"> {{ 'model.modal.empty' | translate }} </h2>
+                </div>
+
+                <div ng-show="model.key_value_properties && model.key_value_properties.length > 0">
+                    <!-- Simple properties -->
+                    <h3>{{ 'model.modal.simpleProperties.title' | translate }}</h3>
+                    <md-virtual-repeat-container class="modal-md-virtual-repeat-container">
+                        <dl class="dl-horizontal model-property-simple" ng-animate="'animate'" md-virtual-repeat="keyValueProperty in model.key_value_properties | orderBy:'name'">
+                            <b>{{keyValueProperty.name }}</b><span ng-if="keyValueProperty.comment"> <i class="fa fa-commenting-o"></i> <em>{{ keyValueProperty.comment }}</em></span>
+                        </dl>
+                    </md-virtual-repeat-container>
+                </div>
+
+                <div ng-show="model.iterable_properties && model.iterable_properties.length > 0">
+                    <!-- Iterable properties -->
+                    <h3>{{ 'model.multipleProperties.title' | translate }}</h3>
+                    <md-virtual-repeat-container class="modal-md-virtual-repeat-container">
+                        <dl class="dl-horizontal model-property-simple" ng-animate="'animate'" md-virtual-repeat="iterableProperty in model.iterable_properties | orderBy:'name'">
+                            <dt>{{ iterableProperty.name }}</dt>
+                            <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">
+                                <b>{{field.name }}</b><span ng-if="field.comment"> <i class="fa fa-commenting-o"></i> <em>{{ field.comment }}</em></span>
+                            </dd>
+                        </dl>
+                    </md-virtual-repeat-container>
+                </div>
+
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

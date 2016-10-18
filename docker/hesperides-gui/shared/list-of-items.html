@@ -1,0 +1,82 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<ul class="shared-list-inline">
+    <li ng-repeat="item in items | filterPlatform:filter | orderBy:sortOn">
+        <md-button
+                   ng-mouseenter="hover = true"
+                   ng-mouseleave="hover = false"
+                   ng-show="!isReadOnly"
+                   ng-click="selfEdit(item)"
+                   ng-style="{'background-color': backgroundColor(item)}"
+                >{{selfLabel(item)}}
+            <md-button class="md-warn md-xs"
+                       ng-really-message="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
+                       aria-label="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
+                       ng-really-click="selfDelete(item)"
+                       ng-mouseenter="hover = true"
+                       ng-mouseleave="hover = false"
+                       ng-if="editable"
+                    ><i class="fa fa-trash"></i></md-button>
+
+            <md-tooltip ng-if="tooltip">{{ tooltip }}</md-tooltip>
+        </md-button>
+
+    </li>
+    <li class="vertical-align-middle" ng-if="editable">
+        <md-button class="md-raised md-success"
+                   ng-click="showInput()"
+                   ng-hide="show_input"
+                   aria-label="Ajouter une techno"
+                ><i class="fa fa-plus"></i></md-button>
+
+        <md-input-container ng-if="type != 'search'" ng-show="show_input">
+            <input type="text"
+                   ng-model="input.inputText"
+                   ng-blur="resetAndHideInput()"
+                   ng-enter="selfAdd(input.inputText)"
+                   placeholder="Entrer un nom..."/>
+        </md-input-container>
+
+        <md-input-container ng-if="type === 'search'" ng-show="show_input">
+            <label></label>
+            <md-autocomplete
+                    id="nameInput"
+                    ng-model="input.inputText"
+                    md-no-cache="true"
+                    md-selected-item="ctrl.selectedItem"
+                    md-search-text="ctrl.searchText"
+                    md-items="{{typeahead}}"
+                    md-item-text="techno.name"
+                    md-selected-item-change="(techno) ? selfAdd(techno) : false"
+                    md-min-length="0"
+                    md-autoselect="true"
+                    md-autofocus="true"
+                    placeholder="{{ 'placeholder.search' | translate }}">
+                <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
+                <md-not-found>
+                    {{ 'message.emptyResult' | translate }}
+                </md-not-found>
+            </md-autocomplete>
+        </md-input-container>
+
+    </li>
+</ul>

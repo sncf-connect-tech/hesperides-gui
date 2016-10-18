@@ -1,0 +1,97 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<div>&nbsp;</div>
+<div layout="row">
+    <div flex>
+        <div class="bg-light">
+            <h3><span> Module <strong><u>{{module.name}}</u></strong>, Version <strong><u>{{module.version}}</u></strong></span>
+                <span ng-show="is_workingcopy"> (Working Copy)</span></span>
+                <md-button id="module_create-release-button" class="md-raised md-primary"
+                           ng-show="is_workingcopy"
+                           ng-click="open_create_release_dialog(module)">
+                    <i class="fa fa-code-fork"></i> {{ 'button.release.create' | translate }}</md-button>
+                <md-button id="module_associated-properties-button" class="md-raised md-warn"
+                           ng-click="open_associated_properties_dialog(module)">
+                    <i class="fa fa-list"></i> {{ 'button.associateProperties' | translate }}</md-button>
+            </h3>
+        </div>
+    </div>
+</div>
+<div layout="row">
+    <div flex>
+        <div class="bg-light module-file" flex>
+            <h4>{{ 'module.specificFiles' | translate }}</h4>
+            <hesperides-template-list template-entries="templateEntries"
+                                      add="add_template"
+                                      edit="edit_template"
+                                      delete="delete_template"
+                                      is-read-only="is_release"></hesperides-template-list>
+        </div>
+    </div>
+</div>
+<div layout="row">
+    <div flex>
+        <div class="bg-light" flex>
+            <h4>{{ 'module.technoList' | translate }}</h4>
+            <list-of-items items="module.technos"
+                           createfunction="add_techno($name)"
+                           ondelete="delete_techno($item)"
+                           size="small"
+                           css="md-info"
+                           label="$item.title"
+                           selected-item="techno"
+                           selectable="true"
+                           editable="is_workingcopy"
+                           placeholder="{{ 'module.search.techno' | translate }}"
+                           typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
+                    ></list-of-items>
+        </div>
+    </div>
+</div>
+<div layout="row">
+    <div flex>
+        <div class="bg-light" flex>
+            <h4>{{ 'module.platformList' | translate }}</h4>
+
+        <list-of-links items="platforms"
+                       label="$item.application_name + ' [' + $item.name + ']'"
+                       filter="searchInPlatforms"
+                       sorton="$item.application_name"
+                       selected-item="platform"
+                       selectable="true"
+                       editable="false"
+                       css="md-warn"
+                       href="'/properties/' + $item.application_name + '?platform=' + $item.name"
+                       new_tab="true"
+                       tooltip="{{ 'properties.platform.selection.tooltip' | translate }}"
+                       size="small">
+        </list-of-links>
+        </div>
+    </div>
+</div>
+<!-- remplacé par la modal model-modal.html
+<div layout="row">
+    <div class="bg-light" flex>
+        <h3>Les propriétés associées</h3>
+        <hesperides-model model="model" loading="loading_model"></hesperides-model>
+    </div>
+</div>-->

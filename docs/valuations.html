@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
+<head>
+    <title>Hesperides Docs - Quick Start</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+    <link rel="shortcut icon" href="favicon.ico">  
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">   
+    <!-- Plugins CSS -->    
+    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+    
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+</head> 
+
+<body class="body-yellow">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon_documents_alt icon"></span>
+                            <span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span>
+                        </a>
+                    </h1>
+                </div><!--//branding-->
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Valuations</li>
+                </ol>
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><i class="icon fa fa-cubes"></i> Valuations</h1>
+                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: oct.13, 2016 - 14:26:32</div>
+                </div><!--//doc-header-->
+                <div class="doc-body">
+                    <div class="doc-content">
+                        <div class="content-inner">
+                            <section id="overview" class="doc-section">
+                                <h2 class="section-title">Overview</h2>
+                                <div class="section-block">
+                                    <p>Now that you know handling templates (if not, go to <a href="templates.html">this section</a>), and applications (if not, go to <a href="applications.html">this section</a>), it's finally time to valuate properties for your application.</p>
+                                    <p>You can valuate properties at three levels :</p>
+                                    <ul>
+                                        <li>Platform Level (optional)</li>
+                                        <li>Module level : the default level considered by Hesperides</li>
+                                        <li>Instance level (optional)</li>
+                                    </ul>
+                                   
+                                    <div class="callout-block callout-info">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-info-circle"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Inheritance</h4>
+                                            <ul>
+                                                <li>properties at platform level can be inherited at module and instance level</li>
+                                                <li>properties at module level can be overload at instance level</li>
+                                            </ul>
+                                        </div><!--//content-->
+                                    </div><!--//callout-block-->
+                                </div>
+                            </section><!--//doc-section-->
+                            <section id="entry_points" class="doc-section">
+                                <h2 class="section-title">Entry points</h2>
+                                <div class="section-block">
+                                <p>You will see in the table the several entry points to access to each level for both mode (tree and block) :</p>
+                                </div>
+                                <div id="step1"  class="section-block">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center">Operation</th>
+                                                    <th style="text-align:center">Tree mode</th>
+                                                    <th style="text-align:center">Block mode</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">Platform level</th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_edit_global_properties.png"/></td>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_block_edit_global_properties.png"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Module level</th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_edit_module_properties.png"/></td>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_block_edit_module_properties.png"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Instance level</th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_tree_edit_instance_properties.png"/></td>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/platform_block_edit_instance_properties.png"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->                   
+                            <section id="platform-level" class="doc-section">
+                                <h2 class="section-title">Platform level</h2>
+                                <div class="section-block">
+                                    <p>If you want to apply the same values for several module properties, you can add some platform properties (you will also see "global properties").</p>
+                                    <p>This level is not mandatory, however it's very convenient not to duplicate data.</p>
+                                </div>
+                                <div id="add-platform-properties" class="section-block">
+                                    <h3 class="block-title">Add global properties</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center">Mode</th>
+                                                    <th style="text-align:center">Steps</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row" style="vertical-align:middle">Tree mode</th>
+                                                    <td>
+                                                        <ol class="list">
+                                                            <li>Fill in name (<b class="red-color">1</b>) and value (<b class="red-color">2</b>) for your global property :<img class="img-responsive" src="assets/images/screenshots/platform_tree_add_global_properties_1.png"/></li>
+                                                            <li>Press enter</li>
+                                                            <li>You can add one or several properties</li>
+                                                            <li>Click on "SAVE THE GLOBAL PROPERTIES", a modal appears :<img class="img-responsive" src="assets/images/screenshots/platform_comment_modal_after_saving.png"/>
+                                                            <div class="callout-block callout-warning">
+                                                                <div class="icon-holder">
+                                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                                </div><!--//icon-holder-->
+                                                                <div class="content">
+                                                                    <h4 class="callout-title">Respect the described rule for comment</h4>
+                                                                    <p>For example "add global property for my demo" </p>
+                                                                </div><!--//content-->
+                                                            </div><!--//callout-block-->
+                                                            </li>
+                                                        </ol>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" style="vertical-align:middle">Block mode</th>
+                                                    <td>
+                                                        <ol class="list">
+                                                            <li>Fill in name (<b class="red-color">1</b>) and value (<b class="red-color">2</b>) for your global property :<img class="img-responsive" src="assets/images/screenshots/platform_block_add_global_properties_1.png"/></li>
+                                                            <li>Press enter</li>
+                                                            <li>You can add one or several properties</li>
+                                                            <li>Click on "SAVE THE GLOBAL PROPERTIES", a modal appears :<img class="img-responsive" src="assets/images/screenshots/platform_comment_modal_after_saving.png"/>
+                                                            <div class="callout-block callout-warning">
+                                                                <div class="icon-holder">
+                                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                                </div><!--//icon-holder-->
+                                                                <div class="content">
+                                                                    <h4 class="callout-title">Respect the described rule for comment</h4>
+                                                                    <p>For example "add global property for my demo" </p>
+                                                                </div><!--//content-->
+                                                            </div><!--//callout-block-->
+                                                            </li>
+                                                        </ol>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!--//section-block-->
+                                <div id="delete-platform-properties" class="section-block">
+                                    <h3 class="block-title">Delete global properties</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center">Mode</th>
+                                                    <th style="text-align:center">Steps</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row" style="vertical-align:middle">Tree mode</th>
+                                                    <td>
+                                                        <ol class="list">
+                                                            <li>Click on the trash icon :<img class="img-responsive" src="assets/images/screenshots/platform_tree_delete_global_properties.png"/></li>
+                                                            <li>You can delete one or several properties</li>
+                                                            <li>Click on "SAVE THE GLOBAL PROPERTIES", a modal appears :<img class="img-responsive" src="assets/images/screenshots/platform_comment_modal_after_saving.png"/>
+                                                            <div class="callout-block callout-warning">
+                                                                <div class="icon-holder">
+                                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                                </div><!--//icon-holder-->
+                                                                <div class="content">
+                                                                    <h4 class="callout-title">Respect the described rule for comment</h4>
+                                                                    <p>For example "delete global property for my demo" </p>
+                                                                </div><!--//content-->
+                                                            </div><!--//callout-block-->
+                                                            </li>
+                                                        </ol>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" style="vertical-align:middle">Block mode</th>
+                                                    <td>
+                                                        <ol class="list">
+                                                            <li>Click on the trash icon :<img class="img-responsive" src="assets/images/screenshots/platform_block_delete_global_properties.png"/></li>
+                                                            <li>You can delete one or several properties</li>
+                                                            <li>Click on "SAVE THE GLOBAL PROPERTIES", a modal appears :<img class="img-responsive" src="assets/images/screenshots/platform_comment_modal_after_saving.png"/>
+                                                            <div class="callout-block callout-warning">
+                                                                <div class="icon-holder">
+                                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                                </div><!--//icon-holder-->
+                                                                <div class="content">
+                                                                    <h4 class="callout-title">Respect the described rule for comment</h4>
+                                                                    <p>For example "delete global property for my demo" </p>
+                                                                </div><!--//content-->
+                                                            </div><!--//callout-block-->
+                                                            </li>
+                                                        </ol>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+                            <section id="module-level" class="doc-section">
+                                <h2 class="section-title">Module level</h2>
+                                <div class="section-block">
+                                    <p>Here we are ! let's fulfill those properties !</p>
+                                </div>
+                                <div id="valuation-module-simple-properties" class="section-block">
+                                    <h3 class="block-title">Simple properties</h3>
+                                    <div class="section-block">
+                                        <p>If you click on your module "module-test" when you edit your platform, you can valuate properties for your environment :</p>
+                                        <img class="img-responsive" src="assets/images/screenshots/platform_display_module_properties.png"/>
+                                    </div>
+                                </div>
+                                <div id="valuation-module-iterable-properties" class="section-block">
+                                    <h3 class="block-title">Iterable properties</h3>
+                                    <div class="section-block">
+                                        <p>You can edit iterable property in addition to simple property (click on link "Iterable properties" to display it) : </p>
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-4 col-xs-12">
+                                                <img class="img-responsive" src="assets/images/screenshots/properties_iterable_manage.png"/>
+                                            </div>
+                                            <div class="col-md-4 col-sm-8 col-xs-12">
+                                                <ol>
+                                                    <li>Add as many shoes as you want</li>
+                                                    <li>Delete the shoe</li>
+                                                    <li>fulfill brand name and bar code</li>
+                                                </ol>
+                                            </div>
+                                        </div><!--//row-->
+                                        <div class="callout-block callout-success">
+                                            <div class="icon-holder">
+                                                <i class="fa fa-thumbs-up"></i>
+                                            </div><!--//icon-holder-->
+                                            <div class="content">
+                                                <h4 class="callout-title">Generation !</h4>
+                                                <p>If you generate file or preview instance, you will finally obtain this file :</p>
+    <pre><code class="language-markup">&lt;html&gt;
+    &lt;body&gt;
+        &lt;ul&gt;
+            &lt;li>brand_1 has bar code : 9999999 &lt;/li&gt;
+            &lt;li>brand_2 has bar code : 8888888 &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+    </code></pre>
+                                            </div><!--//content-->
+                                        </div><!--//section-block-->
+                                    </div>
+                                </div>
+                                <div id="use-platform-properties" class="section-block">
+                                    <h3 class="block-title">Use global properties</h3>
+                                    <div class="section-block">
+                                        <p>If you created some global properties, you can use it at module or instance level.</p>
+                                        <ul class="list">
+                                            <li>If you declared in your template something like <code>new_global_property={{new_global_property}}</code> and if you added a global property as in <a class="scrollto" href="#add-platform-properties">Add global properties</a> section, you will see this when you edit the module properties :</p>
+                                            <img class="img-responsive" src="assets/images/screenshots/platform_use_existing_global_property.png"/></li>
+                                            <li>If you added a global property as in <a class="scrollto" href="#add-platform-properties">Add global properties</a> section, but without declaring it in your template, you can still use it at module level :</p>
+                                            <img class="img-responsive" src="assets/images/screenshots/platform_use_existing_global_property_2.png"/></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div id="annotations-on-ihm" class="section-block">
+                                    <h3 class="block-title">Handle with annotations</h3>
+                                    <div class="section-block">
+                                        <p>In <a class="link" href="templates.html#hesperides-annotation">annotation section</a> you learned how to add annotations in your template. It's time to see how Hesperides handles it when you edit your module properties :</p>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center">Annotation</th>
+                                                    <th style="text-align:center">Display</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>required_key={{value1|@required}}</code></th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/annotation_required_display_on_ihm.png"/>If you do not fulfill the value, you won't be able to save your properties</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>key_with_comment={{value2|@comment "some comment to explain the key"}}</code></th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/annotation_comment_display_on_ihm.png"/>You can see the comment on placeholder if property is empty, or in tooltip when you hover the value input</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>key_with_default_value={{value3|@default "false"}}</code></th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/annotation_default_display_on_ihm.png"/>You can see the default vaule on placeholder if property is empty, or in tooltip when you hover the value input</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>key_password={{value4|@password}}</code></th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/annotation_password_display_on_ihm.png"/>If you are a non-authorized user and if you display a production platform, you will only see stars</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>key_with_pattern={{value5|@pattern "[a-z]*"}}</code></th>
+                                                    <td><img class="img-responsive" src="assets/images/screenshots/annotation_pattern_display_on_ihm.png"/>If you do not fulfill a value that consider the pattern, you won't be able to save your properties. You can see the pattern on placeholder if property is empty, or in tooltip when you hover the value input</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </section>
+                            <section id="instance-level" class="doc-section">
+                                <h2 class="section-title">Instance level</h2>
+                                <div id="define-instance-property" class="section-block">
+                                    <h3 class="block-title">Define instance property</h3>
+                                    <div class="section-block">
+                                        <p>If you have a property at module level, but you want to specify different values according to instance, you can again use mustache.</p>
+                                        First, you have to set your property value at module level like this :
+                                        <img class="img-responsive" src="assets/images/screenshots/platform_define_instance_property.png"/>
+                                        <div class="callout-block callout-warning">
+                                            <div class="icon-holder">
+                                                <i class="fa fa-exclamation-triangle"></i>
+                                            </div><!--//icon-holder-->
+                                            <div class="content">
+                                                <h4 class="callout-title">Take care of your property name</h4>
+                                                <p>If you set the value of your module property with a key already use at platform level, Hesperides will not specify it at instance level !</p>
+                                            </div><!--//content-->
+                                        </div><!--//callout-block-->
+                                    </div>
+                                </div>
+                                <div id="preview-files" class="section-block">
+                                    <h3 class="block-title">Preview files</h3>
+                                    <div class="section-block">
+                                        <p>At instance level, you are able to merge templates with valuations and display a preview of it. All you have to do is to hover the name of the instance you want to preview and click on "eye" icon :</p>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h6>Tree mode</h6>
+                                                <img class="img-responsive" src="assets/images/screenshots/instance_tree_preview.png"/>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h6>Block mode</h6>
+                                                <img class="img-responsive" src="assets/images/screenshots/instance_block_preview.png"/>
+                                            </div>
+                                        </div><!--//row-->
+                                        <p>Whether tree or block mode, you access to the above modal :</p>
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-4 col-xs-12">
+                                                <img class="img-responsive" src="assets/images/screenshots/preview_example.png"/>
+                                            </div>
+                                            <div class="col-md-4 col-sm-8 col-xs-12">
+                                                <ol>
+                                                    <li>Click on file title to open its content</li>
+                                                    <li>Visualize the generated path of your file</li>
+                                                    <li>Visualize the generated content of your file</li>
+                                                    <li>Download the generated file</li>
+                                                    <li>Download a zip containing every generated files</li>
+                                                </ol>
+                                            </div>
+                                        </div><!--//row-->
+                                    </div>
+                                </div>
+                            </section>
+                            <section id="predefined-properties" class="doc-section">
+                                <h2 class="section-title">Predefined properties</h2>
+                                <div class="section-block">
+                                    <p>Hesperides handles contextual variables that can be used directly in your templates or valuations</p>
+                                </div>
+                                <div id="predefined-properties-how-to" class="section-block">
+                                    <h3 class="block-title">How to</h3>
+                                    <ul>
+                                        <li>You can get information about application and platform thanks to :</p>
+                                    <pre><code class="language-javascript">{{hesperides.application.name}}
+{{hesperides.application.version}}
+{{hesperides.platform.name}}</code></pre>
+                                        </li>
+                                        <li>You can get information about module and the path thanks to :</p>
+                                    <pre><code class="language-javascript">{{hesperides.module.name}}
+{{hesperides.module.version}}
+{{hesperides.module.path.0}}
+{{hesperides.module.path.1}}
+etc ...</code></pre>
+                                        </li>
+                                        <li>You can get information about instance thanks to :</p>
+                                    <pre><code class="language-javascript">{{hesperides.instance.name}}</code></pre>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </section>
+                            <section id="common-functions" class="doc-section">
+                                <h2 class="section-title">Common functions</h2>
+                                <div class="section-block">
+                                    <p>At three levels, you can do some things to make nice your navigation</p>
+                                </div>
+                                <div id="sort-property" class="section-block">
+                                    <h3 class="block-title">Sort</h3>
+                                    <p>Playing with this switch, you can sort ascending or descending property names : <img class="img-responsive" src="assets/images/screenshots/switch_sort_properties.png"/></p>
+                                </div>
+                                <div id="filter-property" class="section-block">
+                                    <h3 class="block-title">Filter</h3>
+                                    <ul>
+                                        <li>Playing with thoses inputs <i>(not availables for instance level)</i>, you can filter property name or property value or both at same time : <img class="img-responsive" src="assets/images/screenshots/filter_properties.png"/></li>
+                                        <li>Playing with those switches <i>(not availables for platform level)</i>, you can display only empty properties or deleted properties : <img class="img-responsive" src="assets/images/screenshots/switch_deleted_and_unfilled_properties.png"/></li>
+                                    </ul>
+                                </div>
+                                <div id="clean-property" class="section-block">
+                                    <h3 class="block-title">Clean</h3>
+                                    <p>Clicking on the button <i>(not available for platform level)</i>, you can clean the properties that have been deleted previously (see deleted properties section) : <img class="img-responsive" src="assets/images/screenshots/clean_useless_values.png"/></p>
+                                    <div class="callout-block callout-info">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-info"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Deleted values</h4>
+                                            <p>When you delete a property from a template, it's not deleted in platform. That's why you are able to display deleted properties (see <a class="link" href="contribute.html#model-valuation-section">model/valuation</a>).</p>
+                                        </div><!--//content-->
+                                    </div><!--//section-block-->
+                                </div>
+                            </section>
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar hidden-xs">
+                        <nav id="doc-nav">
+                            <ul id="doc-menu" class="nav doc-menu" data-spy="affix">
+                                <li><a class="scrollto" href="#overview">Overview</a></li>
+                                <li><a class="scrollto" href="#entry_points">Entry points</a></li>
+                                <li>
+                                    <a class="scrollto" href="#platform-level">Platform Level</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#add-platform-properties">Add global properties</a></li>
+                                        <li><a class="scrollto" href="#delete-platform-properties">Delete global properties</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#module-level">Module Level</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#valuation-module-simple-properties">Simple properties</a></li>
+                                        <li><a class="scrollto" href="#valuation-module-iterable-properties">Iterable properties</a></li>
+                                        <li><a class="scrollto" href="#use-platform-properties">Use global properties</a></li>
+                                        <li><a class="scrollto" href="#annotations-on-ihm">Handle with annotations</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#instance-level">Instance Level</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#define-instance-property">Define instance property</a></li>
+                                        <li><a class="scrollto" href="#preview-files">Preview files</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#predefined-properties">Predefined properties</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#predefined-properties-how-to">How to</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#common-functions">Common functions</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#filter-property">Filter</a></li>
+                                        <li><a class="scrollto" href="#sort-property">Sort</a></li>
+                                        <li><a class="scrollto" href="#clean-property">Clean</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                            </ul><!--//doc-menu-->
+                        </nav>
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->              
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->
+    </div><!--//page-wrapper-->
+    
+    <footer class="footer text-center">
+        <div class="container">
+            <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
+            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
+            
+        </div><!--//container-->
+    </footer><!--//footer-->
+    
+     
+    <!-- Main Javascript -->          
+    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>    
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>                                                                
+    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+    
+</body>
+</html> 
+

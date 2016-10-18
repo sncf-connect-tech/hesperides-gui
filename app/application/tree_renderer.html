@@ -1,0 +1,123 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<!-- Debut bloc logic -->
+<init-instance-functions ng-model="box"></init-instance-functions>
+
+<div class="property-tree-logic-bloc" layout="row"  ng-mouseleave="componentButtonsVisible=false">
+    <div flex="none" layout="row" layout-align="none center">
+        <span id="tree-renderer_tree-sign-{{box.name}}" ng-click="displayInstanceDetails()" class="property-tree-sign">{{sign}}</span>
+    </div>
+    <div flex="none"
+         ng-mouseenter="componentButtonsVisible=true"
+         layout="row" layout-align="none center">
+        <a href="" id="tree-renderer_edit-logic-group-{{box.name}}" buttons="no" editable-text="box.name"
+           onbeforesave="update_box_name(box, box.name, $data)"
+           class="{{contain_empty_module(box)}}">
+           {{box.name}}
+           <md-tooltip>{{ 'properties.logicGroup.update' | translate }}</md-tooltip>
+        </a>
+    </div>
+    <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center">
+        <md-button id="tree-renderer_add-module-button-{{box.name}}" ng-click="search_module(box)" aria-label="{{ 'properties.module.add' | translate }}"
+                   class="md-xs">
+            <span class="fa fa-plus"></span>
+            <md-tooltip>{{ 'properties.module.add' | translate }}</md-tooltip>
+        </md-button>
+        <md-button id="tree-renderer_add-logic-group-button-{{box.name}}" ng-click="open_add_box_dialog(box)"
+                   aria-label="{{ 'properties.logicGroup.add' | translate }}"
+                   class="md-xs">
+            <span class="fa fa-inbox"></span>
+            <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
+        </md-button>
+        <md-button id="tree-renderer_remove-box-button-{{box.name}}" ng-really-message="{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}"
+                   aria-label="{{ 'properties.logicGroup.delete' | translate }}"
+                   ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
+                   class="md-xs md-warn">
+            <span class="fa fa-trash"></span>
+            <md-tooltip>{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}</md-tooltip>
+        </md-button>
+    </div>
+</div>
+
+<!-- fin bloc logic -->
+<div ng-if="treedisplay" flex="100">
+    <div class="property-tree-logic-bloc-subbloc" flex="100"
+         ng-repeat="box in (box.children | orderObjectBy:'name') | filterBox:searchInTree"
+         ng-include="'application/tree_renderer.html'"></div>
+
+    <!-- Debut des box affichant les modules -->
+    <div
+         ng-init="moduleButtonsVisible=false"
+         ng-if="box.modules.length > 0"
+         ng-repeat="module in box.modules | orderObjectBy:'name'">
+
+        <init-instances ng-model="module"></init-instances>
+        <div layout="row" class="property-tree-module">
+            <div layout="row" layout-align="none center">
+                <span id="tree-renderer_tree-sign-{{module.title.split(',')[0]}}" ng-click="displayInstances()"
+                      class="property-tree-sign">
+                    {{sign}}
+                </span>
+            </div>
+
+            <div flex="noshrink" layout="row" layout-align="none center">
+                <property-tool-button-over></property-tool-button-over>
+                <a href="" id="tree-renderer_edit-properties-module-button-{{module.title.split(',')[0]}}" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
+                    {{module.title}}
+                    <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
+                </a>
+            </div>
+        </div>
+
+        <!-- Debut des box affichant les instances -->
+        <div ng-if="instancedisplay">
+            <ul>
+                <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
+                    class="list-inline"
+                    ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
+                    <md-button id="tree-renderer_edit-properties-{{instance.name}}-button" class="md-raised" ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"
+                               aria-label="{{ 'properties.module.instance.editProperties.tooltip' | translate }}"
+                               class="md-instance">
+                        {{instance.name}}
+                        <md-tooltip>{{ 'properties.module.instance.editProperties.tooltip' | translate }}</md-tooltip>
+                    </md-button>
+                    <md-button id="tree-renderer_preview-properties-{{instance.name}}-button" ng-click="preview_instance(box, application, platform, instance, module)"
+                               class="md-xs" ng-show="instance.hover">
+                        <md-tooltip>{{ 'properties.module.instance.preview' | translate }}</md-tooltip>
+                        <i class="fa fa-eye"></i>
+                    </md-button>
+                    <md-button id="tree-renderer_delete-{{instance.name}}-button" ng-really-message="{{ 'properties.module.instance.delete.message' | translate : {name:instance.name} }}"
+                               aria-label="{{ 'properties.module.instance.delete' | translate }}"
+                               ng-really-click="delete_instance(instance, module)"
+                               class="md-warn md-xs md-instance" ng-show="instance.hover">
+                        <span class="fa fa-trash"></span>
+                        <md-tooltip>{{ 'properties.module.instance.delete' | translate }}</md-tooltip>
+                    </md-button>
+                </li>
+            </ul>
+        </div>
+        <!-- Fin des box affichant les instances -->
+
+    </div>
+    <!-- Fin des box affichant les modules -->
+
+</div>

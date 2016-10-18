@@ -1,0 +1,31 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-input-container class="md-block">
+    <label><strong>{{ 'properties.compare.modal.calendar' | translate }}</strong></label>
+    <input type="text" id="look-past-date-time" ng-model="ngModel" datetime-picker date-format="yyyy-MM-dd HH:mm:ss Z" year="year" month="month" day="day" flex="35" placeholder="{{holder|date: 'yyyy-MM-dd HH:mm:ss Z' }}"/>
+    <div ng-message="min" ng-show="isInFutur()" class="diff-date-error-message">
+        {{ 'properties.compare.modal.calendar.message' | translate }}
+    </div>
+    <div ng-message="min" ng-show="!isInFutur() && !isValid" class="diff-date-error-message">
+        {{ 'properties.compare.modal.calendar.empty' | translate }}
+    </div>
+</md-input-container>

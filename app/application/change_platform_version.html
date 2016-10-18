@@ -1,0 +1,86 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="50">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>{{ 'properties.platform.version.modal.title' | translate }}</h2>
+
+            <md-content layout-padding class="autoScroll">
+                <form name="platformVersionForm"
+                      ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
+
+
+                    <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl" ng-show="hesperidesConfiguration.nexusMode">
+                        <span>
+                            <strong>Utiliser la note de livraison json de la version {{newVersion}}</strong>
+                        </span>
+                    </md-switch>
+
+                    <md-input-container class="md-block" ng-show="sourceFromNdl && useNdl">
+                    <div flex="100" ng-show="useNdl">
+                        <label id="new-version-label-autocomplete"><strong>Nouvelle version {{newVersion}}</strong></label>
+                        <md-autocomplete
+                                flex="100"
+                                ng-disabled="onLoading"
+                                ng-if="ndlVersions"
+                                ng-model="newVersion"
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="version in ndlVersions | filter:ctrl.searchText"
+                                md-item-text="version"
+                                md-selected-item-change="(version) ? setItem('newVersion', version) : setItem('newVersion', '')"
+                                md-min-length="0"
+                                md-autoselect="true"
+                                md-autofocus="true"
+                                placeholder="Rechercher une version depuis une note Katana">
+                                <span md-highlight-text="ctrl.searchText">{{version}}</span>
+                        </md-autocomplete>
+                    </div>
+                    </md-input-container>
+
+                    <md-input-container md-no-float class="md-block" ng-show="!useNdl">
+                        <label><strong>{{ 'properties.platform.version.modal.newVersion' | translate }} {{newVersion}}</strong></label>
+                        <input type="text"
+                               ng-trim="true"
+                               ng-model="newVersion"
+                               placeholder="{{ 'properties.platform.version.modal.newVersion.placeholder' | translate }}"
+                               md-autofocus="true"
+                                />
+                    </md-input-container>
+
+                    <md-switch class="md-primary md-block" aria-label="Copier les properties valorisées de la version" ng-model="copyProperties">
+                        <span>
+                            <strong>Copier les propriétés valorisées de la version {{platform.application_version}} vers la version {{newVersion}}</strong>
+                        </span>
+                    </md-switch>
+
+                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                </form>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-click="$change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="!isValid()">Valider</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,74 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<!-- Displaying new fields from the model -->
+<div class="form-group iterable-main-block" id="it-prop-{{modelProperty.name}}">
+    <div>
+        <md-button aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click = "addValue()">
+            <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>
+            <md-icon class="fa fa-plus fa-lg"></md-icon>{{modelProperty.name}}
+        </md-button>
+    </div>
+    <!-- Pour chaque valorisation d'un bloc iterable -->
+    <div layout ="column" class="iterable-block" ng-repeat="(index, blockValue) in valueProperty.iterable_valorisation_items">
+        <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
+        <md-virtual-repeat-container id="vertical-container" class="height-100px">
+
+            <md-button aria-label="{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
+                <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}</md-tooltip>
+                <md-icon class="fa fa-minus fa-lg"></md-icon>
+            </md-button>
+
+            <div md-virtual-repeat="fieldValue in blockValue.values | filterIterableProperties: filterValues | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified" class="repeated-item height-20px" flex >
+
+                <div ng-if="fieldValue.iterable_valorisation_items">
+                    <!--<h2>TODO : Iterable property that have other itrables inside</h2>-->
+                    <!--<iterable-properties-list ng-repeat = "innerModelProp in modelProp.iterable_properties" model-property = "innerModelProp" value-property = "getValues(innerModelProp.name)" ></iterable-properties-list>-->
+                </div>
+
+                <div layout="row" ng-if="!fieldValue.iterable_valorisation_items" class="margin-1pc">
+                    <div layout="column" flex="46">
+                        <div class="truncate-ellipsis">
+                            <label class="property-label"
+                                   ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value}"
+                            >{{fieldValue.name}}</label><span ng-show="fieldValue.required" class="property-required">*</span>
+                            <md-tooltip md-direction="top">
+                                {{fieldValue.name}}
+                            </md-tooltip>
+                        </div>
+                    </div>
+                    <div layout="column"  flex>
+                        <input ng-model="fieldValue.value"
+                               ng-trim="true"
+                               ng-readonly="!fieldValue.inModel"
+                               ng-focus="focusthis = true"
+                               ng-blur="focusthis = false"
+                               ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value, 'default-value-color-focus': focusthis}"
+                               placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.comment}}"
+                               ng-pattern="fieldValue.pattern"
+                               class="property-value">
+                    </div>
+                </div>
+            </div>
+
+        </md-virtual-repeat-container>
+    </div>
+</div>

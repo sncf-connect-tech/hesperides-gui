@@ -1,0 +1,107 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="70">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <!-- modal title -->
+            <h2>{{ 'event.modal.title' | translate }} {{title}}</h2>
+
+            <md-content layout-padding class="autoScroll">
+
+                <!-- event filters -->
+                <div fle="100" layout="row" class="events">
+
+                    <!-- module filter -->
+                    <md-input-container flex="50">
+                        <label>{{ 'event.modal.filtering.findInEvents' | translate }}</label>
+                        <input id="event-model-filter-input" ng-model="filtering.inputs" placeholder="{{ 'event.modal.filtering.findInEvents.placeholder' | translate}}">
+                    </md-input-container>
+                    <md-input-container flex="5"></md-input-container>
+                    <!-- myevents filter -->
+                    <md-input-container>
+                        <md-checkbox ng-model="filtering.myevents" aria-label="{{ 'event.modal.filtering.myevents' | translate }}">
+                            {{ 'event.modal.filtering.myevents' | translate }}
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+                <!-- event filters -->
+
+                <!-- if no event to show -->
+                <div ng-show="!(eventEntries) || eventEntries.length == 0">
+                    <h2 class="no-entries"> {{ 'event.modal.title.noHistory' | translate }} </h2>
+                </div>
+                <!-- end if no event to show -->
+
+                <!-- showing events -->
+                <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events height-500px">
+                    <div ng-repeat="event in eventEntries | evensFilter: filtering.inputs | myEventsFilter: filtering.myevents" >
+                        <div ng-switch="event._type" class="event">
+
+                            <!-- Platforms -->
+                            <platform-created ng-switch-when="PlatformCreatedEvent" event="event"></platform-created>
+                            <platform-created-from-existing ng-switch-when="PlatformCreatedFromExistingEvent" event="event"></platform-created-from-existing>
+                            <platform-updated ng-switch-when="PlatformUpdatedEvent" event="event"></platform-updated>
+                            <platform-deleted ng-switch-when="PlatformDeletedEvent" event="event"></platform-deleted>
+
+                            <!-- Modules -->
+                            <module-created ng-switch-when="ModuleCreatedEvent" event="event"></module-created>
+                            <module-updated ng-switch-when="ModuleUpdatedEvent" event="event"></module-updated>
+
+                            <!-- Module Working Copies -->
+                            <module-working-copy-updated ng-switch-when="ModuleWorkingCopyUpdatedEvent" event="event"></module-working-copy-updated>
+
+                            <!-- Module Templates -->
+                            <module-template-created ng-switch-when="ModuleTemplateCreatedEvent" event="event"></module-template-created>
+                            <module-template-updated ng-switch-when="ModuleTemplateUpdatedEvent" event="event"></module-template-updated>
+                            <module-template-deleted ng-switch-when="ModuleTemplateDeletedEvent" event="event"></module-template-deleted>
+
+                            <!-- Properties (Platform) -->
+                            <properties-saved ng-switch-when="PropertiesSavedEvent" event="event"></properties-saved>
+
+                            <!-- Templates inside Template Packages (Techno) -->
+                            <template-created ng-switch-when="TemplateCreatedEvent" event="event"></template-created>
+                            <template-updated ng-switch-when="TemplateUpdatedEvent" event="event"></template-updated>
+                            <template-deleted ng-switch-when="TemplateDeletedEvent" event="event"></template-deleted>
+
+                            <!-- Template Package (Techno) -->
+                            <template-package-deleted ng-switch-when="TemplatePackageDeletedEvent" event="event"></template-package-deleted>
+
+                        </div>
+                    </div>
+                </md-virtual-repeat-container>
+                <!-- end of showing events -->
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-disabled="!(selectedEvents.length == 2)" ng-click="showDiff()" class="md-raised md-default">
+                {{ 'event.modal.diff' | translate }}
+            </md-button>
+            <md-button ng-disabled="noMoreEvents" ng-click="" class="md-raised md-primary" ng-show="noMoreEvents">
+                {{ 'button.modal.done' | translate }}
+            </md-button>
+            <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="!noMoreEvents">
+                {{ 'button.modal.more' | translate }}
+            </md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.close' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>
