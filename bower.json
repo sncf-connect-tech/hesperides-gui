@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
-  "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
-  "license": "MIT",
+  "name": "hesperides-gui",
+  "description": "Hesperides GUI",
+  "version": "1.0.3",
+  "homepage": "https://github.com/voyages-sncf-technologies/hesperides-gui",
+  "license": "GPL",
   "private": true,
   "dependencies": {
     "arrive": "latest",
@@ -18,7 +18,7 @@
     "angular-ui-codemirror": "0.3.0",
     "angular-material": "1.0.9",
     "angular-i18n": "1.5.5",
-    "sc-date-time":"1.1.6",
+    "sc-date-time": "1.1.6",
     "angular-wizard": "0.5.5",
     "momentjs": "2.10.6",
     "angular-xml": "2.2.1",
@@ -26,9 +26,10 @@
     "jszip": "Stuk/jszip#2.5.0",
     "angular-vs-repeat": "1.1.7",
     "angular-translate": "2.11.0",
-    "angular-translate-loader-static-files" : "2.11.0",
-    "angular-translate-storage-cookie" : "2.11.0",
-    "angular-translate-storage-local" : "2.11.0"
+    "angular-translate-loader-static-files": "2.11.0",
+    "angular-translate-storage-cookie": "2.11.0",
+    "angular-translate-storage-local": "2.11.0",
+    "store.js": "storejs#^1.0.13"
   },
   "resolutions": {
     "angular": "1.4.10"

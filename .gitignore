@@ -1,0 +1,15 @@
+logs/*
+!.gitkeep
+node_modules/
+app/bower_components/
+tmp
+.DS_Store
+.idea
+**/*.iml
+*.iml
+target/
+pom.xml.releaseBackup
+release.properties
+app/config.json
+reports/
+npm-debug.log
