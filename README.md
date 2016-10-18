@@ -47,4 +47,4 @@ $ npm run protractor
 Documentation:
 =====
 
-Available at <https://github.com/voyages-sncf-technologies/hesperides-gui/docs>
+Available at <https://cdn.rawgit.com/voyages-sncf-technologies/hesperides-gui/master/docs/index.html>
