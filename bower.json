@@ -29,7 +29,8 @@
     "angular-translate-loader-static-files": "2.11.0",
     "angular-translate-storage-cookie": "2.11.0",
     "angular-translate-storage-local": "2.11.0",
-    "store.js": "storejs#^1.0.13"
+    "store.js": "storejs#^1.0.13",
+    "hesperides-datetime-picker": "0.1.23"
   },
   "resolutions": {
     "angular": "1.4.10"
