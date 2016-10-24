@@ -27,25 +27,39 @@
 
             <md-content layout-padding class="autoScroll">
                 <form ng-submit="saveAction()">
-                <!-- Comment -->
-                <div fle="100" layout="row" class="events">
+                    <!-- Comment -->
+                    <div flex="100" layout="column" class="events">
 
-                    <md-input-container flex="100">
-                        <label><strong>{{ 'save-properties.modal.message.label' | translate }}</strong></label>
+                        <strong flex>{{ 'save-properties.modal.message.label' | translate }}</strong>
                         <br/>
-                        <input id="save-properties-modal_comment-input" ng-model="comment" placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}" md-autofocus="true">
-                    </md-input-container>
+                        <md-autocomplete flex
+                                         id="save-properties-modal_comment-input"
+                                         md-selected-item="comment"
+                                         md-search-text="raw_comment"
+                                         md-items="item in comments.getCommentsLike(application_name, raw_comment)"
+                                         md-item-text="item.prettify()"
+                                         md-min-length="0"
+                                         md-autoselect="true"
+                                         md-selected-item-change="sync_search_text(item)"
+                                         placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
+                            <md-item-template>
+                                <span md-highlight-text="searchText">{{item.prettify()}}</span>
+                            </md-item-template>
+                        </md-autocomplete>
 
-                </div>
-                <!-- / Comment -->
+                    </div>
+                    <!-- / Comment -->
                 </form>
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button id="save-properties-modal_save-comment-button" ng-disabled="!isCommentValid()" ng-click="saveAction()" class="md-raised md-primary">
+            <md-button id="save-properties-modal_save-comment-button" ng-disabled="!isCommentValid()"
+                       ng-click="saveAction()" class="md-raised md-primary">
                 {{ 'button.modal.validate' | translate }}
             </md-button>
-            <md-button id="save-properties-modal_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="save-properties-modal_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{
+                'button.modal.cancel' | translate }}
+            </md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

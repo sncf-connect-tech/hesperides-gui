@@ -50,7 +50,7 @@ fileModule.factory('FileEntry', ['$hesperidesHttp', '$translate', function ($htt
     return FileEntry;
 }]);
 
-fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate) {
+fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate) {
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {
