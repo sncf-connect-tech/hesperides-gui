@@ -990,7 +990,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }
 
         // Save properties
-        HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
+        HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
             ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
                 //Merge properties with model
                 ModuleService.get_model(module).then(function (model) {
@@ -1496,7 +1496,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         $scope.properties_to_modify.key_value_properties = key_value_properties;
 
         // Save the properties
-        HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
+        HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
             ApplicationService.save_properties($scope.application_name, $scope.platform, $scope.properties_to_modify, $scope.properties_path, comment ).then(function (properties) {
                 $route.reload();
             });

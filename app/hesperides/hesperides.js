@@ -716,7 +716,7 @@ angular.module ('hesperides.modals', [])
             modalScope.saveAction = function () {
                 // Calling the callback function with the comment
                 modalScope.comments.addComment(modalScope.application_name, modalScope.raw_comment)
-                validationCallback( modalScope.comment );
+                validationCallback( modalScope.raw_comment );
 
                 modalScope.$closeDialog();
             }
