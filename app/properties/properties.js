@@ -959,7 +959,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             }
 
             // Save the global properties
-            HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
+            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
                 ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment ).then(function (properties) {
                     if (!_.isUndefined($scope.properties)) {
                         $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);

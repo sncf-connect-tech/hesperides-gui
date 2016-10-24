@@ -580,33 +580,123 @@ hesperidesModule.service ('PlatformColorService', function (){
     };
 });
 
+hesperidesModule.factory('Comment', [function() {
+
+    var Comment = function (data){
+        var me = this;
+
+        // Attributes
+        this.comment = data.comment || "~ ~ ~";
+
+        this.date = moment();
+        if (data.date != undefined) {
+            this.date = moment(data.date, "YYYY-MM-DD HH:mm:ss Z")
+        }
+
+        // Methods
+        this.prettify = function () {
+//            return "[" + me.date.format("YYYY-MM-DD") + "] : " + me.comment;
+            return me.comment;
+        };
+
+    };
+
+    return Comment;
+}]);
+
+hesperidesModule.service('Comments', ['Comment', function(Comment) {
+
+    RegExp.escape = function(s) {
+        s = s || "";
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    };
+
+    var local_storage_key = 'comments_history';
+    var comments_history;
+
+    function Comments() {
+
+    };
+
+    function get() {
+        comments_history = store.get(local_storage_key);
+        if (comments_history == undefined) {
+            comments_history = {};
+        }
+    };
+
+    function save() {
+        store.set(local_storage_key, comments_history);
+    }
+
+    Comments.prototype = {
+        getComments: function (application_name) {
+            get();
+            if (comments_history[application_name] && comments_history[application_name].length) {
+                return comments_history[application_name].map(function (elem) {
+                    return new Comment(elem);
+                });
+            }
+            return [];
+        },
+        getCommentsLike: function (application_name, query) {
+            query = RegExp.escape(query).split(' ').join('.*').toLowerCase();
+            return _.filter(this.getComments(application_name), c => c.comment.toLowerCase().match('.*' + (query ? query : '') + '.*')).sort(function (a, b) {return b.date - a.date;});
+        },
+        commentExist: function (application_name, comment) {
+            comments = this.getComments(application_name);
+            return _.filter(comments, c => c.comment == comment).length > 0 ? true : false;
+        },
+        addComment: function (application_name, comment) {
+            if (this.commentExist(application_name, comment) == false) {
+                var comments = this.getComments(application_name);
+
+                comments.push(new Comment({"comment": comment}));
+                comments_history[application_name] = comments;
+                save();
+            }
+        }
+    };
+    return Comments;
+}]);
+
 /* Hesperides global modals module*/
 angular.module ('hesperides.modals', [])
 
-.factory('HesperidesModalFactory', ['$mdDialog', function ($mdDialog){
+.factory('HesperidesModalFactory', ['$mdDialog', 'Comments', function ($mdDialog, Comments){
     return {
     
-        displaySavePropertiesModal: function (scope, validationCallback){
+        displaySavePropertiesModal: function (scope, application, validationCallback){
             //
             // Show the modal
             //
             var modalScope = scope.$new(false);
-            modalScope.comment = "";
+
+            modalScope.comments = new Comments();
+            modalScope.application_name = application;
+
+
             var modal = $mdDialog.show({
                 templateUrl: 'application/properties/save-properties-modal.html',
                 clickOutsideToClose:true,
                 scope: modalScope
             });
 
+            modalScope.sync_search_text = function (selected_comment) {
+                modalScope.raw_comment = selected_comment ? selected_comment.comment : "";
+            }
+
             /**
              * Checks if the typed comment is valid.
-             * Comments are valids only if they contain two separated words
+             * Comments are valid only if they contain two separated words
              */
             modalScope.isCommentValid = function (){
 
-                _temp = modalScope.comment.split (" ");
+                if (modalScope.raw_comment == undefined)
+                    return false;
+                _temp = modalScope.raw_comment.split (" ");
 
-                if ( modalScope.comment.length < 10 || _temp.length < 2){
+                if ( modalScope.raw_comment.length < 10 || _temp.length < 2 ){
                     return false;
                 }
 
@@ -624,8 +714,10 @@ angular.module ('hesperides.modals', [])
             // Validation action
             //
             modalScope.saveAction = function () {
-                // Calling the callback function with the comemnt
+                // Calling the callback function with the comment
+                modalScope.comments.addComment(modalScope.application_name, modalScope.raw_comment)
                 validationCallback( modalScope.comment );
+
                 modalScope.$closeDialog();
             }
         }
