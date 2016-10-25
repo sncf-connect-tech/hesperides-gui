@@ -864,6 +864,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.oldProperites = undefined;
 
     $scope.edit_properties = function (platform, module) {
+        if ($scope.platform.global_properties_usage === null) {
+            $scope.refreshGlobalPropertiesData();
+        }
         ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
             ModuleService.get_model(module).then(function (model) {
                 $scope.properties = properties.mergeWithModel(model);
