@@ -26,7 +26,7 @@ exports.config = {
     createPlatforms_linkModules: ['e2e/platforms/*spec.js', 'e2e/modules/*spec.js', 'e2e/logic-representation/*spec.js'],
     createPlatforms_linkModules_fillProperties: ['e2e/platforms/*spec.js', 'e2e/modules/*spec.js', 'e2e/logic-representation/*spec.js','e2e/annotations/*spec.js'],
     preview_files : ['e2e/preview-files/*spec.js'],
-    properties: 'e2e/properties/*spec.js',
+    properties: ['e2e/menus/*spec.js', 'e2e/properties/*spec.js'],
     role_production: 'e2e/role_production/*spec.js',
     all: ['e2e/menus/*spec.js', 'e2e/platforms/*spec.js',
           'e2e/modules/*spec.js', 'e2e/logic-representation/*spec.js', 
