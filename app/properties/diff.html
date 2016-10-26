@@ -76,7 +76,7 @@
         <div flex="35" layout-align="start start" layout="row">
             <div class="diff-text-modifiable diff-value diff-line">
                 <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ formatProperty(diff_container.property_to_modify.value, diff_container.property_to_modify.globalValue) }}
+                {{ formatProperty(diff_container.property_to_modify) }}
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
@@ -157,7 +157,7 @@
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">
-                {{ formatProperty(diff_container.property_to_modify.value, diff_container.property_to_modify.globalValue) }}
+                {{ formatProperty(diff_container.property_to_modify) }}
                 <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
             </div>
         </div>
@@ -173,7 +173,7 @@
         <div flex="40">
             <span class="diff-text-unmodifiable diff-value">
                 <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ formatProperty(diff_container.property_to_compare_to.value, diff_container.property_to_compare_to.globalValue) }}
+                {{ formatProperty(diff_container.property_to_compare_to) }}
             </span>
         </div>
     </div>
@@ -244,7 +244,7 @@
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">
-                    {{ formatProperty(diff_container.property_to_modify.value, diff_container.property_to_modify.globalValue) }}
+                    {{ formatProperty(diff_container.property_to_modify) }}
                     <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
             </div>
         </div>
@@ -257,7 +257,7 @@
         <div flex="40">
             <span class="diff-text-unmodifiable diff-value">
               <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ formatProperty(diff_container.property_to_compare_to.value, diff_container.property_to_compare_to.globalValue) }}
+                {{ formatProperty(diff_container.property_to_compare_to) }}
             </span>
         </div>
     </div>
@@ -336,7 +336,7 @@
         <div flex="40">
             <span class="diff-text-unmodifiable diff-value">
                 <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ formatProperty(diff_container.property_to_compare_to.value, diff_container.property_to_compare_to.globalValue) }}
+                {{ formatProperty(diff_container.property_to_compare_to) }}
             </span>
         </div>
     </div>
