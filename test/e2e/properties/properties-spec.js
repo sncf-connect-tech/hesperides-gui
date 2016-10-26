@@ -63,7 +63,7 @@ describe('Manage properties (global, module, instance) and annotations (default,
         vsct_utils.clickOnElement(elm_save_properties);
 
         // add comment for saving modifications
-        var elm_comment_input = element(by.id("save-properties-modal_comment-input"));
+        var elm_comment_input = element(by.id("save-properties-modal_input-comment-autocomplete"));
         elm_comment_input.sendKeys(data.comment_for_saving_properties+"_"+random_string);
         var elm_save_comment = element(by.id("save-properties-modal_save-comment-button"));
         vsct_utils.clickOnElement(elm_save_comment);

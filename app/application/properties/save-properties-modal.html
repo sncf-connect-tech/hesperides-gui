@@ -33,7 +33,8 @@
                         <strong flex>{{ 'save-properties.modal.message.label' | translate }}</strong>
                         <br/>
                         <md-autocomplete flex
-                                         id="save-properties-modal_comment-input"
+                                         id="save-properties-modal_comment-autocomplete"
+                                         md-input-id="save-properties-modal_input-comment-autocomplete"
                                          md-selected-item="comment"
                                          md-search-text="raw_comment"
                                          md-items="item in comments.getCommentsLike(application_name, raw_comment)"
