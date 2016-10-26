@@ -1378,17 +1378,23 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         $scope.properties_compare_values_empty = translation;
     });
 
-    $scope.formatProperty = function (propertyValue, globalValue) {
+    $scope.formatProperty = function (property) {
 
-        if (globalValue) {
-            return globalValue;
+        if (property.globalValue) {
+
+            compiled = property.value;
+
+            Object.keys(property.globalValue).forEach(function(key,index) {
+                compiled = compiled.split("{{"+ key + "}}").join(property.globalValue[key]);
+            });
+
+            return compiled;
         }
-
-        if (!propertyValue) {
+        if (!property.value) {
             return $scope.properties_compare_values_empty;
         }
 
-        return propertyValue;
+        return property.value;
 
     }
 
@@ -1951,9 +1957,13 @@ propertiesModule.factory('Properties', function () {
                         return !_.isUndefined(key_value.value) && key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
                     })) {
                         key_value.useGlobal = true;
-                        key_value.globalValue = _.find(global_properties.key_value_properties, function (kvp) {
-                                                                    return key_value.value.indexOf('{{' + kvp.name + '}}') != -1;
-                                                                }, 'value').value;
+                        key_value.globalValue = {};
+
+                        _.forEach(global_properties.key_value_properties, function (kvp) {
+                                                                    if (key_value.value.indexOf('{{' + kvp.name + '}}') != -1) {
+                                                                       key_value.globalValue[kvp.name] = kvp.value;
+                                                                    }
+                                                                });
                     }
                 }
             });
