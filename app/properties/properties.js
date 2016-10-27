@@ -985,7 +985,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.save_properties = function (properties, module) {
 
-        if( _.isEqual(properties, $scope.oldProperites) ){
+        if(
+            _.isEqual(properties.key_value_properties, $scope.oldProperites.key_value_properties) &&
+            // we use angular copy for these to remove the $$hashKey
+            _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperites.iterable_properties)) ){
             $translate('properties-not-changed.message').then(function(label) {
                 $.notify(label, "warn");
             });

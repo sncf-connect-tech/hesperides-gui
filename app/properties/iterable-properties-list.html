@@ -64,6 +64,7 @@
                                ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.comment}}"
                                ng-pattern="fieldValue.pattern"
+                               ng-required="fieldValue.required"
                                class="property-value">
                     </div>
                 </div>
