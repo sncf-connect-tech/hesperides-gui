@@ -71,6 +71,7 @@
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
+                               ng-required="key_value_property.required"
                                class="property-value">
                             <md-tooltip ng-show="key_value_property.defaultValue || key_value_property.pattern || key_value_property.comment" md-direction="top">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
                     </div>
