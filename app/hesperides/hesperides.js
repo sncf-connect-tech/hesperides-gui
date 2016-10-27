@@ -648,13 +648,19 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
             return _.filter(comments, c => c.comment == comment).length > 0 ? true : false;
         },
         addComment: function (application_name, comment) {
-            if (this.commentExist(application_name, comment) == false) {
-                var comments = this.getComments(application_name);
+            var comments = this.getComments(application_name);
 
+            if (this.commentExist(application_name, comment) == false) {
                 comments.push(new Comment({"comment": comment}));
-                comments_history[application_name] = comments;
-                save();
+            } else {
+                _.map(comments, function (elem) {
+                    if (elem.comment == comment) {
+                        elem.date = moment();
+                    }
+                });
             }
+            comments_history[application_name] = comments;
+            save();
         }
     };
     return Comments;
@@ -683,7 +689,7 @@ angular.module ('hesperides.modals', [])
             });
 
             modalScope.sync_search_text = function (selected_comment) {
-                modalScope.raw_comment = selected_comment ? selected_comment.comment : "";
+                modalScope.raw_comment = selected_comment && selected_comment.length > 0 ? selected_comment.comment : modalScope.raw_comment;
             }
 
             /**
