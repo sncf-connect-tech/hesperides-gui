@@ -419,7 +419,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         // Get the list of platforms for an app
         modalScope.get_target_platforms = function (application_name){
            if ( !_.isUndefined(application_name)){
-               ApplicationService.get(application_name).then(function (application){
+               ApplicationService.get(application_name, true).then(function (application){
                    modalScope.target_platforms = application.platforms;
                }, function (error){
                    modalScope.target_platforms = [];
@@ -1174,20 +1174,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             if (_.isUndefined(selected_platform)) {
                 $translate('properties.event.notExist.error').then(function(label) {
                     $.notify(label, "error");
-                });                
+                });
             } else {
                 $scope.platform = selected_platform;
                 $scope.update_main_box(selected_platform);
             }
         }
-
-    }, function (error) {
-        $.notify(error.data.message, "error");
     });
-
-
-
-
 }]);
 
 /**

@@ -253,27 +253,17 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
     function ($http, Application, Platform, Properties, InstanceModel, $translate) {
 
     return {
-        get: function (name) {
+        get: function (name, unsecured) {
             var me = this;
-            return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
-                //Load global properties for each platform
-                var application = new Application(response.data);
+            me.unsecured = unsecured;
 
-                // --- Testing (keeping this comments while testing
-                // --- Instead of retrieving the whole infos about all platform, we are firing api call only when needed
-                // --- app/properties/properties.js : method "update_main_box" grep "// --- Testing"
-//                _.each(application.platforms, function (platform) {
-//                    me.get_properties(name, platform.name, "#").then(function (properties) {
-//                        platform.global_properties = properties;
-//                    });
-//                    me.get_global_properties_usage(name, platform.name).then(function (usage) {
-//                        platform.global_properties_usage = usage;
-//                    });
-//                });
-                return application;
+            return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
+                return new Application(response.data);;
             }, function (error) {
-                $.notify(error.data.message, "error");
-                throw error;
+                if (!me.unsecured) {
+                    $.notify(error.data.message, "error");
+                    throw error;
+                }
             });
         },
         with_name_like: function (name) {
