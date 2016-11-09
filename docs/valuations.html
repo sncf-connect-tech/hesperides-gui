@@ -310,23 +310,33 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><code>required_key={{value1|@required}}</code></th>
+                                                    <td><code>required_key={{value1|@required}}</code></td>
                                                     <td><img class="img-responsive" src="assets/images/screenshots/annotation_required_display_on_ihm.png"/>If you do not fulfill the value, you won't be able to save your properties</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><code>key_with_comment={{value2|@comment "some comment to explain the key"}}</code></th>
+                                                    <td>
+                                                        <code>
+                                                            key_with_comment={{value2 |@comment "some comment to explain the key"}}
+                                                        </code>
+                                                        <br><br>
+                                                        It's also possible to add comments with the short syntax
+                                                        <br><br>
+                                                        <code>
+                                                            key_with_comment={{value2|some comment to explain the key}}
+                                                        </code>
+                                                    </td>
                                                     <td><img class="img-responsive" src="assets/images/screenshots/annotation_comment_display_on_ihm.png"/>You can see the comment on placeholder if property is empty, or in tooltip when you hover the value input</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><code>key_with_default_value={{value3|@default "false"}}</code></th>
+                                                    <td><code>key_with_default_value={{ value3 |@default "false" }}</code></td>
                                                     <td><img class="img-responsive" src="assets/images/screenshots/annotation_default_display_on_ihm.png"/>You can see the default vaule on placeholder if property is empty, or in tooltip when you hover the value input</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><code>key_password={{value4|@password}}</code></th>
+                                                    <td><code>key_password={{value4|@password}}</code></td>
                                                     <td><img class="img-responsive" src="assets/images/screenshots/annotation_password_display_on_ihm.png"/>If you are a non-authorized user and if you display a production platform, you will only see stars</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><code>key_with_pattern={{value5|@pattern "[a-z]*"}}</code></th>
+                                                    <td><code>key_with_pattern={{value5|@pattern "[a-z]*"}}</code></td>
                                                     <td><img class="img-responsive" src="assets/images/screenshots/annotation_pattern_display_on_ihm.png"/>If you do not fulfill a value that consider the pattern, you won't be able to save your properties. You can see the pattern on placeholder if property is empty, or in tooltip when you hover the value input</td>
                                                 </tr>
                                             </tbody>
