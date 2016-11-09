@@ -261,9 +261,19 @@
 key2={{templated_value}}</code></pre>
                                     <p><h6>Example 2 :</h6></p>
                                     <pre><code class="language-markup">&lt;logger name="com.mkyong.web" level="{{level}}"
-        additivity="{{additivity}"&gt; 
-        &lt;appender-ref ref="STDOUT" /&gt; 
-&lt;/logger&gt; </code> </pre> 
+        additivity="{{additivity}"&gt;
+        &lt;appender-ref ref="STDOUT" /&gt;
+&lt;/logger&gt; </code> </pre>
+                                    <br>
+                                    <strong>Note : </strong> Properties' name can contain whitespaces at the start and the end.
+                                    <p><h6>Example :</h6></p>
+                                    <code>key = {{ key1 }}</code> is the equal to <code>key = {{key1}}</code>
+
+                                    <br><br>
+                                    <p>
+                                        They can also be dotted like this <br>
+                                        <code>username = {{ mysql.user.name }}</code>
+                                    </p>
                                 </div><!--//section-block-->
                                 <div id="hesperides-annotation"  class="section-block">
                                     <h3 class="block-title">Annotations</h3>
