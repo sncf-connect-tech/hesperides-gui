@@ -41,7 +41,7 @@ module.exports = function (grunt) {
                     'src/app/**/*.js',
                     'src/app/**/*.html',
                     'src/app/**/*.css',
-                    '!src/bower_components/**/*.js'
+                    '!src/app/bower_components/**/*.js'
                 ],
                 options: {
                     livereload: true
