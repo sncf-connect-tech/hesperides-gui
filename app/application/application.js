@@ -262,8 +262,8 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             }, function (error) {
                 if (!me.unsecured) {
                     $.notify(error.data.message, "error");
-                    throw error;
                 }
+                throw error;
             });
         },
         with_name_like: function (name) {

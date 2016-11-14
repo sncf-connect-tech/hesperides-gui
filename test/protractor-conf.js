@@ -28,10 +28,11 @@ exports.config = {
     preview_files : ['e2e/preview-files/*spec.js'],
     properties: ['e2e/menus/*spec.js', 'e2e/properties/*spec.js'],
     role_production: 'e2e/role_production/*spec.js',
+    diff: 'e2e/diff/*spec.js',
     all: ['e2e/menus/*spec.js', 'e2e/platforms/*spec.js',
           'e2e/modules/*spec.js', 'e2e/logic-representation/*spec.js', 
           'e2e/properties/*spec.js', 'e2e/preview-files/*spec.js', 
-          'e2e/role_production/*spec.js']
+          'e2e/role_production/*spec.js', 'e2e/diff/*spec.js']
   },
   onPrepare: function() {
     jasmine.getEnv().addReporter(
