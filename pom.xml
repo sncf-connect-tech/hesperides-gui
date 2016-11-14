@@ -70,7 +70,7 @@
         </snapshotRepository>
     </distributionManagement>
     <scm>
-        <connection>scm:git:git@github.com:voyages-sncf-technologies/hesperides-gui.git</connection>
-        <developerConnection>scm:git:git@github.com:voyages-sncf-technologies/hesperides-gui.git</developerConnection>
+        <connection>scm:git:https://github.com/voyages-sncf-technologies/hesperides-gui.git</connection>
+        <developerConnection>scm:git:https://github.com/voyages-sncf-technologies/hesperides-gui.git</developerConnection>
     </scm>
 </project>
