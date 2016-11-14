@@ -26,7 +26,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>app</directory>
+            <directory>src/app</directory>
             <includes>
                 <include>**/*</include>
             </includes>
@@ -39,7 +39,7 @@
     </fileSets>
     <files>
         <file>
-            <source>app/menu/menu.js</source>
+            <source>src/app/menu/menu.js</source>
             <outputDirectory>/menu</outputDirectory>
             <filtered>true</filtered>
         </file>

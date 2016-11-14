@@ -38,10 +38,10 @@ module.exports = function (grunt) {
         watch: {
             sources: {
                 files: [
-                    'app/**/*.js',
-                    'app/**/*.html',
-                    'app/**/*.css',
-                    '!app/bower_components/**/*.js'
+                    'src/app/**/*.js',
+                    'src/app/**/*.html',
+                    'src/app/**/*.css',
+                    '!src/app/bower_components/**/*.js'
                 ],
                 options: {
                     livereload: true
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
             options: {
                 hostname: 'localhost',
                 port: 80,
-                base: 'app'
+                base: 'src/app'
             },
             proxies: [
                 {
