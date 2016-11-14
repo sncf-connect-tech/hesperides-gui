@@ -1,7 +1,7 @@
 logs/*
 !.gitkeep
 node_modules/
-app/bower_components/
+src/bower_components/
 tmp
 .DS_Store
 .idea
@@ -13,3 +13,4 @@ release.properties
 app/config.json
 reports/
 npm-debug.log
+coverage/
