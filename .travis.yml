@@ -3,13 +3,24 @@ node_js:
   - 4
 
 before_script:
+  - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - npm install -g bower karma grunt-cli jshint
   - npm start > /dev/null &
+<<<<<<< 4459e04bb9368f26f09e23ee341e798bd611da21
   - node node_modules/protractor/bin/webdriver-manager update
   - java -jar node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-*.jar -Dwebdriver.chrome.driver=./protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25 &
+=======
+  #- node node_modules/protractor/bin/webdriver-manager update
+  - java -jar ./protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-*.jar -Dwebdriver.chrome.driver=./protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25 &
+>>>>>>> update for travis + karma
   - sleep 3 # give server time to start
 
 script:
   - node_modules/.bin/karma start karma.conf --no-auto-watch --single-run
+<<<<<<< 4459e04bb9368f26f09e23ee341e798bd611da21
   - node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+=======
+  #- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+>>>>>>> update for travis + karma
