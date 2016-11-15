@@ -7,7 +7,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - npm start > /dev/null &
   - node node_modules/protractor/bin/webdriver-manager update
-  - java -jar ./protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-*.jar -Dwebdriver.chrome.driver=./protractor/node_modules/webdriver-manager/selenium/chromedriver_*.exe &
+  - java -jar node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-*.jar -Dwebdriver.chrome.driver=./protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25 &
   - sleep 3 # give server time to start
 
 script:
