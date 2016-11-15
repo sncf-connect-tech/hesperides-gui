@@ -13,22 +13,27 @@
     "grunt-contrib-watch": "^0.6.1",
     "http-server": "^0.9.0",
     "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-html-reporter": "^0.2.7",
+    "karma-jasmine": "^1.0.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-verbose-reporter": "0.0.3",
     "protractor": "~4.0.3",
     "protractor-jasmine2-html-reporter": "~0.0.6",
     "restling": "~0.9.1",
-    "shelljs": "^0.2.6",
-    "karma": "0.13.22",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-coverage": "^0.5.3",
-    "karma-jasmine": "0.3.8",
-    "karma-jasmine-html-reporter": "^0.1.8",
-    "karma-phantomjs-launcher": "1.0.0",
-    "karma-verbose-reporter": "0.0.3"
+    "shelljs": "^0.2.6"
   },
   "scripts": {
     "postinstall": "bower install",
     "start": "grunt server",
     "webdriver-start": "node node_modules/protractor/bin/webdriver-manager update && node node_modules/protractor/bin/webdriver-manager start",
     "protractor": "node node_modules/protractor/bin/protractor test/protractor-conf.js --params.data_json=data/data_hesperides.json --suite all"
+  },
+  "dependencies": {
+    "karma-es6-shim": "^1.0.0"
   }
 }

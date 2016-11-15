@@ -14,3 +14,4 @@ app/config.json
 reports/
 npm-debug.log
 coverage/
+karma_html/
