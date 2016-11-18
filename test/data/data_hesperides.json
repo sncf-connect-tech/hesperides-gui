@@ -5,6 +5,7 @@
   "hesperides_protocol": "http",
   "hesperides_host": "localhost",
   "hesperides_port": "80",
+  "change_platform_version": "3.0",
   "new_application": "TEST_AUTO",
   "new_platform": "TEST_AUTO",
   "new_platform_version": "2.0",
