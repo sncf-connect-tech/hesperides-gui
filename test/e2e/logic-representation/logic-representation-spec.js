@@ -62,6 +62,14 @@ describe('Manage logical representation', function() {
 
         vsct_utils.clickToCreateAndCheckIfReallyCreated('add-instance_create-instance-button','box-renderer_editmodule-button-'+data.new_module_name,hesperides_url+'/rest/files/applications/'+data.new_application+'/platforms/'+data.new_platform+'/%23'+data.logic_group_1+'%23'+data.logic_group_2+'/'+data.new_module_name+'/'+data.new_module_version+'/instances/'+data.new_instance_name+'?isWorkingCopy=true');
 
+        // display/hide instance
+        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(0);
+        vsct_utils.clickOnElement(element(by.id("md-button_show-all-instance-"+data.new_module_name)));
+        vsct_utils.checkIfElementIsPresent("div_instance-list-"+data.new_module_name);
+        vsct_utils.checkIfElementIsPresent("div_instance-"+data.new_module_name+"-"+data.new_instance_name);
+        vsct_utils.clickOnElement(element(by.id("md-button_hide-all-instance-"+data.new_module_name)));
+        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(0);
+
     });
     it('should add a logic representation (TREE MODE)', function() {
 
