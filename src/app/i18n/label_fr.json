@@ -137,6 +137,8 @@
   "properties.platform.globalProperties.save": "Sauver les propriétés globales",
   "properties.platform.globalProperties.delete": "Supprimer la property globale {{name}} ?",
   "properties.platform.globalProperties.used_in": "Utilisée dans",
+  "properties.instance.show.all": "Afficher les instances",
+  "properties.instance.hide.all": "Cacher les instances",
   "properties.treeMode.title": "Filtrer sur l'arbre",
   "properties.treeMode.platform.title": "Plateforme",
   "properties.boxMode.title": "Propriétés niveau plateforme",
