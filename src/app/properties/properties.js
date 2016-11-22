@@ -75,6 +75,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.isPlatformOpen = 1;
 
+    $scope.isInstanceOpen = 0;
+
     $scope.$closeDialog = function() {
         $mdDialog.cancel();
     };

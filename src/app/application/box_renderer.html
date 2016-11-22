@@ -58,13 +58,21 @@
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>
             </div>
+            <md-button id="md-button_hide-all-instance-{{module.name}}" ng-click="isInstanceOpen = 0" ng-show="isInstanceOpen === 1" class="md-xs">
+                <span class="fa fa-eye-slash"></span>
+                <md-tooltip>{{ 'properties.instance.hide.all' | translate }}</md-tooltip>
+            </md-button>
+            <md-button id="md-button_show-all-instance-{{module.name}}" ng-click="isInstanceOpen = 1" ng-show="isInstanceOpen === 0" class="md-xs">
+                <span class="fa fa-eye"></span>
+                <md-tooltip>{{ 'properties.instance.show.all' | translate }}</md-tooltip>
+            </md-button>
             <div flex>
                 <property-tool-button></property-tool-button>
             </div>
         </div>
 
-        <div layout="row" layout-wrap>
-            <div ng-repeat="instance in module.instances | orderObjectBy:'name'"
+        <div id="div_instance-list-{{module.name}}" ng-if="isInstanceOpen" layout="row" layout-wrap>
+            <div id="div_instance-{{module.name}}-{{instance.name}}" ng-repeat="instance in module.instances | orderObjectBy:'name'"
                 ng-mouseover="instance.hover = true"
                 ng-mouseleave="instance.hover = false"
                 class="property-instance" flex="nogrow">
