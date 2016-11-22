@@ -100,4 +100,18 @@ describe('Manage platforms', function() {
             }
         );
     });
+    it('should change version of a platform correctly', function() {
+        browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
+
+        var elm_version_platform = element(by.css('[ng-click="change_platform_version(platform)"]'));
+        elm_version_platform.click();
+
+        var elm_new_version_platformName = element(by.css("md-input-container#new-version-input-container input"));
+        elm_new_version_platformName.sendKeys(protractor.Key.ENTER);
+        elm_new_version_platformName.sendKeys(data.change_platform_version);
+        elm_new_version_platformName.sendKeys(protractor.Key.ENTER );
+
+        var elm_new_version_platform = element(by.css('[ng-click="change_platform_version(platform)"]'));
+        vsct_utils.checkIfElementContainsText(elm_new_version_platform, data.change_platform_version);
+    });
 });
