@@ -25,7 +25,7 @@
             <h2>{{ 'properties.platform.version.modal.title' | translate }}</h2>
 
             <md-content layout-padding class="autoScroll">
-                <form name="platformVersionForm"
+                <form name="platformVersionForm" novalidate
                       ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
 
 
@@ -35,7 +35,7 @@
                         </span>
                     </md-switch>
 
-                    <md-input-container class="md-block" ng-show="sourceFromNdl && useNdl">
+                    <md-input-container id="new-version-input-container-ndl" class="md-block" ng-show="sourceFromNdl && useNdl">
                     <div flex="100" ng-show="useNdl">
                         <label id="new-version-label-autocomplete"><strong>Nouvelle version {{newVersion}}</strong></label>
                         <md-autocomplete
@@ -58,11 +58,12 @@
                     </div>
                     </md-input-container>
 
-                    <md-input-container md-no-float class="md-block" ng-show="!useNdl">
+                    <md-input-container id="new-version-input-container" md-no-float class="md-block" ng-show="!useNdl">
                         <label><strong>{{ 'properties.platform.version.modal.newVersion' | translate }} {{newVersion}}</strong></label>
                         <input type="text"
                                ng-trim="true"
                                ng-model="newVersion"
+                               ng-required="true"
                                placeholder="{{ 'properties.platform.version.modal.newVersion.placeholder' | translate }}"
                                md-autofocus="true"
                                 />
