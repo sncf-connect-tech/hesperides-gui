@@ -1,0 +1,57 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="70">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <!-- modal title -->
+            <h2>{{ 'united-nations.modal.title' | translate }}</h2>
+
+            <md-content layout-padding class="autoScroll">
+
+                <div>
+
+                </div>
+
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-autocomplete flex
+                             id="save-all-united-nations-modal_comment-autocomplete"
+                             md-input-id="save-all-united-nations-input-modal_comment-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="comment"
+                             md-search-text="raw_comment"
+                             md-items="item in comments.getCommentsLike(platform.application_name, raw_comment)"
+                             md-item-text="item.prettify()"
+                             md-min-length="0"
+                             md-autoselect="true"
+                             md-selected-item-change="sync_search_text(item)"
+                             placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
+                <md-item-template>
+                    <span md-highlight-text="searchText">{{item.prettify()}}</span>
+                </md-item-template>
+            </md-autocomplete>
+            <md-button ng-disabled="!comments.isCommentValid(raw_comment)" ng-click="saveAllChanges()" class="md-raised md-primary">{{ 'united-nations.modal.saveAllChanges' | translate }}</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.close' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

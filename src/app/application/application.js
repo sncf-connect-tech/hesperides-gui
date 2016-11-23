@@ -249,8 +249,8 @@ applicationModule.factory('Instance', function () {
 
 });
 
-applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate',
-    function ($http, Application, Platform, Properties, InstanceModel, $translate) {
+applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate', '$location',
+    function ($http, Application, Platform, Properties, InstanceModel, $translate, $location) {
 
     return {
         get: function (name, unsecured) {
@@ -258,6 +258,8 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             me.unsecured = unsecured;
 
             return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
+                current_platform = _.find(response.data.platforms, { 'platform_name': $location.search().platform});
+                store.set('current_platform_versionID', current_platform != undefined ? current_platform.version_id : '');
                 return new Application(response.data);;
             }, function (error) {
                 if (!me.unsecured) {

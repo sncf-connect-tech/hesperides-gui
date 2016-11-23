@@ -31,6 +31,7 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.template',
     'hesperides.components',
     'hesperides.user',
+    'hesperides.localChanges',
     'ngMaterial',
     'ngAnimate',
     'xeditable',
@@ -58,6 +59,8 @@ var hesperidesModule = angular.module('hesperides', [
     versionName: 'ARES',
     eventPaginationSize: 25
 });
+
+var hesperidesConfiguration = {};
 
 hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
     editableOptions.theme = 'default';
@@ -105,30 +108,27 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
 
     $rootScope.setHesperidesConfiguration = function () {
 
-        if ($rootScope.hesperidesConfiguration == undefined) {
+        if (hesperidesConfiguration == undefined) {
             console.warn("[Hesperides] Config file not found or empty, applying default configuration");
-            $rootScope.hesperidesConfiguration = {};
+            hesperidesConfiguration = {};
         }
 
-        if ($rootScope.hesperidesConfiguration.nexusMode == undefined) {
-            $rootScope.hesperidesConfiguration.nexusMode = false;
+        if (hesperidesConfiguration.nexusMode == undefined) {
+            hesperidesConfiguration.nexusMode = false;
+        }
+        if (hesperidesConfiguration.localChangesTTL == undefined) {
+            hesperidesConfiguration.localChangesTTL = 20;
         }
     }
 
     $.ajax({
         url: "config.json",
         success: function (data) {
-            if (data) {
-                try {
-                    $rootScope.hesperidesConfiguration = JSON.parse(data);
-                } catch (e) {
-                    console.warn("[Hesperides] Error : " + e.message);
-                }
-            }
-
+            hesperidesConfiguration = data;
             $rootScope.setHesperidesConfiguration();
         },
-        error: function (data) {
+        error: function (jqXHR, textStatus, errorThrown ) {
+            console.warn("[Hesperides] " + errorThrown);
             $rootScope.setHesperidesConfiguration();
         }
      });
@@ -661,6 +661,11 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
             }
             comments_history[application_name] = comments;
             save();
+        },
+        isCommentValid: function (comment) {
+            if (comment == undefined) { return false; }
+            _temp = comment.split (" ");
+            return ( comment.length < 10 || _temp.length < 2 ) ? false : true;;
         }
     };
     return Comments;
@@ -691,23 +696,6 @@ angular.module ('hesperides.modals', [])
             modalScope.sync_search_text = function (selected_comment) {
                 modalScope.raw_comment = selected_comment && selected_comment.length > 0 ? selected_comment.comment : modalScope.raw_comment;
             }
-
-            /**
-             * Checks if the typed comment is valid.
-             * Comments are valid only if they contain two separated words
-             */
-            modalScope.isCommentValid = function (){
-
-                if (modalScope.raw_comment == undefined)
-                    return false;
-                _temp = modalScope.raw_comment.split (" ");
-
-                if ( modalScope.raw_comment.length < 10 || _temp.length < 2 ){
-                    return false;
-                }
-
-                return true;
-            };
 
             //
             // Close the events modal

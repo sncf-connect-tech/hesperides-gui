@@ -16,12 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
  
-var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals']);
+var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals', 'hesperides.localChanges']);
 
 propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
     function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService, $translate) {
     $scope.$change = function (modal_data) {
-        if (modal_data.use_ndl === true && $scope.hesperidesConfiguration.nexusMode === true) {
+        if (modal_data.use_ndl === true && hesperidesConfiguration.nexusMode === true) {
             // on met à jour les modules de l'application à partir des infos de la ndl
             NexusService.getNdl($scope.platform.application_name, modal_data.new_version)
                 .then(function (ndl) {
@@ -64,8 +64,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -352,7 +352,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             });
         };
 
-        if ($scope.hesperidesConfiguration.nexusMode) {
+        if (hesperidesConfiguration.nexusMode) {
             // récupération des versions des ndl de l'application
             NexusService.getNdlVersions(platform.application_name)
                 .then(dialogNdl, dialogNdl);
@@ -858,6 +858,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.instance = undefined;
         $scope.properties = undefined;
         $scope.update_main_box(platform);
+        store.set('current_platform_versionID', platform.version_id);
     };
 
     /**
@@ -877,6 +878,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 //Merge with global properties
                 $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
                 $scope.oldProperites = angular.copy($scope.properties);
+
+                $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
+                $scope.oldProperites = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperites);
 
                 $scope.selected_module = module;
                 $scope.instance = undefined; //hide the instance panel if opened
@@ -985,7 +989,24 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     };
 
-    $scope.save_properties = function (properties, module) {
+    // Why United Nations ? They are solving conflicts, rights ? :D
+    $scope.show_united_nations_modal = function () {
+
+        $mdDialog.show({
+            templateUrl: 'local_changes/united-nations-modal.html',
+            controller: 'UnitedNationsController',
+            clickOutsideToClose:true,
+            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+            scope:$scope
+        });
+
+    }
+
+    $scope.platformLocalChangesCount = function () {
+        return LocalChanges.platformLocalChangesCount($scope.platform);
+    }
+
+    $scope.save_properties_locally = function (properties, module) {
 
         if(
             _.isEqual(properties.key_value_properties, $scope.oldProperites.key_value_properties) &&
@@ -994,40 +1015,72 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $translate('properties-not-changed.message').then(function(label) {
                 $.notify(label, "warn");
             });
-            return;
+            return false;
         }
 
-        // Save properties
-        HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
-            ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
-                //Merge properties with model
-                ModuleService.get_model(module).then(function (model) {
-                    $scope.properties = properties.mergeWithModel(model);
+        var hasSavedLocalChange = false;
 
-                    // Keep the saved properties as old
-                    $scope.oldProperites = angular.copy($scope.properties);
-                });
+        store.set('current_platform_versionID', $scope.platform.version_id);
+        LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
 
-                //Merge with global properties
-                $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+        properties.key_value_properties.forEach( function (elem) {
 
-                //Increase platform number
-                $scope.platform.version_id = $scope.platform.version_id + 1;
+            if (('filtrable_value' in elem && elem['filtrable_value'] != elem['value']) ||
+                (!('filtrable_value' in elem) && elem['value'] && elem['value'].toString().length > 0)) {
+                    LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem['name'], elem['value']);
+                    hasSavedLocalChange = true;
+            }
 
-                //Specify that the global_properties_usage = null means that data may have become outdated.
-                // So next time user wants global_properties we reload then instead of using cached ones.
-                $scope.platform.global_properties_usage = null;
-
-                // Dismiss the modal
-                //modalScope.$closeDialog();
-
-            }, function () {
-                //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
-                $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
-                $route.reload(); //Force reload if needed
-            });
         });
 
+        if (hasSavedLocalChange) {
+            $translate('properties.module.editProperties.savedLocally').then(function(label) {
+                $.notify(label, "success");
+            });
+        }
+
+        properties = LocalChanges.tagWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, properties);
+        return true;
+    }
+
+
+    $scope.save_properties = function (properties, module) {
+
+        if ($scope.save_properties_locally(properties, module)) {
+            // Save properties
+            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
+                ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
+                    //Merge properties with model
+                    ModuleService.get_model(module).then(function (model) {
+                        $scope.properties = properties.mergeWithModel(model);
+
+                        // Keep the saved properties as old
+                        $scope.oldProperites = angular.copy($scope.properties);
+                    });
+
+                    //Merge with global properties
+                    $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+
+                    //Increase platform number
+                    $scope.platform.version_id = $scope.platform.version_id + 1;
+
+                    //Specify that the global_properties_usage = null means that data may have become outdated.
+                    // So next time user wants global_properties we reload then instead of using cached ones.
+                    $scope.platform.global_properties_usage = null;
+
+                    //Cleanning up local change because they have been saved already
+                    LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
+
+                    // Dismiss the modal
+                    //modalScope.$closeDialog();
+
+                }, function () {
+                    //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
+                    $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
+                    $route.reload(); //Force reload if needed
+                });
+            });
+        }
     };
 
     $scope.edit_instance = function (instance, properties_path) {
@@ -1516,20 +1569,39 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
  * This directive will display only the simple properties list.
  * Added by Tidiane SIDIBE on 11/03/2016
  */
- propertiesModule.directive('simplePropertiesList', function () {
+ propertiesModule.directive('simplePropertiesList', ['LocalChanges', function (LocalChanges) {
 
      return {
          restrict: 'E',
          scope: {
-             properties: '='
+             properties: '=',
+             platform: '=',
+             module: '='
          },
          templateUrl: "properties/simple-properties-list.html",
          link: function (scope, element, attrs) {
              scope.propertiesKeyFilter = "";
              scope.propertiesValueFilter = "";
+
+             scope.hasSyncedChanges = function () {
+                return LocalChanges.hasSyncedChanges({'key_value_properties' :scope.properties});
+             }
+
+             scope.areFullySynced = function () {
+                var properties_path = scope.module ? scope.module.properties_path : '';
+                var platform = scope.platform;
+
+                return LocalChanges.areFullySynced(platform != undefined ? platform.application_name : '', platform != undefined ? platform.name : '', properties_path, {'key_value_properties': scope.properties});
+             }
+
+             scope.cleanLocalChanges = function () {
+                LocalChanges.clearLocalChanges({'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path});
+                scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, {'key_value_properties': scope.properties}).key_value_properties;
+             }
+             
          }
      };
- });
+ }]);
 
 /**
  * This directive will display only the iterable properties
@@ -1772,14 +1844,15 @@ propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
  *  2. Iterable probperties
  * Added by Tidiane SIDIBE on 11/03/2016
  */
-propertiesModule.directive('propertiesList', function () {
+propertiesModule.directive('propertiesList', ['LocalChanges', function (LocalChanges) {
 
     return {
         restrict: 'E',
         scope: {
             properties: '=',
             propertiesModel: '=',
-            platform: '='
+            platform: '=',
+            module: '='
         },
         templateUrl: "properties/properties-list.html",
         link: function (scope) {
@@ -1813,9 +1886,18 @@ propertiesModule.directive('propertiesList', function () {
                     scope.isOpen = index;
                 }
             };
+
+            scope.hasLocalChange = function () {
+
+                var properties_path = scope.module ? scope.module.properties_path : '';
+                var platform = scope.platform;
+
+                return LocalChanges.hasLocalChanges(platform != undefined ? platform.application_name : '', platform != undefined ? platform.name : '', properties_path);
+
+            };
         }
     };
-});
+}]);
 
 /**
  * Display the deleted properties button.

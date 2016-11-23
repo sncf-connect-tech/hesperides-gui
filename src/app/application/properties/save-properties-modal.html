@@ -54,7 +54,7 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button id="save-properties-modal_save-comment-button" ng-disabled="!isCommentValid()"
+            <md-button id="save-properties-modal_save-comment-button" ng-disabled="!comments.isCommentValid(raw_comment)"
                        ng-click="saveAction()" class="md-raised md-primary">
                 {{ 'button.modal.validate' | translate }}
             </md-button>
