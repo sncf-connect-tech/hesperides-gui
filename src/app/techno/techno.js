@@ -61,6 +61,24 @@ technoModule.controller('TechnoCtrl',
         });
     };
 
+    $scope.download_template = function (template_entry) {
+        download(template_entry.content, template_entry.filename, template_entry.mediaType);
+    };
+
+    $scope.download_all_template = function (templateEntries) {
+        // The JSZip Object
+        var zip = new JSZip();
+        // Adding files to zip
+        templateEntries.map(function (template){
+        if ( !template.on_error ){
+            zip.file(template.filename, template.content);
+            }
+        });
+        // Generate and save the zip file
+        var content = zip.generate({type:"blob"});
+        saveAs(content, $scope.techno.title + ".zip");
+    };
+
     $scope.edit_template = function (name) {
         if ($scope.techno.is_working_copy) {
             TechnoService.get_template_from_workingcopy($scope.techno.name, $scope.techno.version, name).then(function (template) {
@@ -104,6 +122,7 @@ technoModule.controller('TechnoCtrl',
                 right = FileService.files_rights_to_string(savedTemplate.rights);
                 var new_entry = new TemplateEntry({
                     name: savedTemplate.name,
+                    content: savedTemplate.content,
                     location: savedTemplate.location,
                     filename: savedTemplate.filename,
                     rights: right
@@ -225,12 +244,14 @@ technoModule.factory('TechnoService',
                     var entry = new TemplateEntry(data);
                     var url = baseUrl + '/' + encodeURIComponent(entry.name);
 
-                    entry.getRights(url).then (function (template){
+                    entry.getTemplate(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
                         if (entry.rights < 0)
                             $translate('template.rights.none').then(function (label) { entry.rights = label; });
+                        entry.content = template.content;
+                        entry.filename = template.filename;
                     });
-
+                    entry.setMediaType();
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
@@ -247,10 +268,12 @@ technoModule.factory('TechnoService',
                 return response.data.map(function (data) {
                     var entry = new TemplateEntry(data);
                     var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
-                    entry.getRights(url).then (function (template){
+                    entry.getTemplate(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
                         if (entry.rights < 0)
                             $translate('template.rights.none').then(function (label) { entry.rights = label; });
+                        entry.content = template.content;
+                        entry.filename = template.filename;
                     });
                     return entry;
                 }, function (error) {

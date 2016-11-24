@@ -177,6 +177,8 @@ templateModule.directive('hesperidesTemplateList', function () {
         scope: {
             templateEntries: '=',
             add: '&',
+            downloadAll: '&',
+            download: '&',
             delete: '&',
             edit: '&',
             isReadOnly: '='
@@ -186,6 +188,14 @@ templateModule.directive('hesperidesTemplateList', function () {
 
             scope.add_template = function () {
                 scope.add()();
+            };
+
+            scope.download_all_template = function (templateEntries) {
+                scope.downloadAll()(templateEntries);
+            };
+
+            scope.download_template = function (template_entry) {
+                scope.download()(template_entry);
             };
 
             scope.delete_template = function (name) {
@@ -240,13 +250,41 @@ templateModule.factory('TemplateEntry', ['$hesperidesHttp', 'Template',function 
             name: "",
             namespace: "",
             filename: "",
-            location: ""
+            location: "",
+            url: "",
+            content: "",
+            mediaType: ""
         }, data);
 
-    this.getRights = function (url) {
+        this.getTemplate = function (url) {
             return $http.get(url).then(function (response) {
                 return (new Template(response.data)).toHesperidesEntity();
             });
+        };
+
+        // methods
+        this.getContent = function () {
+            return $http.get(this.url).then(function (response) {
+                return response.data.content;
+            },function (error){
+
+                // Errors in here, are syntax error or something like that !
+                // This is processed on the get_files_entries method.
+                return error;
+            });
+        };
+
+        this.setMediaType = function () {
+            switch(this.filename.substr(this.filename.lastIndexOf('.')+1)) {
+                case 'json':
+                    mediaType = "application/json";
+                    break;
+                case 'xml':
+                    mediaType = "application/xml";
+                    break;
+                default:
+                    mediaType = "text/plain";
+            };
         };
     };
 

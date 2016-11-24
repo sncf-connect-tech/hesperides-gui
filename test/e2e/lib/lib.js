@@ -1,5 +1,6 @@
 var rest = require('restling');
 var vsct_utils = require('./lib.js');
+var path = require('path');
 
 // input : element
 // action : click on element
@@ -96,7 +97,7 @@ exports.clickToCreateAndCheckIfReallyCreated = function(id_button, id_elem_check
             }
         })
     });
-}
+};
 
 // mouse move on element
 // input : id of the element
@@ -105,7 +106,7 @@ exports.moveMouseOnElement = function(id,sleepTime) {
     browser.actions().mouseMove(elm).perform();
     browser.waitForAngular();
     browser.sleep(sleepTime);
-}
+};
 
 // generate string for data tests
 exports.getRandomString = function(length) {
@@ -115,11 +116,43 @@ exports.getRandomString = function(length) {
         string += letters.charAt(Math.floor(Math.random() * letters.length));
     }
     return string;
-}
+};
 
 // clear input before sendKeys
 exports.clearAndSendkeys = function(elm,newString) {
     elm.clear().then(function() {
         elm.sendKeys(newString);
     })
-}
+};
+
+exports.getDownloadsPath = function() {
+    return path.format ({
+        dir: path.join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'reports'
+        )
+    });
+};
+
+exports.getCapabilities  = function() {
+    return {
+        'browserName': 'chrome',
+        'platform': 'ANY',
+        'version': 'ANY',
+        'chromeOptions': {
+            // Get rid of --ignore-certificate yellow warning
+            args: ['--no-sandbox', '--test-type=browser'],
+            // Set download path and avoid prompting for download even though
+            // this is already the default on Chrome but for completeness
+            prefs: {
+                'download': {
+                    'prompt_for_download': false,
+                    'default_directory': this.getDownloadsPath()
+                }
+            }
+        }
+    }
+};
