@@ -56,9 +56,22 @@ describe('Manage diff', function() {
         vsct_utils.clearAndSendkeys(elm_from_app, data.new_application);
 
         expect(element.all(by.css(".notifyjs-wrapper.notifyjs-hidable")).count()).toEqual(0);
+        browser.sleep(1000);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(2);
 
     });
+    it('should display datepicker on compare two platform at a specific date switch', function () {
+        var elm_switch_button = element(by.css('[ng-click="switched()"]'));
+        vsct_utils.clickOnElement(elm_switch_button);
+        expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(1);
 
+        var elm_button_previous_month = element(by.css('[ng-click="addMonth(-1)"]'));
+        vsct_utils.clickOnElement(elm_button_previous_month);
+        expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(1);
 
+        var elm_jour = element.all(by.cssContainingText(".adp-day.selectable","1")).get(0);
+        vsct_utils.clickOnElement(elm_jour);
+        browser.sleep(1000);
+        expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(0);
+    });
 });
