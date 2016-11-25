@@ -21,7 +21,7 @@
 
 <md-input-container class="md-block">
     <label><strong>{{ 'properties.compare.modal.calendar' | translate }}</strong></label>
-    <input type="text" id="look-past-date-time" ng-model="ngModel" datetime-picker date-format="yyyy-MM-dd HH:mm:ss Z" year="year" month="month" day="day" flex="35" placeholder="{{holder|date: 'yyyy-MM-dd HH:mm:ss Z' }}"/>
+    <input type="text" id="look-past-date-time" ng-model="ngModel" bind-event="focus" datetime-picker date-format="yyyy-MM-dd HH:mm:ss Z" year="year" month="month" day="day" flex="35" placeholder="{{holder|date: 'yyyy-MM-dd HH:mm:ss Z' }}"/>
     <div ng-message="min" ng-show="isInFutur()" class="diff-date-error-message">
         {{ 'properties.compare.modal.calendar.message' | translate }}
     </div>
