@@ -249,8 +249,8 @@ applicationModule.factory('Instance', function () {
 
 });
 
-applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate',
-    function ($http, Application, Platform, Properties, InstanceModel, $translate) {
+applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate', '$location',
+    function ($http, Application, Platform, Properties, InstanceModel, $translate, $location) {
 
     return {
         get: function (name, unsecured) {
@@ -258,6 +258,8 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             me.unsecured = unsecured;
 
             return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
+                current_platform = _.find(response.data.platforms, { 'platform_name': $location.search().platform});
+                store.set('current_platform_versionID', current_platform != undefined ? current_platform.version_id : '');
                 return new Application(response.data);;
             }, function (error) {
                 if (!me.unsecured) {
@@ -387,6 +389,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 $translate('properties.event.saved').then(function(label) {
                     $.notify(label, "success");
                 });
+                store.set('current_platform_versionID', platform.version_id + 1);
                 return new Properties(response.data);
             }, function (error) {
                 //$.notify(error.data.message, "error");
@@ -404,7 +407,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
 
-        /**
+        /**a
          * Met à jour la configuration des modules d'une plateforme.
          * <p>
          * Attention, seule l'instance "locale" est modifiée. La modification n'est pas persistée.

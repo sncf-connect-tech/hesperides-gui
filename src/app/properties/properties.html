@@ -86,6 +86,12 @@
                 <md-tooltip>{{ 'properties.platform.version.history' | translate }}</md-tooltip>
             </md-button>
 
+            <!-- Show pending changes -->
+            <md-button id="properties_show-local-change-button" aria-label="{{ 'properties.platform.version.history' | translate }}" ng-click="show_united_nations_modal()" class="md-xs" ng-if="platformLocalChangesCount() > 0">
+                <span class="fa fa-medkit fa-2x"></span>
+                <span class="title">{{ 'properties.platform.localChange.pending' | translate }} ( {{platformLocalChangesCount()}} ) </span>
+            </md-button>
+
         </span>
             </h3>
         </div>
