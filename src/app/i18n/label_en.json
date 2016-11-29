@@ -280,6 +280,9 @@
   "button.associateProperties": "Attached properties",
   "united-nations.modal.title": "United Nations agent",
   "united-nations.modal.saveAllChanges": "Save All",
+  "united-nations.modal.propertyName": "Name",
+  "united-nations.modal.currentPropertyValue": "Current value",
+  "united-nations.modal.propertyToSave": "To save",
   "common.word.and": "and",
   "common.word.all": "All"
 }

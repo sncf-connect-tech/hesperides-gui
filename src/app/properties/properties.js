@@ -992,14 +992,21 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     // Why United Nations ? They are solving conflicts, rights ? :D
     $scope.show_united_nations_modal = function () {
 
-        $mdDialog.show({
+        var modalScope = $scope.$new(false);
+
+        $scope.instance = undefined;
+        $scope.properties = undefined;
+        $scope.showGlobalProperties = undefined;
+        $scope.showButtonAndEye = undefined;
+
+        modalScope.dialog = $mdDialog.show({
             templateUrl: 'local_changes/united-nations-modal.html',
             controller: 'UnitedNationsController',
-            clickOutsideToClose:true,
+            clickOutsideToClose: false,
+            escapeToClose: false,
             preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
-            scope:$scope
+            scope:modalScope
         });
-
     }
 
     $scope.platformLocalChangesCount = function () {

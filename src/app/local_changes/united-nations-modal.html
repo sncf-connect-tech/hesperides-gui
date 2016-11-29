@@ -19,21 +19,77 @@
   ~
   -->
 
-<md-dialog flex="70">
+<md-dialog flex="70" data-ng-init="loadLocalChanges(platform)" id="united-nations">
     <md-dialog-content>
         <div class="ng-binding">
             <!-- modal title -->
             <h2>{{ 'united-nations.modal.title' | translate }}</h2>
 
             <md-content layout-padding class="autoScroll">
+                <section class="local-change-header" ng-repeat="(index, localChange) in localChanges track by $index">
+                    <div layout="row" flex="100">
+                        <md-button ng-click="open(index)" class="united-nations-title">
+                        <span flex="40" class="united-nation-module-name">
+                            {{localChange.module.name}}, {{localChange.module.version}} <span ng-if="localChange.module.is_working_copy">(working copy)</span>
+                        </span>
+                        <span class="united-nation-properties-path">
+                            {{localChange.module.properties_path}}
+                        </span>
+                        </md-button>
+                    </div>
 
-                <div>
+                    <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
+                    <div ng-show="index === isOpen" class="local-change-content ng-hide">
 
-                </div>
+                        <md-dialog-actions class="united-nation-section-header">
+                            <md-autocomplete flex
+                                             id="save-all-united-nations-modal_comment-autocomplete"
+                                             md-input-id="save-all-united-nations-input-modal_comment-autocomplete"
+                                             md-no-cache="true"
+                                             md-selected-item="localChange.comment"
+                                             md-search-text="localChange.raw_comment"
+                                             md-items="item in comments.getCommentsLike(platform.application_name, localChange.raw_comment)"
+                                             md-item-text="item.prettify()"
+                                             md-min-length="0"
+                                             md-autoselect="true"
+                                             md-selected-item-change="sync_search_text(item, localChange.raw_comment)"
+                                             placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
+                                <md-item-template>
+                                    <span md-highlight-text="searchText">{{item.prettify()}}</span>
+                                </md-item-template>
+                            </md-autocomplete>
+                            <md-button ng-disabled="!comments.isCommentValid(localChange.raw_comment)" ng-click="save_one(localChange)" class="md-raised md-primary">{{ 'settings.save' | translate }}</md-button>
+                        </md-dialog-actions>
 
+                        <div class="united-nation-content-header" flex="100">
+                            <div layout="row" flex="100">
+                                <div flex="30" class="united-nation-content-header-current-property">{{ 'united-nations.modal.propertyName' | translate }}</div>
+                                <div flex="32">{{ 'united-nations.modal.currentPropertyValue' | translate }}</div>
+                                <div class="united-nation-copy-property"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+                                <div flex="32" class="united-nation-content-header-to-save-property">{{ 'united-nations.modal.propertyToSave' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="united-nation-content" flex="100">
+                            <div ng-repeat="(index, property) in getConflict(localChange.properties) track by $index" class="united-nation-content-row" layout="row" flex="100">
+                                <div flex="30" class="united-nation-property-name">{{property.name}}</div>
+                                <div flex="32" class="united-nation-content-row-current-property">{{property.filtrable_value}}</div>
+                                <div class="united-nation-copy-property"><md-checkbox
+                                        aria-label="transfert"
+                                        ng-init="property.applied_value=property.value"
+                                        ng-model="property.applied_value"
+                                        ng-true-value="'{{property.filtrable_value}}'"
+                                        ng-false-value="'{{property.value}}'"></md-checkbox></div>
+                                <div flex="32" class="united-nation-content-row-to-save-property">
+                                    <md-input-container class="md-block">
+                                    <input type="text" ng-trim="true" ng-model="property.applied_value" aria-label="to save property input" />
+                                </md-input-container></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </md-content>
         </div>
-        <md-dialog-actions>
+        <md-dialog-actions class="united-nations-actions">
             <md-autocomplete flex
                              id="save-all-united-nations-modal_comment-autocomplete"
                              md-input-id="save-all-united-nations-input-modal_comment-autocomplete"
@@ -44,7 +100,7 @@
                              md-item-text="item.prettify()"
                              md-min-length="0"
                              md-autoselect="true"
-                             md-selected-item-change="sync_search_text(item)"
+                             md-selected-item-change="sync_search_text(item, raw_comment)"
                              placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
                 <md-item-template>
                     <span md-highlight-text="searchText">{{item.prettify()}}</span>

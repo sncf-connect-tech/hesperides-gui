@@ -280,6 +280,9 @@
   "button.associateProperties": "Les propriétés associées",
   "united-nations.modal.title": "Agent de l'ONU",
   "united-nations.modal.saveAllChanges": "Tout sauvegarder",
+  "united-nations.modal.propertyName": "Nom",
+  "united-nations.modal.currentPropertyValue": "Valeur actuelle",
+  "united-nations.modal.propertyToSave": "A sauvegarder",
   "common.word.and": "et",
   "common.word.all": "Tous"
 }

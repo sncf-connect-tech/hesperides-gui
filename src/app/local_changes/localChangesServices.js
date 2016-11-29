@@ -73,9 +73,12 @@ localChangesModule.service('LocalChanges', ['LocalChangesDAO', 'LocalChangesUtil
                 return false;
             return this.getLocalChanges(application_name, platform, properties_path).length > 0 && this.getLocalChanges(application_name, platform, properties_path).length - _.filter(properties.key_value_properties, {'syncWithRemote': true}).length == 0;
         },
+        platformLocalChanges : function (platform) {
+            var properties_paths = _.map(platform.modules, function (module) { return LocalChangesUtils.buildFullPath(platform.application_name, platform.name, module.properties_path); });
+            return _.filter(properties_paths, function (properties_path) { return localChangesDAO.getLocalChanges(properties_path).length > 0; });
+        },
         platformLocalChangesCount : function (platform) {
-            properties_paths = _.map(platform.modules, (module) => { return LocalChangesUtils.buildFullPath(platform.application_name, platform.name, module.properties_path); });
-            return _.filter(properties_paths, function (properties_path) { return localChangesDAO.getLocalChanges(properties_path).length > 0; }).length;
+            return this.platformLocalChanges(platform).length;
         }
     }
 }]);
@@ -88,6 +91,12 @@ localChangesModule.service('LocalChangesUtils', [function() {
         },
         extractPropertiesPath: function (full_path) {
             return full_path.split(']')[1];
+        },
+        extractApplicationName: function (full_path) {
+            return full_path.split('-')[0].replace('[', '');
+        },
+        extractPlatformName: function (full_path) {
+            return full_path.split(']')[0].split('-')[1];
         }
     };
 }]);

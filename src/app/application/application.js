@@ -389,6 +389,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 $translate('properties.event.saved').then(function(label) {
                     $.notify(label, "success");
                 });
+                store.set('current_platform_versionID', platform.version_id + 1);
                 return new Properties(response.data);
             }, function (error) {
                 //$.notify(error.data.message, "error");
@@ -406,7 +407,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
 
-        /**
+        /**a
          * Met à jour la configuration des modules d'une plateforme.
          * <p>
          * Attention, seule l'instance "locale" est modifiée. La modification n'est pas persistée.
