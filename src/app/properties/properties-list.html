@@ -23,7 +23,7 @@
     <section class="file-header">
         <div layout="row" flex="100">
             <div flex>
-                <md-button id="properties-list_display-simple-properties-button" ng-click="open(1)" class="file-title">{{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{(properties.key_value_properties | displayProperties:false).length}} )</md-button>
+                <md-button id="properties-list_display-simple-properties-button" ng-click="open(1)" class="file-title">{{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{(properties.key_value_properties | displayProperties:false).length}} )<span ng-if="hasLocalChange()" class="inLocal_true">{{ 'properties.module.editProperties.localChangeApplied' | translate }}</span></md-button>
             </div>
             <!-- Error tooltip text -->
             <md-tooltip>{{ 'properties.module.editProperties.simpleProperties.tooltip' | translate }}</md-tooltip>
@@ -31,7 +31,7 @@
 
         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
         <div ng-show="1 === isOpen" class="file-content ng-hide" layout="column" flex="100">
-            <simple-properties-list properties = "properties.key_value_properties"></simple-properties-list>
+            <simple-properties-list properties = "properties.key_value_properties" platform="platform" module="module"></simple-properties-list>
         </div>
     </section>
 

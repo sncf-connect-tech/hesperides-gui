@@ -1083,6 +1083,165 @@ h4.contain_empty_module {
     color:#b94a48;
     overflow-y: scroll;
 }
+
+/******************************************************************************
+ * Local changes.
+ */
+
+.inLocal_true {
+    color: rgb(255,87,34);
+}
+
+.local-change-title .inLocal_true {
+    font-size: 14px;
+}
+
+.local-change-title span.inLocal_true, #properties-list_display-simple-properties-button span.inLocal_true {
+    padding-left: 10px;
+}
+
+.inLocal_true.header_edit_properties {
+    font-size: 14px;
+    line-height: 36px;
+    vertical-align: middle;
+    padding-left: 8px;
+}
+
+.inLocal_true.header_edit_properties button {
+    font-size: 12px;
+}
+
+.inLocal_true.header_edit_properties button .fa, #properties_show-local-change-button {
+    color: rgb(255,87,34);
+}
+
+#properties_show-local-change-button span.title {
+    text-transform: initial;
+}
+
+#properties_show-platform-event-button, #properties_show-local-change-button {
+    margin: 4px;
+    padding: 1px 3px;
+}
+
+#properties_show-platform-event-button .fa, #properties_show-local-change-button .fa {
+    font-size: 1.4em;
+}
+
+md-dialog-actions.united-nations-actions {
+    padding-right: 16px;
+}
+
+.local-change-header {
+    background-color: rgba(224, 224, 224, 0.63);
+    border-color: #ddd;
+    border-top-color: rgb(221, 221, 221);
+    border-right-color: rgb(221, 221, 221);
+    border-bottom-color: rgb(221, 221, 221);
+    border-left-color: rgb(221, 221, 221);
+    white-space: nowrap;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+    margin: 8px;
+}
+#dialogContent_united-nations .layout-padding > * {
+    padding: 0;
+}
+
+.united-nations-title {
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+    text-transform: none;
+    font-weight:bold;
+}
+
+.united-nation-module-name {
+}
+
+.united-nation-properties-path {
+    float: right;
+    font-size: 14px;
+    font-weight: initial;
+}
+
+.local-change-content {
+    background-color: #f3f3f3;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+.united-nation-section-header, .united-nation-content {
+    padding: 5px 10px;
+}
+
+.united-nation-content-header {
+    text-align: center;
+    font-weight: bolder;
+}
+
+.united-nation-content-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+div.united-nation-copy-property {
+    width: 20px;
+    color: rgb(255,87,34);
+}
+
+div.united-nation-copy-property md-checkbox {
+    margin: 0;
+}
+
+.united-nation-property-name {
+    text-align: right;
+    font-weight: bold;
+}
+
+.united-nation-content-row {
+    margin: 5px 0;
+}
+
+.united-nation-content-row, .united-nation-content-row md-input-container, .united-nation-content-row md-input-container input {
+    height: 20px;
+}
+
+.united-nation-content-row-current-property {
+    text-align: right;
+    padding-right: 5px;
+}
+
+.united-nation-content-header-to-save-property {
+    color: rgb(0,150,136);
+}
+
+.united-nation-content-row-to-save-property{
+    text-align: left;
+    padding-left: 5px;
+}
+
+.united-nation-section-header button, .united-nations-actions button {
+    line-height: 40px
+}
+
+.united-nation-section-header md-autocomplete {
+    display: inline-block;
+}
+
+.united-nation-content-row-to-save-property md-input-container {
+    margin: 0;
+    padding: 0;
+}
+
+.united-nations-actions {
+    border-top: 2px solid #ddd;
+    border-radius: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
 /******************************************************************************
  * Loading screen.
  */

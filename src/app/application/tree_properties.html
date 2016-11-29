@@ -96,6 +96,12 @@
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
+                <md-button id="box-properties_save-module-properties-button" ng-click="save_properties_locally(properties, selected_module)"
+                           ng-disabled="technoForm.$invalid"
+                           class="md-raised md-warn">
+                    <span class="fa fa-clock-o"></span>
+                    <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
+                </md-button>
                 <md-button id="tree-properties_save-module-properties-button"
                            ng-click="save_properties(properties, selected_module)"
                            class="md-raised md-primary">
@@ -107,7 +113,7 @@
 
         <div layout="row" ng-show="properties">
             <div flex="100">
-                <properties-list properties="properties" properties-model="model" platform="platform"></properties-list>
+                <properties-list properties="properties" properties-model="model" platform="platform" module="selected_module"></properties-list>
             </div>
         </div>
 

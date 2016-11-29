@@ -10,7 +10,7 @@ tmp
 target/
 pom.xml.releaseBackup
 release.properties
-app/config.json
+src/app/config.json
 reports/
 npm-debug.log
 coverage/

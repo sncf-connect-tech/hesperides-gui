@@ -20,6 +20,28 @@
   -->
 
 <div>
+    <div layout="row" ng-if="areFullySynced()">
+        <div flex="none" class="inLocal_true header_edit_properties">
+            {{ 'properties.module.editProperties.fullySyncedLocalChanges' | translate }}
+            <md-button id="clean-local-changes-button" class="md-raised"
+                       ng-really-click="cleanLocalChanges()"
+                       ng-really-message="{{ 'properties.module.editProperties.cleanLocalChangesConfirm' | translate }}">
+                <span class="fa fa-trash"></span>
+                <span>{{ 'properties.module.editProperties.cleanLocalChanges' | translate }}</span>
+            </md-button>
+        </div>
+    </div>
+    <div layout="row" ng-if="hasSyncedChanges() && !areFullySynced()">
+        <div flex="none" class="inLocal_true header_edit_properties">
+            {{ 'properties.module.editProperties.partiallySyncedLocalChanges' | translate }}
+
+        </div>
+        <div flex="none" class="inLocal_true header_edit_properties">
+
+        </div>
+
+
+    </div>
     <div layout="row">
         <div flex="none" class="margin-right-2pc">
             <toggle-sort-properties sort-order="order"></toggle-sort-properties>
@@ -72,7 +94,7 @@
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
                                ng-required="key_value_property.required"
-                               class="property-value">
+                               class="property-value inLocal_{{key_value_property.inLocal}}">
                             <md-tooltip ng-show="key_value_property.defaultValue || key_value_property.pattern || key_value_property.comment" md-direction="top">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
                     </div>
                 </div>
@@ -95,7 +117,7 @@
                         <input id="simple-properties-list_value-property-isglobale-input-{{key_value_property.name}}" ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="true"
-                               class="property-value">
+                               class="property-value inLocal_{{key_value_property.inLocal}}">
                         <md-tooltip md-direction="top">
                             <!-- <br/> do not work in tooltip -->
                             {{ 'properties.module.editProperties.simpleProperties.global' | translate }}
