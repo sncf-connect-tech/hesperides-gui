@@ -62,7 +62,7 @@ var hesperidesModule = angular.module('hesperides', [
 
 var hesperidesConfiguration = {};
 
-hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
+hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $http) {
     editableOptions.theme = 'default';
 
     // overwrite submit button template
@@ -121,17 +121,26 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
         }
     }
 
-    $.ajax({
-        url: "config.json",
-        success: function (data) {
-            hesperidesConfiguration = data;
-            $rootScope.setHesperidesConfiguration();
-        },
-        error: function (jqXHR, textStatus, errorThrown ) {
-            console.warn("[Hesperides] " + errorThrown);
-            $rootScope.setHesperidesConfiguration();
-        }
-     });
+
+    $http({
+        method: 'GET',
+        url: './config.json',
+        transformResponse: [ function (data) {
+            try {
+                data = JSON.parse(data);
+            } catch (e) {
+                console.warn("[Hesperides] " + e);
+                return undefined;
+            }
+            return data;
+        }]
+    }).then(function success(data) {
+        hesperidesConfiguration = data.data;
+        $rootScope.setHesperidesConfiguration();
+    }, function error (response) {
+        console.warn("[Hesperides] " + response);
+        $rootScope.setHesperidesConfiguration();
+    });
 });
 
 
