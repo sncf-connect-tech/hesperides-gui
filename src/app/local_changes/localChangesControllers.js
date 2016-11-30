@@ -67,6 +67,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
 
     $scope.save_one = function (properties) {
 
+        _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
         properties.model.key_value_properties = angular.copy(properties.properties);
 
         ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
