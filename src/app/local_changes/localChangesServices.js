@@ -78,7 +78,11 @@ localChangesModule.service('LocalChanges', ['LocalChangesDAO', 'LocalChangesUtil
             return _.filter(properties_paths, function (properties_path) { return localChangesDAO.getLocalChanges(properties_path).length > 0; });
         },
         platformLocalChangesCount : function (platform) {
-            return this.platformLocalChanges(platform).length;
+            var count = 0;
+            _.forEach(this.platformLocalChanges(platform), function (localChange) {
+                count = count + localChangesDAO.getLocalChanges(localChange).length;
+            });
+            return count;
         }
     }
 }]);
