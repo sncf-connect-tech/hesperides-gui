@@ -30,7 +30,7 @@
                     <div layout="row" flex="100">
                         <md-button ng-click="open(index)" class="united-nations-title">
                         <span flex="40" class="united-nation-module-name">
-                            {{localChange.module.name}}, {{localChange.module.version}} <span ng-if="localChange.module.is_working_copy">(working copy)</span>
+                            {{localChange.module.name}}, {{localChange.module.version}} <span ng-if="localChange.module.is_working_copy">(working copy) </span><span class="inLocal_true">( {{getConflict(localChange.properties).length}} )</span>
                         </span>
                         <span class="united-nation-properties-path">
                             {{localChange.module.properties_path}}

@@ -117,7 +117,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
             hesperidesConfiguration.nexusMode = false;
         }
         if (hesperidesConfiguration.localChangesTTL == undefined) {
-            hesperidesConfiguration.localChangesTTL = 20;
+            hesperidesConfiguration.localChangesTTL = 50;
         }
     }
 
