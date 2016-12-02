@@ -42,6 +42,8 @@
             <h4>{{ 'module.specificFiles' | translate }}</h4>
             <hesperides-template-list template-entries="templateEntries"
                                       add="add_template"
+                                      download-all="download_all_template"
+                                      download="download_template"
                                       edit="edit_template"
                                       delete="delete_template"
                                       is-read-only="is_release"></hesperides-template-list>
@@ -54,6 +56,8 @@
             <h4>{{ 'module.technoList' | translate }}</h4>
             <list-of-items items="module.technos"
                            createfunction="add_techno($name)"
+                           download-all="download_all_template"
+                           download="download_template"
                            ondelete="delete_techno($item)"
                            size="small"
                            css="md-info"

@@ -80,6 +80,8 @@
   "module.release.modal.version.placeholder": "1.0.0, 1.1.2, ...",
   "module.release.modal.message": "Do you want to create the release {{version}}? This operation can not be undone!",
   "template.button.add": "Add a template",
+  "template.button.download.all": "Download all templates",
+  "template.button.download": "Download template",
   "template.modal.add.title": "Adding a template",
   "template.modal.edit.title": "Editing a template",
   "template.modal.name": "Title",

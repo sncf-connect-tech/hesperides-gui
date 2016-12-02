@@ -18,6 +18,7 @@
 
 var rest = require('restling');
 var vsct_utils = require('../lib/lib.js');
+var fs = require('fs');
 
 describe('Manage modules', function() {
 
@@ -108,6 +109,31 @@ describe('Manage modules', function() {
         });
     });
 
+    it('should download template file for a techno', function() {
+        var filename = vsct_utils.getDownloadsPath()+data.json_new_template_filename;
+
+        var elm_btn_download_file=element(by.id("template-list_download-template-module-button-"+data.json_new_template_title));
+        vsct_utils.clickOnElement(elm_btn_download_file);
+
+        browser.driver.wait(function() {
+            // Wait until the file has been downloaded.
+            // We need to wait thus as otherwise protractor has a nasty habit of
+            // trying to do any following tests while the file is still being
+            // downloaded and hasn't been moved to its final location.
+            return fs.existsSync(filename);
+        }, 2000).then(function() {
+            // Do whatever checks you need here.  This is a simple comparison;
+            // for a larger file you might want to do calculate the file's MD5
+            // hash and see if it matches what you expect.
+            expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
+                data.json_new_template_content
+            );
+        });
+
+        var elm_btn_download_all_file=element(by.id("template-list_download-all-template-button"));
+        vsct_utils.clickOnElement(elm_btn_download_all_file);
+    });
+
     it('should add a template in a working copy module and delete it', function() {
         browser.get(hesperides_url+"/#/module/"+data.new_module_name+"/"+data.new_module_version+"?type=workingcopy");
 
@@ -191,8 +217,8 @@ describe('Manage modules', function() {
         );
 
         vsct_utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal-from_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy');
-
     });
+
     afterAll(function(done) {
         process.nextTick(done);
     });

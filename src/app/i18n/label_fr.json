@@ -80,6 +80,8 @@
   "module.release.modal.version.placeholder": "1.0.0, 1.1.2, ...",
   "module.release.modal.message": "Etes-vous sûr de vouloir créer la release {{version}} ? C'est une opération irreversible !",
   "template.button.add": "Ajouter un template",
+  "template.button.download.all": "Tout télécharger",
+  "template.button.download": "Télécharger le template",
   "template.modal.add.title": "Ajout de template",
   "template.modal.edit.title": "Edition de template",
   "template.modal.name": "Titre",
