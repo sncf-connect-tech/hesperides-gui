@@ -102,6 +102,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
 
                     //Merge with global properties
                     tmpProperties = properties.mergeWithGlobalProperties(platform.global_properties);
+                    model.iterable_properties = angular.copy(tmpProperties.iterable_properties);
 
                     tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
                     $scope.localChanges.push({
