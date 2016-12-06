@@ -281,6 +281,7 @@
   "button.release.create.message": "Êtes-vous sur de vouloir créer la release {{version}} ?",
   "button.associateProperties": "Les propriétés associées",
   "united-nations.modal.title": "Agent de l'ONU",
+  "united-nations.modal.comment": "Toute modification locale non reportée lors d'une sauvegarde sera perdue",
   "united-nations.modal.saveAllChanges": "Tout sauvegarder",
   "united-nations.modal.propertyName": "Nom",
   "united-nations.modal.currentPropertyValue": "Valeur actuelle",
