@@ -87,6 +87,9 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
 
     $scope.loadLocalChanges = function (platform) {
 
+        ApplicationService.get_platform(platform.application_name, platform.name).then(function (response) {
+            platform.version_id = response.version_id;
+        });
         _.forEach(LocalChanges.platformLocalChanges(platform), function (full_path) {
 
             var curApplicationName = LocalChangesUtils.extractApplicationName(full_path);
