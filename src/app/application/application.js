@@ -295,6 +295,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 //Try to get the global properties
                 var platform = new Platform(response.data);
+                store.set('current_platform_versionID', platform.version_id);
                 me.get_properties(application_name, platform_name, "#", timestamp).then(function (properties) {
                     platform.global_properties = properties;
                 });

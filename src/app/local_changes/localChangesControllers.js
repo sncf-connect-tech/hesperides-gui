@@ -87,6 +87,9 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
 
     $scope.loadLocalChanges = function (platform) {
 
+        ApplicationService.get_platform(platform.application_name, platform.name).then(function (response) {
+            platform.version_id = response.version_id;
+        });
         _.forEach(LocalChanges.platformLocalChanges(platform), function (full_path) {
 
             var curApplicationName = LocalChangesUtils.extractApplicationName(full_path);
@@ -102,6 +105,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
 
                     //Merge with global properties
                     tmpProperties = properties.mergeWithGlobalProperties(platform.global_properties);
+                    model.iterable_properties = angular.copy(tmpProperties.iterable_properties);
 
                     tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
                     $scope.localChanges.push({

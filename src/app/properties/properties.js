@@ -1003,8 +1003,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             templateUrl: 'local_changes/united-nations-modal.html',
             controller: 'UnitedNationsController',
             clickOutsideToClose: false,
-            escapeToClose: false,
-            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+            escapeToClose: true,
+            preserveScope: false, // requiered for not freez menu see https://github.com/angular/material/issues/5041
             scope:modalScope
         });
     }

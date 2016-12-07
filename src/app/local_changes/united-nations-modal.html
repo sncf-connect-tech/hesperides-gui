@@ -23,7 +23,7 @@
     <md-dialog-content>
         <div class="ng-binding">
             <!-- modal title -->
-            <h2>{{ 'united-nations.modal.title' | translate }}</h2>
+            <h2>{{ 'united-nations.modal.title' | translate }} <span>({{'united-nations.modal.comment' | translate}})</span></h2>
 
             <md-content layout-padding class="autoScroll">
                 <section class="local-change-header" ng-repeat="(index, localChange) in localChanges track by $index">
@@ -72,7 +72,7 @@
                         <div class="united-nation-content" flex="100">
                             <div ng-repeat="(index, property) in getConflict(localChange.properties) track by $index" class="united-nation-content-row" layout="row" flex="100">
                                 <div flex="30" class="united-nation-property-name">{{property.name}}</div>
-                                <div flex="32" class="united-nation-content-row-current-property">{{property.filtrable_value}}</div>
+                                <div flex="32" class="united-nation-content-row-current-property">{{!property.filtrable_value ? '<' + ('properties.compare.values.empty' | translate) + '>' : property.filtrable_value}}</div>
                                 <div class="united-nation-copy-property"><md-checkbox
                                         aria-label="transfert"
                                         ng-init="property.applied_value=property.value"
