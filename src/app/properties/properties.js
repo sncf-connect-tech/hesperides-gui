@@ -1634,63 +1634,63 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
  });
 
 /**
+ * This is a private function of checking if a value
+ * is in the model
+ * @param {Object} model : the model from the scope.
+ * @param {String} name : the value name field.
+ * @return true if it's in, false otherwise.
+ */
+var isInModel = function (model, name){
+    var _model = _.find(model.fields, {name : name});
+    return !_.isUndefined(_model);
+};
+
+
+/**
+ * Private function for merging values
+ * @param {JSON Object} model : the model of the iterable block
+ * @param {JSON Object} values : the values of the iterable block
+ */
+var mergeValue = function (model, values){
+
+    // for each valorisation block
+    _(values.iterable_valorisation_items).each (function (value){
+
+        // for each model fields
+        _(model.fields).each (function (field){
+            //is the block containing value for this filed
+            var exists = !_.isUndefined(_.find(value.values, {name : field.name}));
+
+            if ( exists ){
+                //The value exits, juste merge.
+                _(value.values).each (function (val){
+                    //is it in the mode ?
+                    val.inModel = isInModel(model, val.name);
+                });
+            }
+            else{
+                // not existing existing value found, then add one
+                value.values.push({
+                    name: field.name,
+                    value: (field.required) ? undefined : "", // 'required' to make difference with void string.
+                    comment: (field.comment) ? field.comment : "",
+                    password: (field.password) ? field.password : false,
+                    defaultValue: (field.defaultValue) ? field.defaultValue : "",
+                    required: (field.required) ? field.required : false,
+                    inModel:true,
+                    pattern: (field.pattern) ? field.pattern : ""
+                });
+            }
+        });
+    });
+
+};
+
+/**
  * This is the controller for iterable properties list directive
  * Added by Tidiane SIDIBE 14/03/2015
  */
  propertiesModule.controller('iterablePropertiesListController', function($scope) {
-
-    /**
-     * This is a private function of checking if a value
-     * is in the model
-     * @param {Object} model : the model from the scope.
-     * @param {String} name : the value name field.
-     * @return true if it's in, false otherwise.
-     */
-    var isInModel = function (model, name){
-        var _model = _.find(model.fields, {name : name});
-        return !_.isUndefined(_model);
-    };
-
-
-    /**
-     * Private function for merging values
-     * @param {JSON Object} model : the model of the iterable block
-     * @param {JSON Object} values : the values of the iterable block
-     */
-    var mergeValue = function (model, values){
-
-        // for each valorisation block
-        _(values.iterable_valorisation_items).each (function (value){
-
-            // for each model fields
-            _(model.fields).each (function (field){
-                //is the block containing value for this filed
-                var exists = !_.isUndefined(_.find(value.values, {name : field.name}));
-
-                if ( exists ){
-                    //The value exits, juste merge.
-                    _(value.values).each (function (val){
-                        //is it in the mode ?
-                        val.inModel = isInModel(model, val.name);
-                    });
-                }
-                else{
-                    // not existing existing value found, then add one
-                    value.values.push({
-                        name: field.name,
-                        value: (field.required) ? undefined : "", // 'required' to make difference with void string.
-                        comment: (field.comment) ? field.comment : "",
-                        password: (field.password) ? field.password : false,
-                        defaultValue: (field.defaultValue) ? field.defaultValue : "",
-                        required: (field.required) ? field.required : false,
-                        inModel:true,
-                        pattern: (field.pattern) ? field.pattern : ""
-                    });
-                }
-            });
-        })
-
-    };
 
     // call the merge
     mergeValue($scope.modelProperty, $scope.valueProperty);
@@ -2175,7 +2175,19 @@ propertiesModule.factory('Properties', function () {
 
             scanIterableItems(model.iterable_properties, me.iterable_properties);
 
-            return this;
+            // Taking care of missing values
+
+            // for each model in iterable
+            _(model.iterable_properties).each(function(_model){
+                // find the values
+                values = _.find(me.iterable_properties, {name : _model.name});
+
+                // then merge
+                mergeValue(_model, values);
+          });
+
+          return this;
+
         };
 
         this.filter_according_to_model = function () {
