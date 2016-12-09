@@ -180,7 +180,7 @@
   "properties.module.editProperties.simpleProperties.global": "Valuation is automatically taken from the global variable with the same name. To change it, edit its name in the template or edit the global variable.",
   "properties.module.editProperties.multipleProperties.title": "Multiple properties :",
   "properties.module.editProperties.iterableProperties.title": "Iterable properties",
-  "properties.module.editProperties.iterableProperties.warning": "Iterable properties are not working with local save system for the time being",
+  "properties.module.editProperties.iterableProperties.warning": "Iterable properties are not available yet on local save system for the time being",
   "properties.module.editProperties.iterableProperties.tooltip": "Display iterable properties",
   "properties.module.editProperties.iterableProperties.filter": "Filter iterable properties by value (filters only on saved values)",
   "properties.module.editProperties.iterableProperties.addBlock": "Add a block",
