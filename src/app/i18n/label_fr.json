@@ -180,6 +180,7 @@
   "properties.module.editProperties.simpleProperties.global": "Valeur automatiquement valorisée par la variable globale du même nom. Pour la modifier, changez son nom dans le template ou éditez la variable globale.",
   "properties.module.editProperties.multipleProperties.title": "Propriétés multiples :",
   "properties.module.editProperties.iterableProperties.title": "Propriétés itérables",
+  "properties.module.editProperties.iterableProperties.warning": "Les propriétés itérables ne bénéficient pas du mécanisme de sauvegarde local pour le moment",
   "properties.module.editProperties.iterableProperties.tooltip": "Voir les propriétes itérables",
   "properties.module.editProperties.iterableProperties.filter": "Filtrer les propriétés itérables par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)",
   "properties.module.editProperties.iterableProperties.addBlock": "Ajouter un block",

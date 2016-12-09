@@ -25,6 +25,15 @@
     color: rgb(255,87,34);
 }
 
+.inLocal_true.warning {
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.inLocal_true.warning i {
+    margin-right: 5px;
+}
+
 .local-change-title .inLocal_true {
     font-size: 14px;
 }
