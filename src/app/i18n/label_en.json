@@ -170,7 +170,7 @@
   "properties.module.editProperties.save": "Save",
   "properties.module.editProperties.saveLocal": "Local",
   "properties.module.editProperties.savedLocally": "Your modifications has been saved locally",
-  "properties.module.editProperties.localChangeApplied": "Your local changes has been applied over the current version",
+  "properties.module.editProperties.localChangeApplied": "Local changes has been detected against the current version",
   "properties.module.editProperties.partiallySyncedLocalChanges": "Somes of your local changes are identical with thoses already saved",
   "properties.module.editProperties.fullySyncedLocalChanges": "Your whole local changes are are identical with thoses already saved",
   "properties.module.editProperties.cleanLocalChanges": "Clean my local changes",

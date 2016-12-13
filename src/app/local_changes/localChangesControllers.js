@@ -70,7 +70,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
         _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
         properties.model.key_value_properties = angular.copy(properties.properties);
 
-        ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
+        ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function (new_properties) {
             // Removing local changes sinces they have been saved
             LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
             // Increase platform number
