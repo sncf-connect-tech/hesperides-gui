@@ -146,3 +146,152 @@ describe('Manage properties (global, module, instance) and annotations (default,
         process.nextTick(done);
     });
 });
+
+// global private function
+var openIterableProperties = function (){
+        var elm_iterable_properties = element(by.id('properties-list_display-iterable-properties-button'));
+        vsct_utils.clickOnElement(elm_iterable_properties);
+};
+
+describe('Manage iterable properties and annotations (default, comment, required etc ...)', function() {
+
+    beforeAll(function() {
+        console.log("START describe Manage annotations for iterable properties");
+        browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
+    });
+
+    beforeEach(function() {
+        browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
+
+        // open bloc mode
+        var elm_bloc_mode = element(by.id("properties_show-box-mode-button"));
+        vsct_utils.clickOnElement(elm_bloc_mode);
+
+        var elm_module = element(by.id("box-renderer_editmodule-button-"+data.new_module_name));
+        vsct_utils.clickOnElement(elm_module);
+    });
+
+    it('should fill in iterable properties with right values (BLOC MODE) and check if save event is correctly stored', function() {
+
+        // 0- Get the number of bloc : for avoiding errors in case of multiple tests
+        vsct_utils.getCountOf('.iterable-block').then(function (blocCount){
+
+            // 1- Open iterable properties
+            openIterableProperties();
+
+            // 2- Add a bloc
+            var elm_add_iterable_properties_bloc = element(by.id('properties-list_display-iterable-properties-add-bloc-button'));
+            vsct_utils.clickOnElement(elm_add_iterable_properties_bloc);
+
+            var elm_prop_comment = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + blocCount + "-property-i_comment"));
+            var elm_prop_default = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + blocCount + "-property-i_default"));
+            var elm_prop_required = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + blocCount + "-property-i_required"));
+            var elm_prop_password = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + blocCount + "-property-i_password"));
+            var elm_prop_pattern = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + blocCount + "-property-i_pattern"));
+
+            // we use random_string for at least 1 property to avoid saving plateform without changes for property values
+            var random_string = vsct_utils.getRandomString(20);
+
+            // always clear before sendKeys
+            vsct_utils.clearAndSendkeys(elm_prop_comment,random_string);
+            vsct_utils.clearAndSendkeys(elm_prop_password,data.simple_value);
+            vsct_utils.clearAndSendkeys(elm_prop_pattern,data.value_prop_wrong_pattern);
+            vsct_utils.clearAndSendkeys(elm_prop_required,data.simple_value);
+
+            var elm_save_properties = element(by.id("box-properties_save-module-properties-button"));
+
+            vsct_utils.clickOnElement(elm_save_properties);
+
+            // add comment for saving modifications
+            var elm_comment_input = element(by.id("save-properties-modal_input-comment-autocomplete"));
+            elm_comment_input.sendKeys(data.comment_for_saving_iterable_properties+"_"+random_string);
+
+            var elm_save_comment = element(by.id("save-properties-modal_save-comment-button"));
+            vsct_utils.clickOnElement(elm_save_comment);
+
+            // check events if modification is really saved
+            var elm_open_event_button = element(by.id("properties_show-platform-event-button"));
+            vsct_utils.clickOnElement(elm_open_event_button);
+
+            var elm_found_comment = element(by.id('properties-saved_comment-span-'+data.comment_for_saving_iterable_properties+"_"+random_string));
+            vsct_utils.checkIfElementContainsText(elm_found_comment,data.comment_for_saving_iterable_properties+"_"+random_string);
+
+            // search events by comment
+            var elm_event_filter_input = element(by.id('event-model-filter-input'));
+            vsct_utils.clearAndSendkeys(elm_event_filter_input, data.comment_for_saving_iterable_properties);
+
+            // Expect only one property seved with this commend
+            vsct_utils.checkIfElementIsPresentWithClass('.property-saved');
+        });
+    });
+
+    it('should check that required properties are really required ;)', function (){
+
+        // 0- Open
+        openIterableProperties();
+
+        // 1- Delete the content of the first required field
+        var elm_prop_required = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + 0 + "-property-i_required"));
+
+        // we use random_string for at least 1 property to avoid saving plateform without changes for property values
+        var random_string = vsct_utils.getRandomString(20);
+
+        // always clear before sendKeys and try to save
+        vsct_utils.clearAndSendkeys(elm_prop_required,"");
+
+        var elm_save_properties = element(by.id("box-properties_save-module-properties-button"));
+        vsct_utils.clickOnElement(elm_save_properties);
+
+        // add comment for saving modifications
+        var elm_comment_input = element(by.id("save-properties-modal_input-comment-autocomplete"));
+        elm_comment_input.sendKeys(data.comment_for_saving_iterable_properties+"_"+random_string);
+
+        var elm_save_comment = element(by.id("save-properties-modal_save-comment-button"));
+        vsct_utils.clickOnElement(elm_save_comment);
+
+        // Click on save
+        var elm_open_event_button = element(by.id("properties_show-platform-event-button"));
+        vsct_utils.clickOnElement(elm_open_event_button);
+
+        // Expect the save has failed (no save with this comment)
+        vsct_utils.checkIfElementIsMissing('#properties-saved_comment-span-'+random_string);
+
+    });
+
+    it('should check that un matching value for patterned property is not saved', function (){
+
+        // 0- Open
+        openIterableProperties();
+
+        // 1- Delete the content of the first required field
+        var elm_prop_pattern = element(by.id("iterable-properties-list_value-property-isnotglobale-input-bloc-" + 0 + "-property-i_pattern"));
+
+        // we use random_string for at least 1 property to avoid saving plateform without changes for property values
+        var random_string = vsct_utils.getRandomString(20);
+
+        // always clear before sendKeys and try to save
+        vsct_utils.clearAndSendkeys(elm_prop_pattern, data.value_prop_good_pattern);
+
+        var elm_save_properties = element(by.id("box-properties_save-module-properties-button"));
+        vsct_utils.clickOnElement(elm_save_properties);
+
+        // add comment for saving modifications
+        var elm_comment_input = element(by.id("save-properties-modal_input-comment-autocomplete"));
+        elm_comment_input.sendKeys(data.comment_for_saving_iterable_properties+"_"+random_string);
+
+        var elm_save_comment = element(by.id("save-properties-modal_save-comment-button"));
+        vsct_utils.clickOnElement(elm_save_comment);
+
+        // Click on save
+        var elm_open_event_button = element(by.id("properties_show-platform-event-button"));
+        vsct_utils.clickOnElement(elm_open_event_button);
+
+        // Expect the save has failed (no save with this comment)
+        vsct_utils.checkIfElementIsMissing('#properties-saved_comment-span-'+random_string);
+
+    });
+
+    afterAll(function(done) {
+        process.nextTick(done);
+    });
+});

@@ -26,6 +26,9 @@ exports.checkIfElementIsPresentWithClass = function(className){
     });
 };
 
+exports.checkIfElementIsMissing = function (selector){
+    expect(element(by.css(selector)).isPresent()).toBeFalsy();
+};
 
 exports.checkIfElementIsDisabled = function(id,state){
     expect(element(by.id(id)).getAttribute('disabled')).toBe(state);
@@ -123,3 +126,13 @@ exports.clearAndSendkeys = function(elm,newString) {
         elm.sendKeys(newString);
     })
 }
+
+// count the number of item of a css class
+// in the DOM
+exports.getCountOf = function(classSelector){
+
+    return element.all(by.css(classSelector)).then(function(items) {
+        return items.length;
+    });
+
+};

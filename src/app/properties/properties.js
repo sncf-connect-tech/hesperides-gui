@@ -2180,7 +2180,15 @@ propertiesModule.factory('Properties', function () {
             // for each model in iterable
             _(model.iterable_properties).each(function(_model){
                 // find the values
-                values = _.find(me.iterable_properties, {name : _model.name});
+                var values = _.find(me.iterable_properties, {name : _model.name});
+
+                if (_.isUndefined(values)){
+                    values = {
+                        inModel: true,
+                        iterable_valorisation_items: [],
+                        name: name
+                    };
+                }
 
                 // then merge
                 mergeValue(_model, values);
