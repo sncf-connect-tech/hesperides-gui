@@ -1050,6 +1050,18 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         return true;
     }
 
+    $scope.hasLocalChanges = function (module) {
+        return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform.name, module ? module.properties_path : '');
+    }
+    $scope.hasDeletedProperties = function () {
+        return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , prop => prop.inModel==false).length > 0 ? true :false;
+    }
+
+    $scope.cleanLocalChanges = function (module) {
+        LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
+        $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, $scope.properties);
+    }
+
 
     $scope.save_properties = function (properties, module) {
 
@@ -1589,6 +1601,10 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
          link: function (scope, element, attrs) {
              scope.propertiesKeyFilter = "";
              scope.propertiesValueFilter = "";
+
+             scope.hasLocalChanges = function () {
+                return LocalChanges.hasLocalChanges(scope.platform.application_name, scope.platform.name, scope.module ? scope.module.properties_path : '');
+             }
 
              scope.hasSyncedChanges = function () {
                 return LocalChanges.hasSyncedChanges({'key_value_properties' :scope.properties});
