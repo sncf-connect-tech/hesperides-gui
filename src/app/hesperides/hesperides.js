@@ -56,7 +56,7 @@ var hesperidesModule = angular.module('hesperides', [
     weekdays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
     calendar: 'Calendrier'
 }).value('hesperidesGlobals', {
-    versionName: 'ARES',
+    versionName: 'Borée',
     eventPaginationSize: 25
 });
 
