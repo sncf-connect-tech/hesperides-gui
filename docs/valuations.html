@@ -60,7 +60,7 @@
                             <section id="overview" class="doc-section">
                                 <h2 class="section-title">Overview</h2>
                                 <div class="section-block">
-                                    <p>Now that you know handling templates (if not, go to <a href="templates.html">this section</a>), and applications (if not, go to <a href="applications.html">this section</a>), it's finally time to valuate properties for your application.</p>
+                                    <p>Now that you know handling templates (if not, refer to <a href="templates.html">this section</a>), and applications (if not, refer to <a href="applications.html">this section</a>), it's finally time to valuate properties for your application.</p>
                                     <p>You can valuate properties at three levels :</p>
                                     <ul>
                                         <li>Platform Level (optional)</li>
@@ -395,6 +395,67 @@
                                     </div>
                                 </div>
                             </section>
+                            <section id="local-changes" class="doc-section">
+                                <h2 class="section-title">Local Changes</h2>
+                                <div class="section-block">
+                                    <p>Local changes can be seens has a way to locally save your work. It allows you to pause and resume later on your work, but also act as a failover system in case of a failure in
+                                    the saving process(a local save is automatically done before each save). Allowing you to recover your changes without loosing anything.</p>
+
+                                    <div class="callout-block callout-warning">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Limitations</h4>
+                                            <p>At the time being the local change system only works for simple properties, iterables properties aren't supporter yet, but rest assured their time will come as well.</p>
+                                        </div><!--//content-->
+                                    </div><!--//callout-block-->
+                                </div>
+                                <div id="local-changes-save" class="section-block">
+                                    <h3 class="block-title">Save your local changes</h3>
+                                    <div class="section-block">
+                                        <p>To get started with local change let's assuming you are editing a module</p>
+                                        <img class="img-responsive" src="assets/images/screenshots/initial_local.png">
+                                    </div>
+                                    <div class="section-block">
+                                        <p>Type in or out any changes you want and then press LOCAL button to save locally</p>
+                                        <img class="img-responsive" src="assets/images/screenshots/save_locally.png">
+                                    </div>
+                                    <div class="section-block">
+                                        <p>When local changes are saved, you can see a message saying that local change has been detected, and you can see them by following the orange color code.</p>
+                                        <img class="img-responsive" src="assets/images/screenshots/saved_locally.png">
+                                    </div>
+                                </div>
+                                <div id="local-changes-clear" class="section-block">
+                                    <h3 class="block-title">Delete your local changes</h3>
+                                    <div class="section-block">
+                                        <p>We will continue with the previous states of Saving part. The requirement is to have local changes, otherwise the cleaning button won't appear. So let's get to business,
+                                        the first things to know is that, right now, when cleaning up local changes, it clean all your local changes, you cannot specify which one you want to delete or keep. It should
+                                        be available in the next release.</p>
+                                        <p>Hit the LOCAL button associated with the trash icon to get started</p>
+                                        <img class="img-responsive" src="assets/images/screenshots/clean_local_1.png">
+                                    </div>
+                                    <div class="section-block">
+                                        <p>A confirmation pops in for you to confirm that you really want to delete all your local changes. Obviously, if you had done changes in another module, it won't delete it.</p>
+                                        <img class="img-responsive" src="assets/images/screenshots/clean_local_2.png">
+                                    </div>
+                                </div>
+                                <div id="local-changes-ttl" class="section-block">
+                                    <h3 class="block-title">Time To Live</h3>
+                                    <div class="section-block">
+                                        <p>Your local changes has different way of being deleted, pay attention to understand how it work :</p>
+                                        <ul>
+                                            <li>Removing manually your local changes as explained in the previous part</li>
+                                            <li>While saving for real your local changes will be automatically removed if the save process ends as expected</li>
+                                            <li>A <b>T</b>ime <b>T</b>o <b>L</b>ive parameter allows Hesperides to control how long your local changes will be kept</li>
+                                        </ul>
+
+                                        <p>To explain a bit more about the TTL system, it works with the platform version_id. Each time a user perform a modification against a platform it increase its version_id.
+                                        A default TTL of 50 is applied, meaning that when your change will have a difference bigger than 50 they will be automatically removed. The next release will introduce message warning
+                                        to remind you that your local changes are close to their expiration time</p>
+                                    </div>
+                                </div>
+                            </section>
                             <section id="predefined-properties" class="doc-section">
                                 <h2 class="section-title">Predefined properties</h2>
                                 <div class="section-block">
@@ -479,6 +540,14 @@ etc ...</code></pre>
                                     <ul class="nav doc-sub-menu">
                                         <li><a class="scrollto" href="#define-instance-property">Define instance property</a></li>
                                         <li><a class="scrollto" href="#preview-files">Preview files</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#local-changes">Local changes</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#local-changes-save">Save your local changes</a></li>
+                                        <li><a class="scrollto" href="#local-changes-clear">Delete your local changes</a></li>
+                                        <li><a class="scrollto" href="#local-changes-ttl">Time To Live</a></li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
