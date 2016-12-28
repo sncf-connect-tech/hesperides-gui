@@ -73,9 +73,22 @@
         <init-instances ng-model="module"></init-instances>
         <div layout="row" class="property-tree-module">
             <div layout="row" layout-align="none center">
-                <span id="tree-renderer_tree-sign-{{module.title.split(',')[0]}}" ng-click="displayInstances()"
-                      class="property-tree-sign">
-                    {{sign}}
+                <span ng-switch="module.instances.length">
+                    <span ng-switch-when="0">
+                        <span ng-click="displayInstances() "
+                              class="property-tree-sign">
+                            <md-button ng-click="preview_instance(box, application, platform, instance, module, true)" class="md-xs preview">
+                                <span class="fa fa-eye preview"></span>
+                                <md-tooltip>{{ 'properties.module.instance.preview' | translate }}</md-tooltip>
+                            </md-button>
+                        </span>
+                    </span>
+                    <span ng-switch-default>
+                        <span id="tree-renderer_tree-sign-{{module.title.split(',')[0]}}" ng-click="displayInstances() "
+                              class="property-tree-sign">
+                            {{sign}}
+                        </span>
+                    </span>
                 </span>
             </div>
 

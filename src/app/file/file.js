@@ -35,8 +35,8 @@ fileModule.factory('FileEntry', ['$hesperidesHttp', '$translate', function ($htt
             });
 
             // methods
-            this.getContent = function () {
-                return $http.get(me.url).then(function (response) {
+            this.getContent = function (simulate) {
+                return $http.get(me.url + "&simulate=" + encodeURIComponent(simulate)).then(function (response) {
                     return response;
                 },function (error){
 
@@ -111,8 +111,8 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
 
     return {
 
-        get_files_entries: function (application_name, platform_name, path, module_name, module_version, instance_name, is_working_copy) {
-            var url = 'rest/files/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/' + encodeURIComponent(path) + '/' + encodeURIComponent(module_name) + '/' + encodeURIComponent(module_version) + '/instances/' + encodeURIComponent(instance_name) + '?isWorkingCopy=' + encodeURIComponent(is_working_copy);
+        get_files_entries: function (application_name, platform_name, path, module_name, module_version, instance_name, is_working_copy, simulate) {
+            var url = 'rest/files/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/' + encodeURIComponent(path) + '/' + encodeURIComponent(module_name) + '/' + encodeURIComponent(module_version) + '/instances/' + encodeURIComponent(instance_name) + '?isWorkingCopy=' + encodeURIComponent(is_working_copy) + '&simulate=' + encodeURIComponent(simulate);
 
             return $http.get(url).then(function (response) {
                 return response.data.map(function (data) {
@@ -123,7 +123,7 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                         $translate('template.rights.none').then(function (label) { entry.rights = label; });
                     }
 
-                    entry.getContent().then(function(output) {
+                    entry.getContent(simulate).then(function(output) {
 
                         if ( output.status != 200) {
                             entry.on_error = true;

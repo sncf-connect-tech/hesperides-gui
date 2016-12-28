@@ -610,6 +610,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      * This is used to preview an instance data.
      */
     $scope.preview_instance = function (box, application, platform, instance, module) {
+        $scope.preview_instance(box, application, platform, instance, module, false);
+    }
+
+    $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
         var modalScope = $scope.$new();
 
         modalScope.codeMirrorOptions = {
@@ -617,10 +621,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             'autoRefresh' : true
         };
 
+        instance = instance == undefined ? {"name": "default"} : instance;
         modalScope.instance = instance;
         modalScope.isOpen = undefined;
 
-        FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
+        FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy, simulate).then(function (entries){
             modalScope.fileEntries = entries;
 
             var modal = $mdDialog.show({

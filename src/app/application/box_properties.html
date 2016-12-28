@@ -28,7 +28,7 @@
         <md-button id="box-properties_display-global-properties-button" ng-click="showGlobalPropertiesDisplay()"
                    class="md-fab md-primary md-mini" aria-label="Deplier/Plier le menu">
             <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
-            <i class="fa" ng-class="{'fa-eye': !showButtonAndEye, 'fa-eye-slash': showButtonAndEye}"></i>
+            <i class="fa" ng-class="{'fa-expand': !showButtonAndEye, 'fa-compress': showButtonAndEye}"></i>
         </md-button>
 
         <md-button id="box-properties_compare-global-properties-button" class="md-raised md-mini" ng-show="showButtonAndEye"
