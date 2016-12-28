@@ -38,8 +38,8 @@ localChangesModule.service('LocalChanges', ['LocalChangesDAO', 'LocalChangesUtil
         clearLocalChanges: function (opts) {
             localChangesDAO.clearLocalChanges(opts);
         },
-        smartClearLocalChanges: function (opts, edited_properties) {
-            localChangesDAO.smartClearLocalChanges(opts, edited_properties);
+        smartClearLocalChanges: function (opts, properties) {
+            localChangesDAO.smartClearLocalChanges(opts, properties.key_value_properties);
         },
         mergeWithLocalPropertiesImpl(local_properties, properties, merge) {
             _.each(properties.key_value_properties, function (key_value) {
@@ -203,7 +203,7 @@ localChangesModule.service('LocalChangesDAO', ['LocalChange', 'LocalChangesUtils
                 get();
                 var full_path = LocalChangesUtils.buildFullPath(opts['application_name'], opts['platform'], opts['properties_path']);
                 local_changes[full_path] = _.filter(local_changes[full_path], function (elem) {
-                    return _.some(properties, {"name": elem.properties_name});
+                    return !_.some(properties, {"name": elem.properties_name, "filtrable_value": elem.properties_value});
                 });
                 save();
             }
