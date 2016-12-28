@@ -38,6 +38,9 @@ localChangesModule.service('LocalChanges', ['LocalChangesDAO', 'LocalChangesUtil
         clearLocalChanges: function (opts) {
             localChangesDAO.clearLocalChanges(opts);
         },
+        smartClearLocalChanges: function (opts, edited_properties) {
+            localChangesDAO.smartClearLocalChanges(opts, edited_properties);
+        },
         mergeWithLocalPropertiesImpl(local_properties, properties, merge) {
             _.each(properties.key_value_properties, function (key_value) {
                 if (merge && key_value.inLocal) {
@@ -174,7 +177,7 @@ localChangesModule.service('LocalChangesDAO', ['LocalChange', 'LocalChangesUtils
                 }));
             } else {
                 _.map(local_changes_buffer, function (elem) {
-                    if (elem.properties_name == properties_name) {
+                    if (elem.properties_name == properties_name && elem.properties_value != properties_value) {
                         elem.properties_value = properties_value;
                         elem.version_id = getCurrentVersionID();
                     }
@@ -194,6 +197,16 @@ localChangesModule.service('LocalChangesDAO', ['LocalChange', 'LocalChangesUtils
                 local_changes = {};
             }
             save();
+        },
+        smartClearLocalChanges: function (opts, properties) {
+            if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
+                get();
+                var full_path = LocalChangesUtils.buildFullPath(opts['application_name'], opts['platform'], opts['properties_path']);
+                local_changes[full_path] = _.filter(local_changes[full_path], function (elem) {
+                    return _.some(properties, {"name": elem.properties_name});
+                });
+                save();
+            }
         }
     };
     return LocalChangesDAO;
