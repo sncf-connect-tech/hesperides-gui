@@ -22,7 +22,7 @@
 <!-- Displaying new fields from the model -->
 <div class="form-group iterable-main-block" id="it-prop-{{modelProperty.name}}">
     <div>
-        <md-button aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click = "addValue()">
+        <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click = "addValue()">
             <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>
             <md-icon class="fa fa-plus fa-lg"></md-icon>{{modelProperty.name}}
         </md-button>
@@ -65,7 +65,9 @@
                                placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.comment}}"
                                ng-pattern="fieldValue.pattern"
                                ng-required="fieldValue.required"
-                               class="property-value">
+                               class="property-value"
+                               id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{fieldValue.name}}"
+                        >
                     </div>
                 </div>
             </div>

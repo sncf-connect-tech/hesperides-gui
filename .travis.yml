@@ -1,6 +1,9 @@
 language: node_js
 node_js:
-  - 4
+  - 4.2.4
+
+addons:
+  firefox: "50.0"
 
 before_script:
   - export DISPLAY=:99.0
@@ -12,5 +15,5 @@ before_script:
   - sleep 3 # give server time to start
 
 script:
-  - node_modules/.bin/karma start karma.conf --no-auto-watch --single-run
+  - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run
   #- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
