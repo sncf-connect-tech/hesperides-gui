@@ -83,6 +83,8 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
             }
 
         });
+        $scope.comments.addComment($scope.platform.application_name, properties.raw_comment)
+        properties.raw_comment = '';
     }
 
     $scope.loadLocalChanges = function (platform) {
