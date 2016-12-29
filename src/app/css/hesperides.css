@@ -280,6 +280,16 @@ textarea,
     font-size: 12px;
 }
 
+button.preview {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.fa.fa-eye.preview {
+    font-size: 13px;
+    line-height: 40px;
+}
+
 /* CodeMirror Mode */
 .cm-hesperides {color: #cc051e;}
 .cm-hesperides-token {color: #a100cc;}

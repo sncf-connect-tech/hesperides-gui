@@ -26,11 +26,11 @@
             <div layout="row">
                 <h3>{{ 'properties.application.title' | translate }} <strong>{{application.name}}</strong></h3>
                 <md-button ng-click="isPlatformOpen = 0" ng-show="isPlatformOpen === 1" class="md-mini">
-                    <span class="fa fa-eye-slash"></span>
+                    <span class="fa fa-compress"></span>
                     <md-tooltip>{{ 'properties.platform.hide.all' | translate }}</md-tooltip>
                 </md-button>
                 <md-button ng-click="isPlatformOpen = 1" ng-show="isPlatformOpen === 0" class="md-mini">
-                    <span class="fa fa-eye"></span>
+                    <span class="fa fa-expand"></span>
                     <md-tooltip>{{ 'properties.platform.show.all' | translate }}</md-tooltip>
                 </md-button>
                 <md-input-container ng-show="isPlatformOpen" md-no-float class="md-block filter-platform width-50-pc">
@@ -123,7 +123,7 @@
     </div>
 
     <div id="box" class="slide-animate" ng-if="box" >
-        <box-properties></box-properties>
+        <box-properties isInstanceOpen="isInstanceOpen"></box-properties>
     </div>
     <div id="tree" class="slide-animate" ng-if="tree">
         <tree-properties></tree-properties>

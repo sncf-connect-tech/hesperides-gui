@@ -71,7 +71,7 @@
                                 <div flex="5" ng-init="zoomInGlobalProperties = false">
                                     <div layout="column" layout-wrap>
                                         <span id="properties-globales_zoom-{{key_value_property.name}}" flex class="ng-scope zoom-in-property-icon"
-                                              ng-class="zoomInGlobalProperties ? 'fa fa-eye-slash' : 'fa fa-eye'"
+                                              ng-class="zoomInGlobalProperties ? 'fa fa-compress' : 'fa fa-expand'"
                                               ng-click="zoomInGlobalProperties = !zoomInGlobalProperties"
                                               ng-show="(platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}).length">
                                         </span>
