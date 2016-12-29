@@ -20,26 +20,18 @@
   -->
 
 <div>
-    <div layout="row" ng-if="areFullySynced()">
-        <div flex="none" class="inLocal_true header_edit_properties">
-            {{ 'properties.module.editProperties.fullySyncedLocalChanges' | translate }}
-            <md-button id="clean-local-changes-button" class="md-raised"
-                       ng-really-click="cleanLocalChanges()"
-                       ng-really-message="{{ 'properties.module.editProperties.cleanLocalChangesConfirm' | translate }}">
-                <span class="fa fa-trash"></span>
-                <span>{{ 'properties.module.editProperties.cleanLocalChanges' | translate }}</span>
-            </md-button>
+    <div layout="row">
+        <div layout="row" ng-if="areFullySynced()">
+            <div flex="none" class="inLocal_true header_edit_properties">
+                {{ 'properties.module.editProperties.fullySyncedLocalChanges' | translate }}
+            </div>
         </div>
-    </div>
-    <div layout="row" ng-if="hasSyncedChanges() && !areFullySynced()">
-        <div flex="none" class="inLocal_true header_edit_properties">
-            {{ 'properties.module.editProperties.partiallySyncedLocalChanges' | translate }}
+        <div layout="row" ng-if="hasSyncedChanges() && !areFullySynced()">
+            <div flex="none" class="inLocal_true header_edit_properties">
+                {{ 'properties.module.editProperties.partiallySyncedLocalChanges' | translate }}
 
+            </div>
         </div>
-        <div flex="none" class="inLocal_true header_edit_properties">
-
-        </div>
-
 
     </div>
     <div layout="row">

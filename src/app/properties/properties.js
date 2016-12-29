@@ -1003,8 +1003,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             templateUrl: 'local_changes/united-nations-modal.html',
             controller: 'UnitedNationsController',
             clickOutsideToClose: false,
-            escapeToClose: false,
-            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+            escapeToClose: true,
+            preserveScope: false, // requiered for not freez menu see https://github.com/angular/material/issues/5041
             scope:modalScope
         });
     }
@@ -1048,6 +1048,18 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         properties = LocalChanges.tagWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, properties);
         return true;
+    }
+
+    $scope.hasLocalChanges = function (module) {
+        return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform.name, module ? module.properties_path : '');
+    }
+    $scope.hasDeletedProperties = function () {
+        return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , prop => prop.inModel==false).length > 0 ? true :false;
+    }
+
+    $scope.cleanLocalChanges = function (module) {
+        LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
+        $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, $scope.properties);
     }
 
 
@@ -1589,6 +1601,10 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
          link: function (scope, element, attrs) {
              scope.propertiesKeyFilter = "";
              scope.propertiesValueFilter = "";
+
+             scope.hasLocalChanges = function () {
+                return LocalChanges.hasLocalChanges(scope.platform.application_name, scope.platform.name, scope.module ? scope.module.properties_path : '');
+             }
 
              scope.hasSyncedChanges = function () {
                 return LocalChanges.hasSyncedChanges({'key_value_properties' :scope.properties});

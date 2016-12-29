@@ -91,15 +91,24 @@
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>
                 <md-button id="tree-properties_clean-module-properties-button" class="md-raised"
-                           ng-really-click="clean_properties(properties)"
+                           ng-really-click="clean_properties(properties)" ng-if="hasDeletedProperties()"
                            ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
                 <md-button id="tree-properties_save-module-properties-local-button" ng-click="save_properties_locally(properties, selected_module)"
+
                            ng-disabled="technoForm.$invalid"
                            class="md-raised md-warn">
                     <span class="fa fa-floppy-o"></span>
+                    <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
+                </md-button>
+                <md-button id="tree-properties_clean-local-module-properties-button" ng-if="hasLocalChanges(selected_module)"
+                           ng-really-click="cleanLocalChanges(selected_module)"
+                           ng-really-message="{{ 'properties.module.editProperties.cleanLocalChangesConfirm' | translate }}"
+                           ng-disabled="technoForm.$invalid"
+                           class="md-raised md-button ng-scope md-ink-ripple">
+                    <span class="fa fa-trash"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
                 </md-button>
                 <md-button id="tree-properties_save-module-properties-button"

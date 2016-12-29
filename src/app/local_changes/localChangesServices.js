@@ -40,8 +40,13 @@ localChangesModule.service('LocalChanges', ['LocalChangesDAO', 'LocalChangesUtil
         },
         mergeWithLocalPropertiesImpl(local_properties, properties, merge) {
             _.each(properties.key_value_properties, function (key_value) {
+                if (merge && key_value.inLocal) {
+                    key_value.value = key_value.filtrable_value;
+                }
                 key_value.inLocal = false;
                 key_value.syncWithRemote = false;
+
+
                 var existing_local_property = _.find(local_properties, function (kvp) {
                     return key_value.name === kvp.properties_name;
                 });

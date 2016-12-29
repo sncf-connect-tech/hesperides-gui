@@ -60,6 +60,24 @@ applicationModule.controller('ModuleCtrl', [
         });
     };
 
+    $scope.download_template = function (template_entry) {
+        download(template_entry.content, template_entry.filename, template_entry.mediaType);
+    };
+
+    $scope.download_all_template = function (templateEntries) {
+        // The JSZip Object
+        var zip = new JSZip();
+        // Adding files to zip
+        templateEntries.map(function (template){
+        if ( !template.on_error ){
+            zip.file(template.filename, template.content);
+            }
+        });
+        // Generate and save the zip file
+        var content = zip.generate({type:"blob"});
+        saveAs(content, $scope.module.title + ".zip");
+    };
+
     $scope.edit_template = function (name) {
         ModuleService.get_template($scope.module, name).then(function (template) {
             HesperidesTemplateModal.edit_template({
@@ -90,6 +108,7 @@ applicationModule.controller('ModuleCtrl', [
                 right = FileService.files_rights_to_string(savedTemplate.rights);
                 var new_entry = {
                     name: savedTemplate.name,
+                    content: savedTemplate.content,
                     location: savedTemplate.location,
                     filename: savedTemplate.filename,
                     rights: right
@@ -328,11 +347,15 @@ applicationModule.factory('ModuleService', [
                     var entry = new TemplateEntry(data);
                     var url = baseUrl + '/' + encodeURIComponent(entry.name);
 
-                    entry.getRights(url).then (function (template){
+                    entry.getTemplate(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
                         if (entry.rights < 0)
                             $translate('template.rights.none').then(function (label) { entry.rights = label; });
+                        entry.content = template.content;
+                        entry.filename = template.filename;
                     });
+                    entry.setMediaType();
+                    entry.url = url;
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
