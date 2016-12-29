@@ -1033,7 +1033,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var hasSavedLocalChange = false;
 
         store.set('current_platform_versionID', $scope.platform.version_id);
-        LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
 
         properties.key_value_properties.forEach( function (elem) {
 
@@ -1042,10 +1041,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem['name'], elem['value']);
                     hasSavedLocalChange = true;
             }
-
         });
 
         if (hasSavedLocalChange) {
+
+            LocalChanges.smartClearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, properties);
+
             $translate('properties.module.editProperties.savedLocally').then(function(label) {
                 $.notify(label, "success");
             });
