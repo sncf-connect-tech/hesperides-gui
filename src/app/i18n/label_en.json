@@ -282,11 +282,12 @@
   "button.release.create.message": "Do you want to create the release {{version}} ?",
   "button.associateProperties": "Attached properties",
   "united-nations.modal.title": "United Nations agent",
-  "united-nations.modal.comment": "Uncommited local changes will be lost when saving",
+  "united-nations.modal.comment": "Uncommitted local changes will be lost when saving",
   "united-nations.modal.saveAllChanges": "Save All",
   "united-nations.modal.propertyName": "Name",
   "united-nations.modal.currentPropertyValue": "Current value",
   "united-nations.modal.propertyToSave": "To save",
+  "localChange.deleted.smart": "Local changes having the same value as the remote, has been automatically removed",
   "common.word.and": "and",
   "common.word.all": "All"
 }

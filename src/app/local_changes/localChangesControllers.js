@@ -43,13 +43,15 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
                 ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
                     // Removing local changes sinces they have been saved
                     LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+                    $scope.clear_localChanges_from_scope(properties.module.properties_path);
                     // Increase platform number
                     $scope.platform.version_id = $scope.platform.version_id + 1;
                     // Recursive call to empty '$scope.properties_to_save' stack
                     $scope.save_properties();
-                });
+                }).catch(function () {$scope.save_properties();});
             } else {
                 LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+                $scope.clear_localChanges_from_scope(properties.module.properties_path);
                 $translate('properties-not-changed.message').then(function(label) {
                     $.notify(label + "\n-> " + properties.module.properties_path , "warn");
                 });
@@ -57,7 +59,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
                 $scope.save_properties();
             }
         } else {
-            $mdDialog.hide($scope.modal);
+            $scope.smart_exit_united_nation_popup();
         }
     }
 
@@ -73,14 +75,14 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
         $scope.save_properties();
     }
 
-    $scope.smart_exit_united_nation_popup = function (properties) {
-
-        $scope.localChanges = _.filter($scope.localChanges , function (localChange) { return localChange.module.properties_path != properties.module.properties_path;});
-
-        if ($scope.localChanges.length == 0) {
+    $scope.smart_exit_united_nation_popup = function () {
+        if (LocalChanges.platformLocalChanges($scope.platform).length == 0) {
             $mdDialog.hide($scope.modal);
         }
+    }
 
+    $scope.clear_localChanges_from_scope = function(properties_path) {
+        $scope.localChanges = _.filter($scope.localChanges ,  (localChange) => localChange.module.properties_path != properties_path);
     }
 
     $scope.save_one = function (properties) {
@@ -92,12 +94,15 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
             ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function (new_properties) {
                 // Removing local changes sinces they have been saved
                 LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+                $scope.clear_localChanges_from_scope(properties.module.properties_path);
                 // Increase platform number
                 $scope.platform.version_id = $scope.platform.version_id + 1;
                 $scope.smart_exit_united_nation_popup(properties);
             });
         } else {
+            // Removing local changes since they already are identical with the remote value
             LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+            $scope.clear_localChanges_from_scope(properties.module.properties_path);
             $translate('properties-not-changed.message').then(function(label) {
                 $.notify(label + "\n-> " + properties.module.properties_path , "warn");
             });
@@ -127,14 +132,22 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
                     tmpProperties = properties.mergeWithGlobalProperties(platform.global_properties);
                     model.iterable_properties = angular.copy(tmpProperties.iterable_properties);
 
-                    LocalChanges.smartClearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, tmpProperties);
+                    if (LocalChanges.smartClearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, tmpProperties)) {
+                        $translate('localChange.deleted.smart').then(function(label) {
+                            $.notify(label + "\n-> " + module.properties_path , {"className": "warn", "autoHideDelay": 12000});
+                        });
+                        $scope.smart_exit_united_nation_popup();
+                    }
 
-                    tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
-                    $scope.localChanges.push({
-                        'properties': tmpProperties.key_value_properties,
-                        'model': model,
-                        'module': module
-                    })
+                    if (LocalChanges.hasLocalChanges(curApplicationName, curPlatformName, curPropertiesPath))
+                    {
+                        tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
+                        $scope.localChanges.push({
+                            'properties': tmpProperties.key_value_properties,
+                            'model': model,
+                            'module': module
+                        })
+                    }
                 });
             });
         });

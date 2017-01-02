@@ -287,6 +287,7 @@
   "united-nations.modal.propertyName": "Nom",
   "united-nations.modal.currentPropertyValue": "Valeur actuelle",
   "united-nations.modal.propertyToSave": "A sauvegarder",
+  "localChange.deleted.smart": "Les changements locaux ayant la même valeur que les propriétés distantes ont été automatiquement supprimé",
   "common.word.and": "et",
   "common.word.all": "Tous"
 }
