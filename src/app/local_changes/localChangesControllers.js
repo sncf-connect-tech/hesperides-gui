@@ -164,5 +164,4 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
     $scope.getConflict = function (properties) {
         return _.filter(properties, function (property) { return property.inLocal == true; });
     }
-
 }]);
