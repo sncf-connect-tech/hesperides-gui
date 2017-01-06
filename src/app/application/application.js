@@ -285,8 +285,9 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 throw error;
             });
         },
-        get_platform: function (application_name, platform_name, timestamp) {
+        get_platform: function (application_name, platform_name, timestamp, unsecured) {
             var me = this;
+            me.unsecured = unsecured;
             if (_.isUndefined(timestamp)) {
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name);
             } else {
@@ -301,7 +302,9 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 });
                 return platform;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                if (!me.unsecured) {
+                    $.notify(error.data.message, "error");
+                }
                 throw error;
             });
         },
@@ -360,6 +363,9 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 $.notify(error.data.message, "error");
                 throw error;
             });
+        },
+        delete_platform: function (application_name, platform_name) {
+            return $http.delete('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name));
         },
         get_properties: function (application_name, platform_name, path, timestamp) {
             if (_.isUndefined(timestamp)) {

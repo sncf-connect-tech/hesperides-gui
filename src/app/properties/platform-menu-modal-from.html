@@ -35,6 +35,7 @@
                                    placeholder="{{ 'platform.modal.applicationName.placeholder' | translate }}"
                                    id="platformApplication"
                                    md-autofocus="true"
+                                   ng-change="check_new_platform_already_exist()"
                             />
                         </md-input-container>
                         <md-input-container md-no-float class="md-block" flex="50">
@@ -42,7 +43,9 @@
                             <input type="text" required ng-trim="true"
                                    ng-model="new_platform.platform_name"
                                    id="platformName"
-                                   placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}"/>
+                                   placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}"
+                                   ng-change="check_new_platform_already_exist()"
+                            />
                         </md-input-container>
                     </div>
 
@@ -102,12 +105,22 @@
                         <!--</md-input-container>-->
                     </div>
 
+                    <div layout="row" flex="100">
+
+                    </div>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>
             </md-content>
         </div>
+
+        <md-content layout-padding>
+            <md-switch id="platform-menu-modal_override-existing-switch" class="md-primary" ng-model="new_platform.override_existing" aria-label="" class="md-block" ng-if="new_platform_already_exist">
+                <strong>{{ 'platform.modalFrom.overrideExisting' | translate : {application_name: new_platform.application_name, platform_name: new_platform.platform_name} }}</strong>
+            </md-switch>
+        </md-content>
+
         <md-dialog-actions>
-            <md-button id="platform-menu-modal-from_from-button" ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)" ng-disabled="platformForm.$invalid" class="md-raised md-primary">{{ 'button.modal.create' | translate }}</md-button>
+            <md-button id="platform-menu-modal-from_from-button" ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)" ng-disabled="platformForm.$invalid || (new_platform_already_exist && !new_platform.override_existing)" class="md-raised md-primary">{{ 'button.modal.create' | translate }}</md-button>
             <md-button id="platform-menu-modal-from_cancel-button" ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
