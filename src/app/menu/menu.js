@@ -473,9 +473,3 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
     }
 
 }]);
-
-
-
-
-
-
