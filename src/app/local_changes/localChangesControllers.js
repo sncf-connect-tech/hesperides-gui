@@ -20,8 +20,8 @@ var localChangesModule = angular.module('hesperides.localChanges');
 
 
 // Why United Nations ? They are solving conflicts, rights ? :D
-localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog',
-                                function($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog) {
+localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog', '$translate',
+                                function($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog, $translate) {
 
     $scope.comments = new Comments();
     $scope.localChanges = [];
@@ -35,20 +35,31 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
         if ($scope.properties_to_save.length > 0) {
 
             var properties = $scope.properties_to_save.pop();
-            _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
 
+            _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
             properties.model.key_value_properties = angular.copy(properties.properties);
 
-            ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
-                // Removing local changes sinces they have been saved
+            if (_.some(properties.model.key_value_properties, property => property.filtrable_value && property.value != property.filtrable_value)) {
+                ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
+                    // Removing local changes sinces they have been saved
+                    LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+                    $scope.clear_localChanges_from_scope(properties.module.properties_path);
+                    // Increase platform number
+                    $scope.platform.version_id = $scope.platform.version_id + 1;
+                    // Recursive call to empty '$scope.properties_to_save' stack
+                    $scope.save_properties();
+                }).catch(function () {$scope.save_properties();});
+            } else {
                 LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
-                // Increase platform number
-                $scope.platform.version_id = $scope.platform.version_id + 1;
+                $scope.clear_localChanges_from_scope(properties.module.properties_path);
+                $translate('properties-not-changed.message').then(function(label) {
+                    $.notify(label + "\n-> " + properties.module.properties_path , "warn");
+                });
                 // Recursive call to empty '$scope.properties_to_save' stack
                 $scope.save_properties();
-            });
+            }
         } else {
-            $mdDialog.hide($scope.modal);
+            $scope.smart_exit_united_nation_popup();
         }
     }
 
@@ -62,7 +73,16 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
         $scope.raw_comment = '';
 
         $scope.save_properties();
+    }
 
+    $scope.smart_exit_united_nation_popup = function () {
+        if (LocalChanges.platformLocalChanges($scope.platform).length == 0) {
+            $mdDialog.hide($scope.modal);
+        }
+    }
+
+    $scope.clear_localChanges_from_scope = function(properties_path) {
+        $scope.localChanges = _.filter($scope.localChanges ,  (localChange) => localChange.module.properties_path != properties_path);
     }
 
     $scope.save_one = function (properties) {
@@ -70,21 +90,26 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
         _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
         properties.model.key_value_properties = angular.copy(properties.properties);
 
-        ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function (new_properties) {
-            // Removing local changes sinces they have been saved
+        if (_.some(properties.model.key_value_properties, property => property.filtrable_value && property.value != property.filtrable_value)) {
+            ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function (new_properties) {
+                // Removing local changes sinces they have been saved
+                LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+                $scope.clear_localChanges_from_scope(properties.module.properties_path);
+                // Increase platform number
+                $scope.platform.version_id = $scope.platform.version_id + 1;
+                $scope.smart_exit_united_nation_popup(properties);
+            });
+            $scope.comments.addComment($scope.platform.application_name, properties.raw_comment);
+            properties.raw_comment = '';
+        } else {
+            // Removing local changes since they already are identical with the remote value
             LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
-            // Increase platform number
-            $scope.platform.version_id = $scope.platform.version_id + 1;
-
-            $scope.localChanges = _.filter($scope.localChanges , function (localChange) { return localChange.module.properties_path != properties.module.properties_path;});
-
-            if ($scope.localChanges.length == 0) {
-                $mdDialog.hide($scope.modal);
-            }
-
-        });
-        $scope.comments.addComment($scope.platform.application_name, properties.raw_comment)
-        properties.raw_comment = '';
+            $scope.clear_localChanges_from_scope(properties.module.properties_path);
+            $translate('properties-not-changed.message').then(function(label) {
+                $.notify(label + "\n-> " + properties.module.properties_path , "warn");
+            });
+            $scope.smart_exit_united_nation_popup(properties);
+        }
     }
 
     $scope.loadLocalChanges = function (platform) {
@@ -109,12 +134,22 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
                     tmpProperties = properties.mergeWithGlobalProperties(platform.global_properties);
                     model.iterable_properties = angular.copy(tmpProperties.iterable_properties);
 
-                    tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
-                    $scope.localChanges.push({
-                        'properties': tmpProperties.key_value_properties,
-                        'model': model,
-                        'module': module
-                    })
+                    if (LocalChanges.smartClearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, tmpProperties)) {
+                        $translate('localChange.deleted.smart').then(function(label) {
+                            $.notify(label + "\n-> " + module.properties_path , {"className": "warn", "autoHideDelay": 12000});
+                        });
+                        $scope.smart_exit_united_nation_popup();
+                    }
+
+                    if (LocalChanges.hasLocalChanges(curApplicationName, curPlatformName, curPropertiesPath))
+                    {
+                        tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
+                        $scope.localChanges.push({
+                            'properties': tmpProperties.key_value_properties,
+                            'model': model,
+                            'module': module
+                        })
+                    }
                 });
             });
         });
