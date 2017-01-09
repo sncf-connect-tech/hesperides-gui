@@ -99,6 +99,8 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
                 $scope.platform.version_id = $scope.platform.version_id + 1;
                 $scope.smart_exit_united_nation_popup(properties);
             });
+            $scope.comments.addComment($scope.platform.application_name, properties.raw_comment);
+            properties.raw_comment = '';
         } else {
             // Removing local changes since they already are identical with the remote value
             LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
