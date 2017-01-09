@@ -1223,6 +1223,15 @@ repeated-item
     cursor: pointer;
 }
 
+/* Modal from */
+
+md-switch#platform-menu-modal_override-existing-switch {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 /* Code mirror line number style*/
 .CodeMirror-sizer {
     margin-left: 30px !important;

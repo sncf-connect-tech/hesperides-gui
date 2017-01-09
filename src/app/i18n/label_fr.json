@@ -114,7 +114,8 @@
   "platform.modal.applicationVersion.placeholder": "Cette information est purement indicative et pourra être changée par la suite",
   "platform.modal.isProduction": "Est-ce une plateforme de production ?",
   "platform.modalFrom.title": "Nouvelle plateforme à partir d'une existante",
-  "platform.modalFrom.needCopy": "Copier les instances ?",
+  "platform.modalFrom.needCopy": "Copie complète (valorisations, instances)",
+  "platform.modalFrom.overrideExisting": "{{new_platform.application_name}}-{{new_platform.platform_name}} existe déjà, en activant ce switch, je vais ecraser les données sur cette plateforme",
   "platform.modalFrom.originApplication": "Nom de l'application source",
   "platform.modalFrom.originPlatform": "Nom de la plateforme source",
   "properties.application.title": "Plateformes de",
@@ -287,7 +288,6 @@
   "united-nations.modal.propertyName": "Nom",
   "united-nations.modal.currentPropertyValue": "Valeur actuelle",
   "united-nations.modal.propertyToSave": "A sauvegarder",
-  "localChange.deleted.smart": "Les changements locaux ayant la même valeur que les propriétés distantes ont été automatiquement supprimé",
   "common.word.and": "et",
   "common.word.all": "Tous"
 }

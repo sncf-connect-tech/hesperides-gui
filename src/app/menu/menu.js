@@ -192,10 +192,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 }, 0);
             }
         }
-
     };
-
-
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
         var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
@@ -213,6 +210,10 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     */
     $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstances){
         var platform;
+
+        if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
+            ApplicationService.delete_platform(application_name, platform_name);
+        }
 
         if (copyInstances) {
             // Clone the platform
@@ -313,6 +314,25 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
             scope:modalScope
         });
     };
+
+    $scope.new_platform_already_exist = false;
+
+    $scope.check_new_platform_already_exist = function () {
+       return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
+                                                                  $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
+
+            if (_.some(response, {"name" :  $scope.new_platform.platform_name})) {
+                ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, undefined, true).then(function (response) {
+                    $scope.new_platform_already_exist = true;
+                }, function () {
+                    $scope.new_platform_already_exist = false;
+                });
+            } else {
+                $scope.new_platform_already_exist = false;
+            }
+        });
+    }
+
 }]);
 
 menuModule.directive('disableEditing', function(){
@@ -453,9 +473,3 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
     }
 
 }]);
-
-
-
-
-
-

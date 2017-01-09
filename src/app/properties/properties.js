@@ -1057,7 +1057,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     }
 
     $scope.hasLocalChanges = function (module) {
-        return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform.name, module ? module.properties_path : '');
+        return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform ? $scope.platform.name : '', module ? module.properties_path : '');
     }
     $scope.hasDeletedProperties = function () {
         return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , prop => prop.inModel==false).length > 0 ? true :false;
