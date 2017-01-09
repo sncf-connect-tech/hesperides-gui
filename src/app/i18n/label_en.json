@@ -189,7 +189,7 @@
   "properties.module.instance.add": "Add an instance",
   "properties.module.instance.name": "Name",
   "properties.module.instance.editProperties.tooltip": "Edit instance properties",
-  "properties.module.instance.editProperties.title": "Instance properties attached to",
+  "properties.module.instance.editProperties.titletest/e2e/lib/lib.js": "Instance properties attached to",
   "properties.module.instance.preview": "Preview the instance",
   "properties.module.instance.delete": "Delete the instance",
   "properties.module.instance.delete.message": "Delete the instance {{name}} ?",

@@ -115,7 +115,7 @@
   "platform.modal.isProduction": "Est-ce une plateforme de production ?",
   "platform.modalFrom.title": "Nouvelle plateforme à partir d'une existante",
   "platform.modalFrom.needCopy": "Copie complète (valorisations, instances)",
-  "platform.modalFrom.overrideExisting": "{{new_platform.application_name}}-{{new_platform.platform_name}} existe déjà, en activant ce switch, je vais ecraser les données sur cette plateforme",
+  "platform.modalFrom.overrideExisting": "{{application_name}}-{{platform_name}} existe déjà, en activant ce switch, je vais ecraser les données sur cette plateforme",
   "platform.modalFrom.originApplication": "Nom de l'application source",
   "platform.modalFrom.originPlatform": "Nom de la plateforme source",
   "properties.application.title": "Plateformes de",

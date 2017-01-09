@@ -138,8 +138,6 @@ exports.getCountOf = function(classSelector){
 
 };
 
-};
-
 exports.getDownloadsPath = function() {
     return path.format ({
         dir: path.join(
