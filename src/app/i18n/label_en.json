@@ -258,6 +258,7 @@
   "settings.language": "Default language's choice",
   "settings.french": "French",
   "settings.english": "English",
+  "settings.instance": "Activate by default the display of the instances for an application",
   "settings.copy": "Activate by default the option 'Copy valuated properties from the version X to the version Y'",
   "settings.color": "Activate colors for platforms",
   "settings.access": "Choice of applications for quick access",

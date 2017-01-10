@@ -258,6 +258,7 @@
   "settings.language": "Choix de la langue par défaut",
   "settings.french": "Français",
   "settings.english": "Anglais",
+  "settings.instance": "Activer l'affichage par défaut des instances d'une application",
   "settings.copy": "Activer par défaut l'option 'copier les propriétés valorisées de la version X vers la version Y'",
   "settings.color": "Activer le code couleur au niveau des plateformes",
   "settings.access": "Choix des applications en accès rapide",

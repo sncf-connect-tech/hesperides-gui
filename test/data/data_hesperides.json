@@ -35,5 +35,7 @@
   "comment_for_saving_iterable_properties": "iterable properties saved by ptor",
   "comment_for_saving_global_properties": "global properties saved by ptor",
   "global_property_key": "prop_globale",
-  "global_property_value": "value_prop_globale"
+  "global_property_value": "value_prop_globale",
+  "aide_label": "Aide",
+  "help_label": "Help"
 }

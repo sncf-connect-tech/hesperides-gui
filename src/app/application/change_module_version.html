@@ -30,6 +30,8 @@
                         <label><strong>{{ 'properties.module.version.modal.newVersion' | translate }}</strong></label>
                         <md-autocomplete
                                 required
+                                id="change-module-version-from_module-autocomplete"
+                                md-input-id="change-module-version-from_input-module-autocomplete"
                                 ng-model="moduleSearched"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
@@ -46,6 +48,7 @@
                         </md-autocomplete>
                     <!--</md-input-container>-->
                     <md-switch class="md-primary md-block"
+                               id="switch_copy-property-from-instance"
                                aria-label="Copier les properties"
                                ng-model="copyProperties"
                                ng-show="moduleSearched">
@@ -60,7 +63,7 @@
         <md-dialog-actions>
             <md-button class="md-raised md-primary" ng-disabled="searchModuleForm.$invalid"
                        ng-click="$update({new_module: moduleSearched, copy_properties: copyProperties})" ng-hide="isReadOnly">{{ 'button.modal.validate' | translate }}</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="button_closeDialog" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

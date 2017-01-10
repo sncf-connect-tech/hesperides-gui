@@ -102,7 +102,7 @@
         </div>
 
         <!-- Debut des box affichant les instances -->
-        <div ng-if="instancedisplay">
+        <div id="div_instance-tree-list-{{module.name}}" ng-if="instancedisplay">
             <ul>
                 <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
                     class="list-inline"

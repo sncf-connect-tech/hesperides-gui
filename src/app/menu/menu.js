@@ -359,6 +359,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         else {
             $.getScript("bower_components/angular-i18n/fr-fr.js");
         }
+        store.set('language',langKey);
     };
 
      //Refactoring TO DO
@@ -403,6 +404,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
      * Added by Sahar CHAILLOU
      */
     $scope.display_settings = function(){
+        $scope.settings_instance = store.get('instance_properties');
         $scope.settings_copy = store.get('copy_properties');
         $scope.settings_color = store.get('color_active');
         $scope.settings_display = store.get('display_mode');
@@ -448,6 +450,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         $scope.saveSettings = function() {
                store.set('display_mode',$scope.settings_display);
                store.set('language',$scope.settings_language);
+               store.set('instance_properties',$scope.settings_instance);
                store.set('copy_properties',$scope.settings_copy);
                store.set('color_active',$scope.settings_color);
                store.set('color_red',$scope.color.red);

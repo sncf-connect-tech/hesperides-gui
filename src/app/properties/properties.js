@@ -1204,6 +1204,16 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     /**
+     * Instances display relative vars
+     * The hide mode is displayed by default
+     */
+    if(store.get('instance_properties') == true){
+        $scope.isInstanceOpen = 1;
+    }else{
+        $scope.isInstanceOpen = 0;
+    }
+
+    /**
      * Box and tree display relative vars
      * The tree mode is displayed by default
      */
@@ -2478,6 +2488,10 @@ propertiesModule.directive('initInstances', function () {
             scope.displayInstances = displayInstances;
 
             setSign();
+            if (scope.isInstanceOpen) {
+                displayInstances();
+                scope.ngModel.opened = true;
+            }
         }
     }
 });
