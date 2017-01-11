@@ -126,7 +126,7 @@
 
             <md-button id="box-properties_clean-instance-properties-button" class="md-raised"
                        ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
-                       ng-really-click="clean_instance_properties(instance)">
+                       ng-really-click="clean_instance_properties(instance)" ng-if="instanceHasDeletedProperties(instance)">
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
