@@ -40,22 +40,25 @@
                     <p><strong>{{ 'settings.language' | translate }} :</strong> </p>
 
                     <md-radio-group ng-model="settings_language" layout="row">
-                        <md-radio-button value="fr">
+                        <md-radio-button id="radio-button_language-fr" value="fr">
                             {{ 'settings.french' | translate }}
                         </md-radio-button>
-                        <md-radio-button value="en">
+                        <md-radio-button id="radio-button_language-en" value="en">
                             {{ 'settings.english' | translate }}
                         </md-radio-button>
                     </md-radio-group>
 
-                    <md-switch class="md-primary" ng-model="settings_copy" class="md-block">
+                    <md-switch id="switch_hide-show-instance" class="md-primary" ng-model="settings_instance" class="md-block">
+                        <strong>{{ 'settings.instance' | translate }}</strong>
+                    </md-switch>
+                    <md-switch id="switch_copy-instance" class="md-primary" ng-model="settings_copy" class="md-block">
                         <strong>{{ 'settings.copy' | translate }}</strong>
                     </md-switch>
-                    <md-switch class="md-primary" ng-model="settings_color" class="md-block">
+                   <md-switch id="switch_set-color" class="md-primary" ng-model="settings_color" class="md-block">
                         <strong>{{ 'settings.color' | translate }}</strong>
                     </md-switch>
-                    <div ng-show="settings_color">
 
+                    <div ng-show="settings_color">
                         <div layout="">
                             <div flex="10" layout="" layout-align="center center">
                                 <span class="md-body-1">R</span>
@@ -123,8 +126,8 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="closeDialog()" class="md-raised md-warn">{{ 'settings.close' | translate }}</md-button>
-            <md-button ng-click="saveSettings()" class="md-raised md-primary">{{ 'settings.save' | translate }}</md-button>
+            <md-button id="button_closeDialog" ng-click="closeDialog()" class="md-raised md-warn">{{ 'settings.close' | translate }}</md-button>
+            <md-button id="button_saveSettings" ng-click="saveSettings()" class="md-raised md-primary">{{ 'settings.save' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>
