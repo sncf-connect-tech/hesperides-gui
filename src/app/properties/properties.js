@@ -829,6 +829,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.save_platform_from_box($scope.mainBox);
     };
 
+    $scope.new_instance_name = undefined;
+
     /**
      * That function saves the instance properties
      */
@@ -843,6 +845,22 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 return existing_platform.name === platform.name;
             });
             $scope.platforms[existing_index] = platform;
+
+            // Updating reference of instance to keep it synchronized and thus to prevent loss of information in the next save
+            if ($scope.instance != undefined) {
+
+                module = _.filter(platform.modules, module => module.properties_path == $scope.instance.properties_path)[0];
+
+                tmp_instance = _.filter(module.instances, instance => instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name))[0];
+                tmp_instance.properties_path = $scope.instance.properties_path;
+
+                ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
+                    $scope.instance = tmp_instance.mergeWithModel(model);
+                });
+
+                $scope.new_instance_name = undefined;
+            }
+
             //Update the view
             $scope.update_main_box(platform);
         }, function () {
@@ -1059,8 +1077,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.hasLocalChanges = function (module) {
         return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform ? $scope.platform.name : '', module ? module.properties_path : '');
     }
+
     $scope.hasDeletedProperties = function () {
         return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , prop => prop.inModel==false).length > 0 ? true :false;
+    }
+
+    $scope.instanceHasDeletedProperties = function (instance) {
+        return _.filter(instance ? instance.key_values : [] , prop => prop.inModel==false).length > 0 ? true :false;
     }
 
     $scope.cleanLocalChanges = function (module) {
@@ -1111,6 +1134,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.edit_instance = function (instance, properties_path) {
         ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
             $scope.instance = instance.mergeWithModel(model);
+            $scope.instance.properties_path = properties_path;
             $scope.instance.key_values.forEach(function (elem) {
                 if (elem.value.length)
                     elem.filtrable_value = elem.value;

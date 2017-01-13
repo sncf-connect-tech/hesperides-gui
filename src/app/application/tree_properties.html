@@ -136,7 +136,7 @@
                     </span>
                 </h3>
 
-                <md-button id="tree-properties_clean-instance-properties-button" class="md-raised"
+                <md-button id="tree-properties_clean-instance-properties-button" class="md-raised" ng-if="instanceHasDeletedProperties(instance)"
                            ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
                            ng-really-click="clean_instance_properties(instance)">
                     <i class="fa fa-trash"></i>
