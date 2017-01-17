@@ -1055,7 +1055,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         properties.key_value_properties.forEach( function (elem) {
 
             if (('filtrable_value' in elem && elem['filtrable_value'] != elem['value']) ||
-                (!('filtrable_value' in elem) && elem['value'] && elem['value'].toString().length > 0)) {
+                (!('filtrable_value' in elem) && elem['value'] && elem['value'].toString().length > 0 && !elem['inGlobal'])) {
                     LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem['name'], elem['value']);
                     hasSavedLocalChange = true;
             }
