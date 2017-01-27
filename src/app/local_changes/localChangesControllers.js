@@ -39,7 +39,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
             _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
             properties.model.key_value_properties = angular.copy(properties.properties);
 
-            if (_.some(properties.model.key_value_properties, property => property.filtrable_value && property.value != property.filtrable_value)) {
+            if ($scope.has_differences(properties.model.key_value_properties)) {
                 ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
                     // Removing local changes sinces they have been saved
                     LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
@@ -85,12 +85,15 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
         $scope.localChanges = _.filter($scope.localChanges ,  (localChange) => localChange.module.properties_path != properties_path);
     }
 
-    $scope.save_one = function (properties) {
+    $scope.has_differences = function (key_value_properties) {
+        return _.some(key_value_properties, property => (property.filtrable_value && property.value != property.filtrable_value) || (!property.filtrable_value && property.value && property.value.length > 0));
+    }
 
+    $scope.save_one = function (properties) {
         _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
         properties.model.key_value_properties = angular.copy(properties.properties);
 
-        if (_.some(properties.model.key_value_properties, property => property.filtrable_value && property.value != property.filtrable_value)) {
+        if ($scope.has_differences(properties.model.key_value_properties)) {
             ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function (new_properties) {
                 // Removing local changes sinces they have been saved
                 LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});

@@ -36,7 +36,7 @@ fileModule.factory('FileEntry', ['$hesperidesHttp', '$translate', function ($htt
 
             // methods
             this.getContent = function (simulate) {
-                return $http.get(me.url + "&simulate=" + encodeURIComponent(simulate)).then(function (response) {
+                return $http.get(me.url).then(function (response) {
                     return response;
                 },function (error){
 
