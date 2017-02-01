@@ -1679,7 +1679,8 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
              valueProperty: '=',
              filterDeleted: '=',
              filterUnspecified: '=',
-             filterValues: '='
+             filterValues: '=',
+             sortOrder: '='
          },
          templateUrl: 'properties/iterable-properties-list.html',
          controller : 'iterablePropertiesListController',
@@ -1928,7 +1929,7 @@ propertiesModule.directive('propertiesList', ['LocalChanges', function (LocalCha
              */
             scope.getValues = function (name){
                 if (scope.properties){
-                    values = _.find(scope.properties.iterable_properties, {name : name});
+                    var values = _.find(scope.properties.iterable_properties, {name : name});
                     if(!values) {
                         values = {
                             inModel: true,
