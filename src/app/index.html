@@ -140,6 +140,11 @@
 
     <script type="text/javascript" src="bower_components/angular-vs-repeat/src/angular-vs-repeat.js"></script>
 
+    <script type="text/javascript" src="bower_components/html2canvas/build/html2canvas.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-send-feedback/dist/angular-send-feedback.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-send-feedback/dist/angular-send-feedback.min.css" media="screen">
+
 </head>
 <body ng-init = "authenticate()">
 
@@ -151,5 +156,6 @@
 </div>
 
 <div id="properties-list"></div>
+<angular-feedback></angular-feedback>
 </body>
 </html>

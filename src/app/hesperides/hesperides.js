@@ -40,6 +40,7 @@ var hesperidesModule = angular.module('hesperides', [
     'vs-repeat',
     'scDateTime',
     'angularjs-datetime-picker',
+    'angular-send-feedback',
     'pascalprecht.translate',
     'ngCookies'
 ]).value('scDateTimeConfig', {
@@ -118,6 +119,9 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         }
         if (hesperidesConfiguration.localChangesTTL == undefined) {
             hesperidesConfiguration.localChangesTTL = 50;
+        }
+        if (hesperidesConfiguration.feedbackMode == undefined) {
+            hesperidesConfiguration.feedbackMode = false;
         }
     }
 
