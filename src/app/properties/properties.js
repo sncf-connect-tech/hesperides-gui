@@ -1661,7 +1661,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                 LocalChanges.clearLocalChanges({'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path});
                 scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, {'key_value_properties': scope.properties}).key_value_properties;
              }
-             
+
          }
      };
  }]);
@@ -1680,6 +1680,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
              filterDeleted: '=',
              filterUnspecified: '=',
              filterValues: '=',
+             filterNames: '=',
              sortOrder: '='
          },
          templateUrl: 'properties/iterable-properties-list.html',
@@ -1920,8 +1921,14 @@ propertiesModule.directive('propertiesList', ['LocalChanges', function (LocalCha
         },
         templateUrl: "properties/properties-list.html",
         link: function (scope) {
+            //Simple properties filters
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
+
+            //Iterable properties filters
+            scope.iterablePropertiesNameFilter =  "";
+            scope.iterablePropertiesValueFilter = "";
+
             scope.isOpen = 1;
             /**
              * Gets the properties values from the model name.
@@ -2539,23 +2546,56 @@ propertiesModule.filter('orderObjectBy', function() {
     };
 });
 
+
 /**
- * This function will filter the iterable properties ty value.
+ * This function will filter the iterable properties by values.
  * The filter text and by the simple text or a regex.
- * @see filterProperties for simple properties
+ * @see filterIterablePropertiesValues for value filtering
  */
-propertiesModule.filter('filterIterableProperties', function() {
-    return function (items, filter) {
+propertiesModule.filter('filterIterablePropertiesNames', function (){
+    return function (items, filter){
 
         if (!filter){
             return items;
         }
 
-        var _filter = '.*' + filter.toLowerCase().split(' ').join('.*');
-        var regex_value = undefined;
+        var _name = '.*' + filter.toLowerCase().split(' ').join('.*');
+        var regex_name  = undefined;
 
         try {
-            regex_value = new RegExp(_filter, 'i');
+            regex_name = new RegExp(_name, 'i');
+        }catch (e){
+            return items;
+        }
+
+        var filtered = [];
+        _(items).each (function (item){
+            if (regex_name.test(item.name)){
+                filtered.push(item);
+            }
+        });
+
+        return filtered;
+    };
+});
+
+/**
+ * This function will filter the iterable properties by values.
+ * The filter text and by the simple text or a regex.
+ * @see filterIterablePropertiesNames for name filtering
+ */
+propertiesModule.filter('filterIterablePropertiesValues', function (){
+    return function (items, filter){
+
+        if (!filter){
+            return items;
+        }
+
+        var _value = '.*' + filter.toLowerCase().split(' ').join('.*');
+        var regex_value  = undefined;
+
+        try {
+            regex_value = new RegExp(_value, 'i');
         }catch (e){
             return items;
         }
@@ -2568,11 +2608,8 @@ propertiesModule.filter('filterIterableProperties', function() {
         });
 
         return filtered;
-
     };
-
 });
-
 
 /**
  * Function wich filter the properties' display with string or regex.
