@@ -27,15 +27,23 @@
             <md-icon class="fa fa-plus fa-lg"></md-icon>{{modelProperty.name}}
         </md-button>
     </div>
-    <!-- Pour chaque valorisation d'un bloc iterable -->
+    <!-- For each valuation of an iterable bloc -->
     <div layout ="column" class="iterable-block" ng-repeat="(index, blockValue) in valueProperty.iterable_valorisation_items">
-        <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
+        <!-- For each field of valuation of an iterable bloc -->
         <md-virtual-repeat-container id="vertical-container" class="height-100px">
 
-            <md-button aria-label="{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
-                <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}</md-tooltip>
-                <md-icon class="fa fa-minus fa-lg"></md-icon>
-            </md-button>
+            <div layout="row">
+                <md-button flex = "5" aria-label="{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
+                    <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}</md-tooltip>
+                    <md-icon class="fa fa-minus fa-lg"></md-icon>
+                </md-button>
+
+                <!-- The title -->
+                <input flex="40"
+                       ng-model="blockValue.title"
+                       placeholder="{{ 'properties.module.editProperties.iterableProperties.blocTitle' | translate }}"
+                       class="iterable-title-value" >
+            </div>
 
             <div md-virtual-repeat="fieldValue in blockValue.values | filterIterablePropertiesNames: filterNames | filterIterablePropertiesValues: filterValues | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified | orderBy:'name':sortOrder" class="repeated-item height-20px" flex >
 

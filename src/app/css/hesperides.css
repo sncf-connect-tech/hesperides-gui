@@ -832,9 +832,21 @@ md-list.global-property-usage md-list-item {
 }
 
 .property-value:focus {
-    background-color: rgb(0,150,136);;
+    background-color: rgb(0,150,136);
     color: white;
     font-weight: bold;
+}
+
+.iterable-title-value {
+    margin-left: 3%;
+    font-weight: bold;
+    border-left-style: none;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-width: thin;
+    border-bottom-color: rgb(0,150,136);
+    background-color: transparent;
+    width: 90%;
 }
 
 .properties-container{
@@ -1303,6 +1315,7 @@ md-switch#platform-menu-modal_override-existing-switch {
     border-spacing: 2px;
     margin-left: 12px !important;
     margin-right: 12px !important;
+    margin-top : 2px !important;
 }
 
 .iterable-block {
