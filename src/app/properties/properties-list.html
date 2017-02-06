@@ -56,15 +56,21 @@
 
             <!-- Value filter -->
             <div layout="row">
-                <div flex="90">
+                <div flex="50">
                     <md-input-container class="md-block">
-                        <label>{{ 'properties.module.editProperties.iterableProperties.filter' | translate }}</label>
-                        <input type="text" ng-trim="true" ng-model="iterablePropertiesValueFilter" aria-label="{{ 'properties.module.editProperties.iterableProperties.filter' | translate }}" />
+                        <label>{{ 'properties.module.editProperties.iterableProperties.name.filter' | translate }}</label>
+                        <input type="text" ng-trim="true" ng-model="iterablePropertiesNameFilter" aria-label="{{ 'properties.module.editProperties.iterableProperties.name.filter' | translate }}" />
+                    </md-input-container>
+                </div>
+                <div flex>
+                    <md-input-container class="md-block">
+                        <label>{{ 'properties.module.editProperties.iterableProperties.value.filter' | translate }}</label>
+                        <input type="text" ng-trim="true" ng-model="iterablePropertiesValueFilter" aria-label="{{ 'properties.module.editProperties.iterableProperties.value.filter' | translate }}" />
                     </md-input-container>
                 </div>
             </div>
 
-            <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-values="iterablePropertiesValueFilter" sort-order="iterableSortOrder"></iterable-properties-list>
+            <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-names = "iterablePropertiesNameFilter" filter-values="iterablePropertiesValueFilter" sort-order="iterableSortOrder"></iterable-properties-list>
 
         </div>
     </section>
