@@ -76,6 +76,7 @@
                                class="property-value"
                                id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{fieldValue.name}}"
                         >
+                        <md-tooltip ng-show="fieldValue.defaultValue || fieldValue.pattern || fieldValue.comment" md-direction="top">{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.pattern ? '[pattern=' + fieldValue.pattern + '] ' : ''}} {{fieldValue.comment}}</md-tooltip>
                     </div>
                 </div>
             </div>
