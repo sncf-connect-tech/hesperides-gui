@@ -1720,7 +1720,14 @@ var mergeValue = function (model, values){
             var exists = !_.isUndefined(_.find(value.values, {name : field.name}));
 
             if ( exists ){
-                //The value exits, juste merge.
+                //The value exits, just merge.
+
+                // 1 - We ignore the 'not used' title, if present
+                if ( _.isEqual (value.title, "not used") ){
+                    value.title = "";
+                }
+
+                // 2 - We merge
                 _(value.values).each (function (val){
                     //is it in the mode ?
                     val.inModel = isInModel(model, val.name);
@@ -1728,6 +1735,8 @@ var mergeValue = function (model, values){
             }
             else{
                 // not existing existing value found, then add one
+
+                // 1 - We add the values
                 value.values.push({
                     name: field.name,
                     value: (field.required) ? undefined : "", // 'required' to make difference with void string.
@@ -1768,7 +1777,7 @@ var mergeValue = function (model, values){
 
             // This from the click
             var iterableValue = {};
-            iterableValue.title     = "not used";
+            iterableValue.title     = "";
             iterableValue.values    = [];
 
             _(model.fields).each (function (field){

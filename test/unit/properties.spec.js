@@ -162,6 +162,8 @@
                 expect(_.some(bloc.values, {name: val})).toBe(true);
             });
 
+            // The title should be a void string
+            expect( _.isEqual(bloc.title, "") ).toBe(true);
         });
     });
  });
