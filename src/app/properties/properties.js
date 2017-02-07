@@ -1723,7 +1723,7 @@ var mergeValue = function (model, values){
                 //The value exits, just merge.
 
                 // 1 - We ignore the 'not used' title, if present
-                if ( _.isEqual (value.title, "not used")){
+                if ( _.isEqual (value.title, "not used") ){
                     value.title = "";
                 }
 
@@ -1736,10 +1736,7 @@ var mergeValue = function (model, values){
             else{
                 // not existing existing value found, then add one
 
-                // 1 - We want the void title
-                value.title = "";
-
-                // 2 - We add the values
+                // 1 - We add the values
                 value.values.push({
                     name: field.name,
                     value: (field.required) ? undefined : "", // 'required' to make difference with void string.
