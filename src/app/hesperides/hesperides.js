@@ -170,7 +170,16 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', funct
         UserService.authenticate().then(function (user){
             hesperidesUser = user;
         });
-    }
+    };
+
+    $scope.feedbackOptions  = {
+        postBrowserInfo: false,
+        postHTML: false,
+        strokeStyle: "green",
+        shadowColor: "green",
+        html2canvasURL: 'bower_components/html2canvas/build/html2canvas.js',
+        ajaxURL: window.location.origin+"/rest/feedback/hipchat"
+    };
 }]);
 
 hesperidesModule.controller("WelcomeCtrl", ['$scope','$location', function ($scope, $location) {
