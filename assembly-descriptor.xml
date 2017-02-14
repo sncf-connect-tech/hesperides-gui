@@ -32,6 +32,7 @@
             </includes>
             <excludes>
                 <exclude>menu/menu.js</exclude>
+                <exclude>hesperides/hesperides.js</exclude>
             </excludes>
             <filtered>false</filtered>
             <outputDirectory>/</outputDirectory>
@@ -41,6 +42,11 @@
         <file>
             <source>src/app/menu/menu.js</source>
             <outputDirectory>/menu</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>src/app/hesperides/hesperides.js</source>
+            <outputDirectory>/hesperides</outputDirectory>
             <filtered>true</filtered>
         </file>
     </files>
