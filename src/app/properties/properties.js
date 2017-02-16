@@ -15,7 +15,74 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+/**
+ * Global utility function for generation a unique id
+ * each for iterable properties bloc.
+ * This is used by :
+    - mergeWithModel function
+    - IterablePropertiesContainer directive
+ */
+var getIdentifier = function (){
+
+    var getRandomInt = function (min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min;
+    };
+
+    return (new Date()).getTime() + getRandomInt (100, 100000);
+};
+
+
+/**
+ * Private function for adding the new empty value from the model
+ * This makes use of recursion
+ * @param {Object} property : the property the value should be added to
+ * @param {Object} model : the model of the property
+ */
+var addFromModel = function (property, model){
+
+    var value = {
+        _id: getIdentifier(),
+        title: "",
+        values: []
+    };
+
+    _(model.fields).each(function(field){
+
+        if ( _.isUndefined (field.fields) ){
+            value.values.push({
+                name: field.name,
+                value: (field.required) ? undefined : "",
+                inModel: true,
+                comment: (field.comment) ? field.comment : "",
+                password: (field.password) ? field.password : false,
+                defaultValue: (field.defaultValue) ? field.defaultValue : "",
+                required: (field.required) ? field.required : false,
+                pattern: (field.pattern) ? field.pattern : ""
+            });
+        }else {
+
+            // we add and then search just to make the object tracked by the browser.
+            // No other way to do this yet ;)
+            value.values.push({
+                name: field.name,
+                iterable_valorisation_items: []
+            });
+
+            var subProperty = value.values[value.values.length - 1];
+
+            addFromModel (subProperty, field);
+        }
+    });
+
+    property.iterable_valorisation_items.push(value);
+};
+
+/**
+ * Hesperides properties module
+ */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals', 'hesperides.localChanges']);
 
 propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
@@ -176,7 +243,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.contain_empty_module_status[box ? box.name : "empty_key"] = return_value.length ? true : false;
 
         return return_value;
-
     }
 
     $scope.update_main_box = function (platform) {
@@ -685,7 +751,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
          * Private function to preload next events
          */
         var preloadNextEvents = function (){
-            _events = [];
+            var _events = [];
             EventService.get(stream, page).then(function (nextEntries){
                 events = nextEntries;
                 page ++;
@@ -851,7 +917,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
                 module = _.filter(platform.modules, module => module.properties_path == $scope.instance.properties_path)[0];
 
-                tmp_instance = _.filter(module.instances, instance => instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name))[0];
+                var tmp_instance = _.filter(module.instances, instance => instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name))[0];
                 tmp_instance.properties_path = $scope.instance.properties_path;
 
                 ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
@@ -1095,6 +1161,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.save_properties = function (properties, module) {
 
         if ($scope.save_properties_locally(properties, module)) {
+
             // Save properties
             HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
                 ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
@@ -1667,154 +1734,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
  }]);
 
 /**
- * This directive will display only the iterable properties
- * Added by Tidiane SIDIBE on 11/03/2016
- */
- propertiesModule.directive('iterablePropertiesList', function () {
-
-     return {
-         restrict: 'E',
-         scope: {
-             modelProperty: '=',
-             valueProperty: '=',
-             filterDeleted: '=',
-             filterUnspecified: '=',
-             filterValues: '=',
-             filterNames: '=',
-             sortOrder: '='
-         },
-         templateUrl: 'properties/iterable-properties-list.html',
-         controller : 'iterablePropertiesListController',
-         link: function (scope, element, attrs){
-
-         }
-     };
- });
-
-/**
- * This is a private function of checking if a value
- * is in the model
- * @param {Object} model : the model from the scope.
- * @param {String} name : the value name field.
- * @return true if it's in, false otherwise.
- */
-var isInModel = function (model, name){
-    var _model = _.find(model.fields, {name : name});
-    return !_.isUndefined(_model);
-};
-
-
-/**
- * Private function for merging values
- * @param {JSON Object} model : the model of the iterable block
- * @param {JSON Object} values : the values of the iterable block
- */
-var mergeValue = function (model, values){
-
-    // for each valorisation block
-    _(values.iterable_valorisation_items).each (function (value){
-
-        // for each model fields
-        _(model.fields).each (function (field){
-            //is the block containing value for this filed
-            var exists = !_.isUndefined(_.find(value.values, {name : field.name}));
-
-            if ( exists ){
-                //The value exits, just merge.
-
-                // 1 - We ignore the 'not used' title, if present
-                if ( _.isEqual (value.title, "not used") ){
-                    value.title = "";
-                }
-
-                // 2 - We merge
-                _(value.values).each (function (val){
-                    //is it in the mode ?
-                    val.inModel = isInModel(model, val.name);
-                });
-            }
-            else{
-                // not existing existing value found, then add one
-
-                // 1 - We add the values
-                value.values.push({
-                    name: field.name,
-                    value: (field.required) ? undefined : "", // 'required' to make difference with void string.
-                    comment: (field.comment) ? field.comment : "",
-                    password: (field.password) ? field.password : false,
-                    defaultValue: (field.defaultValue) ? field.defaultValue : "",
-                    required: (field.required) ? field.required : false,
-                    inModel:true,
-                    pattern: (field.pattern) ? field.pattern : ""
-                });
-            }
-        });
-    });
-
-};
-
-/**
- * This is the controller for iterable properties list directive
- * Added by Tidiane SIDIBE 14/03/2015
- */
- propertiesModule.controller('iterablePropertiesListController', function($scope) {
-
-    // call the merge
-    mergeValue($scope.modelProperty, $scope.valueProperty);
-
-    /**
-     * Adds the new void iterable block
-     */
-    $scope.addValue = function(model, values) {
-
-        /**
-         * Private method for adding new void fields from the model.
-         * @param {JSON Object} model : the model of the iterable block
-         * @param {JSON Object} values : the values for the iterable block
-         */
-        var addSimple = function (model, values){
-            var modelFields = model.fields;
-
-            // This from the click
-            var iterableValue = {};
-            iterableValue.title     = "";
-            iterableValue.values    = [];
-
-            _(model.fields).each (function (field){
-                iterableValue.values.push({
-                    name: field.name,
-                    value: (field.required) ? undefined : "",
-                    inModel: true,
-                    comment: (field.comment) ? field.comment : "",
-                    password: (field.password) ? field.password : false,
-                    defaultValue: (field.defaultValue) ? field.defaultValue : "",
-                    required: (field.required) ? field.required : false,
-                    pattern: (field.pattern) ? field.pattern : ""
-                });
-            });
-
-            values.iterable_valorisation_items.push(iterableValue);
-        };
-
-        //
-        // The initial call is make with data from the scope
-        //
-        if (_.isUndefined(model) && _.isUndefined(values)){
-            addSimple($scope.modelProperty, $scope.valueProperty);
-        }
-    };
-
-    /**
-     * Delete the selected block.
-     * @param {Integeger} index : the block id in the values.
-     */
-    $scope.removeValue = function (index){
-        $scope.valueProperty.iterable_valorisation_items.splice(index, 1);
-    };
-
- });
-
-/**
  * This is the directive of the filter button for deleted iterable properties.
  * Added by Tidiane SIDIBE 14/03/2015
  */
@@ -2220,13 +2139,21 @@ propertiesModule.factory('Properties', function () {
                     it.each(function (itProp) {
                         // For each valorisation of iterate
                         _(itProp.iterable_valorisation_items).each(function (val) {
+
                             // For each values in iterate
                             _(val.values).each(function (item) {
+                                // give it an identifier
+                                val._id = getIdentifier ();
+
+                                // clean the title if necessary
+                                if ( _.isEqual (val.title, "not used") ){
+                                   val.title = "";
+                                }
+
                                 if (item.iterable_valorisation_items) {
                                     // New iterate
                                     _(currentModel).filter({name: item.name}).each(function (prop) {
                                         item.iterable_valorisation_items.inModel = true;
-
                                         scanIterableItems([prop], [item]);
                                     });
                                 } else {
@@ -2241,6 +2168,36 @@ propertiesModule.factory('Properties', function () {
                                     });
                                 }
                             });
+
+                            _(currentModel).each(function (prop){
+                                var found = _.find(val.values, {name: prop.name});
+
+                                if ( _.isUndefined (found) ){
+                                    // is it iterable one ?
+                                    if ( !_.isUndefined ( prop.fields ) ){
+
+                                        val.values.push({
+                                            name: prop.name,
+                                            iterable_valorisation_items: []
+                                        });
+
+                                        var iterable = val.values[ val.values.length - 1];
+                                        addFromModel(iterable, prop);
+                                    }else{
+                                        val.values.push({
+                                            name: prop.name,
+                                            value: (prop.required) ? undefined : "",
+                                            comment: prop.comment,
+                                            inModel: true,
+                                            required: (prop.required) ? prop.required : false,
+                                            password: (prop.password) ? prop.password : false,
+                                            defaultValue: (prop.defaultValue) ? prop.defaultValue : "",
+                                            pattern: (prop.pattern) ? prop.pattern : ""
+                                        });
+                                    }
+                                }
+                            });
+
                         });
                     });
                 });
@@ -2248,27 +2205,7 @@ propertiesModule.factory('Properties', function () {
 
             scanIterableItems(model.iterable_properties, me.iterable_properties);
 
-            // Taking care of missing values
-
-            // for each model in iterable
-            _(model.iterable_properties).each(function(_model){
-                // find the values
-                var values = _.find(me.iterable_properties, {name : _model.name});
-
-                if (_.isUndefined(values)){
-                    values = {
-                        inModel: true,
-                        iterable_valorisation_items: [],
-                        name: name
-                    };
-                }
-
-                // then merge
-                mergeValue(_model, values);
-          });
-
-          return this;
-
+            return this;
         };
 
         this.filter_according_to_model = function () {
@@ -2296,7 +2233,45 @@ propertiesModule.factory('Properties', function () {
         }
 
         this.to_rest_entity = function () {
-            return {
+
+            /**
+             * Private function
+             * This convert inner iterable properties to rest entity
+             * Makes use of recursion
+             * @param {Object} iterable : the iterable property
+             * @param {Object} _iterable : the values of the iterable property
+             */
+            var innerIterable = function (iterable, _iterable){
+                _(iterable.iterable_valorisation_items).each(function (item){
+
+                    _iterable.iterable_valorisation_items.push({
+                       title: item.title,
+                       values: []
+                    });
+
+                    var _item = _iterable.iterable_valorisation_items [ _iterable.iterable_valorisation_items.length - 1];
+
+                    _(item.values).each(function (value){
+                        if ( _.isUndefined ( value.iterable_valorisation_items ) ){
+                            _item.values.push({
+                                name: value.name,
+                                value: value.value
+                            });
+                        }else {
+                            _item.values.push({
+                               name: value.name,
+                               iterable_valorisation_items: []
+                            });
+
+                            var _inner = _item.values[ _item.values.length - 1];
+                            innerIterable(value, _inner);
+                        }
+                    })
+                })
+            };
+
+            // The rest entity of properties
+            var entity = {
                 versionID: this.versionID,
                 key_value_properties: _.map(this.key_value_properties, function (kvp) {
                     return {
@@ -2305,14 +2280,28 @@ propertiesModule.factory('Properties', function () {
                         value: kvp.value
                     }
                 }),
-                iterable_properties: _.map(this.iterable_properties, function (ip) {
-                    return {
-                        name: ip.name,
-                        iterable_valorisation_items: ip.iterable_valorisation_items
-                    }
-                })
-            }
-        }
+                iterable_properties:  []
+            };
+
+            // doing conversion for iterable properties
+            var iterableEntity = entity.iterable_properties;
+
+            _(this.iterable_properties).each(function (iterable){
+
+                var _iterable = {
+                    name: iterable.name,
+                    iterable_valorisation_items: []
+                };
+
+                // do it for inners
+                innerIterable(iterable, _iterable);
+
+                // add the value
+                iterableEntity.push(_iterable);
+            });
+
+            return entity;
+        };
 
         this.mergeWithDefaultValue = function () {
             var me = this;

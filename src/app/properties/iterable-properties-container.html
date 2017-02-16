@@ -1,0 +1,73 @@
+
+<script type="text/ng-template" id="iterable">
+
+    <div class="iterable-block">
+
+        <div layout="row" class="iterable-bloc-title">
+            <md-button flex = "5" aria-label="{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}" class = "md-btn md-xs md-button" ng-click="deleteOne(item)">
+                <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}</md-tooltip>
+                <md-icon class="fa fa-minus fa-lg"></md-icon>
+            </md-button>
+
+            <!-- The title -->
+            <input flex="40"
+                   ng-model="item.title"
+                   placeholder="{{ 'properties.module.editProperties.iterableProperties.blocTitle' | translate }}"
+                   class="iterable-title-value" >
+        </div>
+
+        <div ng-repeat="value in item.values">
+            <div layout = "row" ng-if="!value.iterable_valorisation_items">
+
+                <div layout="column" flex="46">
+                    <div class="truncate-ellipsis">
+                        <label class="property-label"
+                               ng-class="{'text-stroke':!value.inModel, 'default-value-color': value.defaultValue && !value.value}"
+                        >{{value.name}}</label><span ng-show="value.required" class="property-required">*</span>
+                        <md-tooltip md-direction="top">
+                            {{value.name}}
+                        </md-tooltip>
+                    </div>
+                </div>
+
+                <div layout="column"  flex>
+                    <input ng-model="value.value"
+                           ng-trim="true"
+                           ng-readonly="!value.inModel"
+                           ng-focus="focusthis = true"
+                           ng-blur="focusthis = false"
+                           ng-class="{'text-stroke':!value.inModel, 'default-value-color': (value.defaultValue || value.pattern) && !value.value, 'default-value-color-focus': focusthis}"
+                           placeholder="{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}"
+                           ng-pattern="value.pattern"
+                           ng-required="value.required"
+                           class="property-value"
+                           id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{value.name}}"
+                    >
+                    <md-tooltip ng-show="value.defaultValue || value.pattern || value.comment" md-direction="top">{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}</md-tooltip>
+                </div>
+
+            </div>
+
+            <div ng-if="value.iterable_valorisation_items">
+
+                <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click="addOne(value)">
+                    <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>
+                    <md-icon class="fa fa-plus fa-lg"></md-icon>{{value.name}}
+                </md-button>
+
+                <div ng-repeat="item in value.iterable_valorisation_items" ng-include="'iterable'"></div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+<div ng-repeat="property in iterables" class="iterable-main-block">
+
+    <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click="addOne(property)">
+        <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>
+        <md-icon class="fa fa-plus fa-lg"></md-icon>{{property.name}}
+    </md-button>
+
+    <div ng-repeat="item in property.iterable_valorisation_items" ng-include="'iterable'"></div>
+</div>

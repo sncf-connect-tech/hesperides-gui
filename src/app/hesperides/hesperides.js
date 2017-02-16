@@ -539,7 +539,7 @@ hesperidesModule.service ('PlatformColorService', function (){
              * Private utility function that calculates
              * a RGB color code according to the input string
              */
-            pastelColour = function(name) {
+            var pastelColour = function(name) {
 
                 // These are the default colors
                 var baseRed = 220;
@@ -653,7 +653,7 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
             return _.filter(this.getComments(application_name), c => c.comment.toLowerCase().match('.*' + (query ? query : '') + '.*')).sort(function (a, b) {return b.date - a.date;});
         },
         commentExist: function (application_name, comment) {
-            comments = this.getComments(application_name);
+            var comments = this.getComments(application_name);
             return _.filter(comments, c => c.comment == comment).length > 0 ? true : false;
         },
         addComment: function (application_name, comment) {
@@ -673,7 +673,7 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
         },
         isCommentValid: function (comment) {
             if (comment == undefined) { return false; }
-            _temp = comment.split (" ");
+            var _temp = comment.split (" ");
             return ( comment.length < 10 || _temp.length < 2 ) ? false : true;;
         }
     };

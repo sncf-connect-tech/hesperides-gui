@@ -52,11 +52,11 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
             return "";
         }
 
-        splitted_path = path.split('#');
+        var splitted_path = path.split('#');
 
-        last_pos = splitted_path.length - 1;
+        var last_pos = splitted_path.length - 1;
 
-        prettify_module = splitted_path[last_pos - 2] + ', ' + splitted_path[last_pos - 1] +
+        var prettify_module = splitted_path[last_pos - 2] + ', ' + splitted_path[last_pos - 1] +
         (splitted_path[last_pos] === 'WORKINGCOPY' ? ' (working copy) ' : '');
 
         splitted_path = splitted_path.slice(0, splitted_path.length - 3);
@@ -392,6 +392,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
         },
         save_properties: function (application_name, platform, properties, path, comment) {
             properties = properties.to_rest_entity();
+
             return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id) + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
                 $translate('properties.event.saved').then(function(label) {
                     $.notify(label, "success");

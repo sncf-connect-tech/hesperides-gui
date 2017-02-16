@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-names = "iterablePropertiesNameFilter" filter-values="iterablePropertiesValueFilter" sort-order="iterableSortOrder"></iterable-properties-list>
+            <iterable-properties-container iterables="properties.iterable_properties" iterables-model="propertiesModel.iterable_properties"></iterable-properties-container>
 
         </div>
     </section>
