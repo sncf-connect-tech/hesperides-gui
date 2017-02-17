@@ -19,44 +19,47 @@ module.directive('iterablePropertiesContainer', [function (){
              controller : ['$scope', function ($scope){
 
                 /**
-                 * Private function for searching in sub items of the iterable.
-                 * This makes use of recursion.
-                 * @param {Object} iterable : is the sub iterable.
-                 * @param {Integer} id : is the id of the item to find
+                 * Private function for searching the iterable containing the item that's _id is id.
+                 * This makes use of recursion
+                 * @param {Object} iterable : the iterable property the item will be search in.
+                 * @param {Integer} id : the id of the item to be searched
                  */
-                var findInItems = function (iterable, id){
-                    var parent = undefined;
+                var findInIterable = function (iterable, id){
+
+                   var parent = undefined;
+
                     _(iterable.iterable_valorisation_items).each(function (item){
                         if ( item._id == id ){
                             parent = iterable;
-                            console.log(">> Found :: ");
-                            console.log(parent);
+                        }
 
+                        if ( !_.isUndefined (parent) ){
                             return false;
                         }
 
-                        _(item.values).each(function (value){
-                            parent = findInItems(value, id);
+                        // recur here : on values of iterable
+                        _( item.values ).each (function ( value ){
+                            parent = findInIterable ( value, id );
 
                             if ( !_.isUndefined (parent) ){
                                 return false;
                             }
                         });
-                    })
+                    });
 
                     return parent;
                 };
 
                 /**
-                 * Private function for searching the parent of a bloc
-                 * @param {Object} iterable : is the iterable.
-                 * @param {Integer} id : is the id of the item to find
+                 * Private function for searching the parent of item that's _id is id
+                 * @param {Object} iterable : the iterable property the item will be search in.
+                 * @param {Integer} id : the id of the item to be searched
                  */
-                var findParent = function (iterables, id){
+                var findParent = function(iterables, id){
                     var parent = undefined;
 
                     _(iterables).each(function (iterable){
-                        parent = findInItems (iterable, id);
+                        parent = findInIterable (iterable, id);
 
                         if ( !_.isUndefined (parent) ){
                             return false;
@@ -126,13 +129,20 @@ module.directive('iterablePropertiesContainer', [function (){
                  * @param {Object} item : is the property item to be deleted.
                  */
                 $scope.deleteOne = function (item){
+
                     // 1 - find the parent of this item
                     var parent = findParent($scope.iterables, item._id);
 
                     // 2 - delete the item
+                    if ( _.isUndefined (parent) ){
+                        console.error("Item of id :" + item._id + " was not found :(. This is an error !");
+                    }
+
                     _.remove(parent.iterable_valorisation_items, {_id: item._id});
+
                 };
              }],
+
              link: function (scope, element, attrs){
 
              }
