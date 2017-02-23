@@ -2,6 +2,7 @@ logs/*
 !.gitkeep
 node_modules/
 src/app/bower_components/
+src/app/feedback/
 tmp
 .DS_Store
 .idea
