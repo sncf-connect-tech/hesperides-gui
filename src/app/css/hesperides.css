@@ -1349,20 +1349,21 @@ md-switch#platform-menu-modal_override-existing-switch {
        outline:none;
        font-size: 0.9em; }}
   @media (min-width: 1280px) {
-.whiteframeBasicClassUsage md-whiteframe {
-      margin: 25px;
-      height: 100px;
-      background-color: #b9f6ca; }
+      .whiteframeBasicClassUsage md-whiteframe {
+          margin: 25px;
+          height: 100px;
+          background-color: #b9f6ca;
+      }
 
+      .center {
+          text-align: center;
+      }
 
-.center {
-    text-align: center;
-}
+      md-whiteframe:hover {
+          box-shadow: 5px 5px 3px #888888;
+      }
 
-md-whiteframe:hover{
-    box-shadow: 5px 5px 3px #888888;
-}
-
-#apps-container {
-    margin-top: 20%;
-}
+      #apps-container {
+          margin-top: 20%;
+      }
+  }
