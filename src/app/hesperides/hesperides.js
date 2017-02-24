@@ -171,7 +171,7 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', funct
         UserService.authenticate().then(function (user){
             hesperidesUser = user;
         });
-    };
+    }
 }]);
 
 hesperidesModule.controller("WelcomeCtrl", ['$scope','$location', function ($scope, $location) {
