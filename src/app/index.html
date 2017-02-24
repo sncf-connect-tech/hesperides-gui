@@ -98,6 +98,8 @@
     <script src="local_changes/localChangesServices.js"></script>
     <script src="local_changes/localChangesControllers.js"></script>
 
+    <!-- Module feedback -->
+    <script src="feedback/feedback.js"></script>
 
     <!-- Date/Time picker -->
     <link rel='stylesheet' href='sc-date-time/sc-date-time.css'>
@@ -157,8 +159,7 @@
 
 <div id="properties-list"></div>
 
-<div ng-controller="FeedbackCtrl">
-    <angular-feedback options="feedbackOptions"></angular-feedback>
-</div>
+<ng-include src="'feedback/feedback.html'"></ng-include>
+
 </body>
 </html>
