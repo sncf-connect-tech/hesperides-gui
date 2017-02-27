@@ -34,7 +34,7 @@ feedbackModule.controller("FeedbackCtrl", ['$scope', "$translate", function ($sc
         tpl: {
             initButton:
             '<div id="feedback-button"></div>' +
-            '<button class="feedback-btn feedback-btn-gray">' +
+            '<button id="feedback-button-contact-us" class="feedback-btn feedback-btn-gray">' +
             $translate.instant('feedback.button') +
             '</button></div>',
             highlighter:
@@ -87,7 +87,7 @@ feedbackModule.controller("FeedbackCtrl", ['$scope', "$translate", function ($sc
             '</b>' +
             $translate.instant('feedback.submit.success.desc3') +
             '</p>' +
-            '<button class="feedback-close-btn feedback-btn-blue">' +
+            '<button id="feedback-submit-success-button-ok" class="feedback-close-btn feedback-btn-blue">' +
             $translate.instant('feedback.submit.success.ok') +
             '</button>' +
             '<div class="feedback-wizard-close"></div></div>',
