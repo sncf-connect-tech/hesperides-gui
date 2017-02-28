@@ -34,6 +34,7 @@ module.exports = function(config) {
       'src/app/bower_components/x2js/xml2json.js',
       'src/app/bower_components/angular-xml/angular-xml.js',
       'src/app/bower_components/jquery/dist/jquery.min.js',
+      'src/app/bower_components/angular-send-feedback/dist/angular-send-feedback.min.js',
       'src/app/lib/*.js',
 
       // mocks
