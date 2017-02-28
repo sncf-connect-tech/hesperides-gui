@@ -58,6 +58,7 @@ module.exports = function(config) {
       'src/app/template/template.js',
       'src/app/shared/components.js',
       'src/app/nexus/nexus.js',
+      'src/app/feedback/feedback.js',
 
       // hesperides karma testing utilities
       'test/unit/utils.js',
