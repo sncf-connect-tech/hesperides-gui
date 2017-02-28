@@ -16,6 +16,14 @@ redisConfiguration:
   waitBeforeRetryMs: 20000
 authenticatorType: none
 useDefaultUserWhenAuthentFails: true
+ldapConfiguration:
+  uri: ldap://titi.rominet.com:389
+  adDomain: groupevsc
+  connectTimeout: 1000ms
+  readTimeout: 1000ms
+  userNameAttribute: sAMAccountName
+  userSearchBase: dc=DC_ME,dc=LOL
+  roleSearchBase: ou=YOUR_ORGANIZATION,dc=YOUR_DC,dc=YOUR_DC2
 server:
   type: simple
   applicationContextPath: /
