@@ -16,15 +16,6 @@ redisConfiguration:
   waitBeforeRetryMs: 20000
 authenticatorType: none
 useDefaultUserWhenAuthentFails: true
-ldapConfiguration:
-  uri: ldap://ambria.groupevsc.com:389
-  adDomain: groupevsc
-  connectTimeout: 1000ms
-  readTimeout: 1000ms
-  userNameAttribute: sAMAccountName
-  userSearchBase: dc=groupevsc,dc=com
-  roleSearchBase: ou=ARCHITECTURE,dc=groupevsc,dc=com
-  prodGroupName: GG_A_HESPERIDES_PROD
 server:
   type: simple
   applicationContextPath: /
