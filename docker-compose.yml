@@ -10,9 +10,9 @@ services:
     ports: 
       - "8080:8080"
       - "8081:8081" 
-    volumes:
-      - "./src/app:/hesperides-gui:ro" 
-      - "./docker/docker-conf.yml:/etc/hesperides/hesperides-configuration.yml:ro" 
+#    volumes:
+#      - "./src/app:/hesperides-gui:ro" 
+#      - "./docker/docker-conf.yml:/etc/hesperides/hesperides-configuration.yml:ro" 
     depends_on:
           - elasticsearch
           - redis
