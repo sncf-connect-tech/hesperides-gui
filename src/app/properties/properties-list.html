@@ -47,14 +47,15 @@
         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
         <div ng-show="2 === isOpen" class="file-content ng-hide" layout="column" flex="100">
 
-            <!-- Filter toggles -->
+            <!-- Filter toggles
             <div layout="row">
                 <div flex="15"><toggle-sort-properties sort-order="iterableSortOrder"></toggle-sort-properties></div>
                 <div flex="none"><toggle-deleted-iterable-properties iterable-properties="properties.iterable_properties" toggle="displayIterableDeletedProperties"></toggle-deleted-iterable-properties></div>
                 <div flex="none"><toggle-unspecified-iterable-properties iterable-properties="properties.iterable_properties"  toggle="displayIterableUnspecifiedProperties"></toggle-unspecified-iterable-properties></div>
             </div>
+            -->
 
-            <!-- Value filter -->
+            <!-- Value filter
             <div layout="row">
                 <div flex="50">
                     <md-input-container class="md-block">
@@ -69,6 +70,7 @@
                     </md-input-container>
                 </div>
             </div>
+            -->
 
             <iterable-properties-container iterables="properties.iterable_properties" iterables-model="propertiesModel.iterable_properties"></iterable-properties-container>
 

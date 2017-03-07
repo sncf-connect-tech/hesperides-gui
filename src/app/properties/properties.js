@@ -25,12 +25,19 @@
  */
 var getIdentifier = function (){
 
+    /**
+     * Private function for getting
+     * a random number between a min and a max
+     *
+     * This is used for calculating the unique identifier
+     */
     var getRandomInt = function (min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min)) + min;
     };
 
+    // Calculate the unique identifier
     return (new Date()).getTime() + getRandomInt (100, 100000);
 };
 
@@ -38,6 +45,9 @@ var getIdentifier = function (){
 /**
  * Private function for adding the new empty value from the model
  * This makes use of recursion
+ * This is used by :
+      - mergeWithModel function
+      - IterablePropertiesContainer directive
  * @param {Object} property : the property the value should be added to
  * @param {Object} model : the model of the property
  */
@@ -68,7 +78,8 @@ var addFromModel = function (property, model){
             // No other way to do this yet ;)
             value.values.push({
                 name: field.name,
-                iterable_valorisation_items: []
+                iterable_valorisation_items: [],
+                inModel: true
             });
 
             var subProperty = value.values[value.values.length - 1];
@@ -1734,104 +1745,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
  }]);
 
 /**
- * This is the directive of the filter button for deleted iterable properties.
- * Added by Tidiane SIDIBE 14/03/2015
- */
-propertiesModule.directive('toggleDeletedIterableProperties', function () {
-
-    return {
-        restrict: 'E',
-        scope: {
-            iterableProperties: '=',
-            toggle: '='
-        },
-        template: '<md-switch id="toggle-deleted-iterable-properties_switch" class="md-primary md-block" style="margin-right:2%"' +
-                    'ng-model="toggle"' +
-                    'ng-init="toggle=false" ' +
-                    'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
-                    'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
-                    '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties() }})          ' +
-                    '</md-switch>',
-        controller : ['$scope', function ($scope){
-            $scope.getNumberOfDeletedProperties = function (tab) {
-                var count = 0;
-
-                if ($scope.iterableProperties) {
-                    _($scope.iterableProperties).each(function (item){
-                        //is the group in model
-                        if (item.inModel){
-                            _(item.iterable_valorisation_items).each(function (valorisation){
-                                _(valorisation.values).each (function (value){
-                                    if (!value.inModel){
-                                        count ++;
-                                    }
-                                });
-                            });
-                        }
-                    });
-                }
-                if (count <= 0) {
-                    $scope.toggle = false;
-                }
-                return count;
-            };
-        }],
-        link: function (scope, element, attrs) {
-
-        }
-    }
-});
-
-/**
- * This is the directive of the filter button for deleted iterable properties.
- * Added by Tidiane SIDIBE 14/03/2015
- */
-propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
-
-    return {
-        restrict: 'E',
-        scope: {
-            iterableProperties: '=',
-            toggle: '='
-        },
-        template: '<md-switch id="toggle-unspecified-iterable-properties_switch" class="md-primary md-block"' +
-                          'ng-model="toggle"' +
-                          'ng-init="toggle=false" ' +
-                          'ng-disabled="(getNumberOfUnspecifiedProperties() <= 0)" ' +
-                          'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
-                          '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties() }})' +
-                          '</md-switch>',
-        controller : ['$scope', function ($scope){
-            $scope.getNumberOfUnspecifiedProperties = function () {
-                var count = 0;
-
-                if ($scope.iterableProperties) {
-                    _($scope.iterableProperties).each(function (item){
-                        //is the group in model
-                        if (item.inModel){
-                            _(item.iterable_valorisation_items).each(function (valorisation){
-                                _(valorisation.values).each (function (value){
-                                    if (value.inModel && _.isEmpty(value.value) && _.isEmpty(value.defaultValue)) {
-                                        count++;
-                                    }
-                                });
-                            });
-                        }
-                    })
-                }
-                if (count == 0) {
-                    $scope.toggle = false;
-                }
-                return count;
-            };
-        }],
-        link: function (scope, element, attrs) {
-
-        }
-    }
-});
-
-/**
  * This directive will display the properties list with contains :
  *  1. Simple properties
  *  2. Iterable probperties
@@ -2132,6 +2045,7 @@ propertiesModule.factory('Properties', function () {
                 _(iterable_model).each(function (model_iterable) {
                     // Found iterate properties for iterable_model
                     var it = _(iterable_properties).filter({name: model_iterable.name});
+
                     // Get current model part
                     var currentModel = model_iterable.fields;
 
@@ -2153,7 +2067,7 @@ propertiesModule.factory('Properties', function () {
                                 if (item.iterable_valorisation_items) {
                                     // New iterate
                                     _(currentModel).filter({name: item.name}).each(function (prop) {
-                                        item.iterable_valorisation_items.inModel = true;
+                                        item.inModel = true;
                                         scanIterableItems([prop], [item]);
                                     });
                                 } else {
@@ -2173,15 +2087,18 @@ propertiesModule.factory('Properties', function () {
                                 var found = _.find(val.values, {name: prop.name});
 
                                 if ( _.isUndefined (found) ){
-                                    // is it iterable one ?
+                                    // is it an iterable ?
                                     if ( !_.isUndefined ( prop.fields ) ){
 
                                         val.values.push({
                                             name: prop.name,
-                                            iterable_valorisation_items: []
+                                            iterable_valorisation_items: [],
+                                            inModel: true
                                         });
 
                                         var iterable = val.values[ val.values.length - 1];
+
+                                        // add iterable values based on the model
                                         addFromModel(iterable, prop);
                                     }else{
                                         val.values.push({
@@ -2205,6 +2122,24 @@ propertiesModule.factory('Properties', function () {
 
             scanIterableItems(model.iterable_properties, me.iterable_properties);
 
+            // Taking care of missing values
+            // for each model in iterable
+            _(model.iterable_properties).each(function(_model){
+                // find the values
+                var values = _.find(me.iterable_properties, {name : _model.name});
+
+                if (_.isUndefined(values)){
+                    values = {
+                        inModel: true,
+                        iterable_valorisation_items: [],
+                        name: _model.name
+                    };
+
+                    // add it
+                    me.iterable_properties.push(values);
+                }
+            });
+
             return this;
         };
 
@@ -2214,6 +2149,7 @@ propertiesModule.factory('Properties', function () {
             });
 
             // for iterable properties
+            // TODO : needs to be updated for iterable of iterable properties ?
             this.iterable_properties = _.filter(this.iterable_properties, function (property) {
                 if (property.inModel){
 
@@ -2355,14 +2291,16 @@ propertiesModule.factory('Properties', function () {
 
 /**
  * This is for filtering the deleted properties.
- * Used for simple and iterable properties.
+ * Used only for simple properties.
  */
 propertiesModule.filter('displayProperties', function () {
+
     return function (items, display) {
         return _.filter(items, function(item) {
             return (display ? !item.inModel : _.isUndefined(display) || display || item.inModel);
         });
     };
+
 });
 
 propertiesModule.filter('filterBox', function () {
@@ -2569,38 +2507,6 @@ propertiesModule.filter('filterIterablePropertiesNames', function (){
         var filtered = [];
         _(items).each (function (item){
             if (regex_name.test(item.name)){
-                filtered.push(item);
-            }
-        });
-
-        return filtered;
-    };
-});
-
-/**
- * This function will filter the iterable properties by values.
- * The filter text and by the simple text or a regex.
- * @see filterIterablePropertiesNames for name filtering
- */
-propertiesModule.filter('filterIterablePropertiesValues', function (){
-    return function (items, filter){
-
-        if (!filter){
-            return items;
-        }
-
-        var _value = '.*' + filter.toLowerCase().split(' ').join('.*');
-        var regex_value  = undefined;
-
-        try {
-            regex_value = new RegExp(_value, 'i');
-        }catch (e){
-            return items;
-        }
-
-        var filtered = [];
-        _(items).each (function (item){
-            if (regex_value.test(item.value)){
                 filtered.push(item);
             }
         });

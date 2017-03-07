@@ -17,6 +17,8 @@
         </div>
 
         <div ng-repeat="value in item.values">
+
+            <!-- If the item hasn't iterable_valorisation_items, then it is simple property -->
             <div layout = "row" ng-if="!value.iterable_valorisation_items">
 
                 <div layout="column" flex="46">
@@ -48,6 +50,7 @@
 
             </div>
 
+            <!-- If the item has iterable_valorisation_items, then it is an inner iterable property -->
             <div ng-if="value.iterable_valorisation_items">
 
                 <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click="addOne(value)">
