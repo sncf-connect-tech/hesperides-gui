@@ -28,10 +28,11 @@
     beforeEach(module('hesperides.properties'));
 
     // Testing iterable properties
-    describe('Testing iterablePropertiesListController', function (){
+    describe('Testing iterable properties', function (){
 
         // test data
         var model = {
+            "key_value_properties": [],
             "iterable_properties":[
                 {
                     "name":"iterable",
@@ -71,6 +72,7 @@
         };
 
         var properties = {
+            "key_value_properties": [],
             "iterable_properties":[
                 {
                     "name":"iterable",
@@ -113,32 +115,45 @@
         // the scope, with testing values
         var scope, http;
 
+        var Properties;
+
         // inject the controller
-        beforeEach(inject(function ($httpBackend, $rootScope, $controller){
+        beforeEach(inject(function ($httpBackend, $rootScope, $controller, _Properties_){
             // new scope and test data
             scope = $rootScope.$new();
-            scope.modelProperty = model.iterable_properties[0];
-            scope.valueProperty = properties.iterable_properties[0];
 
-            // Mock the http service
+            scope.iterables = properties.iterable_properties;
+            scope.iterablesModel = model.iterable_properties;
+
+            // Mock the http service for the config
             http = $httpBackend;
             http.when('GET', './config.json').respond(200, "");
 
             // the controller
-            $controller('iterablePropertiesListController', {$scope: scope});
+            $controller('iterablePropertiesContainerController', {$scope: scope});
+
+            // The Properties factory
+            Properties = _Properties_;
+
         }));
 
         // tests
         it ('should check that all the valuations have been merged', function (){
 
-            _(scope.valueProperty.iterable_valorisation_items).each(function (valuations){
+            // Create and merge properties
+            var merged = (new Properties(properties)).mergeWithModel(new Properties(model));
+
+            _(merged.iterable_properties[0].iterable_valorisation_items).each(function (valuations){
+
+                // every item should have an _id field
+                expect ( _.isUndefined (valuations._id) ).toBeFalsy();
 
                 // values exists
                 var _values = valuations.values;
                 expect(_values).toBeDefined();
 
                 // values cain't exceed the model fields count
-                expect(_values.length == scope.modelProperty.fields.length).toBeTruthy();
+                expect(_values.length == model.iterable_properties[0].fields.length).toBeTruthy();
 
                 // all properties should be in values
                 _(['val1', 'val2', 'val3']).each(function (val){
@@ -148,15 +163,18 @@
         });
 
         it ('should add a new iterable bloc', function (){
-            var beforeCount = scope.valueProperty.iterable_valorisation_items.length;
+            var beforeCount = scope.iterables[0].iterable_valorisation_items.length;
+
+            // given
+            var property = scope.iterables[0];
 
             // when
-            scope.addValue();
+            scope.addOne(property);
 
             // then
-            expect(beforeCount == scope.valueProperty.iterable_valorisation_items.length - 1).toBeTruthy();
+            expect(beforeCount == scope.iterables[0].iterable_valorisation_items.length - 1).toBeTruthy();
 
-            var bloc = scope.valueProperty.iterable_valorisation_items[beforeCount];
+            var bloc = scope.iterables[0].iterable_valorisation_items[beforeCount];
             // all properties should be in new bloc
             _(['val1', 'val2', 'val3']).each(function (val){
                 expect(_.some(bloc.values, {name: val})).toBe(true);
@@ -165,5 +183,24 @@
             // The title should be a void string
             expect( _.isEqual(bloc.title, "") ).toBe(true);
         });
+
+        it ('should remove a iterable bloc', function (){
+            // Create and merge properties
+            var merged = (new Properties(properties)).mergeWithModel(new Properties(model));
+            scope.iterables = merged.iterable_properties;
+
+            var beforeCount = scope.iterables[0].iterable_valorisation_items.lenth;
+            scope.deleteOne(scope.iterables[0].iterable_valorisation_items[0]);
+            expect ( beforeCount == scope.iterables[0].iterable_valorisation_items.length + 1 )
+        });
+
+        it ('should test filtering on deleted iterable properties', function (){
+            // TODO : please add the test for deleted iterable properties filtering here when implemented
+        });
+
+        it ('should test filtering on unspecified iterable properties', function (){
+            // TODO : please add the test for unspecified iterable properties filtering here when implemented
+        });
+
     });
  });

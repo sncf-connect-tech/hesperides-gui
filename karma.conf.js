@@ -54,6 +54,7 @@ module.exports = function(config) {
       'src/app/module/module.js',
       'src/app/model/model.js',
       'src/app/properties/properties.js',
+      'src/app/properties/iterable-properties-container.js',
       'src/app/techno/techno.js',
       'src/app/template/template.js',
       'src/app/shared/components.js',
