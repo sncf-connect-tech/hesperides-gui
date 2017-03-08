@@ -1,0 +1,28 @@
+
+.iterable-main-block {
+    border-style: solid;
+    border-width: thin;
+    border-spacing: 2px;
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+    margin-top : 2px !important;
+    padding: 12px;
+}
+
+.iterable-block {
+    border-style: solid;
+    border-width: thin;
+    width: 95%;
+    margin: 12px;
+    padding: 12px;
+}
+
+.iterable-name {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+
+.iterable-bloc-title {
+    margin-bottom: 15px;
+}

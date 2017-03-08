@@ -539,7 +539,7 @@ hesperidesModule.service ('PlatformColorService', function (){
              * Private utility function that calculates
              * a RGB color code according to the input string
              */
-            pastelColour = function(name) {
+            var pastelColour = function(name) {
 
                 // These are the default colors
                 var baseRed = 220;
@@ -677,7 +677,7 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
         },
         isCommentValid: function (comment) {
             if (comment == undefined) { return false; }
-            _temp = comment.split (" ");
+            var _temp = comment.split (" ");
             return ( comment.length < 10 || _temp.length < 2 ) ? false : true;;
         }
     };

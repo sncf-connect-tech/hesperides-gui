@@ -818,6 +818,8 @@ md-list.global-property-usage md-list-item {
     font-weight: bold;
     border: 0px !important;
     width: 100%;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 .property-value {
@@ -829,6 +831,8 @@ md-list.global-property-usage md-list-item {
     border-bottom-color: rgb(0,150,136);
     background-color: transparent;
     width: 90%;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 .property-value:focus {
@@ -1306,25 +1310,6 @@ md-switch#platform-menu-modal_override-existing-switch {
 .diff-date-error-message {
     color: rgb(255,87,34) !important;;
 }
-
-/* Styling Iterable*/
-
-.iterable-main-block {
-    border-style: solid;
-    border-width: thin;
-    border-spacing: 2px;
-    margin-left: 12px !important;
-    margin-right: 12px !important;
-    margin-top : 2px !important;
-}
-
-.iterable-block {
-    border-style: solid;
-    border-width: thin;
-    width: 95%;
-    margin: 12px;
-}
-
 
 /* Welcome apps displaying style */
 
