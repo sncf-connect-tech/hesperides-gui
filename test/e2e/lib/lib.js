@@ -150,6 +150,19 @@ exports.getDownloadsPath = function() {
     });
 };
 
+exports.getConfigPath = function() {
+    return path.format ({
+        dir: path.join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'src',
+            'app'
+        )
+    });
+};
+
 exports.getCapabilities  = function() {
     return {
         'browserName': 'chrome',
