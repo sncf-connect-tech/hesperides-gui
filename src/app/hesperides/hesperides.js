@@ -32,6 +32,7 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.components',
     'hesperides.user',
     'hesperides.localChanges',
+    'hesperides.feedback',
     'ngMaterial',
     'ngAnimate',
     'xeditable',
@@ -40,6 +41,7 @@ var hesperidesModule = angular.module('hesperides', [
     'vs-repeat',
     'scDateTime',
     'angularjs-datetime-picker',
+    'angular-send-feedback',
     'pascalprecht.translate',
     'ngCookies'
 ]).value('scDateTimeConfig', {
@@ -118,6 +120,9 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         }
         if (hesperidesConfiguration.localChangesTTL == undefined) {
             hesperidesConfiguration.localChangesTTL = 50;
+        }
+        if (hesperidesConfiguration.feedbackRoomName == undefined) {
+            hesperidesConfiguration.feedbackRoomName = "";
         }
     }
 

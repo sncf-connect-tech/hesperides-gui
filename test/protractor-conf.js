@@ -33,10 +33,12 @@ exports.config = {
     role_production: 'e2e/role_production/*spec.js',
     diff: 'e2e/diff/*spec.js',
     settings: 'e2e/settings/*spec.js',
+    feedback: 'e2e/feedback/*spec.js',
     all: ['e2e/menus/*spec.js', 'e2e/technos/*spec.js', 'e2e/platforms/*spec.js',
           'e2e/modules/*spec.js', 'e2e/logic-representation/*spec.js',
           'e2e/properties/*spec.js', 'e2e/preview-files/*spec.js',
-          'e2e/role_production/*spec.js', 'e2e/diff/*spec.js', 'e2e/settings/*spec.js']
+          'e2e/role_production/*spec.js', 'e2e/diff/*spec.js', 'e2e/settings/*spec.js',
+          'e2e/feedback/*spec.js']
   },
   onPrepare: function() {
     jasmine.getEnv().addReporter(

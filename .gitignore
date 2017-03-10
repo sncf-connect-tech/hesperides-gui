@@ -2,6 +2,7 @@ logs/*
 !.gitkeep
 node_modules/
 src/app/bower_components/
+src/app/feedbackReport/
 tmp
 .DS_Store
 .idea
@@ -10,7 +11,7 @@ tmp
 target/
 pom.xml.releaseBackup
 release.properties
-src/app/config.json
+src/app/config.json*
 reports/
 npm-debug.log
 coverage/
