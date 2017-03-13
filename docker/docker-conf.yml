@@ -17,14 +17,14 @@ redisConfiguration:
 authenticatorType: none
 useDefaultUserWhenAuthentFails: true
 ldapConfiguration:
-  uri: ldap://ambria.groupevsc.com:389
+  uri: ldap://titi.rominet.com:389
   adDomain: groupevsc
   connectTimeout: 1000ms
   readTimeout: 1000ms
   userNameAttribute: sAMAccountName
-  userSearchBase: dc=groupevsc,dc=com
-  roleSearchBase: ou=ARCHITECTURE,dc=groupevsc,dc=com
-  prodGroupName: GG_A_HESPERIDES_PROD
+  userSearchBase: dc=DC_ME,dc=LOL
+  roleSearchBase: ou=YOUR_ORGANIZATION,dc=YOUR_DC,dc=YOUR_DC2
+  prodGroupName: PROD_GROUP_NAME
 server:
   type: simple
   applicationContextPath: /

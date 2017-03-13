@@ -88,7 +88,7 @@ var addFromModel = function (property, model){
         }
     });
 
-    property.iterable_valorisation_items.push(value);
+    property.iterable_valorisation_items.unshift(value);
 };
 
 /**
@@ -926,9 +926,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             // Updating reference of instance to keep it synchronized and thus to prevent loss of information in the next save
             if ($scope.instance != undefined) {
 
-                module = _.filter(platform.modules, module => module.properties_path == $scope.instance.properties_path)[0];
+                module = _.filter(platform.modules, function (module) { return module.properties_path == $scope.instance.properties_path })[0];
 
-                var tmp_instance = _.filter(module.instances, instance => instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name))[0];
+                tmp_instance = _.filter(module.instances, function (instance) {
+					return instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name)
+				})[0];
+
                 tmp_instance.properties_path = $scope.instance.properties_path;
 
                 ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
@@ -1156,11 +1159,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     }
 
     $scope.hasDeletedProperties = function () {
-        return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , prop => prop.inModel==false).length > 0 ? true :false;
+        return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , function (prop) { return prop.inModel == false }).length > 0 ? true :false;
     }
 
     $scope.instanceHasDeletedProperties = function (instance) {
-        return _.filter(instance ? instance.key_values : [] , prop => prop.inModel==false).length > 0 ? true :false;
+        return _.filter(instance ? instance.key_values : [] , function (prop) { return prop.inModel == false }).length > 0 ? true :false;
     }
 
     $scope.cleanLocalChanges = function (module) {

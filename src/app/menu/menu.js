@@ -165,7 +165,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     var apps;
 
     ApplicationService.with_name_like("").then(function (response) {
-        apps = response.map(elem => elem.name)
+        apps = response.map(function (elem) { return elem.name })
     });
 
     $scope.find_applications_by_name = function (name) {
@@ -376,7 +376,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
 
     $scope.display_hesperides_informations = function(){
 
-        $scope.front_version = '${project.version}';
+        $scope.front_version = '2.2.2';
         $scope.release = hesperidesGlobals.versionName;
 
         //Get the backend versions

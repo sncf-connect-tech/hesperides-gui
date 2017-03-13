@@ -82,11 +82,11 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
     }
 
     $scope.clear_localChanges_from_scope = function(properties_path) {
-        $scope.localChanges = _.filter($scope.localChanges ,  (localChange) => localChange.module.properties_path != properties_path);
+        $scope.localChanges = _.filter($scope.localChanges, function (localChange) { return localChange.module.properties_path != properties_path });
     }
 
     $scope.has_differences = function (key_value_properties) {
-        return _.some(key_value_properties, property => (property.filtrable_value && property.value != property.filtrable_value) || (!property.filtrable_value && property.value && property.value.length > 0));
+        return _.some(key_value_properties, function (property) { return (property.filtrable_value && property.value != property.filtrable_value) || (!property.filtrable_value && property.value && property.value.length > 0) });
     }
 
     $scope.save_one = function (properties) {

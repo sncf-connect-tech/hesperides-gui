@@ -163,7 +163,7 @@ localChangesModule.service('LocalChangesDAO', ['LocalChange', 'LocalChangesUtils
             return [];
         },
         localChangeExist: function (full_path, properties_name) {
-            return _.filter(this.getLocalChanges(full_path), c => c.properties_name == properties_name).length > 0 ? true : false;
+            return _.filter(this.getLocalChanges(full_path), function (c) { return c.properties_name == properties_name }).length > 0 ? true : false;
         },
         addLocalChange: function (application_name, platform, properties_path, properties_name, properties_value) {
             var full_path = LocalChangesUtils.buildFullPath(application_name, platform, properties_path);

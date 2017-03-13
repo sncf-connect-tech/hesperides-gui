@@ -32,6 +32,7 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.components',
     'hesperides.user',
     'hesperides.localChanges',
+    'hesperides.feedback',
     'ngMaterial',
     'ngAnimate',
     'xeditable',
@@ -40,6 +41,7 @@ var hesperidesModule = angular.module('hesperides', [
     'vs-repeat',
     'scDateTime',
     'angularjs-datetime-picker',
+    'angular-send-feedback',
     'pascalprecht.translate',
     'ngCookies'
 ]).value('scDateTimeConfig', {
@@ -56,7 +58,7 @@ var hesperidesModule = angular.module('hesperides', [
     weekdays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
     calendar: 'Calendrier'
 }).value('hesperidesGlobals', {
-    versionName: 'Chaos',
+    versionName: 'CHAOS', //'${releaseName}',
     eventPaginationSize: 25
 });
 
@@ -118,6 +120,9 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         }
         if (hesperidesConfiguration.localChangesTTL == undefined) {
             hesperidesConfiguration.localChangesTTL = 50;
+        }
+        if (hesperidesConfiguration.feedbackRoomName == undefined) {
+            hesperidesConfiguration.feedbackRoomName = "";
         }
     }
 
@@ -650,11 +655,15 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
         },
         getCommentsLike: function (application_name, query) {
             query = RegExp.escape(query).split(' ').join('.*').toLowerCase();
-            return _.filter(this.getComments(application_name), c => c.comment.toLowerCase().match('.*' + (query ? query : '') + '.*')).sort(function (a, b) {return b.date - a.date;});
+            return _.filter(this.getComments(application_name), function (c) {
+					c.comment.toLowerCase().match('.*' + (query ? query : '') + '.*')
+				}).sort(function (a, b) {return b.date - a.date;});
         },
         commentExist: function (application_name, comment) {
-            var comments = this.getComments(application_name);
-            return _.filter(comments, c => c.comment == comment).length > 0 ? true : false;
+            comments = this.getComments(application_name);
+            return _.filter(comments, function (c) {
+					return c.comment == comment
+			}).length > 0 ? true : false;
         },
         addComment: function (application_name, comment) {
             var comments = this.getComments(application_name);
