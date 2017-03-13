@@ -376,7 +376,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
 
     $scope.display_hesperides_informations = function(){
 
-        $scope.front_version = '2.2.2';
+        $scope.front_version = '${project.version}';
         $scope.release = hesperidesGlobals.versionName;
 
         //Get the backend versions

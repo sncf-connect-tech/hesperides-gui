@@ -656,13 +656,13 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
         getCommentsLike: function (application_name, query) {
             query = RegExp.escape(query).split(' ').join('.*').toLowerCase();
             return _.filter(this.getComments(application_name), function (c) {
-					c.comment.toLowerCase().match('.*' + (query ? query : '') + '.*')
-				}).sort(function (a, b) {return b.date - a.date;});
+                return c.comment.toLowerCase().match('.*' + (query ? query : '') + '.*');
+			}).sort(function (a, b) {return b.date - a.date;});
         },
         commentExist: function (application_name, comment) {
-            comments = this.getComments(application_name);
+            var comments = this.getComments(application_name);
             return _.filter(comments, function (c) {
-					return c.comment == comment
+                return c.comment == comment;
 			}).length > 0 ? true : false;
         },
         addComment: function (application_name, comment) {
