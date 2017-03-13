@@ -88,7 +88,7 @@ var addFromModel = function (property, model){
         }
     });
 
-    property.iterable_valorisation_items.push(value);
+    property.iterable_valorisation_items.unshift(value);
 };
 
 /**
