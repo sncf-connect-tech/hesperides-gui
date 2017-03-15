@@ -153,6 +153,14 @@ applicationModule.controller('ModuleCtrl', [
             $scope.refreshModel();
         });
     };
+    
+    $scope.open_techno_page = function (name, version, is_working_copy) {
+        if(is_working_copy) {
+            $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
+        } else {
+            $location.path('/techno/' + name + '/' + version).search({});
+        }
+    };
 
     $scope.delete_techno = function (techno) {
         $scope.module.remove_techno(techno);
