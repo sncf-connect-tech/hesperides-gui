@@ -115,6 +115,9 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
             var url = 'rest/files/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/' + encodeURIComponent(path) + '/' + encodeURIComponent(module_name) + '/' + encodeURIComponent(module_version) + '/instances/' + encodeURIComponent(instance_name) + '?isWorkingCopy=' + encodeURIComponent(is_working_copy) + '&simulate=' + encodeURIComponent(simulate);
 
             return $http.get(url).then(function (response) {
+                response["data"].sort(function(a, b) {
+                    return a["location"].localeCompare(b["location"]);
+                });
                 return response.data.map(function (data) {
                     var entry = new FileEntry(data);
                     entry.rights = files_rights_to_string(data.rights);
