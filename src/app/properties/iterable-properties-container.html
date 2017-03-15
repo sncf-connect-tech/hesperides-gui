@@ -65,7 +65,7 @@
     </div>
 </script>
 
-<div ng-repeat="property in iterables" class="iterable-main-block">
+<div ng-repeat="property in iterables" class="iterable-main-block" ng-if="property.inModel">
 
     <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click="addOne(property)">
         <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>

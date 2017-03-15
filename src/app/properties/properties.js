@@ -928,7 +928,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
                 module = _.filter(platform.modules, function (module) { return module.properties_path == $scope.instance.properties_path })[0];
 
-                tmp_instance = _.filter(module.instances, function (instance) {
+                var tmp_instance = _.filter(module.instances, function (instance) {
 					return instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name)
 				})[0];
 
@@ -1573,7 +1573,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
         if (property.globalValue) {
 
-            compiled = property.value;
+            var compiled = property.value;
 
             Object.keys(property.globalValue).forEach(function(key,index) {
                 compiled = compiled.split("{{"+ key + "}}").join(property.globalValue[key]);
@@ -1742,7 +1742,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                 LocalChanges.clearLocalChanges({'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path});
                 scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, {'key_value_properties': scope.properties}).key_value_properties;
              }
-
          }
      };
  }]);
@@ -1990,11 +1989,7 @@ propertiesModule.factory('Properties', function () {
                 }
             });
 
-            _.each(this.iterable_properties, function (iterable) {
-                iterable.inModel = model.hasIterable(iterable.name);
-            });
-
-            /* Add key_values that are only in the model */
+            // Add key_values that are only in the model
             _(model.key_value_properties).filter(function (model_key_value) {
                 return !me.hasKey(model_key_value.name);
             }).each(function (model_key_value) {
@@ -2008,6 +2003,11 @@ propertiesModule.factory('Properties', function () {
                     defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : "",
                     pattern: (model_key_value.pattern) ? model_key_value.pattern : ""
                 });
+            });
+
+            // Add iterable property that are only in the model
+            _.each(this.iterable_properties, function (iterable) {
+                iterable.inModel = !_.isUndefined(_(model.iterable_properties).find({name: iterable.name}));
             });
 
             /**
