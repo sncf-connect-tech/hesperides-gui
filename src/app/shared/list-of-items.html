@@ -31,6 +31,7 @@
             <md-button class="md-warn md-xs"
                        ng-really-message="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
                        aria-label="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
+                       ng-click="$event.stopPropagation();"
                        ng-really-click="selfDelete(item)"
                        ng-mouseenter="hover = true"
                        ng-mouseleave="hover = false"
