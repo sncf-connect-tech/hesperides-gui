@@ -116,9 +116,7 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
 
             return $http.get(url).then(function (response) {
 
-                response.data.sort(function(a, b) {
-                    return a.location.localeCompare(b.location);
-                });
+                response.data = _.sortBy(response.data, ["location"]);
 
                 return response.data.map(function (data) {
                     var entry = new FileEntry(data);

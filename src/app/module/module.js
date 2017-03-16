@@ -156,9 +156,9 @@ applicationModule.controller('ModuleCtrl', [
     
     $scope.open_techno_page = function (name, version, is_working_copy) {
         if(is_working_copy) {
-            $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
+            window.open('/#/techno/' + name + '/' + version + $.param({type : "workingcopy"}), "_blank");
         } else {
-            $location.path('/techno/' + name + '/' + version).search({});
+            window.open('/#/techno/' + name + '/' + version, "_blank");
         }
     };
 
