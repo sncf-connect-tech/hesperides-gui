@@ -4,7 +4,13 @@ services:
     image: "elasticsearch:1.7" 
     command: "elasticsearch -Dcluster.name=hesperides" 
   redis: 
-    image: "redis" 
+    image: "redis"
+    ports:
+      - "6379:6379"
+  rediscache: 
+    image: "redis"
+    ports:
+      - "56379:6379"      
   hesperides: 
     image: "hesperides/hesperides"
     ports: 
@@ -16,3 +22,4 @@ services:
     depends_on:
           - elasticsearch
           - redis
+          - rediscache

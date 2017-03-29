@@ -1,6 +1,31 @@
 ---
 backendVersion: 1.0.0
 apiVersion: 1.0.0
+cacheConfiguration:
+  redisConfiguration:
+    type: REDIS
+    host: rediscache
+    port: 6379
+    retry: 5
+    waitBeforeRetryMs: 20000
+    timeout: 20000
+  nbEventBeforePersiste: 100
+  generateCaheOnStartup: false
+  platformTimeline:
+    maxSize: 100
+    itemExpireAfter: 10m
+    #weight: -1
+  module:
+    maxSize: 100
+    itemExpireAfter: 5m
+  templatePackage:
+    maxSize: 100
+    #weight: -1
+    itemExpireAfter: 5m
+  platform:
+    maxSize: 100
+    itemExpireAfter: 5m
+    #weight: not valid
 elasticSearchConfiguration:
   host: elasticsearch
   port: 9200
@@ -16,15 +41,6 @@ redisConfiguration:
   waitBeforeRetryMs: 20000
 authenticatorType: none
 useDefaultUserWhenAuthentFails: true
-ldapConfiguration:
-  uri: ldap://titi.rominet.com:389
-  adDomain: groupevsc
-  connectTimeout: 1000ms
-  readTimeout: 1000ms
-  userNameAttribute: sAMAccountName
-  userSearchBase: dc=DC_ME,dc=LOL
-  roleSearchBase: ou=YOUR_ORGANIZATION,dc=YOUR_DC,dc=YOUR_DC2
-  prodGroupName: PROD_GROUP_NAME
 server:
   type: simple
   applicationContextPath: /
