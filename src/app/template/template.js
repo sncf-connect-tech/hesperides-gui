@@ -154,11 +154,10 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
             modalScope.$close = function(template) {
                 modalScope.save(template).then(function(savedTemplate){
                     modalScope.template = savedTemplate;
+                    $mdDialog.cancel();
                 }).catch(function() {
-                    // Do nothing to prevent closing window if error with annotation
+                    // Do not close window if error
                 });
-
-                $mdDialog.cancel();
             };
 
             modalScope.$save = function(template){
