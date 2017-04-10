@@ -1402,6 +1402,7 @@ select {
 .cards-section .item-yellow .icon {
   color: #F5D76E;
 }
+
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {
   .cards-section .item-inner {
@@ -1422,4 +1423,46 @@ div.table-glossary {
 
 .doc-content img {
   margin: 10px 0;
+}
+
+/**
+ * Theme for Under the shell page
+ */
+.blue2-color, .body-blue2 .branding .text-highlight {
+  color: #6193BD;
+}
+.body-blue2 .doc-sub-menu > li > a:hover {
+  color: #6193BD;
+}
+.body-blue2 .doc-sub-menu > li.active > a {
+  color: #6193BD;
+}
+.body-blue2 .branding .icon {
+  color: #6193BD;
+}
+.body-blue2 .doc-header .doc-title {
+  color: #6193BD;
+}
+.body-blue2 .header {
+  border-color: #6193BD;
+}
+.body-blue2 a {
+  color: #6193BD;
+}
+.body-blue2 .doc-menu > li > a:hover,
+.body-blue2 .doc-menu > li > a:focus {
+  color: #6193BD;
+}
+.body-blue2 .doc-menu > li.active > a {
+  color: #6193BD;
+  border-color: #6193BD;
+}
+.cards-section .item-blue2 .item-inner {
+  border-top: 3px solid #6193BD;
+}
+.cards-section .item-blue2 .item-inner:hover .title {
+  color: #3E5D77;
+}
+.cards-section .item-blue2 .icon {
+  color: #6193BD;
 }

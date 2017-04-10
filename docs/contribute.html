@@ -444,6 +444,110 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
                                     </div><!--//section-block-->
                                 </div>
                             </section><!--//doc-section-->
+							
+							
+							<section id="cache-and-snapshot-section" class="doc-section">
+                                <h2 class="section-title">Cache and snapshot system</h2>
+                                <div id="cache-and-snapshot-implementation" class="section-block">
+                                    <h3 class="block-title">Implementation</h3>
+                                    <p>Hesperides use <a href="https://github.com/google/guava">Guava cache</a>.</p>
+									<p>Caches are implemented in their class :
+                                       <ul>
+									     <li>ModuleRegistry,</li>
+                                         <li>PlatformRegistry,</li>
+                                         <li>TemplatePackageRegistry.</li>
+									  </ul>
+									</p>
+
+                                    <p>Cache creation are done by <code>HesperidesCacheBuilder</code> class. <code>HesperidesCacheBuilder</code> class allow to get a standard configuration in YAML Hesperides file.</p>
+                                    <p>For each cache, you can specify a size and a TTL</p>
+                                    <pre><code class="language-yaml">cacheConfiguration:
+  redisConfiguration:
+    type: REDIS
+    host: 127.0.0.1
+    port: 6379
+    retry: 5
+    waitBeforeRetryMs: 20000
+ nbEventBeforePersiste: 5
+ templatePackage:
+    maxSize: 100
+    #weight: -1
+  module:
+    maxSize: 100
+    #weight: not valid
+  platform:
+    maxSize: 100
+    #weight: not valid
+  platformTimeline:
+    maxSize: 100
+    itemExpireAfter: 10m
+    #weight: not valid</code></pre>
+								  <div class="callout-block callout-warning">
+								    <div class="icon-holder">
+									  <i class="fa fa-exclamation-triangle"></i>
+								    </div><!--//icon-holder-->
+								    <div class="content">
+									  <h4 class="callout-title">Not supported</h4>
+									  <p>Platform cache and Module cache do not support weight parameter because they are a simple objet and not a list.</p>
+								    </div><!--//content-->
+								  </div>
+								  
+								  <p>To their cache, a loader is associate :
+								    <ul>
+									  <li><code>TemplatePackageCacheLoader</code>,</li>
+									  <li><code>PropertiesTimelineCacheLoader</code>,</li>
+									  <li><code>PropertiesCacheLoader</code>,</li>
+                                      <li><code>ModuleCacheLoader</code>.</li>
+									</ul>
+									</p><p>
+									Their loader class load item. To do that, their use a event reconstructor :
+									<ul>
+									  <li><code>VirtualApplicationsAggregate</code> (+ <code>VirtualPlatformRegistry</code>),</li>
+									  <li><code>VirtualModulesAggregate</code> (+ <code>VirtualModuleRegistry</code> and <code>VirtualTemplateRegistry</code>),</li>
+                                      <li><code>VirtualTemplatePackagesAggregate</code> (+ <code>VirtualTemplateRegistry</code>).</li>
+									</ul>
+								  </p>
+								  <p><code>Virtual*</code> class simulate non virtual class (same name class without virtual) to replay all events.</p>
+								  <p><code>Virtual*</code> class don't write in database !</p>
+
+                                  <p>This is the class diagram :
+									<img class="img-responsive" src="assets/images/cache_hesperides.png"/>
+								  </p>
+								  
+								  <p><code>*Registry</code> class have guava cache and use <code>*CacheLoader</code> to load missing item in cache.</p>
+                                  <p><code>*CacheLoader</code> read events from database and replay it.</p>
+                                  <p>Their events are cached by <code>Virtual*</code> class to rebuild item. When done, item store in Guava cache.</p>
+                                </div>
+								
+								<div id="snaphost-system" class="section-block">
+									<h2 class="section-title">Snapshot system</h2>
+									
+									<p>Because, to get final state of item (Hesperides must be replay all events) a snapshot is take regularly to increase boot start time.</p>
+									
+									<p>When we create a platform, we create a associate snapshot (with 1 event).</p>
+	 
+									<p>Then, when we update platform, a new snapshot is create if more than X event (<code>nbEventBeforePersiste</code> in configuration file) are store since last snaphost.</p>
+
+									<p>Whe a platform already exists, Hesperides check if platform is in memory cache (Guava). If not, Hesperides load last snapshot and replay just last event that stored after snapshot.</p>
+
+									<p>If no snasphot found in database (when new system is actived), Hesperides replay all events from scratch and create snaphosts.
+
+									<p>Release version of template package and module have no snapshot cause, their contain only one event.</p>
+									
+									<div class="callout-block callout-success">
+                                        <div class="icon-holder">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Auto regeneration system :</h4>
+                                            <p>If number of event in database is less than the last snapshot. Hesperides drop snapshot and regenerate all.</p>
+                                        </div><!--//content-->
+                                    </div><!--//section-block-->
+
+								</div>
+                            </section><!--//doc-section-->
+							
+							
                             <section id="index-section" class="doc-section">
                                 <h2 class="section-title">Indexation</h2>
                                 <div class="section-block">
@@ -503,6 +607,13 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
                                     <ul class="nav doc-sub-menu">
                                         <li><a class="scrollto" href="#model-valuation-overview">Overview</a></li>
                                         <li><a class="scrollto" href="#model-valuation-example">Example</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+								<li>
+                                    <a class="scrollto" href="#cache-and-snapshot-section">Cache and snapshot system</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#cache-and-snapshot-implementation">Implementation</a></li>
+                                        <li><a class="scrollto" href="#snaphost-system">Snapshot system</a></li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
