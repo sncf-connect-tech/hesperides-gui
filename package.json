@@ -22,7 +22,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-verbose-reporter": "0.0.3",
-    "protractor": "~4.0.3",
+    "protractor": "~5.1.1",
     "protractor-jasmine2-html-reporter": "~0.0.6",
     "restling": "~0.9.1",
     "shelljs": "^0.2.6"
