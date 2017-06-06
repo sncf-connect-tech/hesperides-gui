@@ -1427,11 +1427,13 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.platform_name = $routeParams.platform;
     $scope.properties_path = $routeParams.properties_path;
     $scope.splited_properties_path = $routeParams.properties_path.split('#');
+    $scope.splited_properties_path_last_pos = $scope.splited_properties_path.length - 1;;
     $scope.module = "";
     $scope.compare_application = $routeParams.compare_application;
     $scope.compare_platform = $routeParams.compare_platform;
     $scope.compare_path = $routeParams.compare_path;
     $scope.compare_splited_path = $routeParams.compare_path.split('#');
+    $scope.compare_splited_path_last_pos = $scope.compare_splited_path.length - 1;
     $scope.compare_module = "";
 
     $scope.origin_timestamp = $routeParams.origin_timestamp;
@@ -1448,15 +1450,15 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.propertiesKeyFilter3 = "";
 
     $scope.module = {
-        "name": $scope.splited_properties_path[3],
-        "version": $scope.splited_properties_path[4],
-        "is_working_copy": $scope.splited_properties_path[5] == "WORKINGCOPY" ? true : false
+        "name": $scope.splited_properties_path[$scope.splited_properties_path_last_pos-2],
+        "version": $scope.splited_properties_path[$scope.splited_properties_path_last_pos-1],
+        "is_working_copy": $scope.splited_properties_path[$scope.splited_properties_path_last_pos] == "WORKINGCOPY" ? true : false
     }
 
     $scope.compare_module = {
-        "name": $scope.compare_splited_path[3],
-        "version": $scope.compare_splited_path[4],
-        "is_working_copy": $scope.compare_splited_path[5] == "WORKINGCOPY" ? true : false
+        "name": $scope.compare_splited_path[$scope.compare_splited_path_last_pos-2],
+        "version": $scope.compare_splited_path[$scope.compare_splited_path_last_pos-1],
+        "is_working_copy": $scope.compare_splited_path[$scope.compare_splited_path_last_pos] == "WORKINGCOPY" ? true : false
     };
 
     //Get the platform to get the version id
