@@ -322,7 +322,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                                                                   $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
 
             if (_.some(response, {"name" :  $scope.new_platform.platform_name})) {
-                ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, undefined, true).then(function (response) {
+                ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, undefined, true).then(function () {
                     $scope.new_platform_already_exist = true;
                 }, function () {
                     $scope.new_platform_already_exist = false;

@@ -257,10 +257,10 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             var me = this;
             me.unsecured = unsecured;
 
-            return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
+            return $http.get('rest/applications/' + encodeURIComponent(name) + '?hide_platform=true').then(function (response) {
                 current_platform = _.find(response.data.platforms, { 'platform_name': $location.search().platform});
                 store.set('current_platform_versionID', current_platform != undefined ? current_platform.version_id : '');
-                return new Application(response.data);;
+                return new Application(response.data);
             }, function (error) {
                 if (!me.unsecured) {
                     $.notify(error.data.message, "error");

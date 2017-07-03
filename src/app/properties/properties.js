@@ -142,9 +142,51 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q) {
     Page.setTitle("Properties");
+
+        var loadPlatform = function(ApplicationService, application_name, platform_name) {
+            return $q(function(resolve, reject) {
+                /* Get the application */
+                ApplicationService
+                        .get(application_name)
+                        .then(function (application) {
+                            /* If platform was mentionned in the route, try to find it */
+                            /* If it does not exist show error */
+                            var platform;
+
+                            if (platform_name) {
+                                platform = _.find(application.platforms, function (platform) {
+                                    return platform.name === platform_name;
+                                });
+                            } else {
+                                platform = null;
+                            }
+
+                            return {
+                                application: application,
+                                platform: platform
+                            };
+                        }).then(function (selected_platform) {
+                    if (_.isUndefined(selected_platform.platform)) {
+                        reject('Selected platform not found !');
+                    } else if (selected_platform.platform === null) {
+                        resolve({
+                            application: selected_platform.application,
+                            platform: null
+                        });
+                    } else {
+                        ApplicationService.get_platform(selected_platform.platform.application_name, selected_platform.platform.name).then(function (platform) {
+                            resolve({
+                                application: selected_platform.application,
+                                platform: platform
+                            });
+                        });
+                    }
+                });
+            });
+        }
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
@@ -500,7 +542,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
            if ( !_.isUndefined(application_name)){
                ApplicationService.get(application_name, true).then(function (application){
                    modalScope.target_platforms = application.platforms;
-               }, function (error){
+               }, function (){
                    modalScope.target_platforms = [];
                });
            }else {
@@ -586,7 +628,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             if ( !_.isUndefined(application_name)){
                 ApplicationService.get(application_name).then(function (application){
                     modalScope.target_platforms = application.platforms;
-                }, function (error){
+                }, function (){
                     modalScope.target_platforms = [];
                 });
             }else {
@@ -951,17 +993,18 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.on_edit_platform = function (platform) {
-        //http://hesperides:51100
         $scope.$broadcast('quickHideInstanceDetails', {});
         $scope.quickOpen = false;
         $location.url('/properties/' + platform.application_name + '?platform=' + platform.name);
 
-        $scope.platform = platform;
-        $scope.selected_module = undefined;
-        $scope.instance = undefined;
-        $scope.properties = undefined;
-        $scope.update_main_box(platform);
-        store.set('current_platform_versionID', platform.version_id);
+        ApplicationService.get_platform(platform.application_name, platform.name).then(function (searchPlatform) {
+            $scope.platform = searchPlatform;
+            $scope.selected_module = undefined;
+            $scope.instance = undefined;
+            $scope.properties = undefined;
+            $scope.update_main_box(searchPlatform);
+            store.set('current_platform_versionID', searchPlatform.version_id);
+        });
     };
 
     /**
@@ -1356,26 +1399,22 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }
     }
 
-    /* Get the application */
-    ApplicationService.get($routeParams.application).then(function (application) {
-        $scope.application = application;
-        $scope.platforms = application.platforms;
-        /* If platform was mentionned in the route, try to find it */
-        /* If it does not exist show error */
-        if ($routeParams.platform) {
-            var selected_platform = _.find($scope.platforms, function (platform) {
-                return platform.name === $routeParams.platform;
-            });
-            if (_.isUndefined(selected_platform)) {
+    loadPlatform(ApplicationService, $routeParams.application, $routeParams.platform)
+            .then(function(result) {
+                $scope.application = result.application;
+                $scope.platforms = result.application.platforms;
+
+                if ($routeParams.platform) {
+                    // In thins case, platform field is null
+                    $scope.platform = result.platform;
+                    $scope.update_main_box(result.platform);
+                }
+            })
+            .catch(function() {
                 $translate('properties.event.notExist.error').then(function(label) {
                     $.notify(label, "error");
                 });
-            } else {
-                $scope.platform = selected_platform;
-                $scope.update_main_box(selected_platform);
-            }
-        }
-    });
+            });
 }]);
 
 /**
@@ -1385,7 +1424,7 @@ propertiesModule.directive('boxProperties', function ($timeout){
     return {
         restrict : 'E',
         templateUrl: 'application/box_properties.html',
-        link: function ($scope, element, attrs, ctrl){
+        link: function (){
             $timeout(function (){
                 $("#loading").hide();
                 }, 0);
