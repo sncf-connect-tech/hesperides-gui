@@ -42,7 +42,11 @@
     <md-content layout="column" class="height-500px">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
         <md-virtual-repeat-container id="vertical-container" class="height-500px ">
-            <div md-virtual-repeat="key_value_property in instance.key_values | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | displayProperties:displayDeletedProperties | orderBy:'name':order"
+            <div md-virtual-repeat="key_value_property in instance.key_values
+                | hideHesperidesPredefinedProperties
+                | displayUnspecifiedProperties:displayUnspecified
+                | displayProperties:displayDeletedProperties
+                | orderBy:'name':order"
                  class="repeated-item height-20px " flex >
                 <!-- Non Global Properties -->
                 <div layout="row"

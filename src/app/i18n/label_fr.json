@@ -152,6 +152,7 @@
   "properties.filter.byValue": "Filtrer par valeur (ne filtre que les valeurs enregistrées)",
   "properties.sort.switch": "Tri des propriétés",
   "properties.unspecifiedValues.switch": "Afficher les propriétés non renseignées",
+  "properties.globalPropertiesValues.switch": "Afficher les globales",
   "properties.deletedOnes.switch": "Afficher les propriétés supprimées",
   "properties.logicGroup.add": "Ajouter un groupe logique",
   "properties.logicGroup.add.name": "Nom",

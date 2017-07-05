@@ -2697,12 +2697,60 @@ propertiesModule.directive('toggleSortProperties', function (){
 });
 
 /**
+ * This directive is for filtering only the no global properties.
+ */
+propertiesModule.directive('toggleGlobalProperties', function ($filter) {
+    return {
+        restrict: 'E',
+        scope: {
+            keyValueProperties: '=',
+            toggle: '='
+        },
+        template: '<md-switch id="toggle-global-properties_switch" class="md-primary md-block" ' +
+        'ng-model="toggle"' +
+        'ng-disabled="(getNumberOfGlobalProperties(keyValueProperties) <= 0)" ' +
+        'aria-label="{{ \'properties.globalPropertiesValues.switch\' | translate }}">' +
+        '{{ \'properties.globalPropertiesValues.switch\' | translate }} ({{ getNumberOfGlobalProperties(keyValueProperties) }})' +
+        '</md-switch>',
+        controller: ['$scope', '$filter', function ($scope, $filter) {
+            /**
+             * This calculate the number of global properties.
+             */
+            $scope.getNumberOfGlobalProperties = function (tab) {
+                var count = 0;
+
+                tab = $filter('displayGlobalProperties')(tab, true);
+
+                if (tab) {
+                    _.each(tab, function (item) {
+                       item.inGlobal ? count++ : false;
+                    });
+                }
+
+                return count;
+            };
+        }]
+    }
+});
+
+/**
  * Display only the 'empty' properties
  */
 propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
         return _.filter(items, function(item) {
             return _.isUndefined(display) || !display || !item.filtrable_value && _.isEmpty(item.defaultValue) || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
+        });
+    };
+});
+
+/**
+ * Display only the not globals properties
+ */
+propertiesModule.filter('displayGlobalProperties', function () {
+    return function (items, display) {
+        return _.filter(items, function(item) {
+            return display || !display && !item.inGlobal;
         });
     };
 });

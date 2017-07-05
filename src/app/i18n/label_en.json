@@ -152,6 +152,7 @@
   "properties.filter.byValue": "Filter properties by value (filters only on saved values)",
   "properties.sort.switch": "Sort properties",
   "properties.unspecifiedValues.switch": "Show unfilled properties",
+  "properties.globalPropertiesValues.switch": "Show global properties",
   "properties.deletedOnes.switch": "Show deleted properties",
   "properties.logicGroup.add": "Add a logic group",
   "properties.logicGroup.add.name": "Name",
