@@ -110,18 +110,21 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
 
     $rootScope.setHesperidesConfiguration = function () {
 
-        if (hesperidesConfiguration == undefined) {
+        if (hesperidesConfiguration === undefined) {
             console.warn("[Hesperides] Config file not found or empty, applying default configuration");
             hesperidesConfiguration = {};
         }
 
-        if (hesperidesConfiguration.nexusMode == undefined) {
+        if (hesperidesConfiguration.documentationLink === undefined) {
+            hesperidesConfiguration.documentationLink = "https://voyages-sncf-technologies.github.io/hesperides-gui/";
+        }
+        if (hesperidesConfiguration.nexusMode === undefined) {
             hesperidesConfiguration.nexusMode = false;
         }
-        if (hesperidesConfiguration.localChangesTTL == undefined) {
+        if (hesperidesConfiguration.localChangesTTL === undefined) {
             hesperidesConfiguration.localChangesTTL = 50;
         }
-        if (hesperidesConfiguration.feedbackRoomName == undefined) {
+        if (hesperidesConfiguration.feedbackRoomName === undefined) {
             hesperidesConfiguration.feedbackRoomName = "";
         }
     }
