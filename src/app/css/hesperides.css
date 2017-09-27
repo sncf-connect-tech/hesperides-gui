@@ -767,6 +767,9 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     height: 31px;
 }
 
+#nameInput {
+    min-width: 320px; }
+
 /******************************************************************************
  * Platform/Properties
  */
