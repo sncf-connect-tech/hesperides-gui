@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model']);
+var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model','hesperides.module']);
 
 technoModule.controller('TechnoCtrl',
     ['$scope', '$location', '$mdDialog', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', 'FileService', '$translate',
@@ -48,6 +48,9 @@ technoModule.controller('TechnoCtrl',
         TechnoService.get_model($scope.techno.name, $scope.techno.version, $scope.techno.is_working_copy).then(function(model){
             $scope.model = model;
         });
+        TechnoService.get_modules($scope.techno).then(function (modules) {
+            $scope.modules = modules;
+        })
     };
 
     $scope.refreshModel();
@@ -209,8 +212,8 @@ technoModule.factory('Techno', function () {
 });
 
 technoModule.factory('TechnoService',
-    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService','$translate',
-     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate) {
+    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService', '$translate', 'Module',
+     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate, Module) {
 
     return {
         get_model: function (name, version, isWorkingCopy){
@@ -297,7 +300,7 @@ technoModule.factory('TechnoService',
                 }, function (error) {
                     if (error.status === 409) {
                         $translate('template.event.error').then(function(label) {
-                            $.notify(label, "error");                            
+                            $.notify(label, "error");
                         })
                     } else {
                         $.notify(error.data.message, "error");
@@ -345,7 +348,7 @@ technoModule.factory('TechnoService',
             return $http.post('rest/templates/packages?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy, {name:encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy:true}).then(function (response) {
                 if (response.status === 201) {
                     $translate('workingCopy.event.created').then(function(label) {
-                        $.notify(label, "success");                        
+                        $.notify(label, "success");
                     })
                 } else {
                     $.notify(response.data, "warning");
@@ -369,6 +372,18 @@ technoModule.factory('TechnoService',
                     return deferred.promise;
                 }
             }
+        },
+        get_modules: function(techno){
+            console.log('fire in the hole',techno);
+            return $http.get('rest/modules/using_techno/' + encodeURIComponent(techno.name) + '/' + encodeURIComponent(techno.version) + '/' +  (techno.is_working_copy ? "workingcopy" : "release")).then(function(response){
+                    console.log('response',response)
+                    return response.data.map(function(current){
+                        console.log('there too',current);
+                        return new Module(current);
+                    }, function(){
+                        return new Module([]);
+                    });
+                });
         }
     }
 
