@@ -72,8 +72,7 @@
                     md-autoselect="true"
                     md-autofocus="true"
                     placeholder="{{ 'placeholder.search' | translate }}">
-                <span md-highlight-text="ctrl.searchText" ng-show="!techno.is_working_copy">{{techno.name}} {{techno.version}} </span>
-                <span md-highlight-text="ctrl.searchText" ng-show="techno.is_working_copy">{{techno.name}} {{techno.version}} (working copy)</span>
+                <span md-highlight-text="ctrl.searchText">{{techno.title}} </span>
                 <md-not-found>
                     {{ 'message.emptyResult' | translate }}
                 </md-not-found>
