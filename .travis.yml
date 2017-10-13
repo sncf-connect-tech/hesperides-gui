@@ -1,9 +1,20 @@
 language: node_js
+
 node_js:
   - 4.2.4
 
 addons:
   firefox: "50.0"
+
+service:
+  - docker
+
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::8}
+    - secure: "WpwfAKgZbvDkC28ufKDECWrR/1uZRH8pikdrQoowmZDBnTGRNP6KojhjqiCoPyJaKP9rM+Tjptn8kcp4nDbFOf+ru/gMTKuRQxAvn9AA85aauYbJbx5HhzUjiLepHF6JHIFaFA5Vc8F0SfD7RbGjFoUzUkT3cL0uT/E2zyLAMrpVBiJHPIjHzl1oby6pksoG4rg1M8tPOJ65gCCZTeSv93L5ROAGcoV7tBWJFf8GuR0UGXDSX3Nn0F0IUzMzdPJk6ScDtO1TcIh6BMGSjOtgfZraK/yEV1dK8HNLcRPVnD9RT6G9EscWpHLXYz8k1BdQf5xPJUHP5ftS/oq9FdmA2om0LH6IpIsnh6RRZGfSRuEaczGQqHkYLHStt/woGOmC7r//Feb3uAculalrpFRrVkY7HKMhPNPSSgSAYVpwCywaZK+2gU4n2N0D8RklKGPzr4Vzqij051EDl6CTJdLPj1ajjqgf1OLt4IP18s0/gt0TxeCCugqLIfnRPYBtF9LpxHQaeO5FMT+A2S561mq4jg47DYJeFPl5gB5Coa9Q8prvEI8YPqzHNEb9O0rq29gPYx1MVTK2MxgHMNwD0Id+6mjbB3oYIAog/5NIa1pCQNMbXPSdVeEq1gwqjmV0QzKKzLUfkKkc82ta15hXBOHtklcVwCvFaif/Oh2L3MHLm3I=" # DOCKER_EMAIL
+    - secure: "UA1krl/tieJFGBuksGADyRNw1CMsj78AOLnwr1oZsPmN1iC91uzApnKq6g+xYfJurN3leIAtw1SsRoGbmxUzI3nH2aH5gZJWvUkRgtUCd5GbLCzYGA5BwV7G9GSbLPsO3z95fmAIwRXICM7iYSzl+VfP9r7RbNjzCIPzKEZ/Yx/WKkN5HKSUbFa96muhGZ+ULak/ikNMshGzg1zX+A7Q02QdyQeSn4GNLA1AJd//HOX5cUJgtKUZktkL+9WzTeIKnaVppI4ulK82KlNLZ+ez6Y7hmlMbiIzEx9faTHI/li5NeaToYB7XaGFM20VR7jNNYoFuAbt5fLaAZ6PPD6rQSrkc3nO1ggWNUDHbEgG3Oscqe3lEBqYrwHYzgx7yy1ghZIMN9hYw7PcHacM42hl/GRZaxgxtBxX3ijeHp69WzE/9ZtudlTUw1dIOg8J9vAGwjKEJaCSgorik5rTZZ/F1Y81EgYJo90lFrfmthhAUCogOTlMOEYn3x0kbuXk+6rnQfBttFDbgxzb5F1sSRX+jDz3ktYRkRJp8PF1XZkozpXdklTJh/1vgRhJN91t/E1/0tWj6bq6VkIn9wS2/5i4tytxVmHCw4K9wWejUnpBAuvh5GQ5G3G+a5UtSu5sOnLVvPTqFkNwSbuc37rxMm61/ChmYV8UFdTUV6eEi5OEjg+s=" # DOCKER_USER
+    - secure: "Aem/fFHQ62DolH6MJuRMCrP69tN5Dl3wpn1pxCD30W5YX/DDBxD9CQsMD550TUMSW8JHZ/Ku1q01ANwS5hZMXfEQT6aQy0xTgI2POdMR69Xm7H3jTHEMv8VVQarILvCB9VZI3TGuDfAEyCICov8y2o3g1X2sSu5rlIFal9JcyCi2FEnrACSlilXfpMjZHAvQx08vtPQZQX74OuLmGkQo6RtVqF97EKE88HJyNtX/V0/ha01z4r7nng4lxAByIx+QZIZcxqtIzrYhKOXB1puRrMGOlptIS5hBB7pX94Hdw5yPQTvmzuuOLWazez6WRDhiyjJmSjiB4juvWBejMb5FHmC+96g+Hv11yYS2Sl73aFOwR6yV3kIhujc0hoW2286CRkZmcV54SBcmjAyqcJCSFLRmEYwx430rWbTUlpX/DWlrVKIutsq5sRdZlGrhhXSs7qxDlQD2+GDcWIkgTxg5F+nAKWxjB2if1ckRf9j4oK+tDz9qtT7AMbEo9BgTcjBwuvdQX+1KfocGYxB0hI7VcgQFuzpyob0/SxuS1ASc3Rjz2b2Srbw9EsDBl/jdkMl8uq38pnNnnUB4pfBTO3RT6emr5Rw7C8Z+nIE+XeUsHyVc5kUyoItj3tXHVGCrrMrTBSrDGZY2a3RuprEKIzR46fLndJnOkMkaqcFuiuDxWCE=" # DOCKER_PASS
 
 before_script:
   - export DISPLAY=:99.0
@@ -17,3 +28,11 @@ before_script:
 script:
   - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run
   #- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
+  - export IMAGE=hesperides/hesperides-gui
+  - docker build -t $IMAGE:$COMMIT .
+  - docker tag $IMAGE:$COMMIT $IMAGE:$TAG
+  - docker push $IMAGE:$TAG
