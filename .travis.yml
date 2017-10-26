@@ -31,7 +31,7 @@ script:
 
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH | sed -e 's/\//-/g' -e 's/\#//g' ; fi`
   - export IMAGE=hesperides/hesperides-gui
   - docker build -t $IMAGE:$COMMIT .
   - docker tag $IMAGE:$COMMIT $IMAGE:$TAG
