@@ -113,7 +113,51 @@
                                         </div><!--//content-->
                                     </div><!--//section-block-->
                                 </div><!--//section-block-->
-                            </section><!--//doc-section-->   
+                            </section><!--//doc-section-->
+                            <section id="ecosystem" class="doc-section">
+                                <h2 class="section-title">Ecosystem</h2>
+                                <div id="ecosystem-jenkins-pipelines" class="section-block">
+                                    <h3 class="block-title">Jenkins pipelines</h3>
+                                    <p>If you need to instrument Hesperides from Jenkins pipelines, a <a href="https://jenkins.io/doc/book/pipeline/shared-libraries/">Groovy shared libray</a> is available for you on Github: <a href="https://github.com/voyages-sncf-technologies/hesperides-jenkins-lib">voyages-sncf-technologies/hesperides-jenkins-lib</a>.</p>
+                                    <img class="img-responsive"  src="assets/images/hesperides-jenkins-lib-logo.png" alt="Logo hesperides-jenkins-lib">
+                                    <p>Here is an example of <code>Jenkinsfile</code> that uses it:</p>
+                                    <pre><code class="language-groovy">API_ROOT_URL = 'https://hesperides.mycompany.com'
+
+node {
+
+    withCredentials([[$class: 'UsernamePasswordBinding',
+                      credentialsId: 'HesperidesCredentials',
+                      variable: 'auth']]) {
+
+        stage('Releasing module demoKatana-war') {
+            hesperides.releaseModule(apiRootUrl: API_ROOT_URL,
+                                     auth: auth,
+                                     moduleName: 'demoKatana-war',
+                                     workingcopyVersion: '1.0.0',
+                                     releaseVersion: '1.0.0')
+        }
+
+        stage('Setting modules version on platform USN1') {
+            hesperides.setPlatformModulesVersion(apiRootUrl: API_ROOT_URL,
+                                                 auth: auth,
+                                                 app:'KTN',
+                                                 platform:'USN1',
+                                                 currentVersion:'1.0.0',
+                                                 newVersion:'1.0.0')
+        }
+
+        stage('Updating properties of platform USN1 from a JSON file') {
+            hesperides.updateProperties(apiRootUrl: API_ROOT_URL,
+                                        auth: auth,
+                                        app: 'KTN',
+                                        platform: 'USN1',
+                                        jsonPropertyUpdates: 'http://gitlab.mycompany.com/KTN-USN1.json',
+                                        commitMsg: 'vsct-hesperides-api tests from Jenkinsfile')
+        }
+    }
+}</code></pre>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
                             <section id="tips" class="doc-section">
                                 <h2 class="section-title">Tips</h2>
                                 <div id="tip-autocomplete"  class="section-block">
@@ -217,7 +261,6 @@
                                     </ul>
                                 </div><!--//section-block-->
                             </section><!--//doc-section-->
-
                         </div><!--//content-inner-->
                     </div><!--//doc-content-->
                     <div class="doc-sidebar hidden-xs">
@@ -230,6 +273,12 @@
                                         <li><a class="scrollto" href="#best-practice-techno-module">Module and techno</a></li>
                                         <li><a class="scrollto" href="#best-practice-templates">Templates size</a></li>
                                         <li><a class="scrollto" href="#best-practice-user-settings">User settings</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#ecosystem">Ecosystem</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#ecosystem-jenkins-pipelines">Jenkins pipelines</a></li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
