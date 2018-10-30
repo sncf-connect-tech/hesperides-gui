@@ -1,3 +1,10 @@
+[![](https://travis-ci.org/voyages-sncf-technologies/hesperides-gui.svg?branch=feature/springboot)](https://travis-ci.org/voyages-sncf-technologies/hesperides-gui)
+
+[![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+[![](https://img.shields.io/github/issues/voyages-sncf-technologies/hesperides-gui.svg)](https://github.com/voyages-sncf-technologies/hesperides-gui/issues)
+[![](https://img.shields.io/github/contributors/voyages-sncf-technologies/hesperides-gui.svg)](https://img.shields.io/github/contributors/voyages-sncf-technologies/hesperides-gui.svg)
+[![](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 Hesperides-gui
 ========
 
