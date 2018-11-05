@@ -374,6 +374,10 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         });
      };
 
+     $scope.display_hesperides_documentation = function() {
+         window.open(hesperidesConfiguration.documentationLink);
+     };
+
     $scope.display_hesperides_informations = function(){
 
         $scope.front_version = '${project.version}';
