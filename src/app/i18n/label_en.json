@@ -52,7 +52,7 @@
   "properties.event.savedByUser": "has updated the values of the module",
   "properties.event.savedGlobalByUser": "has updated global properties of the module",
   "properties.event.saved": "The properties have been saved",
-  "properties.event.error": "Saving is not possible. At least one property does not respect @required and/or @pattern annotations",
+  "properties.event.error": "Updating a production platform is reserved to production role",
   "properties.event.notExist.error": "The technical brick mentioned into the url does not exist",
   "nexus.event.error": "Error when trying to get the delivery note : {{error}}",
   "techno.all.title": "All the technos",
