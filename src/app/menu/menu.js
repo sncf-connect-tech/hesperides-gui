@@ -346,6 +346,8 @@ menuModule.directive('disableEditing', function(){
 });
 
 menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', '$translate', 'PlatformColorService', '$parse', 'ApplicationService', function($scope, $mdDialog, $http, hesperidesGlobals, $translate, PlatformColorService, $parse, ApplicationService){
+    $scope.config = hesperidesConfiguration;
+
     $scope.closeDialog = function() {
         $mdDialog.cancel();
     };
@@ -473,7 +475,6 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         });
 
     };
-
 
     $scope.display_swagger = function() {
         window.open('/swagger.html');

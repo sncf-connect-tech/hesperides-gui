@@ -32,7 +32,6 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.components',
     'hesperides.user',
     'hesperides.localChanges',
-    'hesperides.feedback',
     'ngMaterial',
     'ngAnimate',
     'xeditable',
@@ -41,7 +40,6 @@ var hesperidesModule = angular.module('hesperides', [
     'vs-repeat',
     'scDateTime',
     'angularjs-datetime-picker',
-    'angular-send-feedback',
     'pascalprecht.translate',
     'ngCookies'
 ]).value('scDateTimeConfig', {
@@ -109,12 +107,6 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
     };
 
     $rootScope.setHesperidesConfiguration = function () {
-
-        if (hesperidesConfiguration === undefined) {
-            console.warn("[Hesperides] Config file not found or empty, applying default configuration");
-            hesperidesConfiguration = {};
-        }
-
         if (hesperidesConfiguration.documentationLink === undefined) {
             hesperidesConfiguration.documentationLink = "https://voyages-sncf-technologies.github.io/hesperides-gui/";
         }
@@ -124,11 +116,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         if (hesperidesConfiguration.localChangesTTL === undefined) {
             hesperidesConfiguration.localChangesTTL = 50;
         }
-        if (hesperidesConfiguration.feedbackRoomName === undefined) {
-            hesperidesConfiguration.feedbackRoomName = "";
-        }
-    }
-
+    };
 
     $http({
         method: 'GET',
@@ -146,7 +134,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         hesperidesConfiguration = data.data;
         $rootScope.setHesperidesConfiguration();
     }, function error (response) {
-        console.warn("[Hesperides] " + response);
+        console.warn("[Hesperides] Config file not found or empty, applying default configuration");
         $rootScope.setHesperidesConfiguration();
     });
 });
