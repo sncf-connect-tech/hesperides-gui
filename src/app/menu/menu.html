@@ -168,6 +168,11 @@
                             {{ 'menu.help.about' | translate}}
                         </md-button>
                     </md-menu-item>
+                    <md-menu-item ng-if="config.supportUrl">
+                        <md-button href="{{ config.supportUrl }}" target="_blank">
+                            {{ 'menu.help.support' | translate}}
+                        </md-button>
+                    </md-menu-item>
                 </md-menu-content>
             </md-menu>
             <div class="menu-user" ng-controller="MenuHelpCtrl">
