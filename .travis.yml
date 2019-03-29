@@ -5,15 +5,26 @@ node_js:
 addons:
   firefox: "50.0"
 
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - npm install -g bower karma grunt-cli jshint
-  - npm start > /dev/null &
-  #- node node_modules/protractor/bin/webdriver-manager update
-  #- java -jar node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-*.jar -Dwebdriver.chrome.driver=./protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25 &
-  - sleep 3 # give server time to start
+stages:
+- name: test
+- name: docker
+  if: (branch = develop OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides"
 
-script:
-  - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run
-  #- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+jobs:
+  include:
+  - stage: test
+    env: KARMA TESTS
+    before_script:
+      - export DISPLAY=:99.0
+      - sh -e /etc/init.d/xvfb start
+      - npm install -g bower karma grunt-cli jshint
+      - npm start > /dev/null &
+      #- node node_modules/protractor/bin/webdriver-manager update
+      #- java -jar node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-*.jar -Dwebdriver.chrome.driver=./protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25 &
+      - sleep 3 # give server time to start
+    script:
+      - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run
+      #- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+  - stage: docker
+    env: DEPLOY TO DOCKER HUB
+    script: "./.travis/docker_build_push.sh"
