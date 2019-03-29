@@ -127,7 +127,8 @@
                                 <div id="install-docker" class="section-block">
                                     <h3 class="block-title">Docker</h3>
                                     <p><pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides-gui
-docker-compose up</code></pre></p>
+docker build -t hesperides-gui .
+docker run --rm -it -p 80:80 hesperides-gui</code></pre></p>
                                 </div><!--//section-block-->
                                 <div id="install-sources" class="section-block">
                                     <h3 class="block-title">Download sources</h3>
