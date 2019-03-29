@@ -294,7 +294,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
 
     return {
         get: function (namespace, name) {
-            return $http.get('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
+            return $http.get(ENDPOINT + '/rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");
@@ -303,7 +303,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
         save: function (template) {
             template = template.toHesperidesEntity();
             if (template.version_id < 0) {
-                return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
+                return $http.post(ENDPOINT + '/rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $translate('template.event.created').then(function(label) {
                         $.notify(label, "success");
                     });
@@ -318,7 +318,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     }
                 });
             } else {
-                return $http.put('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
+                return $http.put(ENDPOINT + '/rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $translate('template.event.updated').then(function(label) {
                         $.notify(label, "success");
                     });
@@ -329,7 +329,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             }
         },
         delete: function (namespace, name) {
-            return $http.delete('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
+            return $http.delete(ENDPOINT + '/rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 $translate('template.event.deleted').then(function(label) {
                     $.notify(label, "success");
                 });
@@ -339,7 +339,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             });
         },
         all: function (namespace) {
-            return $http.get('rest/templates/' + encodeURIComponent(namespace)).then(function (response) {
+            return $http.get(ENDPOINT + '/rest/templates/' + encodeURIComponent(namespace)).then(function (response) {
                 return response.data.map(function (data) {
                     return new TemplateEntry(data);
                 }, function (error) {

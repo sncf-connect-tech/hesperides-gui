@@ -287,7 +287,7 @@ applicationModule.factory('ModuleService', [
 
     return {
         get: function (name, version, is_working_copy) {
-            return $http.get('rest/modules/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + "/" + (is_working_copy ? "workingcopy" : "release")).then(function (response) {
+            return $http.get(ENDPOINT + '/rest/modules/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + "/" + (is_working_copy ? "workingcopy" : "release")).then(function (response) {
                 return new Module(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");
@@ -303,7 +303,7 @@ applicationModule.factory('ModuleService', [
             } else {
                 module = module.to_rest_entity();
                 if (module.version_id < 0) {
-                    return $http.post('rest/modules', module).then(function (response) {
+                    return $http.post(ENDPOINT + '/rest/modules', module).then(function (response) {
                         $translate('module.workingCopy.event.created').then(function(label) {
                             $.notify(label, "success");
                         });
@@ -312,7 +312,7 @@ applicationModule.factory('ModuleService', [
                         $.notify(error.data.message, "error");
                     });
                 } else {
-                    return $http.put('rest/modules', module).then(function (response) {
+                    return $http.put(ENDPOINT + '/rest/modules', module).then(function (response) {
                         $translate('module.workingCopy.event.updated').then(function(label) {
                             $.notify(label, "success");
                         });
@@ -324,14 +324,14 @@ applicationModule.factory('ModuleService', [
             }
         },
         get_model: function (module){
-            return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/' + (module.is_working_copy ? "workingcopy" : "release") + '/model').then(function(response){
+            return $http.get(ENDPOINT + '/rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/' + (module.is_working_copy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
             }, function () {
                 return new Properties({});
             });
         },
         get_platforms: function (module){
-            return $http.get('rest/applications/using_module/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release")).then(function(response){
+            return $http.get(ENDPOINT + '/rest/applications/using_module/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release")).then(function(response){
                 return response.data.map(function (current) {
                                            return new Platform(current);
                                        });
@@ -340,7 +340,7 @@ applicationModule.factory('ModuleService', [
             });
         },
         get_template: function (module, template_name) {
-            return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(template_name)).then(function (response) {
+            return $http.get(ENDPOINT + '/rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");
@@ -348,7 +348,7 @@ applicationModule.factory('ModuleService', [
             });
         },
         get_all_templates: function (module) {
-            var baseUrl = 'rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates';
+            var baseUrl = ENDPOINT + '/rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates';
 
             return $http.get(baseUrl).then(function (response) {
                 return response.data.map(function (data) {
@@ -384,7 +384,7 @@ applicationModule.factory('ModuleService', [
             } else {
                 template = template.toHesperidesEntity();
                 if (template.version_id < 0) {
-                    return $http.post('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
+                    return $http.post(ENDPOINT + '/rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
                         $translate('template.event.created').then(function(label) {
                             $.notify(label, "success");
                         })
@@ -400,7 +400,7 @@ applicationModule.factory('ModuleService', [
                         throw error;
                     });
                 } else {
-                    return $http.put('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
+                    return $http.put(ENDPOINT + '/rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
                         $translate('template.event.updated').then(function(label) {
                             $.notify(label, "success");
                         });
@@ -419,7 +419,7 @@ applicationModule.factory('ModuleService', [
                 });                
                 throw module;
             } else {
-                return $http.delete('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
+                return $http.delete(ENDPOINT + '/rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                     $translate('template.event.deleted').then(function(label) {
                         $.notify(label, "success");
                     })
@@ -437,7 +437,7 @@ applicationModule.factory('ModuleService', [
                 });                
                 throw module;
             } else {
-                return $http.post('rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version) + '&release_version=' + encodeURIComponent(release_version)).then(function (response) {
+                return $http.post(ENDPOINT + '/rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version) + '&release_version=' + encodeURIComponent(release_version)).then(function (response) {
                     $translate('release.event.created', {name:module.name, version:release_version}).then(function(label) {
                         $.notify(label, "success");
                     });
@@ -450,7 +450,7 @@ applicationModule.factory('ModuleService', [
         },
         create_workingcopy_from: function(name, version, fromModule) {
             var newModule = new Module({name: name, version:version}).to_rest_entity();
-            return $http.post('rest/modules?from_module_name='+encodeURIComponent(fromModule.name)+'&from_module_version='+encodeURIComponent(fromModule.version)+'&from_is_working_copy='+encodeURIComponent(fromModule.is_working_copy), newModule).then(function(response){
+            return $http.post(ENDPOINT + '/rest/modules?from_module_name='+encodeURIComponent(fromModule.name)+'&from_module_version='+encodeURIComponent(fromModule.version)+'&from_is_working_copy='+encodeURIComponent(fromModule.is_working_copy), newModule).then(function(response){
                 $translate('workingCopy.event.created.details', {name:name, version:version}).then(function(label) {
                     $.notify(label, "success");
                 });                
@@ -463,7 +463,7 @@ applicationModule.factory('ModuleService', [
         with_name_like: function (name) {
             if (!_.isUndefined(name)){
                 if(name.length > 2) { //prevent search with too few characters
-                    return $http.post('rest/modules/perform_search?terms=' + encodeURIComponent(name)).then(function (response) {
+                    return $http.post(ENDPOINT + '/rest/modules/perform_search?terms=' + encodeURIComponent(name)).then(function (response) {
 
                         items = _.map(response.data, function (module) {
                             return new Module(module);
@@ -499,7 +499,7 @@ applicationModule.factory('ModuleService', [
         },
         search: function (name) {
             if (!_.isUndefined(name)){
-                return $http.post('rest/modules/search?terms=' + encodeURIComponent(name.toLowerCase())).then(function (response) {
+                return $http.post(ENDPOINT + '/rest/modules/search?terms=' + encodeURIComponent(name.toLowerCase())).then(function (response) {
                     return response.data;
                 }, function () {
                     return null;

@@ -99,7 +99,7 @@ eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperide
          * @param {Integer} page : is the page number to retrieve.
          */
         get : function (stream, page) {
-            var url =  "rest/events/" + encodeURIComponent(stream) + "?page=" + encodeURIComponent(page) + "&size=" + encodeURIComponent(hesperidesGlobals.eventPaginationSize);
+            var url = ENDPOINT + "/rest/events/" + encodeURIComponent(stream) + "?page=" + encodeURIComponent(page) + "&size=" + encodeURIComponent(hesperidesGlobals.eventPaginationSize);
             return $http.get(url).then (function (response){
                return response.data.map (function(item){
                     var event = new EventEntry(item);

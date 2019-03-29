@@ -43,7 +43,7 @@ angular.module("hesperides.user", [])
  .service("UserService", ["$http", "User", function ($http, User){
     return {
         authenticate : function (){
-            return $http.get ('/rest/users/auth').then (function (response){
+            return $http.get(ENDPOINT + '/rest/users/auth').then (function (response){
                 return new User(response.data);
             }, function (error){
                 throw error;

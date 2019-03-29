@@ -1270,7 +1270,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.refreshGlobalPropertiesData = function() {
         var platform = $scope.platform;
-        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent('#');
+        var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent('#');
 
         $http.get(url).then(function (response) {
             return new Properties(response.data);
@@ -1284,7 +1284,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
         });
 
-        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_properties_usage';
+        var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_properties_usage';
 
         $http.get(url).then(function (response) {
             return response.data;

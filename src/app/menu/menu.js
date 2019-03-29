@@ -227,7 +227,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 
         } else {
             //Get the existing platform
-            $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
+            $http.get(ENDPOINT + '/rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
                 // Create a new platform from the get's response and change the main properties with the target values
                 platform = new Platform(response.data);
                 platform.name = platform_name;
@@ -263,7 +263,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                     ApplicationService.get_properties(from_application, from_platform, path).then(function (properties) {
                         properties = properties.to_rest_entity();
                         // Save the properties for the new platform
-                        $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties);
+                        $http.post(ENDPOINT + '/rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties);
                     });
 
                 });
@@ -386,7 +386,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         $scope.release = hesperidesGlobals.versionName;
 
         //Get the backend versions
-        $http.get('rest/versions').then(function(response){
+        $http.get(ENDPOINT + '/rest/versions').then(function(response){
             $scope.backend_version = response.data.backend_version;
             $scope.api_version = response.data.api_version;
         }, function (error) {

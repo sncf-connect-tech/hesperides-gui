@@ -257,7 +257,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             var me = this;
             me.unsecured = unsecured;
 
-            return $http.get('rest/applications/' + encodeURIComponent(name) + '?hide_platform=true').then(function (response) {
+            return $http.get(ENDPOINT + '/rest/applications/' + encodeURIComponent(name) + '?hide_platform=true').then(function (response) {
                 current_platform = _.find(response.data.platforms, { 'platform_name': $location.search().platform});
                 store.set('current_platform_versionID', current_platform != undefined ? current_platform.version_id : '');
                 return new Application(response.data);
@@ -269,7 +269,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
         with_name_like: function (name) {
-            return $http.post('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
+            return $http.post(ENDPOINT + '/rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
                 $.notify(error.data.message, "error");
@@ -277,7 +277,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
         get_platform_name_of_application: function(application_name, platform_name){
-            return $http.post('rest/applications/platforms/perform_search?applicationName=' + encodeURIComponent(application_name) +
+            return $http.post(ENDPOINT + '/rest/applications/platforms/perform_search?applicationName=' + encodeURIComponent(application_name) +
                    "&platformName="+ encodeURIComponent(platform_name)).then(function (response) {
                 return response.data;
             }, function (error) {
@@ -289,9 +289,9 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             var me = this;
             me.unsecured = unsecured;
             if (_.isUndefined(timestamp)) {
-                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name);
+                var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name);
             } else {
-                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '?timestamp=' + timestamp;
+                var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '?timestamp=' + timestamp;
             }
             return $http.get(url).then(function (response) {
                 //Try to get the global properties
@@ -315,7 +315,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             }
             platform = platform.to_rest_entity();
             if (platform.version_id < 0) {
-                return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
+                return $http.post(ENDPOINT + '/rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
                     $translate('platform.event.created').then(function(label) {
                         $.notify(label, "success");
                     });
@@ -330,7 +330,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     throw error;
                 });
             } else {
-                return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules=' + copyPropertiesOfUpdatedModules, platform).then(function (response) {
+                return $http.put(ENDPOINT + '/rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules=' + copyPropertiesOfUpdatedModules, platform).then(function (response) {
                     $translate('platform.event.updated').then(function(label) {
                         $.notify(label, "success");
                     });
@@ -349,7 +349,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
         create_platform_from: function (platform, from_application, from_platform) {
             var me = this;
             platform = platform.to_rest_entity();
-            return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application=' + encodeURIComponent(from_application) + '&from_platform=' + encodeURIComponent(from_platform), platform).then(function (response) {
+            return $http.post(ENDPOINT + '/rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application=' + encodeURIComponent(from_application) + '&from_platform=' + encodeURIComponent(from_platform), platform).then(function (response) {
                 $translate('platform.event.created').then(function(label) {
                     $.notify(label, "success");
                 });
@@ -365,13 +365,13 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
         delete_platform: function (application_name, platform_name) {
-            return $http.delete('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name));
+            return $http.delete(ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name));
         },
         get_properties: function (application_name, platform_name, path, timestamp) {
             if (_.isUndefined(timestamp)) {
-                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path);
+                var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path);
             } else {
-                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path) + '&timestamp=' + timestamp;
+                var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path) + '&timestamp=' + timestamp;
             }
             return $http.get(url).then(function (response) {
                 return new Properties(response.data);
@@ -382,7 +382,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
         },
         get_global_properties_usage: function (application_name, platform_name) {
 
-            var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/global_properties_usage';
+            var url = ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/global_properties_usage';
             return $http.get(url).then(function (response) {
                 return response.data;
             }, function (error) {
@@ -393,7 +393,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
         save_properties: function (application_name, platform, properties, path, comment) {
             properties = properties.to_rest_entity();
 
-            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id) + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
+            return $http.post(ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id) + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
                 $translate('properties.event.saved').then(function(label) {
                     $.notify(label, "success");
                 });
@@ -408,7 +408,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
         get_instance_model: function (application_name, platform, path) {
-            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties/instance_model?path=' + encodeURIComponent(path)).then(function (response) {
+            return $http.get(ENDPOINT + '/rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties/instance_model?path=' + encodeURIComponent(path)).then(function (response) {
                 return new InstanceModel(response.data);
             }, function (error) {
                 return new InstanceModel({});
