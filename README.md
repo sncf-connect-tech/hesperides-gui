@@ -14,6 +14,8 @@ It lets you easily generate content from a template file (using mustache) in a g
 
 Go to <https://github.com/voyages-sncf-technologies/hesperides> to handle hesperides backend.
 
+Note : it has a custom date picker whose code is in a separate repo : [hesperides-datetime-picker](https://github.com/stidiovip/hesperides-datetime-picker)
+
 Build:
 =====
 
