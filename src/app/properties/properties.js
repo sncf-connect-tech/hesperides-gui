@@ -728,11 +728,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     /**
      * This is used to preview an instance data.
      */
-    $scope.preview_instance = function (box, application, platform, instance, module) {
-        $scope.preview_instance(box, application, platform, instance, module, false);
-    }
+     $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
+        simulate = simulate || false;
 
-    $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
         var modalScope = $scope.$new();
 
         modalScope.codeMirrorOptions = {
