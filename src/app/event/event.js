@@ -106,7 +106,7 @@ eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperide
                     return event;
                });
             }, function (error){
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         }

@@ -224,7 +224,7 @@ technoModule.factory('TechnoService',
             return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -232,7 +232,7 @@ technoModule.factory('TechnoService',
             return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/release/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -255,7 +255,7 @@ technoModule.factory('TechnoService',
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                         throw error;
                     } else {
                         return [];
@@ -278,7 +278,7 @@ technoModule.factory('TechnoService',
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                         throw error;
                     } else {
                         return [];
@@ -295,12 +295,12 @@ technoModule.factory('TechnoService',
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    if (error.status === 409) {
+                    if (error.data.message || error.data) {
+                        $.notify(error.data.message || error.data, "error");
+                    } else if (error.status === 409) {
                         $translate('template.event.error').then(function(label) {
                             $.notify(label, "error");                            
                         })
-                    } else {
-                        $.notify(error.data.message, "error");
                     }
                     throw error;
                 });
@@ -311,7 +311,7 @@ technoModule.factory('TechnoService',
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                     throw error;
                 });
             }
@@ -323,7 +323,7 @@ technoModule.factory('TechnoService',
                 });
                 return response;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -337,7 +337,7 @@ technoModule.factory('TechnoService',
                     $.notify(response.data, "warning");
                 }
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -351,7 +351,7 @@ technoModule.factory('TechnoService',
                     $.notify(response.data, "warning");
                 }
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },

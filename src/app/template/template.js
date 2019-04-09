@@ -297,7 +297,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             return $http.get('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
             });
         },
         save: function (template) {
@@ -309,12 +309,12 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    if (error.status === 409) {
+                    if (error.data.message || error.data) {
+                        $.notify(error.data.message || error.data, "error");
+                    } else if (error.status === 409) {
                         $translate('template.event.error').then(function(label) {
                             $.notify(label, "error");
                         })
-                    } else {
-                        $.notify(error.data.message, "error");
                     }
                 });
             } else {
@@ -324,7 +324,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                 });
             }
         },
@@ -335,7 +335,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                 });
                 return response;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
             });
         },
         all: function (namespace) {
@@ -344,7 +344,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     return new TemplateEntry(data);
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                     } else {
                         return [];
                     }

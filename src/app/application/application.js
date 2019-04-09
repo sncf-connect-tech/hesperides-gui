@@ -263,7 +263,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 return new Application(response.data);
             }, function (error) {
                 if (!me.unsecured) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                 }
                 throw error;
             });
@@ -272,7 +272,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.post('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -281,7 +281,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                    "&platformName="+ encodeURIComponent(platform_name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -303,7 +303,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 return platform;
             }, function (error) {
                 if (!me.unsecured) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                 }
                 throw error;
             });
@@ -326,7 +326,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     });
                     return platform;
                 }, function (error) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                     throw error;
                 });
             } else {
@@ -341,7 +341,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     });
                     return platform;
                 }, function (error) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                     throw error;
                 });
             }
@@ -360,7 +360,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 });
                 return platform;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -376,7 +376,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 return new Properties(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -386,7 +386,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -400,10 +400,13 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 store.set('current_platform_versionID', platform.version_id + 1);
                 return new Properties(response.data);
             }, function (error) {
-                //$.notify(error.data.message, "error");
-                $translate('properties.event.error').then(function(label) {
-                    $.notify(label, "error");
-                });                
+                if (error.data.message || error.data) {
+                    $.notify(error.data.message || error.data, "error");
+                } else {
+                    $translate('properties.event.generic-error').then(function(label) {
+                        $.notify(label, "error");
+                    });
+                }
                 throw error;
             });
         },
