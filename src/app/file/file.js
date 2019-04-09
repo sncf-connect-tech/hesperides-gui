@@ -149,7 +149,7 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                     return entry;
                 });
             }, function (error) {
-               $.notify(error.data.message, "error");
+               $.notify(error.data.message || error.data, "error");
                throw error;
            });
         },

@@ -271,7 +271,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 $scope.open_properties_page(platform.application_name, platform.name);
                 reload(application_name, platform_name);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             })
         }

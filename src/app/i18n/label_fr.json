@@ -53,7 +53,7 @@
   "properties.event.savedByUser": "a modifié les valeurs du module",
   "properties.event.savedGlobalByUser": "a modifié les propriétés globales du module",
   "properties.event.saved": "Les propriétés ont bien été sauvegardées",
-  "properties.event.error": "Enregistrement impossible - une ou plusieurs propriétés ne respectent pas l'annotation @required et/ou @pattern",
+  "properties.event.generic-error": "Enregistrement impossible",
   "properties.event.notExist.error": "La brique technique mentionnée dans l'url n'existe pas",
   "nexus.event.error": "Impossible de récupérer la note de livraison : {{error}}",
   "techno.all.title": "Toutes les technos",

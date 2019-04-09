@@ -1273,7 +1273,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $http.get(url).then(function (response) {
             return new Properties(response.data);
         }, function (error) {
-            $.notify(error.data.message, "error");
+            $.notify(error.data.message || error.data, "error");
             throw error;
         }).then(function (response) {
             platform.global_properties = response;
@@ -1287,7 +1287,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $http.get(url).then(function (response) {
             return response.data;
         }, function (error) {
-            $.notify(error.data.message, "error");
+            $.notify(error.data.message || error.data, "error");
             throw error;
         }).then(function (response) {
             platform.global_properties_usage = response;

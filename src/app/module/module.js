@@ -290,7 +290,7 @@ applicationModule.factory('ModuleService', [
             return $http.get('rest/modules/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + "/" + (is_working_copy ? "workingcopy" : "release")).then(function (response) {
                 return new Module(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -309,7 +309,7 @@ applicationModule.factory('ModuleService', [
                         });
                         return new Module(response.data);
                     }, function (error) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                     });
                 } else {
                     return $http.put('rest/modules', module).then(function (response) {
@@ -318,7 +318,7 @@ applicationModule.factory('ModuleService', [
                         });
                         return new Module(response.data);
                     }, function (error) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                     });
                 }
             }
@@ -343,7 +343,7 @@ applicationModule.factory('ModuleService', [
             return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
@@ -367,7 +367,7 @@ applicationModule.factory('ModuleService', [
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                         throw error;
                     } else {
                         return [];
@@ -390,12 +390,12 @@ applicationModule.factory('ModuleService', [
                         })
                         return new Template(response.data);
                     }, function (error) {
-                        if (error.status === 409) {
+                        if (error.data.message || error.data) {
+                            $.notify(error.data.message || error.data, "error");
+                        } else if (error.status === 409) {
                             $translate('template.event.error').then(function(label) {
                                 $.notify(label, "error");
                             })
-                        } else {
-                            $.notify(error.data.message, "error");
                         }
                         throw error;
                     });
@@ -406,7 +406,7 @@ applicationModule.factory('ModuleService', [
                         });
                         return new Template(response.data);
                     }, function (error) {
-                        $.notify(error.data.message, "error");
+                        $.notify(error.data.message || error.data, "error");
                         throw error;
                     });
                 }
@@ -425,7 +425,7 @@ applicationModule.factory('ModuleService', [
                     })
                     return response;
                 }, function (error) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                     throw error;
                 });
             }
@@ -443,7 +443,7 @@ applicationModule.factory('ModuleService', [
                     });
                     return new Module(response.data);
                 }, function (error) {
-                    $.notify(error.data.message, "error");
+                    $.notify(error.data.message || error.data, "error");
                     throw error;
                 });
             }
@@ -456,7 +456,7 @@ applicationModule.factory('ModuleService', [
                 });                
                 return new Module(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                $.notify(error.data.message || error.data, "error");
                 throw error;
             });
         },
