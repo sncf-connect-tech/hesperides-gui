@@ -21,7 +21,7 @@
             <!-- If the item hasn't iterable_valorisation_items, then it is simple property -->
             <div layout = "row" ng-if="!value.iterable_valorisation_items">
 
-                <div layout="column" flex="46">
+                <div layout="column" flex="30">
                     <div class="truncate-ellipsis">
                         <label class="property-label"
                                ng-class="{'text-stroke':!value.inModel, 'default-value-color': value.defaultValue && !value.value}"
@@ -32,19 +32,19 @@
                     </div>
                 </div>
 
-                <div layout="column"  flex>
-                    <input ng-model="value.value"
-                           ng-trim="true"
-                           ng-readonly="!value.inModel"
-                           ng-focus="focusthis = true"
-                           ng-blur="focusthis = false"
-                           ng-class="{'text-stroke':!value.inModel, 'default-value-color': (value.defaultValue || value.pattern) && !value.value, 'default-value-color-focus': focusthis}"
-                           placeholder="{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}"
-                           ng-pattern="value.pattern"
-                           ng-required="value.required"
-                           class="property-value"
-                           id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{value.name}}"
-                    >
+                <div layout="column" flex>
+                    <textarea ng-model="value.value"
+                              ng-trim="true"
+                              ng-readonly="!value.inModel"
+                              ng-focus="focusthis = true"
+                              ng-blur="focusthis = false"
+                              ng-class="{'text-stroke':!value.inModel, 'default-value-color': (value.defaultValue || value.pattern) && !value.value, 'default-value-color-focus': focusthis}"
+                              placeholder="{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}"
+                              ng-pattern="value.pattern"
+                              ng-required="value.required"
+                              class="property-value"
+                              id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{value.name}}"
+                    ></textarea>
                     <md-tooltip ng-show="value.defaultValue || value.pattern || value.comment" md-direction="top">{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}</md-tooltip>
                 </div>
 

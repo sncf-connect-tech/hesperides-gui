@@ -1785,6 +1785,24 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
      };
  }]);
 
+propertiesModule.directive('adjustHeightToTextContent', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            property: '=',
+        },
+        link: function (scope, element) {
+            scope.$watch('property', function () {
+                var textarea = element[0];
+                // Recipe from: https://stackoverflow.com/a/995374/636849
+                textarea.style.height = '1px';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            });
+        }
+    };
+});
+
+
 /**
  * This directive will display the properties list with contains :
  *  1. Simple properties
