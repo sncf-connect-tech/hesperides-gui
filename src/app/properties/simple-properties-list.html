@@ -44,7 +44,7 @@
     </div>
 
     <div layout="row">
-        <div flex="50">
+        <div flex="30">
             <md-input-container class="md-block">
                 <label>{{ 'properties.filter.byKey' | translate }}</label>
                 <input id="simple-properties-list_filter-key-input" type="text" ng-trim="true" ng-model="propertiesKeyFilter" aria-label="{{ 'properties.filter.byKey' | translate }}" />
@@ -61,19 +61,18 @@
     <md-content layout="column" class="properties-container">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
         <md-virtual-repeat-container id="vertical-container" class="height-300px">
-            <div
-                    md-virtual-repeat="key_value_property in properties
-                        | hideHesperidesPredefinedProperties
-                        | displayGlobalProperties:displayGlobal
-                        | displayUnspecifiedProperties:displayUnspecified
-                        | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter}
-                        | displayProperties:displayDeletedProperties
-                        | orderBy:'name':order" class="repeated-item height-20px" flex>
+            <div md-virtual-repeat="key_value_property in properties
+                    | hideHesperidesPredefinedProperties
+                    | displayGlobalProperties:displayGlobal
+                    | displayUnspecifiedProperties:displayUnspecified
+                    | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter}
+                    | displayProperties:displayDeletedProperties
+                    | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
                      ng_if="!key_value_property.inGlobal"
                      class="margin-1pc">
-                    <div layout="column" flex="46">
+                    <div layout="column" flex="30">
                         <div class="truncate-ellipsis">
                             <label id="simple-properties-list_key-property-isnotglobale-input-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
@@ -83,19 +82,21 @@
                             </md-tooltip>
                         </div>
                     </div>
-                    <div layout="column"  flex>
-                        <input id="simple-properties-list_value-property-isnotglobale-input-{{key_value_property.name}}"
-                               ng-model="key_value_property.value"
-                               ng-trim="true"
-                               ng-readonly="!key_value_property.inModel"
-                               ng-focus="focusthis = true"
-                               ng-blur="focusthis = false"
-                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
-                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}"
-                               ng-pattern="key_value_property.pattern"
-                               ng-required="key_value_property.required"
-                               class="property-value inLocal_{{key_value_property.inLocal}}">
-                            <md-tooltip ng-show="key_value_property.defaultValue || key_value_property.pattern || key_value_property.comment" md-direction="top">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
+                    <div layout="column" flex>
+                        <textarea id="simple-properties-list_value-property-isnotglobale-input-{{key_value_property.name}}"
+                                  ng-model="key_value_property.value"
+                                  ng-trim="true"
+                                  ng-readonly="!key_value_property.inModel"
+                                  ng-focus="focusthis = true"
+                                  ng-blur="focusthis = false"
+                                  ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                                  placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}"
+                                  ng-pattern="key_value_property.pattern"
+                                  ng-required="key_value_property.required"
+                                  class="property-value inLocal_{{key_value_property.inLocal}}"
+                                  adjust-height-to-text-content property="key_value_property"
+                        ></textarea>
+                        <md-tooltip ng-show="key_value_property.defaultValue || key_value_property.pattern || key_value_property.comment" md-direction="top">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
                     </div>
                 </div>
 
@@ -103,7 +104,7 @@
                 <div layout="row"
                      ng_if="key_value_property.inGlobal"
                      class="margin-1pc">
-                    <div layout="column" flex="46">
+                    <div layout="column" flex="30">
                         <div class="truncate-ellipsis">
                             <label id="simple-properties-list_key-property-isglobale-input-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
@@ -113,8 +114,9 @@
                             </md-tooltip>
                         </div>
                     </div>
-                    <div layout="column"  flex>
-                        <input id="simple-properties-list_value-property-isglobale-input-{{key_value_property.name}}" ng-model="key_value_property.value"
+                    <div layout="column" flex>
+                        <input id="simple-properties-list_value-property-isglobale-input-{{key_value_property.name}}"
+                               ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="true"
                                class="property-value inLocal_{{key_value_property.inLocal}}">
