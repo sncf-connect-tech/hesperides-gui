@@ -53,15 +53,6 @@ describe('Testing hesperides menu', function() {
         expect(menuHelpCtrl).toBeDefined();
       });
 
-      it( 'should test window open event', inject( function( $window ) {
-          spyOn( $window, 'open' ).and.callFake( function() {
-              return true;
-          } );
-          $scope.display_swagger();
-          expect( $window.open ).toHaveBeenCalled();
-          expect( $window.open ).toHaveBeenCalledWith( "/swagger.html" );
-      }));
-
     });
 
     // This is for testing the menu module controller
