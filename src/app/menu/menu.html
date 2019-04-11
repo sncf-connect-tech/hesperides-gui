@@ -153,7 +153,7 @@
                     {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                 </button>
                 <md-menu-content class="menu-item">
-                    <md-menu-item>
+                    <md-menu-item ng-if="config.swaggerLink">
                         <md-button id="menu_help-swagger-menu" ng-click="display_swagger()">
                             {{ 'menu.help.swagger' | translate}}
                         </md-button>

@@ -477,7 +477,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
     };
 
     $scope.display_swagger = function() {
-        window.open('/swagger.html');
+        window.open(hesperidesConfiguration.swaggerLink);
     }
 
 }]);
