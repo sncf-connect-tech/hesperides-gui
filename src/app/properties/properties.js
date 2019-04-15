@@ -1785,7 +1785,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
      };
  }]);
 
-propertiesModule.directive('adjustHeightToTextContent', function () {
+propertiesModule.directive('adjustHeightToTextContent', ['$timeout', function ($timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -1796,11 +1796,11 @@ propertiesModule.directive('adjustHeightToTextContent', function () {
                 var textarea = element[0];
                 // Recipe from: https://stackoverflow.com/a/995374/636849
                 textarea.style.height = '1px';
-                textarea.style.height = textarea.scrollHeight + 'px';
+                $timeout(() => textarea.style.height = textarea.scrollHeight + 'px', 0);
             });
         }
     };
-});
+}]);
 
 
 /**
