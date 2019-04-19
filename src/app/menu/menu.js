@@ -195,12 +195,10 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
-        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
+        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production || false});
         ApplicationService.save_platform(platform).then(function(platform){
             $scope.open_properties_page(platform.application_name, platform.platform_name);
-        });
-
-        reload(application_name, platform_name);
+        }).then(() => reload(application_name, platform_name) );
     };
 
     /**
