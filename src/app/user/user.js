@@ -23,15 +23,9 @@ angular.module("hesperides.user", [])
 .factory ("User", function (){
 
     var User = function (data){
-        var me = this;
-
-        // The user name
-        this.username = data.username;
-
-        // Indicates if the user is an Ops or not.
-        // Used for Ops dedicated actions.
-        this.isProdUser = data.prodUser;
-
+        _.assign(this, data);
+        // For backward-compatibility:
+        this.isProdUser = this.prodUser;
     };
 
     return User;
