@@ -164,7 +164,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 
     var apps;
 
-    ApplicationService.with_name_like("").then(function (response) {
+    ApplicationService.list_applications().then(function (response) {
         apps = response.map(function (elem) { return elem.name })
     });
 

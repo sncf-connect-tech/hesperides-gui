@@ -214,14 +214,14 @@ technoModule.factory('TechnoService',
 
     return {
         get_model: function (name, version, isWorkingCopy){
-            return $http.get('rest/templates/packages/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + '/' + (isWorkingCopy ? "workingcopy" : "release") + '/model').then(function(response){
+            return $http.get('rest/technos/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + '/' + (isWorkingCopy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
             }, function () {
                 return new Properties({});
             });
         },
         get_template_from_workingcopy: function (wc_name, wc_version, template_name) {
-            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
+            return $http.get('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
                 $.notify(error.data.message || error.data, "error");
@@ -229,7 +229,7 @@ technoModule.factory('TechnoService',
             });
         },
         get_template_from_release: function (wc_name, wc_version, template_name) {
-            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/release/templates/' + encodeURIComponent(template_name)).then(function (response) {
+            return $http.get('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/release/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
                 $.notify(error.data.message || error.data, "error");
@@ -237,7 +237,7 @@ technoModule.factory('TechnoService',
             });
         },
         get_all_templates_from_workingcopy: function (wc_name, wc_version) {
-            var baseUrl = 'rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates';
+            var baseUrl = 'rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates';
 
             return $http.get(baseUrl).then(function (response) {
                 return response.data.map(function (data) {
@@ -264,10 +264,10 @@ technoModule.factory('TechnoService',
             });
         },
         get_all_templates_from_release: function (r_name, r_version) {
-            return $http.get('rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates').then(function (response) {
+            return $http.get('rest/technos/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates').then(function (response) {
                 return response.data.map(function (data) {
                     var entry = new TemplateEntry(data);
-                    var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
+                    var url ='rest/technos/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
                     entry.getTemplate(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
                         if (entry.rights < 0)
@@ -289,7 +289,7 @@ technoModule.factory('TechnoService',
         save_template_in_workingcopy: function (wc_name, wc_version, template) {
             template = template.toHesperidesEntity();
             if (template.version_id < 0) {
-                return $http.post('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
+                return $http.post('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
                     $translate('template.event.created').then(function(label) {
                         $.notify(label, "success");
                     });
@@ -305,7 +305,7 @@ technoModule.factory('TechnoService',
                     throw error;
                 });
             } else {
-                return $http.put('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
+                return $http.put('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
                     $translate('template.event.updated').then(function(label) {
                         $.notify(label, "success");
                     });
@@ -317,7 +317,7 @@ technoModule.factory('TechnoService',
             }
         },
         delete_template_in_workingcopy: function (wc_name, wc_version, template_name) {
-            return $http.delete('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
+            return $http.delete('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 $translate('template.event.deleted').then(function(label) {
                     $.notify(label, "success");
                 });
@@ -328,7 +328,7 @@ technoModule.factory('TechnoService',
             });
         },
         create_release: function (r_name, r_version) {
-            return $http.post('rest/templates/packages/create_release?package_name=' + encodeURIComponent(r_name) + '&package_version=' + encodeURIComponent(r_version)).then(function (response) {
+            return $http.post('rest/technos/create_release?package_name=' + encodeURIComponent(r_name) + '&package_version=' + encodeURIComponent(r_version)).then(function (response) {
 				if (response.status === 201) {
                     $translate('release.event.created', {name:r_name, version:r_version}).then(function(label) {
                         $.notify(label, "success");
@@ -342,7 +342,7 @@ technoModule.factory('TechnoService',
             });
         },
         create_workingcopy: function (wc_name, wc_version, from_name, from_version, is_from_workingcopy) {
-            return $http.post('rest/templates/packages?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy, {name:encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy:true}).then(function (response) {
+            return $http.post('rest/technos?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy, {name:encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy:true}).then(function (response) {
                 if (response.status === 201) {
                     $translate('workingCopy.event.created').then(function(label) {
                         $.notify(label, "success");                        
@@ -358,7 +358,7 @@ technoModule.factory('TechnoService',
         with_name_like: function (name) {
             if (!_.isUndefined(name)){
                 if(name.length > 2) { //prevent search with too few characters
-                    return $http.post('rest/templates/packages/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#').replace('-', '#'))).then(function (response) {
+                    return $http.get('rest/technos/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#').replace('-', '#'))).then(function (response) {
                         return _.map(response.data, function (techno) {
                             return new Techno(techno.name, techno.version, techno.working_copy);
                         });

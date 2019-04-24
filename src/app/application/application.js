@@ -268,8 +268,16 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 throw error;
             });
         },
+        list_applications: function () {
+            return $http.get('rest/applications').then(function (response) {
+                return response.data;
+            }, function (error) {
+                $.notify(error.data.message || error.data, "error");
+                throw error;
+            });
+        },
         with_name_like: function (name) {
-            return $http.post('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
+            return $http.get('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
                 $.notify(error.data.message || error.data, "error");
@@ -277,7 +285,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             });
         },
         get_platform_name_of_application: function(application_name, platform_name){
-            return $http.post('rest/applications/platforms/perform_search?applicationName=' + encodeURIComponent(application_name) +
+            return $http.get('rest/applications/platforms/perform_search?applicationName=' + encodeURIComponent(application_name) +
                    "&platformName="+ encodeURIComponent(platform_name)).then(function (response) {
                 return response.data;
             }, function (error) {
