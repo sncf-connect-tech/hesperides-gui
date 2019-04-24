@@ -577,11 +577,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         modalScope.isDiffAllowed = function () {
-            var selectedAppPlatformEqualToCurrent = modalScope.from.application == $scope.platform.application_name && modalScope.from.platform == $scope.platform.name;
             var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
             return (!modalScope.from.lookPast || modalScope.from.dateValid)
                 && modalScope.target_platforms && modalScope.target_platforms.length >= 1
-                && selectedPlatformInList && !selectedAppPlatformEqualToCurrent;
+                && selectedPlatformInList;
         }
 
         var t = $mdDialog.show({
@@ -666,11 +665,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         modalScope.isDiffAllowed = function () {
-            var selectedAppPlatformEqualToCurrent = modalScope.from.application == $scope.platform.application_name && modalScope.from.platform == $scope.platform.name;
             var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
             return (!modalScope.from.lookPast || modalScope.from.dateValid)
                 && modalScope.target_platforms && modalScope.target_platforms.length >= 1
-                && selectedPlatformInList && !selectedAppPlatformEqualToCurrent;
+                && selectedPlatformInList;
         }
 
         $mdDialog.show({
