@@ -463,7 +463,7 @@ applicationModule.factory('ModuleService', [
         with_name_like: function (name) {
             if (!_.isUndefined(name)){
                 if(name.length > 2) { //prevent search with too few characters
-                    return $http.post('rest/modules/perform_search?terms=' + encodeURIComponent(name)).then(function (response) {
+                    return $http.get('rest/modules/perform_search?terms=' + encodeURIComponent(name)).then(function (response) {
 
                         items = _.map(response.data, function (module) {
                             return new Module(module);
