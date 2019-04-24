@@ -64,8 +64,7 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button class="md-raised md-primary" ng-disabled="comparedPlatformForm.$invalid || (from.lookPast && !from.dateValid) || target_platforms.length < 1 || pltfm_not_in_list()"
-                       ng-click="$diff(from)">{{ 'button.modal.runComparison' | translate }}</md-button>
+            <md-button class="md-raised md-primary" ng-disabled="comparedPlatformForm.$invalid || !isDiffAllowed()" ng-click="$diff(from)">{{ 'button.modal.runComparison' | translate }}</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>

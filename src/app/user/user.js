@@ -25,7 +25,9 @@ angular.module("hesperides.user", [])
     var User = function (data){
         _.assign(this, data);
         // For backward-compatibility:
-        this.isProdUser = this.prodUser;
+        if (typeof this.prodUser !== 'undefined') {
+            this.isProdUser = this.prodUser;
+        }
     };
 
     return User;

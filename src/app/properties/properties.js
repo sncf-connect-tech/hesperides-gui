@@ -550,7 +550,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
            }
         }
 
-       modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
+        modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
 
         modalScope.$diff = function() {
             $mdDialog.hide();
@@ -576,8 +576,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             }
         };
 
-        modalScope.pltfm_not_in_list = function () {
-            return !_.some(modalScope.target_platforms, { 'name': modalScope.from.platform });;
+        modalScope.isDiffAllowed = function () {
+            var selectedAppPlatformEqualToCurrent = modalScope.from.application == $scope.platform.application_name && modalScope.from.platform == $scope.platform.name;
+            var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
+            return (!modalScope.from.lookPast || modalScope.from.dateValid)
+                && modalScope.target_platforms && modalScope.target_platforms.length >= 1
+                && selectedPlatformInList && !selectedAppPlatformEqualToCurrent;
         }
 
         var t = $mdDialog.show({
@@ -661,8 +665,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             }
         };
 
-        modalScope.pltfm_not_in_list = function () {
-            return !_.some(modalScope.target_platforms, { 'name': modalScope.from.platform });;
+        modalScope.isDiffAllowed = function () {
+            var selectedAppPlatformEqualToCurrent = modalScope.from.application == $scope.platform.application_name && modalScope.from.platform == $scope.platform.name;
+            var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
+            return (!modalScope.from.lookPast || modalScope.from.dateValid)
+                && modalScope.target_platforms && modalScope.target_platforms.length >= 1
+                && selectedPlatformInList && !selectedAppPlatformEqualToCurrent;
         }
 
         $mdDialog.show({
@@ -1462,16 +1470,9 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
     $scope.application_name = $routeParams.application;
     $scope.platform_name = $routeParams.platform;
-    $scope.properties_path = $routeParams.properties_path;
-    $scope.splited_properties_path = $routeParams.properties_path.split('#');
-    $scope.splited_properties_path_last_pos = $scope.splited_properties_path.length - 1;;
-    $scope.module = "";
+
     $scope.compare_application = $routeParams.compare_application;
     $scope.compare_platform = $routeParams.compare_platform;
-    $scope.compare_path = $routeParams.compare_path;
-    $scope.compare_splited_path = $routeParams.compare_path.split('#');
-    $scope.compare_splited_path_last_pos = $scope.compare_splited_path.length - 1;
-    $scope.compare_module = "";
 
     $scope.origin_timestamp = $routeParams.origin_timestamp;
     $scope.timestamp = $routeParams.timestamp;
@@ -1486,49 +1487,52 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.propertiesKeyFilter2 = "";
     $scope.propertiesKeyFilter3 = "";
 
+    var splitedPropertiesPath = $routeParams.properties_path.split('#');
     $scope.module = {
-        "name": $scope.splited_properties_path[$scope.splited_properties_path_last_pos-2],
-        "version": $scope.splited_properties_path[$scope.splited_properties_path_last_pos-1],
-        "is_working_copy": $scope.splited_properties_path[$scope.splited_properties_path_last_pos] == "WORKINGCOPY" ? true : false
+        "name": splitedPropertiesPath[splitedPropertiesPath.length - 3],
+        "version": splitedPropertiesPath[splitedPropertiesPath.length - 2],
+        "is_working_copy": splitedPropertiesPath[splitedPropertiesPath.length - 1] == "WORKINGCOPY" ? true : false
     }
 
+    var compareSplitedPath = $routeParams.compare_path.split('#');
     $scope.compare_module = {
-        "name": $scope.compare_splited_path[$scope.compare_splited_path_last_pos-2],
-        "version": $scope.compare_splited_path[$scope.compare_splited_path_last_pos-1],
-        "is_working_copy": $scope.compare_splited_path[$scope.compare_splited_path_last_pos] == "WORKINGCOPY" ? true : false
+        "name": compareSplitedPath[compareSplitedPath.length - 3],
+        "version": compareSplitedPath[compareSplitedPath.length - 2],
+        "is_working_copy": compareSplitedPath[compareSplitedPath.length - 1] == "WORKINGCOPY" ? true : false
     };
 
     //Get the platform to get the version id
+    ApplicationService.get_platform($routeParams.application, $routeParams.platform).then(platform => $scope.platform = platform);
+
     //Then get the properties, version id could have changed but it is really marginal
-    ApplicationService.get_platform($routeParams.application, $routeParams.platform).then(function (platform) {
-        $scope.platform = platform;
-    }).then(function () {
-        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path);
-    }).then(function (properties) {
+    ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path).then(function (properties) {
         $scope.properties_to_modify = properties;
+        if ($scope.module.name && $scope.module.version) {
+            return ModuleService.get_model($scope.module).then(function (model) {
+                $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
+            });
+        } else {
+            return Promise.resolve();
+        }
     }).then(function () {
-        return ModuleService.get_model($scope.module);
-    }).then(function (model) {
-        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
-    }).then(function () {
-        // Get global properties
         return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
-    }).then(function (model) {
-        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(model);
-    }).then(function () {
+    }).then(function (globalProperties) {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(globalProperties);
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
     }).then(function (properties) {
         $scope.properties_to_compare_to = properties;
-    }).then(function () {
-        return ModuleService.get_model($scope.compare_module);
-    }).then(function (model) {
-        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
+        if ($scope.compare_module.name && $scope.compare_module.version) {
+            return ModuleService.get_model($scope.compare_module).then(function (model) {
+                $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
+            });
+        } else {
+            return Promise.resolve();
+        }
     }).then(function () {
         // Get global properties
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, '#');
     }).then(function (model) {
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
-    }).then(function () {
         $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
         $scope.generate_diff_containers($routeParams.properties_path !== '#');
@@ -1736,7 +1740,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
         // Save the properties
         HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
-            ApplicationService.save_properties($scope.application_name, $scope.platform, $scope.properties_to_modify, $scope.properties_path, comment ).then(function (properties) {
+            ApplicationService.save_properties($routeParams.application, $scope.platform, $scope.properties_to_modify, $routeParams.properties_path, comment ).then(function (properties) {
                 $route.reload();
             });
         });
@@ -2273,7 +2277,7 @@ propertiesModule.factory('Properties', function () {
                     return {
                         name: kvp.name,
                         comment: kvp.comment,
-                        value: kvp.value
+                        value: kvp.value || ''
                     }
                 }),
                 iterable_properties:  []
