@@ -150,18 +150,6 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 
     var properties;
-
-    /**
-     * This set the current page by the created platform page.
-     * Used for reloading page after platform creation.
-     * This could be improved.
-     */
-    var reload = function (application, platform){
-        var path = '/properties/' + application;
-        $location.url(path).search({platform: platform});
-        location.reload();
-    };
-
     var apps;
 
     ApplicationService.list_applications().then(function (response) {
@@ -176,29 +164,22 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
     };
 
-    $scope.open_properties_page = function (application_name, platform_name, fakeButton, secure) {
-
-        if (secure || !secure && apps.indexOf(application_name) != -1) {
-
-            var path = '/properties/' + application_name;
-            $location.url(path).search({platform: platform_name});
-            $scope.applicationSearched = "";
-            $mdDialog.cancel();
-
-            // Very bad trick to close menu :-(
-            if (fakeButton) {
-                $timeout(function() {
-                    $(fakeButton).click();
-                }, 0);
-            }
+    $scope.open_properties_page = function (application_name, platform_name, fakeButton, forceOpenEvenIfAppUnknown) {
+        if (!forceOpenEvenIfAppUnknown && apps.indexOf(application_name) == -1) {
+            return;
         }
+
+        var path = '/properties/' + application_name;
+        $scope.applicationSearched = "";
+        $mdDialog.cancel();
+        $location.path(path).search({platform: platform_name})
     };
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
         var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production || false});
-        ApplicationService.save_platform(platform).then(function(platform){
-            $scope.open_properties_page(platform.application_name, platform.platform_name);
-        }).then(() => reload(application_name, platform_name) );
+        ApplicationService.save_platform(platform).then((platform) =>
+            $scope.open_properties_page(platform.application_name, platform.platform_name)
+        );
     };
 
     /**
@@ -216,11 +197,9 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         if (copyInstances) {
             // Clone the platform
             platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
-            ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
-                $scope.open_properties_page(platform.application_name,  platform.name);
-                reload(application_name, platform_name);
-            }).catch(function(e) {
-            });
+            ApplicationService.create_platform_from(platform, from_application, from_platform).then((platform) =>
+                $scope.open_properties_page(platform.application_name, platform.name)
+            );
 
 
         } else {
@@ -235,9 +214,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 platform.version_id = -1;
 
                 //Empty the instances for each module (we don't want to copy the instances)
-                _.each(platform.modules, function (module) {
-                    module.delete_instances();
-                });
+                _.each(platform.modules, (module) => module.delete_instances() );
 
                 // Saving the platform as a creation
                 ApplicationService.save_platform(platform, true);
@@ -267,9 +244,8 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 });
 
                 $scope.open_properties_page(platform.application_name, platform.name);
-                reload(application_name, platform_name);
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesCtrl.create_platform_from', "error");
                 throw error;
             })
         }
@@ -380,13 +356,13 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
 
     $scope.display_hesperides_informations = function(){
 
-        $scope.front_version = '${project.version}';
+        $scope.front_build_time = BUILD_TIME || 'unknown';
         $scope.release = hesperidesGlobals.versionName;
 
         //Get the backend versions
         $http.get('rest/versions').then(function(response){
-            $scope.backend_version = response.data.backend_version;
-            $scope.api_version = response.data.api_version;
+            $scope.api_version = response.data.version || response.data.api_version || 'unknown';
+            $scope.api_build_time = response.data.build_time || 'unknown';
         }, function (error) {
             throw error;
         });

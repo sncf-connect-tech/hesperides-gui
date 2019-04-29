@@ -106,7 +106,7 @@ eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperide
                     return event;
                });
             }, function (error){
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in EventService.get', "error");
                 throw error;
             });
         }

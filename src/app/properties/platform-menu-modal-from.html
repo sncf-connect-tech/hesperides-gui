@@ -120,7 +120,10 @@
         </md-content>
 
         <md-dialog-actions>
-            <md-button id="platform-menu-modal-from_from-button" ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)" ng-disabled="platformForm.$invalid || (new_platform_already_exist && !new_platform.override_existing)" class="md-raised md-primary">{{ 'button.modal.create' | translate }}</md-button>
+            <md-button id="platform-menu-modal-from_from-button" class="md-raised md-primary"
+                       ng-disabled="platformForm.$invalid || (new_platform_already_exist && !new_platform.override_existing)"
+                       ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)"
+            >{{ 'button.modal.create' | translate }}</md-button>
             <md-button id="platform-menu-modal-from_cancel-button" ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>

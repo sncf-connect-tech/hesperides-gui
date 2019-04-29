@@ -149,7 +149,7 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                     return entry;
                 });
             }, function (error) {
-               $.notify(error.data.message || error.data, "error");
+               $.notify((error.data && error.data.message) || error.data || 'Unknown API error in FileService.get_files_entries', "error");
                throw error;
            });
         },

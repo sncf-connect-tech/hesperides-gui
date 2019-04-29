@@ -297,7 +297,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             return $http.get('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.get', "error");
             });
         },
         save: function (template) {
@@ -309,8 +309,8 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    if (error.data.message || error.data) {
-                        $.notify(error.data.message || error.data, "error");
+                    if (error.data) {
+                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.save.post', "error");
                     } else if (error.status === 409) {
                         $translate('template.event.error').then(function(label) {
                             $.notify(label, "error");
@@ -324,7 +324,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    $.notify(error.data.message || error.data, "error");
+                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.save.put', "error");
                 });
             }
         },
@@ -335,7 +335,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                 });
                 return response;
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.delete', "error");
             });
         },
         all: function (namespace) {
@@ -344,7 +344,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     return new TemplateEntry(data);
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data.message || error.data, "error");
+                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.all', "error");
                     } else {
                         return [];
                     }

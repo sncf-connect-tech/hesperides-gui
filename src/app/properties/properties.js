@@ -1279,7 +1279,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $http.get(url).then(function (response) {
             return new Properties(response.data);
         }, function (error) {
-            $.notify(error.data.message || error.data, "error");
+            $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_properties', "error");
             throw error;
         }).then(function (response) {
             platform.global_properties = response;
@@ -1293,7 +1293,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $http.get(url).then(function (response) {
             return response.data;
         }, function (error) {
-            $.notify(error.data.message || error.data, "error");
+            $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_global_properties_usage', "error");
             throw error;
         }).then(function (response) {
             platform.global_properties_usage = response;
