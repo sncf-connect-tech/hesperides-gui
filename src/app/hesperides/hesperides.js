@@ -199,8 +199,7 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
     }).
     when('/properties/:application', {
         templateUrl: 'properties/properties.html',
-        controller: 'PropertiesCtrl',
-        reloadOnSearch: false
+        controller: 'PropertiesCtrl'
     }).
     when('/diff', {
         templateUrl: 'properties/diff.html',

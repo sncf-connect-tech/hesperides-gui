@@ -24,7 +24,12 @@ gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## v4.3
+### Added
+
+- Added: CHANGELOG.md + push Docker image sur hub avec version=date (#179) [Lucas Cimon]
+
+
 ### Fixed
 
 - Correction d'un regression - il doit être possible de comparer une plateforme avec elle-même (à une date antérieure) (#177) [Lucas Cimon]

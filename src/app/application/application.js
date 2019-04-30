@@ -263,7 +263,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 return new Application(response.data);
             }, function (error) {
                 if (!me.unsecured) {
-                    $.notify(error.data.message || error.data, "error");
+                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get', "error");
                 }
                 throw error;
             });
@@ -272,7 +272,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get('rest/applications').then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.list_applications', "error");
                 throw error;
             });
         },
@@ -280,7 +280,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.with_name_like', "error");
                 throw error;
             });
         },
@@ -289,7 +289,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                    "&platformName="+ encodeURIComponent(platform_name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform_name_of_application', "error");
                 throw error;
             });
         },
@@ -311,7 +311,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 return platform;
             }, function (error) {
                 if (!me.unsecured) {
-                    $.notify(error.data.message || error.data, "error");
+                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform', "error");
                 }
                 throw error;
             });
@@ -334,7 +334,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     });
                     return platform;
                 }, function (error) {
-                    $.notify(error.data.message || error.data, "error");
+                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_platform.post', "error");
                     throw error;
                 });
             } else {
@@ -349,7 +349,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     });
                     return platform;
                 }, function (error) {
-                    $.notify(error.data.message || error.data, "error");
+                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_platform.put', "error");
                     throw error;
                 });
             }
@@ -368,7 +368,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 });
                 return platform;
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.create_platform_from', "error");
                 throw error;
             });
         },
@@ -384,7 +384,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 return new Properties(response.data);
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_properties', "error");
                 throw error;
             });
         },
@@ -394,7 +394,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data.message || error.data, "error");
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_global_properties_usage', "error");
                 throw error;
             });
         },
@@ -408,8 +408,8 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 store.set('current_platform_versionID', platform.version_id + 1);
                 return new Properties(response.data);
             }, function (error) {
-                if (error.data.message || error.data) {
-                    $.notify(error.data.message || error.data, "error");
+                if (error.data) {
+                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_properties', "error");
                 } else {
                     $translate('properties.event.generic-error').then(function(label) {
                         $.notify(label, "error");

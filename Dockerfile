@@ -9,6 +9,7 @@ COPY .bowerrc .
 COPY bower.json .
 COPY src src
 RUN npm run postinstall
+RUN sed -i "s/BUILD_TIME = '.*'/BUILD_TIME = '$(date +%F_%T)'/" src/app/index.html
 
 FROM nginx:1.15-alpine
 COPY --from=0 /usr/src/app/src/app                  /usr/share/nginx/html/
