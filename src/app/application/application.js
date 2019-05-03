@@ -354,10 +354,14 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 });
             }
         },
-        create_platform_from: function (platform, from_application, from_platform) {
+        create_platform_from: function (platform, from_application, from_platform, copyInstancesAndProperties) {
             var me = this;
             platform = platform.to_rest_entity();
-            return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application=' + encodeURIComponent(from_application) + '&from_platform=' + encodeURIComponent(from_platform), platform).then(function (response) {
+            var path = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms'
+                + '?from_application=' + encodeURIComponent(from_application)
+                + '&from_platform=' + encodeURIComponent(from_platform)
+                + '&copy_instances_and_properties=' + copyInstancesAndProperties;
+            return $http.post(path, platform).then(function (response) {
                 $translate('platform.event.created').then(function(label) {
                     $.notify(label, "success");
                 });

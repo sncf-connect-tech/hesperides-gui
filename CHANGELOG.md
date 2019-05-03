@@ -25,6 +25,11 @@ gitchangelog && git add CHANGELOG.md
 
 <!-- gitchangelog START -->
 ## 2019-05-03
+### Added
+
+- Bouton de suppression de plateforme + champ pour restaurer une plateforme + corrige le bug d'accès en 2 temps aux propriétés de module - close #185 #186 (#187) [Lucas Cimon]
+
+
 ### Fixed
 
 - #183 Montée de version de module déployé sans cocher la copie de propriétés (#184) [Thomas L'Hostis]
