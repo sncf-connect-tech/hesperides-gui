@@ -9,6 +9,17 @@ module.exports = function (grunt) {
             targetHost: 'localhost',
             targetPort: 8080
         },
+
+        // daxmort
+        //hesperides: {
+        //    targetHost: 'daxmort',
+        //    targetPort: 51000
+        //},
+
+        nexus: {
+            targetHost: 'bloodymary.socrate.vsct.fr',
+            targetPort: 50080
+        }
     };
 
     /**

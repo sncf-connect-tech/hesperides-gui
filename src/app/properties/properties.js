@@ -500,7 +500,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
         modalScope.module = module;
-        modalScope.copyProperties = store.get('copy_properties') | false;
+        modalScope.copyProperties = store.get('copy_properties') || false;
         modalScope.searchText = module.name + ' ';
 
         modalScope.$update = function (modal_data) {
