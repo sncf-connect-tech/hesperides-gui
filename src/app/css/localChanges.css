@@ -57,16 +57,20 @@
     color: rgb(255,87,34);
 }
 
+#properties_delete-button {
+    color: red;
+}
+
 #properties_show-local-change-button span.title {
     text-transform: initial;
 }
 
-#properties_show-platform-event-button, #properties_show-local-change-button {
+#properties_show-platform-event-button, #properties_show-local-change-button, #properties_delete-button {
     margin: 4px;
     padding: 1px 3px;
 }
 
-#properties_show-platform-event-button .fa, #properties_show-local-change-button .fa {
+#properties_show-platform-event-button .fa, #properties_show-local-change-button .fa, #properties_delete-button .fa {
     font-size: 1.4em;
 }
 

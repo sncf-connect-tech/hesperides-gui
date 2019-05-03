@@ -96,8 +96,9 @@ var addFromModel = function (property, model){
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals', 'hesperides.localChanges']);
 
-propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
-    function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService, $translate) {
+propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', '$translate',
+    function ($scope, $mdDialog, NexusService, ApplicationService, $translate) {
+
     $scope.$change = function (modal_data) {
         if (modal_data.use_ndl === true && hesperidesConfiguration.nexusMode === true) {
             // on met à jour les modules de l'application à partir des infos de la ndl
@@ -144,49 +145,6 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 
 propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q',
     function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q) {
-    Page.setTitle("Properties");
-
-        var loadPlatform = function(ApplicationService, application_name, platform_name) {
-            return $q(function(resolve, reject) {
-                /* Get the application */
-                ApplicationService
-                        .get(application_name)
-                        .then(function (application) {
-                            /* If platform was mentionned in the route, try to find it */
-                            /* If it does not exist show error */
-                            var platform;
-
-                            if (platform_name) {
-                                platform = _.find(application.platforms, function (platform) {
-                                    return platform.name === platform_name;
-                                });
-                            } else {
-                                platform = null;
-                            }
-
-                            return {
-                                application: application,
-                                platform: platform
-                            };
-                        }).then(function (selected_platform) {
-                    if (_.isUndefined(selected_platform.platform)) {
-                        reject('Selected platform not found !');
-                    } else if (selected_platform.platform === null) {
-                        resolve({
-                            application: selected_platform.application,
-                            platform: null
-                        });
-                    } else {
-                        ApplicationService.get_platform(selected_platform.platform.application_name, selected_platform.platform.name).then(function (platform) {
-                            resolve({
-                                application: selected_platform.application,
-                                platform: platform
-                            });
-                        });
-                    }
-                });
-            });
-        }
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
@@ -200,6 +158,32 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.$closeDialog = function() {
         $mdDialog.cancel();
     };
+
+    $scope.contain_empty_module_status = {};
+
+    $scope.cached_empty_module = [];
+
+    $scope.test_obj = {"name": "demoKatana-war", "version": "1.1.2", "working_copy": false, "status": "toDO"};
+
+    $scope.quickOpen = false;
+
+    $scope.mainBox = null;
+
+    $scope.new_instance_name = undefined;
+
+    // The new global property info
+    $scope.new_kv_name = '';
+    $scope.new_kv_value = '';
+
+    /**
+     * An ugly copy for properties
+     */
+    $scope.oldProperties = undefined;
+
+    /**
+     * An ugly copy of global properties
+     */
+    $scope.oldGolbalProperties = undefined;
 
     var Box = function (data) {
         return angular.extend(this, {
@@ -228,33 +212,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }, data);
     };
 
-    $scope.contain_empty_module_status = {};
-
-    $scope.cached_empty_module = [];
-
-    $scope.test_obj = {"name": "demoKatana-war", "version": "1.1.2", "working_copy": false, "status": "toDO"};
-
-    function check_modules_models(modules) {
-        _.forEach(modules, function (module) {
-            var ref = {"name": module.name, "version": module.version, "working_copy": module.working_copy};
-
-            if (!_.some($scope.cached_empty_module, ref)) {
-                $scope.cached_empty_module.push(ref);
-                var elem = _.find($scope.cached_empty_module, ref);
-
-                ModuleService.search(module.name + " " + module.version + " " + module.working_copy).then(function (response) {
-                    if (elem && response)
-                        elem.has_model = true;
-                    else if (elem)
-                        elem.has_model = false;
-                });
-            }
-        })
-    }
-
     $scope.is_module_has_model = function (module) {
-        return _.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": true});
-    }
+        return _.some($scope.cached_empty_module, {
+            "name": module.name,
+            "version": module.version,
+            "working_copy": module.working_copy,
+            "has_model": true
+        });
+    };
 
     $scope.empty_module_status = function () {
         var return_value = false;
@@ -265,13 +230,31 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             }
         });
         return return_value;
-    }
+    };
 
     $scope.contain_empty_module = function (box) {
 
         var return_value = "";
 
         if (box) {
+
+            function check_modules_models(modules) {
+                _.forEach(modules, function (module) {
+                    var ref = {"name": module.name, "version": module.version, "working_copy": module.working_copy};
+
+                    if (!_.some($scope.cached_empty_module, ref)) {
+                        $scope.cached_empty_module.push(ref);
+                        var elem = _.find($scope.cached_empty_module, ref);
+
+                        ModuleService.search(module.name + " " + module.version + " " + module.working_copy).then(function (response) {
+                            if (elem && response)
+                                elem.has_model = true;
+                            else if (elem)
+                                elem.has_model = false;
+                        });
+                    }
+                })
+            }
 
             check_modules_models(box.modules);
 
@@ -296,7 +279,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.contain_empty_module_status[box ? box.name : "empty_key"] = return_value.length ? true : false;
 
         return return_value;
-    }
+    };
 
     $scope.update_main_box = function (platform) {
 
@@ -394,7 +377,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.update_box_name = function (box, old_name, new_name) {
-        if (!(old_name === new_name)) {
+        if (old_name !== new_name) {
             box.name = new_name;
             box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
             delete box.parent_box["children"][old_name];
@@ -697,7 +680,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $window.open('/#/diff?' + $.param(urlParams), '_blank');
     };
 
-    $scope.quickOpen = false;
     $scope.quickDisplayInstance = function () {
         $scope.$broadcast((!$scope.quickOpen ? 'quickDisplayInstanceDetails' : 'quickHideInstanceDetails'), {})
         $scope.quickOpen = !$scope.quickOpen;
@@ -734,7 +716,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     /**
      * This is used to preview an instance data.
      */
-     $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
+    $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
         simulate = simulate || false;
 
         var modalScope = $scope.$new();
@@ -952,8 +934,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.save_platform_from_box($scope.mainBox);
     };
 
-    $scope.new_instance_name = undefined;
-
     /**
      * That function saves the instance properties
      */
@@ -1011,11 +991,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         });
     };
 
-    /**
-     * An ungly copy for properties
-     */
-    $scope.oldProperites = undefined;
-
     $scope.edit_properties = function (platform, module) {
         if ($scope.platform.global_properties_usage === null) {
             $scope.refreshGlobalPropertiesData();
@@ -1027,10 +1002,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
                 //Merge with global properties
                 $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
-                $scope.oldProperites = angular.copy($scope.properties);
+                $scope.oldProperties = angular.copy($scope.properties);
 
                 $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
-                $scope.oldProperites = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperites);
+                $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
 
                 $scope.selected_module = module;
                 $scope.instance = undefined; //hide the instance panel if opened
@@ -1088,10 +1063,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             return item.inModel;
         });
     };
-
-    // The new global property info
-    $scope.new_kv_name = '';
-    $scope.new_kv_value = '';
 
     $scope.save_global_properties = function (properties, save) {
         // Getting information with querySelector, this is because there is
@@ -1163,12 +1134,34 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         return LocalChanges.platformLocalChangesCount($scope.platform);
     }
 
+    $scope.delete_platform = function () {
+        ApplicationService.delete_platform($scope.platform.application_name, $scope.platform.name)
+            .then(() => {
+                $location.url('/properties/' + $scope.platform.application_name)
+                _.remove($scope.platforms, platform => platform.name == $scope.platform.name);
+                $scope.platform = null;
+            }).catch(function (error) {
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.delete_platform', "error");
+                throw error;
+            });
+    };
+
+    $scope.restore_platform = function (platformToRestore) {
+        ApplicationService.restore_platform($scope.platform.application_name, platformToRestore)
+            .then(() => {
+                $location.url('/properties/' + $scope.platform.application_name).search({platform: platformToRestore});
+            }).catch(function (error) {
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.restore_platform', "error");
+                throw error;
+            });
+    };
+
     $scope.save_properties_locally = function (properties, module) {
 
-        if(
-            _.isEqual(properties.key_value_properties, $scope.oldProperites.key_value_properties) &&
+        if (
+            _.isEqual(properties.key_value_properties, $scope.oldProperties.key_value_properties) &&
             // we use angular copy for these to remove the $$hashKey
-            _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperites.iterable_properties)) ){
+            _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperties.iterable_properties)) ){
             $translate('properties-not-changed.message').then(function(label) {
                 $.notify(label, "warn");
             });
@@ -1231,7 +1224,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                         $scope.properties = properties.mergeWithModel(model);
 
                         // Keep the saved properties as old
-                        $scope.oldProperites = angular.copy($scope.properties);
+                        $scope.oldProperties = angular.copy($scope.properties);
                     });
 
                     //Merge with global properties
@@ -1300,11 +1293,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         });
     }
 
-    /**
-     * A ungly copy of global properties
-     */
-    $scope.oldGolbalProperties = undefined;
-
     $scope.showGlobalPropertiesDisplay = function () {
         // --- Testing retrive on demand
         // If the usage is already filled, we don't call the backend, and serve cache instead
@@ -1356,28 +1344,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     /**
-     * Instances display relative vars
-     * The hide mode is displayed by default
-     */
-    if(store.get('instance_properties') == true){
-        $scope.isInstanceOpen = 1;
-    }else{
-        $scope.isInstanceOpen = 0;
-    }
-
-    /**
-     * Box and tree display relative vars
-     * The tree mode is displayed by default
-     */
-    if(store.get('display_mode') == 'arbre'){
-        $scope.box = false;
-        $scope.tree = true;
-    }else{
-        $scope.box = true;
-        $scope.tree = false;
-    }
-
-    /**
      * This will display the properties in the box mode.
      */
     $scope.boxModeShow = function (){
@@ -1402,6 +1368,72 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $scope.instance = undefined;
         }
     }
+
+    Page.setTitle("Properties");
+
+    /**
+     * Instances display relative vars
+     * The hide mode is displayed by default
+     */
+    if (store.get('instance_properties') == true) {
+        $scope.isInstanceOpen = 1;
+    } else {
+        $scope.isInstanceOpen = 0;
+    }
+
+    /**
+     * Box and tree display relative vars
+     * The tree mode is displayed by default
+     */
+    if (store.get('display_mode') == 'arbre') {
+        $scope.box = false;
+        $scope.tree = true;
+    } else {
+        $scope.box = true;
+        $scope.tree = false;
+    }
+    
+    var loadPlatform = function(ApplicationService, application_name, platform_name) {
+        return $q(function(resolve, reject) {
+            /* Get the application */
+            ApplicationService
+                    .get(application_name)
+                    .then(function (application) {
+                        /* If platform was mentionned in the route, try to find it */
+                        /* If it does not exist show error */
+                        var platform;
+
+                        if (platform_name) {
+                            platform = _.find(application.platforms, function (platform) {
+                                return platform.name === platform_name;
+                            });
+                        } else {
+                            platform = null;
+                        }
+
+                        return {
+                            application: application,
+                            platform: platform
+                        };
+                    }).then(function (selected_platform) {
+                if (_.isUndefined(selected_platform.platform)) {
+                    reject('Selected platform not found !');
+                } else if (selected_platform.platform === null) {
+                    resolve({
+                        application: selected_platform.application,
+                        platform: null
+                    });
+                } else {
+                    ApplicationService.get_platform(selected_platform.platform.application_name, selected_platform.platform.name).then(function (platform) {
+                        resolve({
+                            application: selected_platform.application,
+                            platform: platform
+                        });
+                    });
+                }
+            });
+        });
+    };
 
     loadPlatform(ApplicationService, $routeParams.application, $routeParams.platform)
             .then(function(result) {

@@ -23,21 +23,31 @@
 <div layout="row">
     <div flex="100">
         <div class="bg-light">
-            <div layout="row">
-                <h3>{{ 'properties.application.title' | translate }} <strong>{{application.name}}</strong></h3>
-                <md-button ng-click="isPlatformOpen = 0" ng-show="isPlatformOpen === 1" class="md-mini">
-                    <span class="fa fa-compress"></span>
-                    <md-tooltip>{{ 'properties.platform.hide.all' | translate }}</md-tooltip>
-                </md-button>
-                <md-button ng-click="isPlatformOpen = 1" ng-show="isPlatformOpen === 0" class="md-mini">
-                    <span class="fa fa-expand"></span>
-                    <md-tooltip>{{ 'properties.platform.show.all' | translate }}</md-tooltip>
-                </md-button>
-                <md-input-container ng-show="isPlatformOpen" md-no-float class="md-block filter-platform width-50-pc">
-                    <label></label>
-                    <input id="properties_platform-filter-input" type="text" ng-trim="true" ng-model="searchInPlatforms"
-                           placeholder="{{ 'properties.platform.filter.placeholder' | translate }}"/>
-                </md-input-container>
+            <div layout="row" layout-align="space-between">
+                <div layout="row" flex="75">
+                    <h3>{{ 'properties.application.title' | translate }} <strong>{{application.name}}</strong></h3>
+                    <md-button ng-click="isPlatformOpen = 0" ng-show="isPlatformOpen === 1" class="md-mini">
+                        <span class="fa fa-compress"></span>
+                        <md-tooltip>{{ 'properties.platform.hide.all' | translate }}</md-tooltip>
+                    </md-button>
+                    <md-button ng-click="isPlatformOpen = 1" ng-show="isPlatformOpen === 0" class="md-mini">
+                        <span class="fa fa-expand"></span>
+                        <md-tooltip>{{ 'properties.platform.show.all' | translate }}</md-tooltip>
+                    </md-button>
+                    <md-input-container ng-show="isPlatformOpen" class="md-block filter-platform width-50-pc">
+                        <label>{{ 'properties.platform.search' | translate }}</label>
+                        <input id="properties_platform-filter-input" type="text" ng-trim="true" ng-model="searchInPlatforms"
+                               placeholder="{{ 'properties.platform.filter.placeholder' | translate }}"/>
+                    </md-input-container>
+                </div>
+                <div layout="row" flex>
+                    <md-input-container>
+                        <label>{{ 'properties.platform.restore.label' | translate }}</label>
+                        <input type="text" ng-trim="true" ng-model="platformToRestore"
+                               placeholder="{{ 'platform.modal.platformName' | translate }}"/>
+                    </md-input-container>
+                    <md-button ng-click="restore_platform(platformToRestore)" class="md-mini md-raised">{{ 'properties.platform.restore.try' | translate }}</md-button>
+                </div>
             </div>
             <div ng-show="isPlatformOpen" class="file-content ng-hide" layout="column" flex="100">
                 <list-of-items items="platforms"
@@ -45,25 +55,12 @@
                                filter="searchInPlatforms"
                                sorton="$item.name"
                                selected-item="platform"
-                               createfunction="add_platform($name)"
-                               ondelete="delete_platform($item)"
                                onedit="on_edit_platform($item)"
                                selectable="true"
                                editable="false"
                                css="md-warn"
                                tooltip="{{ 'properties.platform.selection.tooltip' | translate }}"
                                size="small">
-                </list-of-items>
-                <list-of-items items="module.technos"
-                               createfunction="add_techno($name)"
-                               ondelete="delete_techno($item)"
-                               size="small"
-                               label="$item.title"
-                               selected-item="techno"
-                               selectable="true"
-                               editable="is_workingcopy"
-                               css="md-warn"
-                               typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)">
                 </list-of-items>
             </div>
         </div>
@@ -72,35 +69,45 @@
 
 <div layout="column" ng-show="platform" class="bg-light">
     <div layout="row">
-        <div flex="66">
-            <h3><span>{{ 'properties.platform.title' | translate }} <strong>{{platform.name}} (version
+        <div flex="50">
+            <h3>{{ 'properties.platform.title' | translate }} <strong>{{platform.name}} (version
                 <a href="" ng-click="change_platform_version(platform)"
                    class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
                 <md-tooltip>{{ 'properties.platform.version.tooltip' | translate }}</md-tooltip>
                 )</strong>
 
-            <!-- Show events for platform -->
-            <md-button id="properties_show-platform-event-button" aria-label="{{ 'properties.platform.version.history' | translate }}" ng-click="show_events(application, platform, 'platform')" class="md-xs">
-                <span class="fa fa-history fa-2x"></span>
-                <md-tooltip>{{ 'properties.platform.version.history' | translate }}</md-tooltip>
-            </md-button>
+                <!-- Show events for platform -->
+                <md-button id="properties_show-platform-event-button" aria-label="{{ 'properties.platform.version.history' | translate }}"
+                           ng-click="show_events(application, platform, 'platform')" class="md-xs">
+                    <span class="fa fa-history fa-2x"></span>
+                    <md-tooltip>{{ 'properties.platform.version.history' | translate }}</md-tooltip>
+                </md-button>
 
-            <!-- Show pending changes -->
-            <md-button id="properties_show-local-change-button" aria-label="{{ 'properties.platform.version.history' | translate }}" ng-click="show_united_nations_modal()" class="md-xs" ng-if="platformLocalChangesCount() > 0">
-                <span class="fa fa-medkit fa-2x"></span>
-                <span class="title">{{ 'properties.platform.localChange.pending' | translate }} ( {{platformLocalChangesCount()}} ) </span>
-            </md-button>
-
-        </span>
+                <!-- Show pending changes -->
+                <md-button id="properties_show-local-change-button" aria-label="{{ 'properties.platform.localChange.pending' | translate }}"
+                           ng-click="show_united_nations_modal()" class="md-xs" ng-if="platformLocalChangesCount() > 0">
+                    <span class="fa fa-medkit fa-2x"></span>
+                    <span class="title">{{ 'properties.platform.localChange.pending' | translate }} ( {{platformLocalChangesCount()}} ) </span>
+                </md-button>
             </h3>
         </div>
-        <div flex="33" layout-align="center top">
+        <div flex="25" layout-align="center top">
             <h3>
-                <md-switch id="properties_isProduction-switch" class="md-primary properties-production" aria-label="Production" ng-model="platform.production" ng-disabled="!isProductionUser()" ng-change="save_platform_from_box(mainBox)" id="isProduction">
+                <md-switch id="properties_isProduction-switch" class="md-primary properties-production" aria-label="Production"
+                           ng-model="platform.production" ng-disabled="!isProductionUser()" ng-change="save_platform_from_box(mainBox)" id="isProduction">
                     {{ 'properties.platform.production.switch' | translate }}
                     <md-tooltip>{{ 'properties.platform.production.switch.tooltip' | translate }}</md-tooltip>
                 </md-switch>
+            </h3>
+        </div>
+        <div flex layout-align="center top">
+            <h3>
+                <md-button id="properties_delete-button" aria-label="{{ 'properties.platform.delete' | translate }}"
+                           ng-click="delete_platform()" class="md-xs">
+                    <span class="fa fa-trash fa-2x"></span>
+                    <span class="title">{{ 'properties.platform.delete' | translate }}</span>
+                </md-button>
             </h3>
         </div>
     </div>
