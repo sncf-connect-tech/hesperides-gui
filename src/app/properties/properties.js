@@ -1413,11 +1413,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     $scope.platform = result.platform;
                     $scope.update_main_box(result.platform);
                 }
-            })
-            .catch(function() {
-                $translate('properties.event.notExist.error').then(function(label) {
-                    $.notify(label, "error");
-                });
+            }).catch(function (error) {
+                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl constructor', "error");
+                throw error;
             });
 }]);
 
