@@ -181,48 +181,20 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         );
     };
 
-    /**
-     * Create a new platform from existing platform by copying all the characteristics.
-     * This function presents two options to the user: copying the instances or not.
-     * Modified by Sahar CHAILLOU on 25/01/2016.
-    */
-    $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyProperties){
+    $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstancesAndProperties) {
         var platform;
 
         if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
             ApplicationService.delete_platform(application_name, platform_name);
         }
 
-        if (copyProperties) {
-            // Clone the platform
-            platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
-            ApplicationService.create_platform_from(platform, from_application, from_platform).then((platform) =>
-                $scope.open_properties_page(platform.application_name, platform.name)
-            );
-
-        } else {
-            // Lucas 2019/05/03 : on devrait implémenter ça côté backend via copyProperties=false -> https://github.com/voyages-sncf-technologies/hesperides/issues/634
-            // Get the existing platform
-            $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
-                // Create a new platform from the get's response and change the main properties with the target values
-                platform = new Platform(response.data);
-                platform.name = platform_name;
-                platform.application_name = application_name;
-                platform.production = production;
-                platform.application_version = application_version;
-                platform.version_id = -1;
-
-                //Empty the instances for each module (we don't want to copy the instances)
-                _.each(platform.modules, (module) => module.delete_instances() );
-
-                // Saving the platform as a creation
-                return ApplicationService.save_platform(platform, true)
-            }).then(() => $scope.open_properties_page(platform.application_name, platform.name)
-            ).catch(function (error) {
+        platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
+        ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
+            .then((platform) => $scope.open_properties_page(platform.application_name, platform.name) )
+            .catch(function (error) {
                 $.notify((error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesCtrl.create_platform_from', "error");
                 throw error;
-            })
-        }
+            });
     };
 
     $scope.open_create_platform_dialog = function () {
