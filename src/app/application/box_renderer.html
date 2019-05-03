@@ -53,7 +53,8 @@
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules | orderObjectBy:'name'">
         <div layout="row">
             <div class="property-box-module-name layout-align-start-center layout-row flex-none" layout="row" layout-align="start center" flex="none">
-                <a id="box-renderer_editmodule-button-{{module.title.split(',')[0]}}" href="" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module)">
+                <a id="box-renderer_editmodule-button-{{module.title.split(',')[0]}}" href="" class="module-link has_model_{{is_module_has_model(module)}}"
+                   ng-click="edit_properties(platform, module)">
                     {{module.title}}
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>

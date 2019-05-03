@@ -62,7 +62,7 @@ var hesperidesModule = angular.module('hesperides', [
 
 var hesperidesConfiguration = {};
 
-hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $http) {
+hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $http, $location, $route) {
     editableOptions.theme = 'default';
 
     // overwrite submit button template
@@ -137,6 +137,22 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         console.warn("[Hesperides] Config file not found or empty, applying default configuration");
         $rootScope.setHesperidesConfiguration();
     });
+
+    // reloadOnSearch ne fait pas de distinction entre $location.search() & $location.hash()
+    // Or nous voulons uniquement déclencher un reload en cas de changement de search :
+    var lastHash = null;
+    $rootScope.$on('$routeUpdate', function routeUpdateListener(ngEvent, current) {
+        if (current.loadedTemplateUrl != 'properties/properties.html') {
+            throw new Error('Unexpected $routeUpdate - Cet événement ne devrait être déclenché que lorsque reloadOnSearch == false');
+        }
+        var triggerReload = !$location.hash() || $location.hash() == lastHash;
+        //console.log('$routeUpdate', lastHash, triggerReload, $location.hash());
+        if (triggerReload) {
+            // cf. https://github.com/angular/angular.js/blob/master/src/ngRoute/route.js#L635
+            $route.reload();
+        }
+        lastHash = $location.hash();
+    });
 });
 
 
@@ -199,7 +215,8 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
     }).
     when('/properties/:application', {
         templateUrl: 'properties/properties.html',
-        controller: 'PropertiesCtrl'
+        controller: 'PropertiesCtrl',
+        reloadOnSearch: false // "reload route when only $location.search() or $location.hash() changes." - cf. routeUpdateListener au-dessus
     }).
     when('/diff', {
         templateUrl: 'properties/diff.html',

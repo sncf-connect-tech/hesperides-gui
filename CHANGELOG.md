@@ -24,12 +24,21 @@ gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## v4.3
+## 2019-05-03
+### Fixed
+
+- #183 Montée de version de module déployé sans cocher la copie de propriétés (#184) [Thomas L'Hostis]
+
+
+
+## 2019-04-26
 ### Added
 
-- Added: CHANGELOG.md + push Docker image sur hub avec version=date (#179) [Lucas Cimon]
+- CHANGELOG.md + push Docker image sur hub avec version=date (#179) [Lucas Cimon]
 
 
+
+## 2019-04-24
 ### Fixed
 
 - Correction d'un regression - il doit être possible de comparer une plateforme avec elle-même (à une date antérieure) (#177) [Lucas Cimon]

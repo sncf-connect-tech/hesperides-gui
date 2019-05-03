@@ -169,10 +169,9 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
             return;
         }
 
-        var path = '/properties/' + application_name;
         $scope.applicationSearched = "";
         $mdDialog.cancel();
-        $location.path(path).search({platform: platform_name})
+        $location.path('/properties/' + application_name).search({platform: platform_name})
     };
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
@@ -187,14 +186,14 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
      * This function presents two options to the user: copying the instances or not.
      * Modified by Sahar CHAILLOU on 25/01/2016.
     */
-    $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstances){
+    $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyProperties){
         var platform;
 
         if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
             ApplicationService.delete_platform(application_name, platform_name);
         }
 
-        if (copyInstances) {
+        if (copyProperties) {
             // Clone the platform
             platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
             ApplicationService.create_platform_from(platform, from_application, from_platform).then((platform) =>
@@ -202,7 +201,8 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
             );
 
         } else {
-            //Get the existing platform
+            // Lucas 2019/05/03 : on devrait implémenter ça côté backend via copyProperties=false -> https://github.com/voyages-sncf-technologies/hesperides/issues/634
+            // Get the existing platform
             $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
                 // Create a new platform from the get's response and change the main properties with the target values
                 platform = new Platform(response.data);

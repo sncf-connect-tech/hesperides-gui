@@ -375,6 +375,9 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
         delete_platform: function (application_name, platform_name) {
             return $http.delete('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name));
         },
+        restore_platform: function (application_name, platform_name) {
+            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/restore');
+        },
         get_properties: function (application_name, platform_name, path, timestamp) {
             if (_.isUndefined(timestamp)) {
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path);
