@@ -52,7 +52,7 @@
                                aria-label="Copier les properties"
                                ng-model="copyProperties"
                                ng-show="moduleSearched">
-                        <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
+                        <span ng-style="{'font-weight' : (copyProperties ? 'bold' : 'normal')}">
                            {{ 'properties.module.version.modal.copy.switch' | translate : {moduleVersion:module.version,moduleSearchedVersion:moduleSearched.version} }}
                         </span>
                     </md-switch>

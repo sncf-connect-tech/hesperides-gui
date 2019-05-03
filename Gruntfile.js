@@ -8,17 +8,6 @@ module.exports = function (grunt) {
         hesperides: {
             targetHost: 'localhost',
             targetPort: 8080
-        },
-
-        // daxmort
-        //hesperides: {
-        //    targetHost: 'daxmort',
-        //    targetPort: 51000
-        //},
-
-        nexus: {
-            targetHost: 'bloodymary.socrate.vsct.fr',
-            targetPort: 50080
         }
     };
 
@@ -63,14 +52,6 @@ module.exports = function (grunt) {
                     context: '/rest',
                     host: '<%= config.hesperides.targetHost %>',
                     port: '<%= config.hesperides.targetPort %>'
-                },
-                {
-                    context: '/nexus-api',
-                    host: '<%= config.nexus.targetHost %>',
-                    port: '<%= config.nexus.targetPort %>',
-                    rewrite: {
-                        '^/nexus-api': '/nexus'
-                    }
                 }
             ],
             livereload: {
