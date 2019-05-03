@@ -201,7 +201,6 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 $scope.open_properties_page(platform.application_name, platform.name)
             );
 
-
         } else {
             //Get the existing platform
             $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
@@ -217,34 +216,9 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 _.each(platform.modules, (module) => module.delete_instances() );
 
                 // Saving the platform as a creation
-                ApplicationService.save_platform(platform, true);
-                platform.version_id = 0;
-
-                // Save the properties for each module
-                _.each(platform.modules, function (module) {
-                    var module_type;
-
-                    //Get the module's type
-                    if(module.is_working_copy){
-                        module_type = 'WORKINGCOPY';
-                    }else{
-                        module_type = 'RELEASE';
-                    }
-
-                    // Instantiate the properties path
-                    var path = module.path + '#'+module.name + '#' + module.version + '#' + module_type;
-
-                    // Get the properties from the existing platform
-                    ApplicationService.get_properties(from_application, from_platform, path).then(function (properties) {
-                        properties = properties.to_rest_entity();
-                        // Save the properties for the new platform
-                        $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties);
-                    });
-
-                });
-
-                $scope.open_properties_page(platform.application_name, platform.name);
-            }, function (error) {
+                return ApplicationService.save_platform(platform, true)
+            }).then(() => $scope.open_properties_page(platform.application_name, platform.name)
+            ).catch(function (error) {
                 $.notify((error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesCtrl.create_platform_from', "error");
                 throw error;
             })

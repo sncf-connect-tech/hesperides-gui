@@ -54,7 +54,6 @@
   "properties.event.savedGlobalByUser": "has updated global properties of the module",
   "properties.event.saved": "The properties have been saved",
   "properties.event.generic-error": "Saving is not possible",
-  "properties.event.notExist.error": "The technical brick mentioned into the url does not exist",
   "nexus.event.error": "Error when trying to get the delivery note : {{error}}",
   "techno.all.title": "All the technos",
   "techno.associateFiles.title": "Files attached to the techno",
