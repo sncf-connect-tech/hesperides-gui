@@ -1,6 +1,7 @@
 # CHANGELOG
-Tous les changements notables sur ce projet sont documentés dans ce fichier.
+Le changelog du backend est ici: [hesperides/CHANGELOG.md](https://github.com/voyages-sncf-technologies/hesperides/blob/master/CHANGELOG.md)
 
+Tous les changements notables sur ce projet sont documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](http://keepachangelog.com).
 
 Il est généré automatiquement à partir des commits dont le message débute par
@@ -20,7 +21,7 @@ Pour automatiquement mettre à jour ce fichier à chaque commit,
 placez le code suivant dans `.git/hooks/pre-commit` :
 ```
 #!/bin/sh
-gitchangelog && git add CHANGELOG.md
+git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->

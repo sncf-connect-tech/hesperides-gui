@@ -94,45 +94,21 @@ var addFromModel = function (property, model){
 /**
  * Hesperides properties module
  */
-var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals', 'hesperides.localChanges']);
+var propertiesModule = angular.module('hesperides.properties', ['hesperides.modals', 'hesperides.localChanges']);
 
-propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', '$translate',
-    function ($scope, $mdDialog, NexusService, ApplicationService, $translate) {
+propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'ApplicationService', '$translate',
+    function ($scope, $mdDialog, ApplicationService, $translate) {
 
     $scope.$change = function (modal_data) {
-        if (modal_data.use_ndl === true && hesperidesConfiguration.nexusMode === true) {
-            // on met à jour les modules de l'application à partir des infos de la ndl
-            NexusService.getNdl($scope.platform.application_name, modal_data.new_version)
-                .then(function (ndl) {
-                    return ApplicationService.updatePlatformConfig($scope.platform, modal_data.new_version, ndl.NDL_pour_rundeck.packages);
-                })
-                .then(function (updatedModules) {
-                    // sauvegarde de la plateforme
-                    $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
-                        .then(function () {
-                            $scope.properties = undefined;
-                            $scope.instance = undefined;
+        // sinon, on ne met à jour que la version de l'application
+        $scope.platform.application_version = modal_data.new_version;
 
-                            // notification des modules mis à jour
-                            _.each(updatedModules, function (updatedModule) {
-                                $translate('module.event.updated.details', {name:updatedModule.name}).then(function(label) {
-                                    $.notify(label, "success");
-                                });                                
-                            })
-                        });
-                });
-
-        } else {
-            // sinon, on ne met à jour que la version de l'application
-            $scope.platform.application_version = modal_data.new_version;
-
-            // sauvegarde de la plateforme
-            $scope.save_platform_from_box($scope.mainBox)
-                .then(function () {
-                    $scope.properties = undefined;
-                    $scope.instance = undefined;
-                });
-        }
+        // sauvegarde de la plateforme
+        $scope.save_platform_from_box($scope.mainBox)
+            .then(function () {
+                $scope.properties = undefined;
+                $scope.instance = undefined;
+            });
 
         $mdDialog.cancel();
     };
@@ -143,8 +119,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q) {
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
@@ -430,38 +406,24 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      * @param platform plateforme courante
      */
     $scope.change_platform_version = function (platform) {
-        var dialogNdl = function (ndlVersions) {
-            var modalScope = $scope.$new();
-            modalScope.platform = platform;
-            modalScope.sourceFromNdl = _.isArray(ndlVersions) && ndlVersions.length != 0;
+        var modalScope = $scope.$new();
+        modalScope.platform = platform;
+        modalScope.onLoading = true;
 
-            modalScope.ndlVersions = modalScope.sourceFromNdl ? ndlVersions : [];
-            modalScope.onLoading = true;
-
-            modalScope.isValid = function (){
-                return !_.isUndefined(modalScope.newVersion) && !_.isEmpty(modalScope.newVersion);
-            }
-
-            $mdDialog.show({
-                templateUrl: 'application/change_platform_version.html',
-                controller: 'PlatformVersionModule',
-                clickOutsideToClose:true,
-                scope:modalScope,
-                onComplete: function() {
-                    // Use to prevent display list of version at wrong position
-                    modalScope.onLoading = false;
-                }
-            });
-        };
-
-        if (hesperidesConfiguration.nexusMode) {
-            // récupération des versions des ndl de l'application
-            NexusService.getNdlVersions(platform.application_name)
-                .then(dialogNdl, dialogNdl);
-        } else {
-            dialogNdl();
+        modalScope.isValid = function (){
+            return !_.isUndefined(modalScope.newVersion) && !_.isEmpty(modalScope.newVersion);
         }
 
+        $mdDialog.show({
+            templateUrl: 'application/change_platform_version.html',
+            controller: 'PlatformVersionModule',
+            clickOutsideToClose:true,
+            scope:modalScope,
+            onComplete: function() {
+                // Use to prevent display list of version at wrong position
+                modalScope.onLoading = false;
+            }
+        });
     };
 
     $scope.search_module = function (box) {
@@ -566,17 +528,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 && selectedPlatformInList;
         }
 
-        var t = $mdDialog.show({
+        $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
             clickOutsideToClose:true,
             scope: modalScope
-        });
-
-        t.then(function() {
-            $scope.open_diff_page();
-        }, function() {
-            // Cancel
-        });
+        }).then(() => $scope.open_diff_page() );
     };
 
     $scope.open_diff_page = function () {
