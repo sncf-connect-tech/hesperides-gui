@@ -50,7 +50,8 @@ fileModule.factory('FileEntry', ['$hesperidesHttp', '$translate', function ($htt
     return FileEntry;
 }]);
 
-fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate) {
+fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', 'notify',
+        function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate, notify) {
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {
@@ -149,7 +150,7 @@ fileModule.service('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                     return entry;
                 });
             }, function (error) {
-               $.notify((error.data && error.data.message) || error.data || 'Unknown API error in FileService.get_files_entries', "error");
+               notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in FileService.get_files_entries'});
                throw error;
            });
         },

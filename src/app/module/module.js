@@ -281,9 +281,8 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
 
 }]);
 
-applicationModule.factory('ModuleService', [
-    '$hesperidesHttp', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService', '$translate', 'Platform',
-    function ($http, $q, Module, Template, TemplateEntry, Properties, FileService, $translate, Platform) {
+applicationModule.factory('ModuleService', ['$hesperidesHttp', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService', '$translate', 'Platform', 'notify',
+    function ($http, $q, Module, Template, TemplateEntry, Properties, FileService, $translate, Platform, notify) {
 
     return {
         get: function (name, version, is_working_copy) {
@@ -291,13 +290,13 @@ applicationModule.factory('ModuleService', [
                 return new Module(response.data);
             }, function (error) {
                 throw error;
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.get', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.get'});
             });
         },
         save: function (module) {
             if (!module.is_working_copy) {
                 $translate('module.workingCopy.event.error').then(function(label) {
-                    $.notify(label, "error");
+                    notify({classes: ['error'], message: label});
                 });                
                 throw module;
             } else {
@@ -305,20 +304,20 @@ applicationModule.factory('ModuleService', [
                 if (module.version_id < 0) {
                     return $http.post('rest/modules', module).then(function (response) {
                         $translate('module.workingCopy.event.created').then(function(label) {
-                            $.notify(label, "success");
+                            notify({classes: ['success'], message: label});
                         });
                         return new Module(response.data);
                     }, function (error) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save.post', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save.post'});
                     });
                 } else {
                     return $http.put('rest/modules', module).then(function (response) {
                         $translate('module.workingCopy.event.updated').then(function(label) {
-                            $.notify(label, "success");
+                            notify({classes: ['error'], message: label});
                         });
                         return new Module(response.data);
                     }, function (error) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save.put', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save.put'});
                     });
                 }
             }
@@ -343,7 +342,7 @@ applicationModule.factory('ModuleService', [
             return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.get_template', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.get_template'});
                 throw error;
             });
         },
@@ -367,7 +366,7 @@ applicationModule.factory('ModuleService', [
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleServic.get_all_templates', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleServic.get_all_templates'});
                         throw error;
                     } else {
                         return [];
@@ -378,7 +377,7 @@ applicationModule.factory('ModuleService', [
         save_template: function (module, template) {
             if (!module.is_working_copy) {
                 $translate('module.template.event.error').then(function(label) {
-                    $.notify(label, "error");
+                    notify({classes: ['error'], message: label});
                 });
                 throw module;
             } else {
@@ -386,15 +385,15 @@ applicationModule.factory('ModuleService', [
                 if (template.version_id < 0) {
                     return $http.post('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
                         $translate('template.event.created').then(function(label) {
-                            $.notify(label, "success");
+                            notify({classes: ['success'], message: label});
                         })
                         return new Template(response.data);
                     }, function (error) {
                         if (error.data) {
-                            $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save_template.post', "error");
+                            notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save_template.post'});
                         } else if (error.status === 409) {
                             $translate('template.event.error').then(function(label) {
-                                $.notify(label, "error");
+                                notify({classes: ['error'], message: label});
                             })
                         }
                         throw error;
@@ -402,11 +401,11 @@ applicationModule.factory('ModuleService', [
                 } else {
                     return $http.put('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
                         $translate('template.event.updated').then(function(label) {
-                            $.notify(label, "success");
+                            notify({classes: ['success'], message: label});
                         });
                         return new Template(response.data);
                     }, function (error) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save_template.put', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.save_template.put'});
                         throw error;
                     });
                 }
@@ -415,17 +414,17 @@ applicationModule.factory('ModuleService', [
         delete_template: function (module, template_name) {
             if (!module.is_working_copy) {
                 $translate('module.workingCopy.event.error').then(function(label) {
-                    $.notify(label, "error");
+                    notify({classes: ['error'], message: label});
                 });                
                 throw module;
             } else {
                 return $http.delete('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                     $translate('template.event.deleted').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['success'], message: label});
                     })
                     return response;
                 }, function (error) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.delete_template', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.delete_template'});
                     throw error;
                 });
             }
@@ -433,17 +432,17 @@ applicationModule.factory('ModuleService', [
         create_release: function (module, release_version) {
             if (!module.is_working_copy) {
                 $translate('release.event.error').then(function(label) {
-                    $.notify(label, "error");
+                    notify({classes: ['error'], message: label});
                 });                
                 throw module;
             } else {
                 return $http.post('rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version) + '&release_version=' + encodeURIComponent(release_version)).then(function (response) {
                     $translate('release.event.created', {name:module.name, version:release_version}).then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['success'], message: label});
                     });
                     return new Module(response.data);
                 }, function (error) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.create_release', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.create_release'});
                     throw error;
                 });
             }
@@ -452,11 +451,11 @@ applicationModule.factory('ModuleService', [
             var newModule = new Module({name: name, version:version}).to_rest_entity();
             return $http.post('rest/modules?from_module_name='+encodeURIComponent(fromModule.name)+'&from_module_version='+encodeURIComponent(fromModule.version)+'&from_is_working_copy='+encodeURIComponent(fromModule.is_working_copy), newModule).then(function(response){
                 $translate('workingCopy.event.created.details', {name:name, version:version}).then(function(label) {
-                    $.notify(label, "success");
+                    notify({classes: ['success'], message: label});
                 });                
                 return new Module(response.data);
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.create_workingcopy_from', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ModuleService.create_workingcopy_from'});
                 throw error;
             });
         },

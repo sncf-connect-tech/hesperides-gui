@@ -16,29 +16,12 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // libs
-      'src/app/bower_components/angular/angular.min.js',
-      'src/app/bower_components/angular-animate/angular-animate.min.js',
-      'src/app/bower_components/angular-aria/angular-aria.min.js',
-      'src/app/bower_components/angular-translate/angular-translate.js',
-      'src/app/bower_components/angular-cookies/angular-cookies.min.js',
-      'src/app/bower_components/angular-route/angular-route.min.js',
-      'src/app/bower_components/store.js/dist/store.js',
-      'src/app/bower_components/angular-material/angular-material.min.js',
-      'src/app/bower_components/hesperides-datetime-picker/angularjs-datetime-picker.js',
-      'src/app/bower_components/sc-date-time/dist/sc-date-time.js',
-      'src/app/bower_components/angular-vs-repeat/src/angular-vs-repeat.js',
-      'src/app/bower_components/angular-wizard/dist/angular-wizard.js',
-      'src/app/bower_components/angular-ui-codemirror/ui-codemirror.js',
-      'src/app/bower_components/angular-xeditable/dist/js/xeditable.js',
-      'src/app/bower_components/angular-aria/angular-aria.js',
-      'src/app/bower_components/x2js/xml2json.js',
-      'src/app/bower_components/angular-xml/angular-xml.js',
-      'src/app/bower_components/jquery/dist/jquery.min.js',
-      'src/app/lib/*.js',
+      'src/app/vendor.min.js',
+      'src/app/app.js',
 
       // mocks
-      'src/app/bower_components/angular-mocks/angular-mocks.js',
-      'src/app/bower_components/angular-material/angular-material-mocks.js',
+      'node_modules/angular-mocks/angular-mocks.js',
+      'node_modules/angular-material/angular-material-mocks.js',
 
       // app files
       'src/app/hesperides/hesperides.js',
@@ -66,15 +49,9 @@ module.exports = function(config) {
       'test/unit/*.spec.js'
     ],
 
-    // list of files to exclude
-    exclude: [
-      'src/app/bower_components/**/index.js',
-    ],
-
-
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: { 'src/app/!(*bower_components)/!(*spec).js': ['coverage'] },
+    preprocessors: { 'src/app/*/!(*spec).js': ['coverage'] },
 
 
     // test results reporter to use

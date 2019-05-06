@@ -209,8 +209,8 @@ technoModule.factory('Techno', function () {
 });
 
 technoModule.factory('TechnoService',
-    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService','$translate',
-     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate) {
+    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService','$translate', 'notify',
+     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate, notify) {
 
     return {
         get_model: function (name, version, isWorkingCopy){
@@ -224,7 +224,7 @@ technoModule.factory('TechnoService',
             return $http.get('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_workingcopy', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_workingcopy'});
                 throw error;
             });
         },
@@ -232,7 +232,7 @@ technoModule.factory('TechnoService',
             return $http.get('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/release/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_release', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_release'});
                 throw error;
             });
         },
@@ -255,7 +255,7 @@ technoModule.factory('TechnoService',
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_workingcopy', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_workingcopy'});
                         throw error;
                     } else {
                         return [];
@@ -278,7 +278,7 @@ technoModule.factory('TechnoService',
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_release', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_release'});
                         throw error;
                     } else {
                         return [];
@@ -291,15 +291,15 @@ technoModule.factory('TechnoService',
             if (template.version_id < 0) {
                 return $http.post('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
                     $translate('template.event.created').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['success'], message: label});
                     });
                     return new Template(response.data);
                 }, function (error) {
                     if (error.data) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.post', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.post'});
                     } else if (error.status === 409) {
                         $translate('template.event.error').then(function(label) {
-                            $.notify(label, "error");                            
+                            notify({classes: ['error'], message: label});
                         })
                     }
                     throw error;
@@ -307,11 +307,11 @@ technoModule.factory('TechnoService',
             } else {
                 return $http.put('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
                     $translate('template.event.updated').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['error'], message: label});
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.put', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.put'});
                     throw error;
                 });
             }
@@ -319,11 +319,11 @@ technoModule.factory('TechnoService',
         delete_template_in_workingcopy: function (wc_name, wc_version, template_name) {
             return $http.delete('rest/technos/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 $translate('template.event.deleted').then(function(label) {
-                    $.notify(label, "success");
+                    notify({classes: ['success'], message: label});
                 });
                 return response;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.delete_template_in_workingcopy', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.delete_template_in_workingcopy'});
                 throw error;
             });
         },
@@ -331,13 +331,13 @@ technoModule.factory('TechnoService',
             return $http.post('rest/technos/create_release?package_name=' + encodeURIComponent(r_name) + '&package_version=' + encodeURIComponent(r_version)).then(function (response) {
 				if (response.status === 201) {
                     $translate('release.event.created', {name:r_name, version:r_version}).then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['success'], message: label});
                     })
                 } else {
-                    $.notify(response.data, "warning");
+                    notify({classes: ['warn'], message: response.data});
                 }
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_release', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_release'});
                 throw error;
             });
         },
@@ -345,13 +345,13 @@ technoModule.factory('TechnoService',
             return $http.post('rest/technos?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy, {name:encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy:true}).then(function (response) {
                 if (response.status === 201) {
                     $translate('workingCopy.event.created').then(function(label) {
-                        $.notify(label, "success");                        
+                        notify({classes: ['success'], message: label});
                     })
                 } else {
-                    $.notify(response.data, "warning");
+                    notify({classes: ['warn'], message: response.data});
                 }
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_workingcopy', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_workingcopy'});
                 throw error;
             });
         },

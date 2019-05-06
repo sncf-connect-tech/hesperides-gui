@@ -39,12 +39,12 @@ describe('Manage diff', function() {
 
         elm_from_app.sendKeys(protractor.Key.BACK_SPACE);
 
-        expect(element.all(by.css(".notifyjs-wrapper.notifyjs-hidable")).count()).toEqual(0);
+        expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(0);
 
         vsct_utils.clearAndSendkeys(elm_from_app, "foo");
 
-        expect(element.all(by.css(".notifyjs-wrapper.notifyjs-hidable")).count()).toEqual(0);
+        expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(0);
 
     });
@@ -55,7 +55,7 @@ describe('Manage diff', function() {
 
         vsct_utils.clearAndSendkeys(elm_from_app, data.new_application);
 
-        expect(element.all(by.css(".notifyjs-wrapper.notifyjs-hidable")).count()).toEqual(0);
+        expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         browser.sleep(1000);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(2);
 

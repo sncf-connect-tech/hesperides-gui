@@ -249,8 +249,8 @@ applicationModule.factory('Instance', function () {
 
 });
 
-applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate', '$location',
-    function ($http, Application, Platform, Properties, InstanceModel, $translate, $location) {
+applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate', '$location', 'notify',
+    function ($http, Application, Platform, Properties, InstanceModel, $translate, $location, notify) {
 
     return {
         get: function (name, unsecured) {
@@ -263,7 +263,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 return new Application(response.data);
             }, function (error) {
                 if (!me.unsecured) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get'});
                 }
                 throw error;
             });
@@ -272,7 +272,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get('rest/applications').then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.list_applications', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.list_applications'});
                 throw error;
             });
         },
@@ -280,7 +280,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.with_name_like', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.with_name_like'});
                 throw error;
             });
         },
@@ -289,7 +289,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                    "&platformName="+ encodeURIComponent(platform_name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform_name_of_application', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform_name_of_application'});
                 throw error;
             });
         },
@@ -311,7 +311,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 return platform;
             }, function (error) {
                 if (!me.unsecured) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform'});
                 }
                 throw error;
             });
@@ -325,7 +325,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             if (platform.version_id < 0) {
                 return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
                     $translate('platform.event.created').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['error'], message: label});
                     });
                     //Try to get the global properties
                     var platform = new Platform(response.data);
@@ -334,13 +334,13 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     });
                     return platform;
                 }, function (error) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_platform.post', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_platform.post'});
                     throw error;
                 });
             } else {
                 return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules=' + copyPropertiesOfUpdatedModules, platform).then(function (response) {
                     $translate('platform.event.updated').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['error'], message: label});
                     });
                     //Try to get the global properties
                     var platform = new Platform(response.data);
@@ -349,7 +349,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                     });
                     return platform;
                 }, function (error) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_platform.put', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_platform.put'});
                     throw error;
                 });
             }
@@ -363,7 +363,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 + '&copy_instances_and_properties=' + copyInstancesAndProperties;
             return $http.post(path, platform).then(function (response) {
                 $translate('platform.event.created').then(function(label) {
-                    $.notify(label, "success");
+                    notify({classes: ['error'], message: label});
                 });
                 //Try to get the global properties
                 var platform = new Platform(response.data);
@@ -372,7 +372,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
                 });
                 return platform;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.create_platform_from', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.create_platform_from'});
                 throw error;
             });
         },
@@ -391,7 +391,7 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 return new Properties(response.data);
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_properties', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_properties'});
                 throw error;
             });
         },
@@ -401,25 +401,29 @@ applicationModule.service('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get(url).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_global_properties_usage', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_global_properties_usage'});
                 throw error;
             });
         },
         save_properties: function (application_name, platform, properties, path, comment) {
             properties = properties.to_rest_entity();
 
-            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id) + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
+            return $http.post('rest/applications/' + encodeURIComponent(application_name)
+                                + '/platforms/' + encodeURIComponent(platform.name)
+                                + '/properties?path=' + encodeURIComponent(path)
+                                           + '&platform_vid=' + encodeURIComponent(platform.version_id)
+                                           + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
                 $translate('properties.event.saved').then(function(label) {
-                    $.notify(label, "success");
+                    notify({classes: ['success'], message: label});
                 });
                 store.set('current_platform_versionID', platform.version_id + 1);
                 return new Properties(response.data);
             }, function (error) {
                 if (error.data) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_properties', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.save_properties'});
                 } else {
                     $translate('properties.event.generic-error').then(function(label) {
-                        $.notify(label, "error");
+                        notify({classes: ['error'], message: label});
                     });
                 }
                 throw error;

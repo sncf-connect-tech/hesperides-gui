@@ -524,18 +524,6 @@ md-menu-content.md-menu-bar-menu.md-dense {
     background-repeat: no-repeat;
 }
 
-#fakeButtonSearchTechno {
-    display:none;
-}
-
-#fakeButtonSearchModule {
-    display:none;
-}
-
-#fakeButtonSearchProperties {
-    display:none;
-}
-
 /******************************************************************************
  * Template
  */
@@ -1113,7 +1101,7 @@ h4.contain_empty_module {
 /******************************************************************************
  * Loading screen.
  */
-#loading {
+#loader {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1364,3 +1352,19 @@ md-switch#platform-menu-modal_override-existing-switch {
           margin-top: 20%;
       }
   }
+
+.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.error {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+.warn {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}

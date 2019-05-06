@@ -106,9 +106,6 @@ components.directive('listOfItems', ['$parse', 'PlatformColorService', function 
 
             scope.showInput = function () {
                 scope.show_input = true;
-                window.setTimeout(function () {
-                    $('#nameInput').focus();
-                }, 80);
             }
 
         }

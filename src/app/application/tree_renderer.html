@@ -94,7 +94,7 @@
 
             <div flex="noshrink" layout="row" layout-align="none center">
                 <property-tool-button-over></property-tool-button-over>
-                <a href="" id="tree-renderer_edit-properties-module-button-{{module.title.split(',')[0]}}" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
+                <a href="" id="tree-renderer_edit-properties-module-button-{{module.title.split(',')[0]}}" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module)">
                     {{module.title}}
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>

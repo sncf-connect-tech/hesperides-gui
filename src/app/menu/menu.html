@@ -41,9 +41,6 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
-                        <md-button id="fakeButtonSearchTechno">
-                            fake
-                        </md-button>
                         <md-autocomplete
                                 id="menu_techno-autocomplete"
                                 md-no-cache="true"
@@ -51,7 +48,7 @@
                                 md-search-text="ctrl.searchText"
                                 md-items="item in find_technos_by_name(ctrl.searchText)"
                                 md-item-text="item.name"
-                                md-selected-item-change="(item) ? open_techno_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchTechno') : false"
+                                md-selected-item-change="(item) ? open_techno_page(item.name, item.version, item.is_working_copy) : false"
                                 md-min-length="0"
                                 md-autoselect="true"
                                 placeholder="{{ 'placeholder.search' | translate}}">
@@ -78,9 +75,6 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
-                        <md-button id="fakeButtonSearchModule">
-                            fake
-                        </md-button>
                         <md-autocomplete
                                 id="menu_module-autocomplete"
                                 md-no-cache="true"
@@ -88,7 +82,7 @@
                                 md-search-text="ctrl.searchText"
                                 md-items="item in find_modules_by_name(ctrl.searchText)"
                                 md-item-text="item.name"
-                                md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchModule') : false"
+                                md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy) : false"
                                 md-min-length="0"
                                 md-autoselect="true"
                                 placeholder="{{ 'placeholder.search' | translate}}">
@@ -116,10 +110,6 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
-                        <md-button id="fakeButtonSearchProperties">
-                            fake
-                        </md-button>
-                        <form ng-submit="open_properties_page(ctrl.searchText, null, '#fakeButtonSearchProperties', false)">
                         <md-autocomplete
                                 id="menu_application-autocomplete"
                                 md-no-cache="true"
@@ -127,13 +117,12 @@
                                 md-search-text="ctrl.searchText"
                                 md-items="item in find_applications_by_name(ctrl.searchText)"
                                 md-item-text="item.name"
-                                md-selected-item-change="(item) ? open_properties_page(item.name, null, '#fakeButtonSearchProperties', true) : false"
+                                md-selected-item-change="(item) ? open_properties_page(item.name) : false"
                                 md-min-length="0"
                                 md-autoselect="true"
                                 placeholder="{{ 'placeholder.search' | translate}}">
                             <span md-highlight-text="ctrl.searchText">{{item.name}} {{item.version}}</span>
                         </md-autocomplete>
-                        </form>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
