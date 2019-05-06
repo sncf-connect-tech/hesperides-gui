@@ -58,7 +58,6 @@ module.exports = function(config) {
       'src/app/techno/techno.js',
       'src/app/template/template.js',
       'src/app/shared/components.js',
-      'src/app/nexus/nexus.js',
 
       // hesperides karma testing utilities
       'test/unit/utils.js',
@@ -70,7 +69,6 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'src/app/bower_components/**/index.js',
-      'src/app/swagger/**/*.js'
     ],
 
 

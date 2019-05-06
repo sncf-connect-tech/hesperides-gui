@@ -28,7 +28,8 @@
                       ng-submit="addInstanceForm.$valid && $add(new_instance_name)">
                     <md-input-container md-no-float class="md-block">
                         <label><strong>{{ 'properties.module.instance.name' | translate }}</strong></label>
-                        <input id="add-instance_instance-name-input" type="text" required ng-trim="true" ng-model="new_instance_name" md-autofocus="true" />
+                        <input id="add-instance_instance-name-input" type="text" required ng-trim="true" ng-model="new_instance_name"
+                               md-autofocus="true" />
                     </md-input-container>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>

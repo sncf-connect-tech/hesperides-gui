@@ -26,39 +26,11 @@
 
             <md-content layout-padding class="autoScroll">
                 <form name="platformVersionForm" novalidate
-                      ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
+                      ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, copy_properties: copyProperties})">
 
-
-                    <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl" ng-show="hesperidesConfiguration.nexusMode">
-                        <span>
-                            <strong>Utiliser la note de livraison json de la version {{newVersion}}</strong>
-                        </span>
-                    </md-switch>
-
-                    <md-input-container id="new-version-input-container-ndl" class="md-block" ng-show="sourceFromNdl && useNdl">
-                    <div flex="100" ng-show="useNdl">
-                        <label id="new-version-label-autocomplete"><strong>Nouvelle version {{newVersion}}</strong></label>
-                        <md-autocomplete
-                                flex="100"
-                                ng-disabled="onLoading"
-                                ng-if="ndlVersions"
-                                ng-model="newVersion"
-                                md-no-cache="true"
-                                md-selected-item="ctrl.selectedItem"
-                                md-search-text="ctrl.searchText"
-                                md-items="version in ndlVersions | filter:ctrl.searchText"
-                                md-item-text="version"
-                                md-selected-item-change="(version) ? setItem('newVersion', version) : setItem('newVersion', '')"
-                                md-min-length="0"
-                                md-autoselect="true"
-                                md-autofocus="true"
-                                placeholder="Rechercher une version depuis une note Katana">
-                                <span md-highlight-text="ctrl.searchText">{{version}}</span>
-                        </md-autocomplete>
-                    </div>
                     </md-input-container>
 
-                    <md-input-container id="new-version-input-container" md-no-float class="md-block" ng-show="!useNdl">
+                    <md-input-container id="new-version-input-container" md-no-float class="md-block">
                         <label><strong>{{ 'properties.platform.version.modal.newVersion' | translate }} {{newVersion}}</strong></label>
                         <input type="text"
                                ng-trim="true"
@@ -80,7 +52,7 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="$change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="!isValid()">Valider</md-button>
+            <md-button ng-click="$change({new_version: newVersion, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="!isValid()">Valider</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
         </md-dialog-actions>
     </md-dialog-content>

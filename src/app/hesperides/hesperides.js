@@ -110,9 +110,6 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
         if (hesperidesConfiguration.documentationLink === undefined) {
             hesperidesConfiguration.documentationLink = "https://voyages-sncf-technologies.github.io/hesperides-gui/";
         }
-        if (hesperidesConfiguration.nexusMode === undefined) {
-            hesperidesConfiguration.nexusMode = false;
-        }
         if (hesperidesConfiguration.localChangesTTL === undefined) {
             hesperidesConfiguration.localChangesTTL = 50;
         }
@@ -225,9 +222,6 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
     when('/techno/:name/:version', {
         templateUrl: 'techno/techno.html',
         controller: 'TechnoCtrl'
-    }).
-    when('/help/swagger', {
-        templateUrl: 'swagger/swagger.html'
     }).
     otherwise({
         templateUrl: 'welcome_screen.html',
@@ -697,9 +691,7 @@ hesperidesModule.service('Comments', ['Comment', function(Comment) {
 }]);
 
 /* Hesperides global modals module*/
-angular.module ('hesperides.modals', [])
-
-.factory('HesperidesModalFactory', ['$mdDialog', 'Comments', function ($mdDialog, Comments){
+angular.module ('hesperides.modals', []).factory('HesperidesModalFactory', ['$mdDialog', 'Comments', function ($mdDialog, Comments){
     return {
     
         displaySavePropertiesModal: function (scope, application, validationCallback){
