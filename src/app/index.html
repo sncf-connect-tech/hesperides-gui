@@ -39,122 +39,46 @@
         BUILD_TIME = '';
     </script>
 
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="vendor.js"></script> <!-- vendor.min.js est également dispo, mais cela rend le debug + difficile -->
+    <link rel="stylesheet" href="vendor.css">
 
-	<script src="bower_components/angular-animate/angular-animate.js"></script>
-	<script src="bower_components/angular-aria/angular-aria.js"></script>
-	<script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.js"></script>
-    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-    <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
-    <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
-    <script src="bower_components/angular-i18n/angular-locale_fr-fr.js"></script>
-    <script src="bower_components/x2js/xml2json.js"></script>
-    <script src="bower_components/angular-xml/angular-xml.js"></script>
-    <script src="bower_components/jszip/dist/jszip.min.js"></script>
-    <script src="bower_components/jszip/vendor/FileSaver.js"></script>
-    <script type="text/javascript" src="bower_components/store.js/dist/store.min.js"></script>
-
-    <!-- Main App -->
+    <script src="utils.js"></script>
     <script src="hesperides/hesperides.js"></script>
-
-    <!-- Module menu -->
-    <script src="menu/menu.js"></script>
-
-    <!-- Module application -->
     <script src="application/application.js"></script>
-
-    <!-- Module file -->
-    <script src="file/file.js"></script>
-
-    <!-- Module user -->
-    <script src="user/user.js"></script>
-
-    <!-- Module event -->
+    <script src="datepicker/datepicker.js"></script>
     <script src="event/event.js"></script>
-
-    <!-- Module module -->
-    <script src="module/module.js"></script>
-
-    <!-- Module model -->
-    <script src="model/model.js"></script>
-
-    <!-- Module properties -->
-    <script src="properties/properties.js"></script>
-
-    <!-- Module properties -->
-    <script src="properties/iterable-properties-container.js"></script>
-
-    <!-- Module techno -->
-    <script src="techno/techno.js"></script>
-
-    <!-- Module template -->
-    <script src="template/template.js"></script>
-
-    <!-- Module components -->
-    <script src="shared/components.js"></script>
-
-    <!-- Module localChanges -->
+    <script src="file/file.js"></script>
     <script src="local_changes/localChanges.js"></script>
     <script src="local_changes/localChangeFactory.js"></script>
-    <script src="local_changes/localChangesServices.js"></script>
     <script src="local_changes/localChangesControllers.js"></script>
-
-    <!-- Date/Time picker -->
-    <link rel='stylesheet' href='sc-date-time/sc-date-time.css'>
-    <script src='bower_components/sc-date-time/dist/sc-date-time.js'></script>
-
-    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
-    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
-	
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="lib/lodash.js"></script>
-    <script src="lib/notify.js"></script>
-    <script src="lib/esprima.js"></script>
-    <script src="lib/js-yaml.js"></script>
-    <script src="bower_components/codemirror/lib/codemirror.js"></script>
-    <script src="bower_components/codemirror/mode/yaml/yaml.js"></script>
-    <script src="bower_components/codemirror/addon/display/fullscreen.js"></script>
-    <script src="bower_components/codemirror/addon/display/autorefresh.js"></script>
-    <script src="bower_components/codemirror/addon/mode/overlay.js"></script>
-    <script src="bower_components/codemirror/mode/properties/properties.js"></script>
-    <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
-    <script src="lib/utils.js"></script>
-
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
-	<script src="bower_components/arrive/minified/arrive.min.js"></script>
-    <link rel="stylesheet" href="css/hesperides.css"/>
-    <link rel="stylesheet" href="css/localChanges.css"/>
-    <link rel="stylesheet" href="css/iterable-properties-container.css"/>
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
-    <link rel="stylesheet" href="bower_components/codemirror/addon/display/fullscreen.css"/>
-    <link href="css/font-awesome-min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="bower_components/hesperides-datetime-picker/angularjs-datetime-picker.css"/>
-
-    <script type="text/javascript" src="bower_components/hesperides-datetime-picker/angularjs-datetime-picker.js"></script>
-
-	<script src="bower_components/angular-wizard/dist/angular-wizard.js"></script>
-	<link rel="stylesheet" href="bower_components/angular-wizard/dist/angular-wizard.css"/>
-
-    <script type="text/javascript" src="bower_components/momentjs/min/moment.min.js"></script>
-
-    <script type="text/javascript" src="bower_components/downloadjs/download.min.js"></script>
-
-    <script type="text/javascript" src="bower_components/angular-vs-repeat/src/angular-vs-repeat.js"></script>
-
-    <script type="text/javascript" src="bower_components/html2canvas/build/html2canvas.js"></script>
-
+    <script src="local_changes/localChangesServices.js"></script>
+    <script src="menu/menu.js"></script>
+    <script src="model/model.js"></script>
+    <script src="module/module.js"></script>
+    <script src="properties/properties.js"></script>
+    <script src="properties/iterable-properties-container.js"></script>
+    <script src="shared/components.js"></script>
+    <script src="techno/techno.js"></script>
+    <script src="template/template.js"></script>
+    <script src="user/user.js"></script>
+    <link rel="stylesheet" href="css/font-awesome-min.css">
+    <link rel="stylesheet" href="datepicker/datepicker.css">
+    <link rel="stylesheet" href="css/hesperides.css">
+    <link rel="stylesheet" href="css/iterable-properties-container.css">
+    <link rel="stylesheet" href="css/localChanges.css">
+    <link rel="stylesheet" href="sc-date-time/sc-date-time.css">
+    <!-- Ces sources sont dispos en bundle également, mais cela rend le debug + difficile :
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="app.css">
+    <!-- -->
 </head>
-<body ng-init = "authenticate()">
+<body ng-init="authenticate()">
 
 <ng-include src="'menu/menu.html'"></ng-include>
-<div ng-view class="padding-left-20px padding-right-20px" ></div>
+<div ng-view class="padding-left-20px padding-right-20px"></div>
 
 <div>
-    <img ng-src="img/loading.gif" id="loading" />
+    <img ng-src="img/loading.gif" id="loader" ng-show="isLoading"/>
 </div>
 
 <div id="properties-list"></div>

@@ -1,14 +1,12 @@
 FROM node:8-alpine
 WORKDIR /usr/src/app
-RUN echo '{"allow_root": true}' > /root/.bowerrc
 RUN apk add git
 COPY package.json .
 COPY package-lock.json .
-RUN npm install
-COPY .bowerrc .
-COPY bower.json .
+COPY packager.js .
 COPY src src
-RUN npm run postinstall
+# Using yarn instead of npm as long as we need http-server-legacy: https://github.com/indexzero/http-server/issues/518
+RUN yarn install
 RUN sed -i "s/BUILD_TIME = '.*'/BUILD_TIME = '$(date +%F_%T)'/" src/app/index.html
 
 FROM nginx:1.15-alpine

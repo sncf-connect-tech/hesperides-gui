@@ -1,3 +1,5 @@
+const packager = require('./packager');
+
 module.exports = function (grunt) {
 
     /**
@@ -25,13 +27,13 @@ module.exports = function (grunt) {
          * Watches files for changes.
          */
         watch: {
-            sources: {
+            scripts: {
                 files: [
                     'src/app/**/*.js',
                     'src/app/**/*.html',
                     'src/app/**/*.css',
-                    '!src/app/bower_components/**/*.js'
                 ],
+                //tasks: ['packager-generate-app-bundles'],
                 options: {
                     livereload: true
                 }
@@ -79,6 +81,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-connect-proxy');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
+
+    //grunt.registerTask('packager-generate-app-bundles', packager.generateAppBundles);
 
     /**
      * Registers the 'server' task.

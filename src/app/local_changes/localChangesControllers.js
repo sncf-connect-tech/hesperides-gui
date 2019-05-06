@@ -20,8 +20,8 @@ var localChangesModule = angular.module('hesperides.localChanges');
 
 
 // Why United Nations ? They are solving conflicts, rights ? :D
-localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog', '$translate',
-                                function($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog, $translate) {
+localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog', '$translate', 'notify',
+                                function($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog, $translate, notify) {
 
     $scope.comments = new Comments();
     $scope.localChanges = [];
@@ -53,7 +53,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
                 LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
                 $scope.clear_localChanges_from_scope(properties.module.properties_path);
                 $translate('properties-not-changed.message').then(function(label) {
-                    $.notify(label + "\n-> " + properties.module.properties_path , "warn");
+                    notify({classes: ['warn'], message: label + "\n-> " + properties.module.properties_path});
                 });
                 // Recursive call to empty '$scope.properties_to_save' stack
                 $scope.save_properties();
@@ -109,7 +109,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
             LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
             $scope.clear_localChanges_from_scope(properties.module.properties_path);
             $translate('properties-not-changed.message').then(function(label) {
-                $.notify(label + "\n-> " + properties.module.properties_path , "warn");
+                notify({classes: ['warn'], message: label + "\n-> " + properties.module.properties_path});
             });
             $scope.smart_exit_united_nation_popup(properties);
         }
@@ -139,7 +139,7 @@ localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 
 
                     if (LocalChanges.smartClearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, tmpProperties)) {
                         $translate('localChange.deleted.smart').then(function(label) {
-                            $.notify(label + "\n-> " + module.properties_path , {"className": "warn", "autoHideDelay": 12000});
+                            notify({classes: ['warn'], message: label + "\n-> " + module.properties_path, duration: 12000});
                         });
                         $scope.smart_exit_united_nation_popup();
                     }

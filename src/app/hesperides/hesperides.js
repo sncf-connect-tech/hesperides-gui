@@ -40,8 +40,7 @@ var hesperidesModule = angular.module('hesperides', [
     'vs-repeat',
     'scDateTime',
     'angularjs-datetime-picker',
-    'pascalprecht.translate',
-    'ngCookies'
+    'pascalprecht.translate'
 ]).value('scDateTimeConfig', {
     defaultTheme: 'sc-date-time/hesperides.tpl',
     autosave: false,
@@ -69,13 +68,6 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
     editableThemes['default'].submitTpl = '<md-button class="md-raised md-primary" ng-click="$form.$submit()"><i class="fa fa-check"></i></md-button>';
     editableThemes['default'].cancelTpl = '<md-button class="md-raised md-warn" ng-click="$form.$cancel()"><i class="fa fa-times"></i></md-button>';
 
-    //Init bootstrap ripples
-    /*$(document).ready(function () {
-     $.material.init();
-     });*/
-    //Prevent anoying behavior of bootstrap with dropdowns
-    $(document).unbind('keydown.bs.dropdown.data-api');
-
     /**
      * Hack to calculate correctly margin of calendar.
      *
@@ -84,11 +76,11 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
      * @returns {string}
      */
     $rootScope.offsetMargin = function(calendar, cssClass) {
-        var obj = $('.' + cssClass);
+        var objs = document.querySelectorAll('.' + cssClass);
         var selectedObj;
 
-        for (var index = 0; index < obj.length; index++) {
-            selectedObj = obj[index];
+        for (var index = 0; index < objs.length; index++) {
+            selectedObj = objs[index];
 
             if (selectedObj.getAttribute("aria-label") === "1") {
                 break;
@@ -388,10 +380,10 @@ hesperidesModule.directive('konami', function() {
         link: function(scope, element, attrs) {
             var keys = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
             var i = 0;
-            $(document).keydown(function(e) {
-                if(e.keyCode === keys[i++]) {
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === keys[i++]) {
                     if(i === keys.length) {
-                        $(document).unbind('keydown', arguments.callee);
+                        document.removeEventListener('keydown', arguments.callee);
                         //Konami code is active, do some fun stuff here
                         element.append('<img src="img/' + scope.name + '" width="100%" />');
                     }
@@ -403,51 +395,44 @@ hesperidesModule.directive('konami', function() {
     }
 });
 
-hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', function($http, $q){
+hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', '$rootScope', function($http, $q, $rootScope) {
     var returnResponseAndHideLoadingSucces = function(response) {
-        $('#loading').hide();
+        $rootScope.isLoading = false;
         return $q.resolve(response);
     };
 
     var returnResponseAndHideLoadingError = function(response) {
-        $('#loading').hide();
+        $rootScope.isLoading = false;
         return $q.reject(response);
     };
 
     return {
         get: function(url, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.get(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         head: function(url, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.head(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         post: function(url, data, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.post(url, data, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         put: function(url, data, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.put(url, data, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         delete: function(url, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.delete(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         jsonp: function(url, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.jsonp(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         patch: function(url, data, config) {
-            $('#loading').show();
-
+            $rootScope.isLoading = true;
             return $http.patch(url, data, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         }
     };

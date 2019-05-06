@@ -94,7 +94,7 @@ var addFromModel = function (property, model){
 /**
  * Hesperides properties module
  */
-var propertiesModule = angular.module('hesperides.properties', ['hesperides.modals', 'hesperides.localChanges']);
+var propertiesModule = angular.module('hesperides.properties', ['hesperides.modals', 'hesperides.localChanges', 'cgNotify']);
 
 propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'ApplicationService', '$translate',
     function ($scope, $mdDialog, ApplicationService, $translate) {
@@ -119,8 +119,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ap
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q', '$rootScope', 'notify',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q, $rootScope, notify) {
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
@@ -975,32 +975,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         });
     };
 
-    $scope.movePropertiesDivHolderToCursorPosition = function(event){
-        var specificOffset = 10;
-        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-        if(isChrome) {
-            specificOffset += 11;
-        }
-
-        var offset = $('#propertiesDivHolder').parent().offset();
-
-        // This function is call in box view also, but not working
-        if (!_.isUndefined(offset)) {
-            var parentY = offset.top;
-            var clickedElementPosition = event.target.getBoundingClientRect().top + window.pageYOffset;
-            var padding = clickedElementPosition - parentY - specificOffset;
-            $('#propertiesDivHolder').css('padding-top', padding);
-
-            //Scroll to properties
-            $timeout(function () {
-                $('html, body').animate({
-                    scrollTop: clickedElementPosition - 15
-                }, 1000, 'swing');
-            }, 0);
-        }
-    };
-
     /**
      * Clean properties.
      * Used to delete unsed properties in module template.
@@ -1039,7 +1013,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             if ( _.isEqual(properties, $scope.oldGolbalProperties) ){
                 $translate('properties-not-changed.message').then(function(label) {
-                    $.notify(label, "warn");
+                    notify({classes: ['warn'], message: label});
                 });
                 return;
             }
@@ -1097,17 +1071,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 _.remove($scope.platforms, platform => platform.name == $scope.platform.name);
                 $scope.platform = null;
             }).catch(function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.delete_platform', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.delete_platform'});
                 throw error;
             });
     };
 
     $scope.restore_platform = function (platformToRestore) {
-        ApplicationService.restore_platform($scope.platform.application_name, platformToRestore)
+        ApplicationService.restore_platform($routeParams.application, platformToRestore)
             .then(() => {
-                $location.url('/properties/' + $scope.platform.application_name).search({platform: platformToRestore});
+                $location.search({platform: platformToRestore});
             }).catch(function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.restore_platform', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.restore_platform'});
                 throw error;
             });
     };
@@ -1119,7 +1093,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             // we use angular copy for these to remove the $$hashKey
             _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperties.iterable_properties)) ){
             $translate('properties-not-changed.message').then(function(label) {
-                $.notify(label, "warn");
+                notify({classes: ['warn'], message: label});
             });
             return false;
         }
@@ -1142,7 +1116,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             LocalChanges.smartClearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, properties);
 
             $translate('properties.module.editProperties.savedLocally').then(function(label) {
-                $.notify(label, "success");
+                notify({classes: ['error'], message: label});
             });
         }
 
@@ -1228,7 +1202,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $http.get(url).then(function (response) {
             return new Properties(response.data);
         }, function (error) {
-            $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_properties', "error");
+            notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_properties'});
             throw error;
         }).then(function (response) {
             platform.global_properties = response;
@@ -1242,7 +1216,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $http.get(url).then(function (response) {
             return response.data;
         }, function (error) {
-            $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_global_properties_usage', "error");
+            notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_global_properties_usage'});
             throw error;
         }).then(function (response) {
             platform.global_properties_usage = response;
@@ -1304,7 +1278,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      */
     $scope.boxModeShow = function (){
         if (!$scope.box){
-            $("#loading").show();
+            $rootScope.isLoading = true;
             $scope.box = true;
             $scope.tree = false;
             $scope.properties = undefined;
@@ -1317,7 +1291,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      */
     $scope.treeModeShow = function (){
         if (!$scope.tree){
-            $("#loading").show();
+            $rootScope.isLoading = true;
             $scope.box = false;
             $scope.tree = true;
             $scope.properties = undefined;
@@ -1402,7 +1376,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     $scope.update_main_box(result.platform);
                 }
             }).catch(function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl constructor', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl constructor'});
                 throw error;
             });
 }]);
@@ -1410,34 +1384,31 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 /**
  * Directive for rendering properties on box mode.
  */
-propertiesModule.directive('boxProperties', function ($timeout){
+propertiesModule.directive('boxProperties', ['$timeout', '$rootScope', function ($timeout, $rootScope) {
     return {
         restrict : 'E',
         templateUrl: 'application/box_properties.html',
         link: function (){
-            $timeout(function (){
-                $("#loading").hide();
-                }, 0);
+            $timeout(() => $rootScope.isLoading = false, 0);
         }
     }
-});
+}]);
 
 /**
  * Directive for rendering properties on tree mode.
  */
-propertiesModule.directive('treeProperties', function ($timeout){
+propertiesModule.directive('treeProperties', ['$timeout', '$rootScope', function ($timeout, $rootScope) {
     return {
         restrict : 'E',
         templateUrl: 'application/tree_properties.html',
         link: function ($scope, element, attrs, ctrl){
-            $timeout(function (){
-                $("#loading").hide();
-                }, 0);
+            $timeout(() => $rootScope.isLoading = false, 0);
         }
     }
-});
+}]);
 
-propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', 'notify',
+        function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, notify) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -1715,7 +1686,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
         if ( !hasSomeDiffSelected ){
             $translate('properties-not-changed.message').then(function(label) {
-                $.notify(label, "warn");
+                notify({classes: ['error'], message: label});
             });
             return;
         }

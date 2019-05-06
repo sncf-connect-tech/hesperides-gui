@@ -17,11 +17,8 @@
  */
 var menuModule = angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties']);
 
-menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'TechnoService', function ($scope, $mdDialog, $location, $timeout, TechnoService) {
-
-    $scope.closeDialog = function() {
-        $mdDialog.cancel();
-    };
+menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'TechnoService',
+        function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
 
     $scope.find_technos_by_name = function (name) {
         return TechnoService.with_name_like(name);
@@ -54,30 +51,20 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$t
         });
     };
 
-    $scope.open_techno_page = function (name, version, is_working_copy, fakeButton) {
+    $scope.open_techno_page = function (name, version, is_working_copy) {
         if(is_working_copy) {
             $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
         } else {
             $location.path('/techno/' + name + '/' + version).search({});
         }
         $scope.technoSearched = "";
-        $mdDialog.cancel();
-
-        // Very bad trick to close menu :-(
-        if (fakeButton) {
-            $timeout(function() {
-                $(fakeButton).click();
-            }, 0);
-        }
+        $mdMenu.cancel();
     }
 
 }]);
 
-menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'ModuleService', 'Module',  function ($scope, $mdDialog, $location, $timeout, ModuleService, Module) {
-
-    $scope.closeDialog = function() {
-        $mdDialog.cancel();
-    };
+menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ModuleService', 'Module',
+        function ($scope, $mdDialog, $mdMenu, $location, $timeout, ModuleService, Module) {
 
     $scope.selectedItemChange = function(item) {
         $log.info('Item changed to ' + JSON.stringify(item));
@@ -97,25 +84,16 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
     $scope.create_module_from = function (name, version, moduleFrom) {
         ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function(){
             $scope.open_module_page(name, version, true);
-            $mdDialog.cancel();
         });
     };
 
-    $scope.open_module_page = function (name, version, is_working_copy, fakeButton) {
+    $scope.open_module_page = function (name, version, is_working_copy, arg) {
+        $location.path('/module/' + name + '/' + version).search({});
         if(is_working_copy){
-            $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
-        } else {
-            $location.path('/module/' + name + '/' + version).search({});
+            $location.search({type : "workingcopy"});
         }
         $scope.moduleSearched = "";
-        $mdDialog.cancel();
-
-        // Very bad trick to close menu :-(
-        if (fakeButton) {
-            $timeout(function() {
-                $(fakeButton).click();
-            }, 0);
-        }
+        $mdMenu.cancel();
     };
 
     $scope.open_create_module_dialog = function () {
@@ -143,11 +121,8 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
 }]);
 
 
-menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDialog', '$location', '$timeout', 'ApplicationService', 'Platform', function ($http, $scope, $mdDialog, $location, $timeout, ApplicationService, Platform) {
-
-    $scope.closeDialog = function() {
-        $mdDialog.cancel();
-    };
+menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify',
+        function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify) {
 
     var properties;
     var apps;
@@ -164,14 +139,13 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
     };
 
-    $scope.open_properties_page = function (application_name, platform_name, fakeButton, forceOpenEvenIfAppUnknown) {
-        if (!forceOpenEvenIfAppUnknown && apps.indexOf(application_name) == -1) {
-            return;
+    $scope.open_properties_page = function (application_name, platform_name) {
+        $location.path('/properties/' + application_name)
+        if (platform_name) {
+            $location.search({platform: platform_name})
         }
-
         $scope.applicationSearched = "";
-        $mdDialog.cancel();
-        $location.path('/properties/' + application_name).search({platform: platform_name})
+        $mdMenu.cancel();
     };
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
@@ -192,7 +166,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
             .then((platform) => $scope.open_properties_page(platform.application_name, platform.name) )
             .catch(function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesCtrl.create_platform_from', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesCtrl.create_platform_from'});
                 throw error;
             });
     };
@@ -256,21 +230,17 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 }]);
 
 menuModule.directive('disableEditing', function(){
-   return {
+    return {
        link:function(scope, element){
            element.on('cut copy paste keypress', function (event) {
              event.preventDefault();
            });
        }
-   };
+    };
 });
 
 menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', '$translate', 'PlatformColorService', '$parse', 'ApplicationService', function($scope, $mdDialog, $http, hesperidesGlobals, $translate, PlatformColorService, $parse, ApplicationService){
     $scope.config = hesperidesConfiguration;
-
-    $scope.closeDialog = function() {
-        $mdDialog.cancel();
-    };
 
     $scope.change_language = function(langKey) {
         $translate.use(langKey);

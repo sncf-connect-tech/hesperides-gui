@@ -91,7 +91,8 @@ eventModule.factory('EventEntry', function ($translate){
 /**
  * Hesperides event http service
  */
-eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperidesGlobals', function ($http, EventEntry, hesperidesGlobals){
+eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperidesGlobals', 'notify',
+        function ($http, EventEntry, hesperidesGlobals, notify){
     return {
         /**
          * Get events from the back.
@@ -106,7 +107,7 @@ eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperide
                     return event;
                });
             }, function (error){
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in EventService.get', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in EventService.get'});
                 throw error;
             });
         }

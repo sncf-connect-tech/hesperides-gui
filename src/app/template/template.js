@@ -82,20 +82,6 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
             mode: 'hesperides',
             lineNumbers: false, // there is a bug on line numbers, so keep it h
             lineWrapping : true,
-            extraKeys: {
-                'F11': function (cm) {
-                    $('body').append($('#templateContent')); //Change the parent of codemirror because if not, fullscreen is restricted to the modal
-                    $('#templateContent').children().css("z-index", 100000);
-                    cm.setOption('fullScreen', true);
-                    cm.focus();
-                    defaultScope.codemirrorFullscreenStatus = true;
-                },
-                'Esc': function (cm) {
-                    $('#templateContentParent').append($('#templateContent'));
-                    if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
-                    cm.focus();
-                }
-            },
             onLoad: function(_editor){
                 defaultScope.editor = _editor;
                 //This is some trick to avoid a bug. If not refresh, then we have to click on code mirror to see its content
@@ -290,14 +276,15 @@ templateModule.factory('TemplateEntry', ['$hesperidesHttp', 'Template',function 
     return TemplateEntry;
 }]);
 
-templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', '$translate', function ($http, Template, TemplateEntry, $translate) {
+templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', '$translate', 'notify',
+        function ($http, Template, TemplateEntry, $translate, notify) {
 
     return {
         get: function (namespace, name) {
             return $http.get('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.get', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.get'});
             });
         },
         save: function (template) {
@@ -305,37 +292,37 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             if (template.version_id < 0) {
                 return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $translate('template.event.created').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['success'], message: label});
                     });
                     return new Template(response.data);
                 }, function (error) {
                     if (error.data) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.save.post', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.save.post'});
                     } else if (error.status === 409) {
                         $translate('template.event.error').then(function(label) {
-                            $.notify(label, "error");
+                            notify({classes: ['error'], message: label});
                         })
                     }
                 });
             } else {
                 return $http.put('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $translate('template.event.updated').then(function(label) {
-                        $.notify(label, "success");
+                        notify({classes: ['success'], message: label});
                     });
                     return new Template(response.data);
                 }, function (error) {
-                    $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.save.put', "error");
+                    notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.save.put'});
                 });
             }
         },
         delete: function (namespace, name) {
             return $http.delete('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 $translate('template.event.deleted').then(function(label) {
-                    $.notify(label, "success");
+                    notify({classes: ['success'], message: label});
                 });
                 return response;
             }, function (error) {
-                $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.delete', "error");
+                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.delete'});
             });
         },
         all: function (namespace) {
@@ -344,7 +331,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
                     return new TemplateEntry(data);
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify((error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.all', "error");
+                        notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in TemplateService.all'});
                     } else {
                         return [];
                     }
