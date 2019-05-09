@@ -20,153 +20,153 @@ var localChangesModule = angular.module('hesperides.localChanges');
 
 
 // Why United Nations ? They are solving conflicts, rights ? :D
-localChangesModule.controller('UnitedNationsController', ['$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog', '$translate', 'notify',
-                                function($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog, $translate, notify) {
+localChangesModule.controller('UnitedNationsController', [
+    '$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog', '$translate', 'notify',
+    function ($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog, $translate, notify) {
+        $scope.comments = new Comments();
+        $scope.localChanges = [];
 
-    $scope.comments = new Comments();
-    $scope.localChanges = [];
+        $scope.save_properties = function () {
+            if ($scope.properties_to_save.length > 0) {
+                var properties = $scope.properties_to_save.pop();
 
-    $scope.sync_search_text = function (selected_comment, raw_comment) {
-        raw_comment = selected_comment && selected_comment.length > 0 ? selected_comment.comment : raw_comment;
-    }
+                _.forEach(properties.properties, function (property) {
+                    property.value = property.applied_value ? property.applied_value : property.value;
+                });
+                properties.model.key_value_properties = angular.copy(properties.properties);
 
-    $scope.save_properties = function () {
+                if ($scope.has_differences(properties.model.key_value_properties)) {
+                    ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment).then(function () {
+                    // Removing local changes sinces they have been saved
+                        LocalChanges.clearLocalChanges({ 'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path });
+                        $scope.clear_localChanges_from_scope(properties.module.properties_path);
+                        // Increase platform number
+                        $scope.platform.version_id++;
+                        // Recursive call to empty '$scope.properties_to_save' stack
+                        $scope.save_properties();
+                    }).catch(function () {
+                        $scope.save_properties();
+                    });
+                } else {
+                    LocalChanges.clearLocalChanges({ 'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path });
+                    $scope.clear_localChanges_from_scope(properties.module.properties_path);
+                    $translate('properties-not-changed.message').then(function (label) {
+                        notify({ classes: [ 'warn' ], message: `${ label }\n-> ${ properties.module.properties_path }` });
+                    });
+                    // Recursive call to empty '$scope.properties_to_save' stack
+                    $scope.save_properties();
+                }
+            } else {
+                $scope.smart_exit_united_nation_popup();
+            }
+        };
 
-        if ($scope.properties_to_save.length > 0) {
+        $scope.saveAllChanges = function () {
+            _.forEach($scope.localChanges, function (localChange) {
+                localChange.comment = $scope.raw_comment;
+            });
 
-            var properties = $scope.properties_to_save.pop();
+            $scope.properties_to_save = angular.copy($scope.localChanges);
 
-            _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
+            $scope.comments.addComment($scope.platform.application_name, $scope.raw_comment);
+            $scope.raw_comment = '';
+
+            $scope.save_properties();
+        };
+
+        $scope.smart_exit_united_nation_popup = function () {
+            if (LocalChanges.platformLocalChanges($scope.platform).length === 0) {
+                $mdDialog.hide($scope.modal);
+            }
+        };
+
+        $scope.clear_localChanges_from_scope = function (properties_path) {
+            $scope.localChanges = _.filter($scope.localChanges, function (localChange) {
+                return localChange.module.properties_path !== properties_path;
+            });
+        };
+
+        $scope.has_differences = function (key_value_properties) {
+            return _.some(key_value_properties, function (property) {
+                return (property.filtrable_value && property.value !== property.filtrable_value) || (!property.filtrable_value && property.value && property.value.length > 0);
+            });
+        };
+
+        $scope.save_one = function (properties) {
+            _.forEach(properties.properties, function (property) {
+                property.value = property.applied_value ? property.applied_value : property.value;
+            });
             properties.model.key_value_properties = angular.copy(properties.properties);
 
             if ($scope.has_differences(properties.model.key_value_properties)) {
-                ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.comment ).then(function (new_properties) {
-                    // Removing local changes sinces they have been saved
-                    LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
+                ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function () {
+                // Removing local changes sinces they have been saved
+                    LocalChanges.clearLocalChanges({ 'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path });
                     $scope.clear_localChanges_from_scope(properties.module.properties_path);
                     // Increase platform number
-                    $scope.platform.version_id = $scope.platform.version_id + 1;
-                    // Recursive call to empty '$scope.properties_to_save' stack
-                    $scope.save_properties();
-                }).catch(function () {$scope.save_properties();});
+                    $scope.platform.version_id++;
+                    $scope.smart_exit_united_nation_popup(properties);
+                });
+                $scope.comments.addComment($scope.platform.application_name, properties.raw_comment);
+                properties.raw_comment = '';
             } else {
-                LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
-                $scope.clear_localChanges_from_scope(properties.module.properties_path);
-                $translate('properties-not-changed.message').then(function(label) {
-                    notify({classes: ['warn'], message: label + "\n-> " + properties.module.properties_path});
-                });
-                // Recursive call to empty '$scope.properties_to_save' stack
-                $scope.save_properties();
-            }
-        } else {
-            $scope.smart_exit_united_nation_popup();
-        }
-    }
-
-    $scope.saveAllChanges = function () {
-
-        _.forEach($scope.localChanges, function (localChange) { localChange.comment = $scope.raw_comment ;});
-
-        $scope.properties_to_save = angular.copy( $scope.localChanges )
-
-        $scope.comments.addComment($scope.platform.application_name, $scope.raw_comment)
-        $scope.raw_comment = '';
-
-        $scope.save_properties();
-    }
-
-    $scope.smart_exit_united_nation_popup = function () {
-        if (LocalChanges.platformLocalChanges($scope.platform).length == 0) {
-            $mdDialog.hide($scope.modal);
-        }
-    }
-
-    $scope.clear_localChanges_from_scope = function(properties_path) {
-        $scope.localChanges = _.filter($scope.localChanges, function (localChange) { return localChange.module.properties_path != properties_path });
-    }
-
-    $scope.has_differences = function (key_value_properties) {
-        return _.some(key_value_properties, function (property) { return (property.filtrable_value && property.value != property.filtrable_value) || (!property.filtrable_value && property.value && property.value.length > 0) });
-    }
-
-    $scope.save_one = function (properties) {
-        _.forEach(properties.properties, function (property) { property.value = property.applied_value != undefined ? property.applied_value : property.value ;});
-        properties.model.key_value_properties = angular.copy(properties.properties);
-
-        if ($scope.has_differences(properties.model.key_value_properties)) {
-            ApplicationService.save_properties($scope.platform.application_name, $scope.platform, properties.model, properties.module.properties_path, properties.raw_comment).then(function (new_properties) {
-                // Removing local changes sinces they have been saved
-                LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
-                $scope.clear_localChanges_from_scope(properties.module.properties_path);
-                // Increase platform number
-                $scope.platform.version_id = $scope.platform.version_id + 1;
-                $scope.smart_exit_united_nation_popup(properties);
-            });
-            $scope.comments.addComment($scope.platform.application_name, properties.raw_comment);
-            properties.raw_comment = '';
-        } else {
             // Removing local changes since they already are identical with the remote value
-            LocalChanges.clearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path});
-            $scope.clear_localChanges_from_scope(properties.module.properties_path);
-            $translate('properties-not-changed.message').then(function(label) {
-                notify({classes: ['warn'], message: label + "\n-> " + properties.module.properties_path});
+                LocalChanges.clearLocalChanges({ 'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': properties.module.properties_path });
+                $scope.clear_localChanges_from_scope(properties.module.properties_path);
+                $translate('properties-not-changed.message').then(function (label) {
+                    notify({ classes: [ 'warn' ], message: `${ label }\n-> ${ properties.module.properties_path }` });
+                });
+                $scope.smart_exit_united_nation_popup(properties);
+            }
+        };
+
+        $scope.loadLocalChanges = function (platform) {
+            ApplicationService.get_platform(platform.application_name, platform.name).then(function (response) {
+                platform.version_id = response.version_id;
             });
-            $scope.smart_exit_united_nation_popup(properties);
-        }
-    }
+            _.forEach(LocalChanges.platformLocalChanges(platform), function (full_path) {
+                var curApplicationName = LocalChangesUtils.extractApplicationName(full_path);
+                var curPlatformName = LocalChangesUtils.extractPlatformName(full_path);
+                var curPropertiesPath = LocalChangesUtils.extractPropertiesPath(full_path);
 
-    $scope.loadLocalChanges = function (platform) {
+                ApplicationService.get_properties(curApplicationName, curPlatformName, curPropertiesPath).then(function (properties) {
+                    var module = _.filter(platform.modules, function (mod) {
+                        return mod.properties_path === curPropertiesPath;
+                    })[0];
 
-        ApplicationService.get_platform(platform.application_name, platform.name).then(function (response) {
-            platform.version_id = response.version_id;
-        });
-        _.forEach(LocalChanges.platformLocalChanges(platform), function (full_path) {
+                    ModuleService.get_model(module).then(function (model) {
+                        var tmpProperties = properties.mergeWithModel(model);
 
-            var curApplicationName = LocalChangesUtils.extractApplicationName(full_path);
-            var curPlatformName = LocalChangesUtils.extractPlatformName(full_path);
-            var curPropertiesPath = LocalChangesUtils.extractPropertiesPath(full_path);
+                        // Merge with global properties
+                        tmpProperties = properties.mergeWithGlobalProperties(platform.global_properties);
+                        model.iterable_properties = angular.copy(tmpProperties.iterable_properties);
 
-            ApplicationService.get_properties(curApplicationName, curPlatformName, curPropertiesPath).then(function (properties) {
+                        if (LocalChanges.smartClearLocalChanges({ 'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': module.properties_path }, tmpProperties)) {
+                            $translate('localChange.deleted.smart').then(function (label) {
+                                notify({ classes: [ 'warn' ], message: `${ label }\n-> ${ module.properties_path }`, duration: 12000 });
+                            });
+                            $scope.smart_exit_united_nation_popup();
+                        }
 
-                var module = _.filter(platform.modules, function (module) { return module.properties_path === curPropertiesPath;})[0];
-
-                ModuleService.get_model(module).then(function (model) {
-                    var tmpProperties = properties.mergeWithModel(model);
-
-                    //Merge with global properties
-                    tmpProperties = properties.mergeWithGlobalProperties(platform.global_properties);
-                    model.iterable_properties = angular.copy(tmpProperties.iterable_properties);
-
-                    if (LocalChanges.smartClearLocalChanges({'application_name': $scope.platform.application_name, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, tmpProperties)) {
-                        $translate('localChange.deleted.smart').then(function(label) {
-                            notify({classes: ['warn'], message: label + "\n-> " + module.properties_path, duration: 12000});
-                        });
-                        $scope.smart_exit_united_nation_popup();
-                    }
-
-                    if (LocalChanges.hasLocalChanges(curApplicationName, curPlatformName, curPropertiesPath))
-                    {
-                        tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
-                        $scope.localChanges.push({
-                            'properties': tmpProperties.key_value_properties,
-                            'model': model,
-                            'module': module
-                        })
-                    }
+                        if (LocalChanges.hasLocalChanges(curApplicationName, curPlatformName, curPropertiesPath)) {
+                            tmpProperties = LocalChanges.mergeWithLocalProperties(curApplicationName, curPlatformName, curPropertiesPath, tmpProperties);
+                            $scope.localChanges.push({
+                                'properties': tmpProperties.key_value_properties,
+                                model,
+                                module,
+                            });
+                        }
+                    });
                 });
             });
-        });
-    }
+        };
 
-    $scope.open = function (index) {
-        if ( index === $scope.isOpen ) {
-            $scope.isOpen = undefined;
-        } else {
-            $scope.isOpen = index;
-        }
-    }
+        $scope.open = function (index) {
+            $scope.isOpen = (index === $scope.isOpen) ? null : index;
+        };
 
-    $scope.getConflict = function (properties) {
-        return _.filter(properties, function (property) { return property.inLocal == true; });
-    }
-}]);
+        $scope.getConflict = function (properties) {
+            return _.filter(properties, (property) => property.inLocal);
+        };
+    },
+]);

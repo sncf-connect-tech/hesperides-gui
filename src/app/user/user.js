@@ -15,35 +15,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-angular.module("hesperides.user", [])
+angular.module('hesperides.user', [])
 
 /**
  * The user entity
  */
-.factory ("User", function (){
+    .factory('User', function () {
+        var User = function (data) {
+            _.assign(this, data);
+            // For backward-compatibility:
+            if (!_.isUndefined(this.prodUser)) {
+                this.isProdUser = this.prodUser;
+            }
+        };
 
-    var User = function (data){
-        _.assign(this, data);
-        // For backward-compatibility:
-        if (typeof this.prodUser !== 'undefined') {
-            this.isProdUser = this.prodUser;
-        }
-    };
-
-    return User;
- })
+        return User;
+    })
 
 /**
  * The authentication service for users.
  */
- .service("UserService", ["$http", "User", function ($http, User){
-    return {
-        authenticate : function (){
-            return $http.get ('/rest/users/auth').then (function (response){
-                return new User(response.data);
-            }, function (error){
-                throw error;
-            })
-        }
-    }
- }]);
+    .service('UserService', [
+        '$http', 'User', function ($http, User) {
+            return {
+                authenticate() {
+                    return $http.get('/rest/users/auth').then(function (response) {
+                        return new User(response.data);
+                    }, function (error) {
+                        throw error;
+                    });
+                },
+            };
+        },
+    ]);

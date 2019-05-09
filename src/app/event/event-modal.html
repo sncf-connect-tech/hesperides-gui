@@ -53,8 +53,8 @@
 
                 <!-- showing events -->
                 <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events height-500px">
-                    <div ng-repeat="event in eventEntries | evensFilter: filtering.inputs | myEventsFilter: filtering.myevents" >
-                        <div ng-switch="event._type" class="event">
+                    <div ng-repeat="event in eventEntries | eventsFilter: filtering.inputs | myEventsFilter: filtering.myevents" >
+                        <div ng-switch="event.type" class="event">
 
                             <!-- Platforms -->
                             <platform-created ng-switch-when="PlatformCreatedEvent" event="event"></platform-created>

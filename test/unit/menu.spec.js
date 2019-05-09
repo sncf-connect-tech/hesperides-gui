@@ -33,7 +33,7 @@ describe('Testing hesperides menu', function() {
 
         var menuHelpCtrl, $httpBackend, $routeParams;
 
-        beforeEach(inject(function($controller, $rootScope, _$httpBackend_, $injector, hesperidesGlobals, PlatformColorService, ApplicationService) {
+        beforeEach(inject(function($controller, $rootScope, _$httpBackend_, $injector, PlatformColorService, ApplicationService) {
             $scope = $rootScope.$new();
             $httpBackend = _$httpBackend_;
             $mdDialog = $injector.get('$mdDialog');
@@ -42,7 +42,6 @@ describe('Testing hesperides menu', function() {
             menuHelpCtrl = $controller('MenuHelpCtrl', {
                  $scope: $scope,
                  $mdDialog: $mdDialog,
-                 hesperidesGlobals: hesperidesGlobals,
                  $translate: $translate,
                  PlatformColorService: PlatformColorService,
                  $parse: $parse,

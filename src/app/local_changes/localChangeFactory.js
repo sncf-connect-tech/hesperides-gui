@@ -18,23 +18,20 @@
 
 var localChangesModule = angular.module('hesperides.localChanges');
 
-localChangesModule.factory('LocalChange', [function() {
+localChangesModule.factory('LocalChange', [
+    function () {
+        var LocalChange = function (data) {
+            // Attributes
+            this.properties_name = data.properties_name;
+            this.properties_value = data.properties_value ? data.properties_value : '';
+            this.version_id = data.version_id ? data.version_id : store.get('current_platform_versionID');
 
-    var LocalChange = function (data){
-        var me = this;
-
-        // Attributes
-        this.properties_name = data.properties_name;
-        this.properties_value = data.properties_value == undefined ? "" : data.properties_value;
-        this.version_id = data.version_id == undefined ? store.get('current_platform_versionID') : data.version_id;
-
-        // Methods
-        this.prettify = function () {
-            return me.properties_name;
+            // Methods
+            this.prettify = function () {
+                return this.properties_name;
+            };
         };
 
-    };
-
-    return LocalChange;
-
-}]);
+        return LocalChange;
+    },
+]);
