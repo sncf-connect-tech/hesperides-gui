@@ -15,7 +15,7 @@ angular.module('hesperides.properties')
                     iterablesModel: '=',
                 },
                 templateUrl: 'properties/iterable-properties-container.html',
-                controller: 'iterablePropertiesContainerController',
+                controller: 'IterablePropertiesContainerController',
             };
         },
     ])
@@ -23,7 +23,7 @@ angular.module('hesperides.properties')
 /**
  * The controller for iterablePropertiesContainer directive
  */
-    .controller('iterablePropertiesContainerController', [
+    .controller('IterablePropertiesContainerController', [
         '$scope', function ($scope) {
             /**
               * Private function for searching the iterable containing the item whose .id is id.

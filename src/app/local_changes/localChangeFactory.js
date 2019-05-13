@@ -16,9 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var localChangesModule = angular.module('hesperides.localChanges');
-
-localChangesModule.factory('LocalChange', [
+angular.module('hesperides.localChanges').factory('LocalChange', [
     function () {
         var LocalChange = function (data) {
             // Attributes

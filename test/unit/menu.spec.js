@@ -27,7 +27,7 @@ describe('Testing hesperides menu', function() {
       beforeEach (module('hesperides.menu'));
 
       // This is for testing the menu help controller
-      describe('Testing MenuHelpCtrl', function() {
+      describe('Testing MenuHelpController', function() {
 
         var $scope, $mdDialog, $translate, $parse;
 
@@ -39,7 +39,7 @@ describe('Testing hesperides menu', function() {
             $mdDialog = $injector.get('$mdDialog');
             $translate = $injector.get('$translate');
             $parse = $injector.get('$parse');
-            menuHelpCtrl = $controller('MenuHelpCtrl', {
+            menuHelpCtrl = $controller('MenuHelpController', {
                  $scope: $scope,
                  $mdDialog: $mdDialog,
                  $translate: $translate,
@@ -55,7 +55,7 @@ describe('Testing hesperides menu', function() {
     });
 
     // This is for testing the menu module controller
-    describe('Testing MenuModuleCtrl', function (){
+    describe('Testing MenuModuleController', function (){
 
         var scope, dialog, location, timeout, ctrl;
 
@@ -65,7 +65,7 @@ describe('Testing hesperides menu', function() {
             location = $injector.get('$location');
             timeout = $injector.get('$timeout');
 
-            ctrl = $controller('MenuModuleCtrl', {
+            ctrl = $controller('MenuModuleController', {
                 $scope: scope,
                 $mdDialog: dialog,
                 $location: location,

@@ -1,6 +1,6 @@
 {
     "plugins": ["lodash"],
-    "extends": ["strict", "plugin:lodash/recommended"],
+    "extends": ["strict", "plugin:angular/johnpapa", "plugin:lodash/recommended"],
     "globals": {
         "BUILD_TIME": "readonly",
         "addFromModel": "writable",
@@ -18,6 +18,12 @@
         "JSZip": "readonly"
     },
     "rules": {
+        "angular/controller-as": 0,
+        "angular/controller-as-route": 0,
+        "angular/controller-as-vm": 0,
+        "angular/file-name": 0,
+        "angular/function-type": 0,
+        "angular/no-run-logic": 0,
         "array-element-newline": 0,
         "camelcase": 0,
         "complexity": ["error", 12],

@@ -30,7 +30,7 @@ describe('Testing hesperides module', function (){
     // Services
     var pageService, moduleService, technoService, fileService;
 
-    describe('Testing the ModuleCtrl', function (){
+    describe('Testing the ModuleController', function (){
         var scope, routeParams, dialog, location, translator, ctrl;
 
         beforeEach(inject(function($injector, $rootScope, $controller, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page, FileService, Platform){
@@ -48,7 +48,7 @@ describe('Testing hesperides module', function (){
             fileService = FileService;
 
             // get controller
-            ctrl = $controller('ModuleCtrl', {
+            ctrl = $controller('ModuleController', {
                 $scope: scope,
                 $routeParams: routeParams,
                 $location: location,

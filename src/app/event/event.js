@@ -15,98 +15,98 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-var eventModule = angular.module('hesperides.event', []);
+angular.module('hesperides.event', [])
 
 /**
  * Hesperides event data type
  *
  */
-eventModule.factory('EventEntry', function ($translate) {
-    var EventEntry = function (data) {
-        this.type = data.type;
-        this.data = data.data;
-        this.timestamp = data.timestamp;
-        this.user = data.user;
-        this.isGlobal = false; // indicates if this event is about global properties
+    .factory('EventEntry', function ($translate) {
+        var EventEntry = function (data) {
+            this.type = data.type;
+            this.data = data.data;
+            this.timestamp = data.timestamp;
+            this.user = data.user;
+            this.isGlobal = false; // indicates if this event is about global properties
 
-        // For internal use
-        this.id = 0;
-        this.isSelected = false;
-        this.isSelectable = true;
+            // For internal use
+            this.id = 0;
+            this.isSelected = false;
+            this.isSelectable = true;
 
-        this.label = `${ this.user } `; // the event label : the displayable message. Used for filtering. Always starts by the user name
+            this.label = `${ this.user } `; // the event label : the displayable message. Used for filtering. Always starts by the user name
 
-        // The simple type of the event
-        this.type = _.last(data.type.split('.'));
+            // The simple type of the event
+            this.type = _.last(data.type.split('.'));
 
-        // Get the module name of the event if applicable
-        if (!_.isUndefined(this.data.path)) {
-            if (_.isEqual(this.data.path, '#')) {
-                if (_.isEqual(this.type, 'PropertiesSavedEvent')) {
-                    this.isGlobal = true;
-                }
-            } else {
-                var pathsItems = this.data.path.split('#');
-                if (!_.isUndefined(pathsItems[3])) {
-                    this.moduleName = pathsItems[3];
-                }
-                if (!_.isUndefined(pathsItems[4])) {
-                    this.moduleVersion = pathsItems[4];
+            // Get the module name of the event if applicable
+            if (!_.isUndefined(this.data.path)) {
+                if (_.isEqual(this.data.path, '#')) {
+                    if (_.isEqual(this.type, 'PropertiesSavedEvent')) {
+                        this.isGlobal = true;
+                    }
+                } else {
+                    var pathsItems = this.data.path.split('#');
+                    if (!_.isUndefined(pathsItems[3])) {
+                        this.moduleName = pathsItems[3];
+                    }
+                    if (!_.isUndefined(pathsItems[4])) {
+                        this.moduleVersion = pathsItems[4];
+                    }
                 }
             }
-        }
 
-        /**
+            /**
          * This method is for building the event label
          */
-        this.buildLabel = function (...args) {
-            var labelCode = args[0];
+            this.buildLabel = function (...args) {
+                var labelCode = args[0];
 
-            _.remove(args, function (item) {
-                return item === labelCode;
-            });
-
-            var event = this;
-            $translate(labelCode).then(function (label) {
-                label = `${ event.user } ${ label }`;
-                _.each(args, function (arg) {
-                    label += ` ${ arg }`;
+                _.remove(args, function (item) {
+                    return item === labelCode;
                 });
-                event.label = label;
-            });
-        };
-    };
 
-    return EventEntry;
-});
+                var event = this;
+                $translate(labelCode).then(function (label) {
+                    label = `${ event.user } ${ label }`;
+                    _.each(args, function (arg) {
+                        label += ` ${ arg }`;
+                    });
+                    event.label = label;
+                });
+            };
+        };
+
+        return EventEntry;
+    })
 
 /**
  * Hesperides event http service
  */
-eventModule.service('EventService', [
-    '$hesperidesHttp', 'EventEntry', 'notify', 'globalConfig',
-    function ($http, EventEntry, notify, globalConfig) {
-        return {
-        /**
+    .factory('EventService', [
+        '$hesperidesHttp', 'EventEntry', 'notify', 'globalConfig',
+        function ($http, EventEntry, notify, globalConfig) {
+            return {
+                /**
          * Get events from the back.
          * @param {String} stream : is the name of the stream, application or module
          * @param {Integer} page : is the page number to retrieve.
          */
-            get(stream, page) {
-                var url = `rest/events/${ encodeURIComponent(stream) }?page=${ encodeURIComponent(page) }&size=${ encodeURIComponent(globalConfig.eventPaginationSize) }`;
-                return $http.get(url).then(function (response) {
-                    return response.data.map(function (item) {
-                        var event = new EventEntry(item);
-                        return event;
+                get(stream, page) {
+                    var url = `rest/events/${ encodeURIComponent(stream) }?page=${ encodeURIComponent(page) }&size=${ encodeURIComponent(globalConfig.eventPaginationSize) }`;
+                    return $http.get(url).then(function (response) {
+                        return response.data.map(function (item) {
+                            var event = new EventEntry(item);
+                            return event;
+                        });
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in EventService.get' });
+                        throw error;
                     });
-                }, function (error) {
-                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in EventService.get' });
-                    throw error;
-                });
-            },
-        };
-    },
-]);
+                },
+            };
+        },
+    ])
 
 /**
  * This is the list of directives used to display each type of events
@@ -118,311 +118,303 @@ eventModule.service('EventService', [
 //
 
 /* This is for platform creation event */
-eventModule.directive('platformCreated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/platform/platform-created.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('platform.event.createdByUser');
+    .directive('platformCreated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/platform/platform-created.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('platform.event.createdByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for platform creation from an existing event */
-eventModule.directive('platformCreatedFromExisting', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/platform/platform-created-from-existing.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.from = $scope.event.data.originPlatform.key.entityName;
-                $scope.event.buildLabel('platform.event.createdFromExisting', $scope.from);
+    .directive('platformCreatedFromExisting', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/platform/platform-created-from-existing.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.from = $scope.event.data.originPlatform.key.entityName;
+                    $scope.event.buildLabel('platform.event.createdFromExisting', $scope.from);
+                },
+            ],
+        };
+    })
 
 
 /* This is for platform update event */
-eventModule.directive('platformUpdated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/platform/platform-updated.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('platform.event.updatedByUser');
+    .directive('platformUpdated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/platform/platform-updated.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('platform.event.updatedByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for platform deletion event */
-eventModule.directive('platformDeleted', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/platform/platform-deleted.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('platform.event.deletedByUser');
+    .directive('platformDeleted', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
-
-//
-// Modules
-//
+            templateUrl: 'event/directives/platform/platform-deleted.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('platform.event.deletedByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for module creation event */
-eventModule.directive('moduleCreated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/module/module-created.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('module.event.created');
+    .directive('moduleCreated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/module/module-created.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('module.event.created');
+                },
+            ],
+        };
+    })
 
 /* This is for module update event */
-eventModule.directive('moduleUpdated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/module/module-updated.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('module.event.updatedByUser');
+    .directive('moduleUpdated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
-
-//
-// Module Working Copy
-//
+            templateUrl: 'event/directives/module/module-updated.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('module.event.updatedByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for module working copy update event */
-eventModule.directive('moduleWorkingCopyUpdated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/module-working-copy/module-working-copy-updated.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('module.workingCopy.event.updatedByUser');
+    .directive('moduleWorkingCopyUpdated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/module-working-copy/module-working-copy-updated.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('module.workingCopy.event.updatedByUser');
+                },
+            ],
+        };
+    })
 
 //
 // Module Templates
 //
 
 /* This is for module template creation event */
-eventModule.directive('moduleTemplateCreated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/module-template/module-template-created.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('module.template.event.createdByUser');
+    .directive('moduleTemplateCreated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/module-template/module-template-created.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('module.template.event.createdByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for module template  update event */
-eventModule.directive('moduleTemplateUpdated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/module-template/module-template-updated.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('module.template.event.updatedByUser');
+    .directive('moduleTemplateUpdated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/module-template/module-template-updated.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('module.template.event.updatedByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for module template  deletion event */
-eventModule.directive('moduleTemplateDeleted', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/module-template/module-template-deleted.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('module.template.event.deletedByUser');
+    .directive('moduleTemplateDeleted', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/module-template/module-template-deleted.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('module.template.event.deletedByUser');
+                },
+            ],
+        };
+    })
 
 //
 // Properties
 //
 
 /* This is for properties saved event */
-eventModule.directive('propertiesSaved', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
+    .directive('propertiesSaved', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
+            },
 
-        templateUrl: 'event/directives/properties/properties-saved.html',
-        controller: [
-            '$scope', function ($scope) {
+            templateUrl: 'event/directives/properties/properties-saved.html',
+            controller: [
+                '$scope', function ($scope) {
                 // Get the scope of the modal
-                var modalScope = $scope.$parent.$parent.$parent;
+                    var modalScope = $scope.$parent.$parent.$parent;
 
-                /**
+                    /**
              * Selectes or unselects the current events for diff.
              */
-                $scope.selectOrUnselect = function () {
-                    if ($scope.event.isSelected) {
-                        modalScope.selectedEvents.push($scope.event);
+                    $scope.selectOrUnselect = function () {
+                        if ($scope.event.isSelected) {
+                            modalScope.selectedEvents.push($scope.event);
+                        } else {
+                            _.remove(modalScope.selectedEvents, function (item) {
+                                return item.id === $scope.event.id;
+                            });
+                        }
+                        modalScope.checkSelectStatus();
+                    };
+
+                    $scope.moduleName = $scope.event.moduleName;
+                    $scope.moduleVersion = $scope.event.moduleVersion;
+
+                    // get the event message for filtering
+
+                    if ($scope.event.isGlobal) {
+                        $scope.event.buildLabel('properties.event.savedGlobalByUser');
                     } else {
-                        _.remove(modalScope.selectedEvents, function (item) {
-                            return item.id === $scope.event.id;
-                        });
+                        $scope.event.buildLabel('properties.event.savedByUser', $scope.event.moduleName, $scope.event.moduleVersion);
                     }
-                    modalScope.checkSelectStatus();
-                };
-
-                $scope.moduleName = $scope.event.moduleName;
-                $scope.moduleVersion = $scope.event.moduleVersion;
-
-                // get the event message for filtering
-
-                if ($scope.event.isGlobal) {
-                    $scope.event.buildLabel('properties.event.savedGlobalByUser');
-                } else {
-                    $scope.event.buildLabel('properties.event.savedByUser', $scope.event.moduleName, $scope.event.moduleVersion);
-                }
-            },
-        ],
-    };
-});
+                },
+            ],
+        };
+    })
 
 //
 // Templates (Techno)
 //
 
 /* This is for techno creation event */
-eventModule.directive('templateCreated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/template/template-created.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('techno.event.createdByUser');
+    .directive('templateCreated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/template/template-created.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('techno.event.createdByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for techno  update event */
-eventModule.directive('templateUpdated', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/template/template-updated.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('techno.event.updatedByUser');
+    .directive('templateUpdated', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/template/template-updated.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('techno.event.updatedByUser');
+                },
+            ],
+        };
+    })
 
 /* This is for techno  deletion event */
-eventModule.directive('templateDeleted', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/template/template-deleted.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('techno.event.deletedByUser');
+    .directive('templateDeleted', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/template/template-deleted.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('techno.event.deletedByUser');
+                },
+            ],
+        };
+    })
 
 //
 // Template Package (Techno)
 //
 
 /* This is for techno package deletion event */
-eventModule.directive('templatePackageDeleted', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            event: '=',
-        },
-        templateUrl: 'event/directives/template-package/template-package-deleted.html',
-        controller: [
-            '$scope', function ($scope) {
-                $scope.event.buildLabel('techno.package.event.deletedByUser');
+    .directive('templatePackageDeleted', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
             },
-        ],
-    };
-});
+            templateUrl: 'event/directives/template-package/template-package-deleted.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('techno.package.event.deletedByUser');
+                },
+            ],
+        };
+    })
 
 /**
  * This for event timestamp formatting and displaying
  */
 /* This is for techno package deletion event */
-eventModule.directive('eventTime', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            timestamp: '=',
-        },
-        templateUrl: 'event/directives/event-time.html',
-    };
-});
+    .directive('eventTime', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                timestamp: '=',
+            },
+            templateUrl: 'event/directives/event-time.html',
+        };
+    })
 
 /**
  * This is the events filtering by :
@@ -431,43 +423,43 @@ eventModule.directive('eventTime', function () {
  *  - othor
  *  - event displayable message
  */
-eventModule.filter('eventsFilter', function ($filter) {
-    return function (events, inputs) {
-        if (_.isUndefined(inputs) || _.isEmpty(inputs)) {
-            return events;
-        }
+    .filter('eventsFilter', function ($filter) {
+        return function (events, inputs) {
+            if (_.isUndefined(inputs) || _.isEmpty(inputs)) {
+                return events;
+            }
 
-        try {
+            try {
             // Format the filters to construct the regex
-            var regex = new RegExp(`.*${ inputs.split(' ').join('.*') }`, 'i');
+                var regex = new RegExp(`.*${ inputs.split(' ').join('.*') }`, 'i');
 
-            return _.filter(events, function (event) {
-                var module = event.moduleName ? `${ event.moduleName } ` : '';
-                module += event.moduleVersion ? event.moduleVersion : '';
+                return _.filter(events, function (event) {
+                    var module = event.moduleName ? `${ event.moduleName } ` : '';
+                    module += event.moduleVersion ? event.moduleVersion : '';
 
-                return regex.test(module) ||
+                    return regex.test(module) ||
                     regex.test(event.user) ||
                     regex.test(event.label) ||
                     regex.test($filter('date')(event.timestamp, 'd MMMM yyyy HH:mm')) ||
                     regex.test(event.data.comment);
-            });
-        } catch (error) {
-            return events;
-        }
-    };
-});
+                });
+            } catch (error) {
+                return events;
+            }
+        };
+    })
 
 /**
  * This is the events filtering by user name or my events
  */
-eventModule.filter('myEventsFilter', [
-    '$filter', 'session', function ($filter, session) {
-        return function (events, myevents) {
-            if (myevents) {
-            // reuse a above filter
-                return $filter('eventsFilter')(events, session.user.username);
-            }
-            return events;
-        };
-    },
-]);
+    .filter('myEventsFilter', [
+        '$filter', 'session', function ($filter, session) {
+            return function (events, myevents) {
+                if (myevents) {
+                    // reuse a above filter
+                    return $filter('eventsFilter')(events, session.user.username);
+                }
+                return events;
+            };
+        },
+    ]);

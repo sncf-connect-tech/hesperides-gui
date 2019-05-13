@@ -35,7 +35,7 @@ angular.module('hesperides.user', [])
 /**
  * The authentication service for users.
  */
-    .service('UserService', [
+    .factory('UserService', [
         '$http', 'User', function ($http, User) {
             return {
                 authenticate() {

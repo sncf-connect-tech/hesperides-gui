@@ -156,7 +156,7 @@
             http.when('GET', './config.json').respond(200, "");
 
             // the controller
-            $controller('iterablePropertiesContainerController', {$scope: scope});
+            $controller('IterablePropertiesContainerController', {$scope: scope});
 
             // The Properties factory
             Properties = _Properties_;

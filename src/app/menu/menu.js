@@ -15,315 +15,315 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-var menuModule = angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties' ]);
+angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties' ])
 
-menuModule.controller('MenuTechnoCtrl', [
-    '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'TechnoService',
-    function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
-        $scope.find_technos_by_name = function (name) {
-            return TechnoService.with_name_like(name);
-        };
+    .controller('MenuTechnoController', [
+        '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'TechnoService',
+        function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
+            $scope.find_technos_by_name = function (name) {
+                return TechnoService.with_name_like(name);
+            };
 
-        $scope.open_create_techno_dialog = function () {
-            $mdDialog.show({
-                templateUrl: 'techno/techno-menu-modal.html',
-                controller: 'MenuTechnoCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
-                scope: $scope,
-            });
-        };
+            $scope.open_create_techno_dialog = function () {
+                $mdDialog.show({
+                    templateUrl: 'techno/techno-menu-modal.html',
+                    controller: 'MenuTechnoController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+                    scope: $scope,
+                });
+            };
 
-        $scope.open_create_techno_from_dialog = function () {
-            $mdDialog.show({
-                templateUrl: 'techno/techno-menu-modal-from.html',
-                controller: 'MenuTechnoCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-            // Remove scope cause else with autocomplete, window is closed
-            // scope:$scope
-            });
-        };
+            $scope.open_create_techno_from_dialog = function () {
+                $mdDialog.show({
+                    templateUrl: 'techno/techno-menu-modal-from.html',
+                    controller: 'MenuTechnoController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    // Remove scope cause else with autocomplete, window is closed
+                    // scope:$scope
+                });
+            };
 
-        $scope.create_techno_from = function (name, version, fromName, fromVersion, isFromWorkingCopy) {
-            TechnoService.create_workingcopy(name, version, fromName, fromVersion, isFromWorkingCopy).then(function () {
-                $scope.open_techno_page(name, version, true);
-            });
-        };
+            $scope.create_techno_from = function (name, version, fromName, fromVersion, isFromWorkingCopy) {
+                TechnoService.create_workingcopy(name, version, fromName, fromVersion, isFromWorkingCopy).then(function () {
+                    $scope.open_techno_page(name, version, true);
+                });
+            };
 
-        $scope.open_techno_page = function (name, version, is_working_copy) {
-            if (is_working_copy) {
-                $location.path(`/techno/${ name }/${ version }`).search({ type: 'workingcopy' });
-            } else {
-                $location.path(`/techno/${ name }/${ version }`).search({});
-            }
-            $scope.technoSearched = '';
-            $mdMenu.cancel();
-        };
-    },
-]);
+            $scope.open_techno_page = function (name, version, is_working_copy) {
+                if (is_working_copy) {
+                    $location.path(`/techno/${ name }/${ version }`).search({ type: 'workingcopy' });
+                } else {
+                    $location.path(`/techno/${ name }/${ version }`).search({});
+                }
+                $scope.technoSearched = '';
+                $mdMenu.cancel();
+            };
+        },
+    ])
 
-menuModule.controller('MenuModuleCtrl', [
-    '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ModuleService', 'Module',
-    function ($scope, $mdDialog, $mdMenu, $location, $timeout, ModuleService, Module) {
-        $scope.find_modules_by_name = function (name) {
-            return ModuleService.with_name_like(name);
-        };
+    .controller('MenuModuleController', [
+        '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ModuleService', 'Module',
+        function ($scope, $mdDialog, $mdMenu, $location, $timeout, ModuleService, Module) {
+            $scope.find_modules_by_name = function (name) {
+                return ModuleService.with_name_like(name);
+            };
 
-        $scope.create_module = function (name, version) {
-            var module = new Module({ name, version });
-            ModuleService.save(module).then(function (mod) {
-                $scope.open_module_page(mod.name, mod.version, mod.is_working_copy);
-            });
-        };
+            $scope.create_module = function (name, version) {
+                var module = new Module({ name, version });
+                ModuleService.save(module).then(function (mod) {
+                    $scope.open_module_page(mod.name, mod.version, mod.is_working_copy);
+                });
+            };
 
-        $scope.create_module_from = function (name, version, moduleFrom) {
-            ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function () {
-                $scope.open_module_page(name, version, true);
-            });
-        };
+            $scope.create_module_from = function (name, version, moduleFrom) {
+                ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function () {
+                    $scope.open_module_page(name, version, true);
+                });
+            };
 
-        $scope.open_module_page = function (name, version, is_working_copy) {
-            $location.path(`/module/${ name }/${ version }`).search({});
-            if (is_working_copy) {
-                $location.search({ type: 'workingcopy' });
-            }
-            $scope.moduleSearched = '';
-            $mdMenu.cancel();
-        };
+            $scope.open_module_page = function (name, version, is_working_copy) {
+                $location.path(`/module/${ name }/${ version }`).search({});
+                if (is_working_copy) {
+                    $location.search({ type: 'workingcopy' });
+                }
+                $scope.moduleSearched = '';
+                $mdMenu.cancel();
+            };
 
-        $scope.open_create_module_dialog = function () {
-            $mdDialog.show({
-                templateUrl: 'module/module-menu-modal.html',
-                controller: 'MenuModuleCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-                scope: $scope,
-            });
-        };
+            $scope.open_create_module_dialog = function () {
+                $mdDialog.show({
+                    templateUrl: 'module/module-menu-modal.html',
+                    controller: 'MenuModuleController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    scope: $scope,
+                });
+            };
 
-        $scope.open_create_module_from_dialog = function () {
-            $mdDialog.show({
-                templateUrl: 'module/module-menu-modal-from.html',
-                controller: 'MenuModuleCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-            // Remove scope cause else with autocomplete, window is closed
-            // scope:$scope
-            });
-        };
-    },
-]);
+            $scope.open_create_module_from_dialog = function () {
+                $mdDialog.show({
+                    templateUrl: 'module/module-menu-modal-from.html',
+                    controller: 'MenuModuleController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    // Remove scope cause else with autocomplete, window is closed
+                    // scope:$scope
+                });
+            };
+        },
+    ])
 
 
-menuModule.controller('MenuPropertiesCtrl', [
-    '$hesperidesHttp', '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'session',
-    function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify, session) {
-        $scope.find_applications_by_name = function (name) {
-            return ApplicationService.with_name_like(name);
-        };
+    .controller('MenuPropertiesController', [
+        '$hesperidesHttp', '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'session',
+        function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify, session) {
+            $scope.find_applications_by_name = function (name) {
+                return ApplicationService.with_name_like(name);
+            };
 
-        $scope.find_platforms_of_application = function (application_name, filter_env) {
-            return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
-        };
+            $scope.find_platforms_of_application = function (application_name, filter_env) {
+                return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
+            };
 
-        $scope.open_properties_page = function (application_name, platform_name) {
-            $location.path(`/properties/${ application_name }`);
-            if (platform_name) {
-                $location.search({ platform: platform_name });
-            }
-            $scope.applicationSearched = '';
-            $mdMenu.cancel();
-        };
+            $scope.open_properties_page = function (application_name, platform_name) {
+                $location.path(`/properties/${ application_name }`);
+                if (platform_name) {
+                    $location.search({ platform: platform_name });
+                }
+                $scope.applicationSearched = '';
+                $mdMenu.cancel();
+            };
 
-        $scope.create_platform = function (application_name, platform_name, production, application_version) {
-            var platform = new Platform({ name: platform_name, application_name, application_version, production: production || false });
-            ApplicationService.save_platform(platform).then((ptf) => {
-                $mdDialog.cancel();
-                $scope.open_properties_page(ptf.application_name, ptf.platform_name);
-            });
-        };
-
-        $scope.create_platform_from = function (application_name, platform_name, production, application_version, from_application, from_platform, copyInstancesAndProperties) {
-            if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
-                ApplicationService.delete_platform(application_name, platform_name);
-            }
-            var platform = new Platform({ name: platform_name, application_name, application_version, production });
-            ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
-                .then((ptf) => {
+            $scope.create_platform = function (application_name, platform_name, production, application_version) {
+                var platform = new Platform({ name: platform_name, application_name, application_version, production: production || false });
+                ApplicationService.save_platform(platform).then((ptf) => {
                     $mdDialog.cancel();
-                    $scope.open_properties_page(ptf.application_name, ptf.name);
-                })
-                .catch(function (error) {
-                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesCtrl.create_platform_from' });
+                    $scope.open_properties_page(ptf.application_name, ptf.platform_name);
+                });
+            };
+
+            $scope.create_platform_from = function (application_name, platform_name, production, application_version, from_application, from_platform, copyInstancesAndProperties) {
+                if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
+                    ApplicationService.delete_platform(application_name, platform_name);
+                }
+                var platform = new Platform({ name: platform_name, application_name, application_version, production });
+                ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
+                    .then((ptf) => {
+                        $mdDialog.cancel();
+                        $scope.open_properties_page(ptf.application_name, ptf.name);
+                    })
+                    .catch(function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesController.create_platform_from' });
+                        throw error;
+                    });
+            };
+
+            $scope.open_create_platform_dialog = function () {
+                $scope.isProductionUser = session.isProdUser;
+
+                $mdDialog.show({
+                    templateUrl: 'properties/platform-menu-modal.html',
+                    controller: 'MenuPropertiesController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    scope: $scope,
+                });
+            };
+
+            $scope.open_create_platform_from_dialog = function () {
+                var modalScope = $scope.$new(true);
+
+                modalScope.applicationSearched = '';
+                modalScope.isProductionUser = session.isProdUser;
+
+                $mdDialog.show({
+                    templateUrl: 'properties/platform-menu-modal-from.html',
+                    controller: 'MenuPropertiesController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    scope: modalScope,
+                });
+            };
+
+            $scope.new_platform_already_exist = false;
+
+            $scope.check_new_platform_already_exist = function () {
+                return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
+                    $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
+                    if (_.some(response, { 'name': $scope.new_platform.platform_name })) {
+                        ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, null, true).then(function () {
+                            $scope.new_platform_already_exist = true;
+                        }, function () {
+                            $scope.new_platform_already_exist = false;
+                        });
+                    } else {
+                        $scope.new_platform_already_exist = false;
+                    }
+                });
+            };
+        },
+    ])
+
+    .directive('disableEditing', function () {
+        return {
+            link(scope, element) {
+                element.on('cut copy paste keypress', function (event) {
+                    event.preventDefault();
+                });
+            },
+        };
+    })
+
+    .controller('MenuHelpController', [
+        '$scope', '$mdDialog', '$hesperidesHttp', '$translate', '$parse', '$window', 'ApplicationService', 'PlatformColorService', 'globalConfig',
+        function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, globalConfig) {
+            $scope.config = globalConfig;
+
+            $scope.change_language = function (langKey) {
+                $translate.use(langKey);
+                store.set('language', langKey);
+            };
+
+            // Refactoring TO DO
+            $scope.find_applications_by_name = function (name) {
+                return ApplicationService.with_name_like(name).then(function (apps) {
+                    // Already loved apps shouldn't be displayed
+                    return _.filter(apps, function (item) {
+                        return !_.some($scope.applications, function (love) {
+                            return love === item.name;
+                        });
+                    });
+                });
+            };
+
+            $scope.display_hesperides_documentation = function () {
+                $window.open(globalConfig.documentationLink);
+            };
+
+            $scope.display_swagger = function () {
+                $window.open(globalConfig.swaggerLink);
+            };
+
+            $scope.display_hesperides_informations = function () {
+                $scope.front_build_time = BUILD_TIME || 'unknown';
+
+                // Get the backend versions
+                $http.get('rest/versions').then(function (response) {
+                    $scope.api_version = response.data.version || response.data.api_version || 'unknown';
+                    $scope.api_build_time = response.data.build_time || 'unknown';
+                }, function (error) {
                     throw error;
                 });
-        };
 
-        $scope.open_create_platform_dialog = function () {
-            $scope.isProductionUser = session.isProdUser;
-
-            $mdDialog.show({
-                templateUrl: 'properties/platform-menu-modal.html',
-                controller: 'MenuPropertiesCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-                scope: $scope,
-            });
-        };
-
-        $scope.open_create_platform_from_dialog = function () {
-            var modalScope = $scope.$new(true);
-
-            modalScope.applicationSearched = '';
-            modalScope.isProductionUser = session.isProdUser;
-
-            $mdDialog.show({
-                templateUrl: 'properties/platform-menu-modal-from.html',
-                controller: 'MenuPropertiesCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-                scope: modalScope,
-            });
-        };
-
-        $scope.new_platform_already_exist = false;
-
-        $scope.check_new_platform_already_exist = function () {
-            return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
-                $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
-                if (_.some(response, { 'name': $scope.new_platform.platform_name })) {
-                    ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, null, true).then(function () {
-                        $scope.new_platform_already_exist = true;
-                    }, function () {
-                        $scope.new_platform_already_exist = false;
-                    });
-                } else {
-                    $scope.new_platform_already_exist = false;
-                }
-            });
-        };
-    },
-]);
-
-menuModule.directive('disableEditing', function () {
-    return {
-        link(scope, element) {
-            element.on('cut copy paste keypress', function (event) {
-                event.preventDefault();
-            });
-        },
-    };
-});
-
-menuModule.controller('MenuHelpCtrl', [
-    '$scope', '$mdDialog', '$hesperidesHttp', '$translate', 'PlatformColorService', '$parse', 'ApplicationService', 'globalConfig',
-    function ($scope, $mdDialog, $http, $translate, PlatformColorService, $parse, ApplicationService, globalConfig) {
-        $scope.config = globalConfig;
-
-        $scope.change_language = function (langKey) {
-            $translate.use(langKey);
-            store.set('language', langKey);
-        };
-
-        // Refactoring TO DO
-        $scope.find_applications_by_name = function (name) {
-            return ApplicationService.with_name_like(name).then(function (apps) {
-            // Already loved apps shouldn't be displayed
-                return _.filter(apps, function (item) {
-                    return !_.some($scope.applications, function (love) {
-                        return love === item.name;
-                    });
+                $mdDialog.show({
+                    templateUrl: 'hesperides/help-menu-modal.html',
+                    controller: 'MenuHelpController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    scope: $scope,
                 });
-            });
-        };
+            };
 
-        $scope.display_hesperides_documentation = function () {
-            window.open(globalConfig.documentationLink);
-        };
-
-        $scope.display_swagger = function () {
-            window.open(globalConfig.swaggerLink);
-        };
-
-        $scope.display_hesperides_informations = function () {
-            $scope.front_build_time = BUILD_TIME || 'unknown';
-
-            // Get the backend versions
-            $http.get('rest/versions').then(function (response) {
-                $scope.api_version = response.data.version || response.data.api_version || 'unknown';
-                $scope.api_build_time = response.data.build_time || 'unknown';
-            }, function (error) {
-                throw error;
-            });
-
-            $mdDialog.show({
-                templateUrl: 'hesperides/help-menu-modal.html',
-                controller: 'MenuHelpCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-                scope: $scope,
-            });
-        };
-
-        /**
+            /**
      * That is the user settings modal.
      * It's used to customize user relative settings on hesperides.
      *
      * Added by Sahar CHAILLOU
      */
-        $scope.display_settings = function () {
-            $scope.settings_instance = store.get('instance_properties');
-            $scope.settings_copy = store.get('copy_properties');
-            $scope.settings_color = store.get('color_active');
-            $scope.settings_display = store.get('display_mode');
-            $scope.settings_language = store.get('language');
-            $scope.items = [ { name: 'USN1' }, { name: 'INT1' }, { name: 'REC1' } ];
-            $scope.applications = [];
-            if (store.get('applications')) {
-                $scope.applications = store.get('applications');
-            }
-            $scope.color = {
-                red: store.get('color_red') || 220,
-                green: store.get('color_green') || 200,
-                blue: store.get('color_blue') || 220,
-            };
-
-            $scope.backgroundColor = function (item) {
-                return PlatformColorService.calculateColor(item.name, $scope.color);
-            };
-
-            $scope.addApplication = function (application) {
-                if (!_.includes($scope.applications, application.name)) {
-                    $scope.applications.push(application.name);
+            $scope.display_settings = function () {
+                $scope.settings_instance = store.get('instance_properties');
+                $scope.settings_copy = store.get('copy_properties');
+                $scope.settings_color = store.get('color_active');
+                $scope.settings_display = store.get('display_mode');
+                $scope.settings_language = store.get('language');
+                $scope.items = [ { name: 'USN1' }, { name: 'INT1' }, { name: 'REC1' } ];
+                $scope.applications = [];
+                if (store.get('applications')) {
+                    $scope.applications = store.get('applications');
                 }
-            };
+                $scope.color = {
+                    red: store.get('color_red') || 220,
+                    green: store.get('color_green') || 200,
+                    blue: store.get('color_blue') || 220,
+                };
 
-            $scope.removeApplication = function () {
-                var index = $scope.applications.indexOf($scope.app);
-                $scope.applications.splice(index - 1, 1);
-            };
+                $scope.backgroundColor = function (item) {
+                    return PlatformColorService.calculateColor(item.name, $scope.color);
+                };
 
-            $scope.saveSettings = function () {
-                store.set('display_mode', $scope.settings_display);
-                store.set('language', $scope.settings_language);
-                store.set('instance_properties', $scope.settings_instance);
-                store.set('copy_properties', $scope.settings_copy);
-                store.set('color_active', $scope.settings_color);
-                store.set('color_red', $scope.color.red);
-                store.set('color_green', $scope.color.green);
-                store.set('color_blue', $scope.color.blue);
-                store.set('applications', $scope.applications);
-                location.reload();
-                $mdDialog.cancel();
+                $scope.addApplication = function (application) {
+                    if (!_.includes($scope.applications, application.name)) {
+                        $scope.applications.push(application.name);
+                    }
+                };
+
+                $scope.removeApplication = function () {
+                    var index = $scope.applications.indexOf($scope.app);
+                    $scope.applications.splice(index - 1, 1);
+                };
+
+                $scope.saveSettings = function () {
+                    store.set('display_mode', $scope.settings_display);
+                    store.set('language', $scope.settings_language);
+                    store.set('instance_properties', $scope.settings_instance);
+                    store.set('copy_properties', $scope.settings_copy);
+                    store.set('color_active', $scope.settings_color);
+                    store.set('color_red', $scope.color.red);
+                    store.set('color_green', $scope.color.green);
+                    store.set('color_blue', $scope.color.blue);
+                    store.set('applications', $scope.applications);
+                    location.reload();
+                    $mdDialog.cancel();
+                };
+                $mdDialog.show({
+                    templateUrl: 'hesperides/settings-modal.html',
+                    controller: 'MenuHelpController',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu
+                    scope: $scope,
+                });
             };
-            $mdDialog.show({
-                templateUrl: 'hesperides/settings-modal.html',
-                controller: 'MenuHelpCtrl',
-                clickOutsideToClose: true,
-                preserveScope: true, // requiered for not freez menu
-                scope: $scope,
-            });
-        };
-    },
-]);
+        },
+    ]);
