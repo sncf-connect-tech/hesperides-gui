@@ -1,6 +1,6 @@
 {
   "name": "hesperides-gui",
-  "version": "1.0.3",
+  "version": "4.3.0",
   "description": "Hesperides GUI",
   "homepage": "https://github.com/voyages-sncf-technologies/hesperides-gui",
   "license": "GPL",
@@ -31,7 +31,7 @@
     "html2canvas": "^0.5.0-beta4",
     "js-yaml": "^3.13.1",
     "jszip": "^2.6.1",
-    "lodash": "^2.4.1",
+    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "sc-date-time": "^1.1.7",
     "store.js": "^1.1.0",
@@ -39,7 +39,10 @@
   },
   "devDependencies": {
     "angular-mocks": "^1.4.10",
-    "buildify": "^0.4.0",
+    "buildify": "latest",
+    "eslint": "^5.16.0",
+    "eslint-config-strict": "^14.0.1",
+    "eslint-plugin-lodash": "^5.1.0",
     "grunt": "latest",
     "grunt-connect-proxy": "latest",
     "grunt-contrib-connect": "latest",
@@ -57,11 +60,13 @@
     "karma-verbose-reporter": "0.0.3",
     "protractor": "~5.1.1",
     "protractor-jasmine2-html-reporter": "~0.0.6",
-    "restling": "~0.9.1"
+    "restling": "~0.9.1",
+    "serve-static": "^1.13.2"
   },
   "scripts": {
-    "postinstall": "node packager.js",
+    "postinstall": "node bundler.js",
     "start": "grunt server",
+    "lint": "eslint --fix src/app",
     "test": "karma start karma.conf.js --no-auto-watch --single-run",
     "webdriver-start": "node node_modules/protractor/bin/webdriver-manager update && node node_modules/protractor/bin/webdriver-manager start",
     "protractor": "node node_modules/protractor/bin/protractor test/protractor-conf.js --params.data_json=data/data_hesperides.json --suite all"

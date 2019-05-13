@@ -32,7 +32,24 @@
 
         // test data
         var model = {
-            "key_value_properties": [],
+            "key_value_properties": [
+                {
+                    "name":"buzz",
+                    "comment":"",
+                    "required":false,
+                    "defaultValue":"DEFAULT",
+                    "pattern":"",
+                    "password":false
+                },
+                {
+                    "name":"blah",
+                    "comment":null,
+                    "required":false,
+                    "defaultValue":"",
+                    "pattern":"",
+                    "password":false
+                }
+            ],
             "iterable_properties":[
                 {
                     "name":"iterable",
@@ -72,7 +89,16 @@
         };
 
         var properties = {
-            "key_value_properties": [],
+            "key_value_properties": [
+                {
+                    "name":"foo",
+                    "value":"bar"
+                },
+                {
+                    "name":"buzz",
+                    "value":""
+                }
+            ],
             "iterable_properties":[
                 {
                     "name":"iterable",
@@ -143,21 +169,31 @@
             // Create and merge properties
             var merged = (new Properties(properties)).mergeWithModel(new Properties(model));
 
-            _(merged.iterable_properties[0].iterable_valorisation_items).each(function (valuations){
+            // Validating simple properties
+            expect(merged.key_value_properties.length).toEqual(3);
+            expect(merged.key_value_properties[0]).toEqual(jasmine.objectContaining(
+                {name: 'foo', value: 'bar', filtrable_value: 'bar', inModel: false, required: false, defaultValue: '',        pattern: '', password: false}));
+            expect(merged.key_value_properties[1]).toEqual(jasmine.objectContaining(
+                {name: 'buzz', value: '',   filtrable_value: '',    inModel: true,  required: false, defaultValue: 'DEFAULT', pattern: '', password: false}));
+            expect(merged.key_value_properties[2]).toEqual(jasmine.objectContaining(
+                {name: 'blah', value: '',                  comment: null,           required: false, defaultValue: '',      pattern: '', password: false}));
 
-                // every item should have an _id field
-                expect ( _.isUndefined (valuations._id) ).toBeFalsy();
+            // Validating iterable properties
+            expect(merged.iterable_properties.length).toEqual(1);
+            _.each(merged.iterable_properties[0].iterable_valorisation_items, function (valuations){
+
+                // every item should have an .id field
+                expect ( valuations.id ).toBeDefined();
 
                 // values exists
-                var _values = valuations.values;
-                expect(_values).toBeDefined();
+                expect(valuations.values).toBeDefined();
 
                 // values cain't exceed the model fields count
-                expect(_values.length == model.iterable_properties[0].fields.length).toBeTruthy();
+                expect(valuations.values.length).toEqual(model.iterable_properties[0].fields.length);
 
                 // all properties should be in values
-                _(['val1', 'val2', 'val3']).each(function (val){
-                    expect(_.some(_values, {name: val})).toBe(true);
+                _.each(['val1', 'val2', 'val3'], function (val){
+                    expect(valuations.values).toContain(jasmine.objectContaining({name: val}));
                 });
             });
         });
@@ -172,11 +208,11 @@
             scope.addOne(property);
 
             // then
-            expect(beforeCount == scope.iterables[0].iterable_valorisation_items.length - 1).toBeTruthy();
+            expect(beforeCount).toEqual(scope.iterables[0].iterable_valorisation_items.length - 1);
 
             var bloc = scope.iterables[0].iterable_valorisation_items[beforeCount];
             // all properties should be in new bloc
-            _(['val1', 'val2', 'val3']).each(function (val){
+            _.each(['val1', 'val2', 'val3'], function (val){
                 expect(_.some(bloc.values, {name: val})).toBe(true);
             });
 

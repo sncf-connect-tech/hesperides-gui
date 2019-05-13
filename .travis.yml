@@ -17,8 +17,9 @@ stages:
 
 jobs:
   include:
+  - stage: lint
+    script: npm run lint
   - stage: test
-    env: KARMA TESTS
     before_script:
       - export DISPLAY=:99.0
       - sh -e /etc/init.d/xvfb start
@@ -30,8 +31,7 @@ jobs:
     script:
       - npm test
       #- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
-  - stage: docker
-    env: DEPLOY TO DOCKER HUB
+  - stage: deploy to docker hub
     script: .travis/docker_build_push.sh
 
 notifications:

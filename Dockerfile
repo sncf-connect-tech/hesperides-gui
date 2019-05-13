@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 RUN apk add git
 COPY package.json .
 COPY package-lock.json .
-COPY packager.js .
+COPY bundler.js .
 COPY src src
 # Using yarn instead of npm as long as we need http-server-legacy: https://github.com/indexzero/http-server/issues/518
 RUN yarn install

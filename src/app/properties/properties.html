@@ -95,7 +95,7 @@
         <div flex="25" layout-align="center top">
             <h3>
                 <md-switch id="properties_isProduction-switch" class="md-primary properties-production" aria-label="Production"
-                           ng-model="platform.production" ng-disabled="!isProductionUser()" ng-change="save_platform_from_box(mainBox)" id="isProduction">
+                           ng-model="platform.production" ng-disabled="!isProductionUser" ng-change="save_platform_from_box(mainBox)" id="isProduction">
                     {{ 'properties.platform.production.switch' | translate }}
                     <md-tooltip>{{ 'properties.platform.production.switch.tooltip' | translate }}</md-tooltip>
                 </md-switch>

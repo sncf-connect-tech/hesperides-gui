@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-var modelModule = angular.module('hesperides.model', ['hesperides.properties']);
+var modelModule = angular.module('hesperides.model', [ 'hesperides.properties' ]);
 
-modelModule.directive('hesperidesModel', function(){
+modelModule.directive('hesperidesModel', function () {
     return {
         restrict: 'E',
         templateUrl: 'model/model.html',
         scope: {
-            model: '='
-        }
-    }
+            model: '=',
+        },
+    };
 });

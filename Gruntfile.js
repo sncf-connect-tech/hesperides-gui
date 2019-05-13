@@ -1,4 +1,5 @@
-const packager = require('./packager');
+const serveStatic = require('serve-static'),
+      bundler = require('./bundler');
 
 module.exports = function (grunt) {
 
@@ -33,7 +34,7 @@ module.exports = function (grunt) {
                     'src/app/**/*.html',
                     'src/app/**/*.css',
                 ],
-                //tasks: ['packager-generate-app-bundles'],
+                //tasks: ['bundler-generate-app-bundles'],
                 options: {
                     livereload: true
                 }
@@ -64,10 +65,7 @@ module.exports = function (grunt) {
                         return [
                             // Include the proxy first
                             proxy,
-                            // Serve static files.
-                            connect.static(options.base[0]),
-                            // Make empty directories browsable.
-                            connect.directory(options.base[0])
+                            serveStatic(options.base[0]),
                         ];
                     }
                 }
@@ -82,7 +80,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    //grunt.registerTask('packager-generate-app-bundles', packager.generateAppBundles);
+    //grunt.registerTask('bundler-generate-app-bundles', bundler.generateAppBundles);
 
     /**
      * Registers the 'server' task.

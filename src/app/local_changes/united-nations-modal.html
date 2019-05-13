@@ -52,7 +52,6 @@
                                              md-item-text="item.prettify()"
                                              md-min-length="0"
                                              md-autoselect="true"
-                                             md-selected-item-change="sync_search_text(item, localChange.raw_comment)"
                                              placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
                                 <md-item-template>
                                     <span md-highlight-text="searchText">{{item.prettify()}}</span>
@@ -100,7 +99,6 @@
                              md-item-text="item.prettify()"
                              md-min-length="0"
                              md-autoselect="true"
-                             md-selected-item-change="sync_search_text(item, raw_comment)"
                              placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
                 <md-item-template>
                     <span md-highlight-text="searchText">{{item.prettify()}}</span>

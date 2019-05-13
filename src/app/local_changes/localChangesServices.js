@@ -18,199 +18,189 @@
 
 var localChangesModule = angular.module('hesperides.localChanges');
 
-localChangesModule.service('LocalChanges', ['LocalChangesDAO', 'LocalChangesUtils', function(LocalChangesDAO, LocalChangesUtils) {
+localChangesModule.service('LocalChanges', [
+    'LocalChangesDAO', 'LocalChangesUtils', function (LocalChangesDAO, LocalChangesUtils) {
+        var localChangesDAO = new LocalChangesDAO();
 
-    var localChangesDAO = new LocalChangesDAO();
+        return {
+            hasLocalChanges(application_name, platform, properties_path) {
+                return localChangesDAO.hasLocalChanges(application_name, platform, properties_path);
+            },
+            getLocalChanges(application_name, platform, properties_path) {
+                return localChangesDAO.getLocalChanges(LocalChangesUtils.buildFullPath(application_name, platform, properties_path));
+            },
+            addLocalChange(application_name, platform, properties_path, properties_name, properties_value) {
+                localChangesDAO.addLocalChange(application_name, platform, properties_path, properties_name, properties_value);
+            },
+            clearLocalChanges(opts) {
+                localChangesDAO.clearLocalChanges(opts);
+            },
+            smartClearLocalChanges(opts, properties) {
+                return localChangesDAO.smartClearLocalChanges(opts, properties.key_value_properties);
+            },
+            mergeWithLocalPropertiesImpl(local_properties, properties, merge) {
+                _.each(properties.key_value_properties, function (key_value) {
+                    if (merge && key_value.inLocal) {
+                        key_value.value = key_value.filtrable_value;
+                    }
+                    key_value.inLocal = false;
+                    key_value.syncWithRemote = false;
 
-    return {
-        hasLocalChanges : function (application_name, platform, properties_path) {
-            return localChangesDAO.hasLocalChanges(application_name, platform, properties_path);
-        },
-        getLocalChanges: function (application_name, platform, properties_path) {
-            return localChangesDAO.getLocalChanges(LocalChangesUtils.buildFullPath(application_name, platform, properties_path));
-        },
-        addLocalChange: function (application_name, platform, properties_path, properties_name, properties_value) {
-            localChangesDAO.addLocalChange(application_name, platform, properties_path, properties_name, properties_value);
-        },
-        hasLocalChanges: function (application_name, platform, properties_path) {
-            return localChangesDAO.hasLocalChanges(application_name, platform, properties_path);
-        },
-        clearLocalChanges: function (opts) {
-            localChangesDAO.clearLocalChanges(opts);
-        },
-        smartClearLocalChanges: function (opts, properties) {
-            return localChangesDAO.smartClearLocalChanges(opts, properties.key_value_properties);
-        },
-        mergeWithLocalPropertiesImpl(local_properties, properties, merge) {
-            _.each(properties.key_value_properties, function (key_value) {
-                if (merge && key_value.inLocal) {
-                    key_value.value = key_value.filtrable_value;
+                    var existing_local_property = _.find(local_properties, { properties_name: key_value.name });
+                    if (!_.isUndefined(existing_local_property)) {
+                        key_value.inLocal = true;
+                        if (key_value.filtrable_value === existing_local_property.properties_value) {
+                            key_value.syncWithRemote = true;
+                        }
+                        if (merge) {
+                            key_value.value = existing_local_property.properties_value;
+                        }
+                    }
+                });
+                return properties;
+            },
+            mergeWithLocalProperties(application_name, platform, properties_path, properties) {
+                return this.mergeWithLocalPropertiesImpl(this.getLocalChanges(application_name, platform, properties_path), properties, true);
+            },
+            tagWithLocalProperties(application_name, platform, properties_path, properties) {
+                return this.mergeWithLocalPropertiesImpl(this.getLocalChanges(application_name, platform, properties_path), properties, false);
+            },
+            hasSyncedChanges(properties) {
+                if (!properties || !properties.key_value_properties) {
+                    return false;
                 }
-                key_value.inLocal = false;
-                key_value.syncWithRemote = false;
-
-
-                var existing_local_property = _.find(local_properties, function (kvp) {
-                    return key_value.name === kvp.properties_name;
-                });
-                if (!_.isUndefined(existing_local_property)) {
-                    key_value.inLocal = true;
-                    if (key_value.filtrable_value == existing_local_property.properties_value) {
-                        key_value.syncWithRemote = true;
-                    }
-                    if (merge) {
-                        key_value.value = existing_local_property.properties_value;
-                    }
+                return _.filter(properties.key_value_properties, { 'syncWithRemote': true }).length > 0;
+            },
+            areFullySynced(application_name, platform, properties_path, properties) {
+                if (!properties || !properties.key_value_properties) {
+                    return false;
                 }
+                return this.getLocalChanges(application_name, platform, properties_path).length > 0 && this.getLocalChanges(application_name, platform, properties_path).length - _.filter(properties.key_value_properties, { 'syncWithRemote': true }).length === 0;
+            },
+            platformLocalChanges(platform) {
+                var properties_paths = platform ? _.map(platform.modules, function (module) {
+                    return LocalChangesUtils.buildFullPath(platform.application_name, platform.name, module.properties_path);
+                }) : [];
+                return _.filter(properties_paths, function (properties_path) {
+                    return localChangesDAO.getLocalChanges(properties_path).length > 0;
+                });
+            },
+            platformLocalChangesCount(platform) {
+                var count = 0;
+                _.forEach(this.platformLocalChanges(platform), function (localChange) {
+                    count += localChangesDAO.getLocalChanges(localChange).length;
+                });
+                return count;
+            },
+        };
+    },
+]);
+
+localChangesModule.service('LocalChangesUtils', [
+    function () {
+        return {
+            buildFullPath(application_name, platform, properties_path) {
+                return `[${ application_name }-${ platform }]${ properties_path }`;
+            },
+            extractPropertiesPath(full_path) {
+                return full_path.split(']')[1];
+            },
+            extractApplicationName(full_path) {
+                return full_path.split('-')[0].replace('[', '');
+            },
+            extractPlatformName(full_path) {
+                return full_path.split(']')[0].split('-')[1];
+            },
+        };
+    },
+]);
+
+localChangesModule.service('LocalChangesDAO', [
+    'LocalChange', 'LocalChangesUtils', 'globalConfig',
+    function (LocalChange, LocalChangesUtils, globalConfig) {
+        var local_storage_key = 'local_changes';
+        var local_changes = {};
+
+        function getCurrentVersionID() {
+            return store.get('current_platform_versionID');
+        }
+
+        function save() {
+            store.set(local_storage_key, local_changes);
+        }
+
+        function localChangesCleanup() {
+            local_changes = store.get(local_storage_key) || {};
+            Object.keys(local_changes).forEach((key) => {
+                _.remove(local_changes[key], (elem) => getCurrentVersionID() - elem.version_id > globalConfig.localChangesTTL);
             });
-            return properties;
-        },
-        mergeWithLocalProperties: function (application_name, platform, properties_path, properties) {
-            return this.mergeWithLocalPropertiesImpl(this.getLocalChanges(application_name, platform, properties_path), properties, true);
-        },
-        tagWithLocalProperties: function (application_name, platform, properties_path, properties) {
-            return this.mergeWithLocalPropertiesImpl(this.getLocalChanges(application_name, platform, properties_path), properties, false);
-        },
-        hasSyncedChanges: function (properties) {
-            if (properties == undefined || properties.key_value_properties == undefined)
-                return false;
-            return _.filter(properties.key_value_properties, {'syncWithRemote': true}).length > 0;
-        },
-        areFullySynced: function (application_name, platform, properties_path, properties) {
-            if (properties == undefined || properties.key_value_properties == undefined)
-                return false;
-            return this.getLocalChanges(application_name, platform, properties_path).length > 0 && this.getLocalChanges(application_name, platform, properties_path).length - _.filter(properties.key_value_properties, {'syncWithRemote': true}).length == 0;
-        },
-        platformLocalChanges : function (platform) {
-            var properties_paths = platform ? _.map(platform.modules, function (module) { return LocalChangesUtils.buildFullPath(platform.application_name, platform.name, module.properties_path); }) : [];
-            return _.filter(properties_paths, function (properties_path) { return localChangesDAO.getLocalChanges(properties_path).length > 0; });
-        },
-        platformLocalChangesCount : function (platform) {
-            var count = 0;
-            _.forEach(this.platformLocalChanges(platform), function (localChange) {
-                count = count + localChangesDAO.getLocalChanges(localChange).length;
-            });
-            return count;
-        }
-    }
-}]);
-
-localChangesModule.service('LocalChangesUtils', [function() {
-
-    return {
-        buildFullPath: function (application_name, platform, properties_path) {
-            return '[' + application_name + '-' + platform + ']' + properties_path;
-        },
-        extractPropertiesPath: function (full_path) {
-            return full_path.split(']')[1];
-        },
-        extractApplicationName: function (full_path) {
-            return full_path.split('-')[0].replace('[', '');
-        },
-        extractPlatformName: function (full_path) {
-            return full_path.split(']')[0].split('-')[1];
-        }
-    };
-}]);
-
-localChangesModule.service('LocalChangesDAO', ['LocalChange', 'LocalChangesUtils', function(LocalChange, LocalChangesUtils) {
-
-    var local_storage_key = 'local_changes';
-    var local_changes;
-
-    function LocalChangesDAO() {
-        get();
-    };
-
-    function get() {
-        local_changes = store.get(local_storage_key);
-        if (local_changes == undefined) {
-            local_changes = {};
-        }
-
-        var has_removed = false;
-        for (var key in local_changes) {
-            if (local_changes.hasOwnProperty(key)) {
-                _.remove(local_changes[key], function (elem) {
-                    if (!has_removed && (getCurrentVersionID() - elem.version_id > hesperidesConfiguration.localChangesTTL)) {
-                        has_removed = true;
-                    }
-
-                    return (getCurrentVersionID() - elem.version_id > hesperidesConfiguration.localChangesTTL);
-                });
-
-            }
-        }
-        save();
-    };
-
-    function save() {
-        store.set(local_storage_key, local_changes);
-    }
-
-    function getCurrentVersionID() {
-        return store.get('current_platform_versionID');
-    }
-
-    LocalChangesDAO.prototype = {
-        getLocalChanges: function (full_path) {
-            get();
-            if (local_changes[full_path] && local_changes[full_path].length) {
-                return local_changes[full_path].map(function (elem) {
-                    return new LocalChange(elem);
-                });
-            }
-            return [];
-        },
-        localChangeExist: function (full_path, properties_name) {
-            return _.filter(this.getLocalChanges(full_path), function (c) { return c.properties_name == properties_name }).length > 0 ? true : false;
-        },
-        addLocalChange: function (application_name, platform, properties_path, properties_name, properties_value) {
-            var full_path = LocalChangesUtils.buildFullPath(application_name, platform, properties_path);
-            var local_changes_buffer = this.getLocalChanges(full_path);
-
-            if (this.localChangeExist(full_path, properties_name) == false) {
-                local_changes_buffer.push(new LocalChange({
-                    "properties_name"  : properties_name,
-                    "properties_value" : properties_value,
-                    "version_id" : getCurrentVersionID()
-                }));
-            } else {
-                _.map(local_changes_buffer, function (elem) {
-                    if (elem.properties_name == properties_name && elem.properties_value != properties_value) {
-                        elem.properties_value = properties_value;
-                        elem.version_id = getCurrentVersionID();
-                    }
-                });
-            }
-
-            local_changes[full_path] = local_changes_buffer;
             save();
-        },
-        hasLocalChanges: function (application_name, platform, properties_path) {
-            return this.getLocalChanges(LocalChangesUtils.buildFullPath(application_name, platform, properties_path)).length > 0 ? true : false;
-        },
-        clearLocalChanges: function (opts) {
-            if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
-                local_changes[LocalChangesUtils.buildFullPath(opts['application_name'], opts['platform'], opts['properties_path'])] = [];
-            } else {
-                local_changes = {};
-            }
-            save();
-        },
-        smartClearLocalChanges: function (opts, properties) {
-            if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
-                get();
-                var full_path = LocalChangesUtils.buildFullPath(opts['application_name'], opts['platform'], opts['properties_path']);
-                var length = local_changes[full_path].length;
-                local_changes[full_path] = _.filter(local_changes[full_path], function (elem) {
-                    return !_.some(properties, {"name": elem.properties_name, "filtrable_value": elem.properties_value});
-                });
+        }
+
+        function LocalChangesDAO() {
+            localChangesCleanup();
+        }
+
+        LocalChangesDAO.prototype = {
+            getLocalChanges(full_path) {
+                localChangesCleanup();
+                if (local_changes[full_path] && local_changes[full_path].length) {
+                    return local_changes[full_path].map(function (elem) {
+                        return new LocalChange(elem);
+                    });
+                }
+                return [];
+            },
+            localChangeExist(full_path, properties_name) {
+                return _.filter(this.getLocalChanges(full_path), function (localChange) {
+                    return localChange.properties_name === properties_name;
+                }).length > 0;
+            },
+            addLocalChange(application_name, platform, properties_path, properties_name, properties_value) {
+                var full_path = LocalChangesUtils.buildFullPath(application_name, platform, properties_path);
+                var local_changes_buffer = this.getLocalChanges(full_path);
+                if (this.localChangeExist(full_path, properties_name)) {
+                    _.map(local_changes_buffer, function (elem) {
+                        if (elem.properties_name === properties_name && elem.properties_value !== properties_value) {
+                            elem.properties_value = properties_value;
+                            elem.version_id = getCurrentVersionID();
+                        }
+                    });
+                } else {
+                    local_changes_buffer.push(new LocalChange({
+                        properties_name,
+                        properties_value,
+                        'version_id': getCurrentVersionID(),
+                    }));
+                }
+                local_changes[full_path] = local_changes_buffer;
                 save();
-                return !length == local_changes[full_path].length;
-            }
-            return false;
-        }
-    };
-    return LocalChangesDAO;
-}]);
+            },
+            hasLocalChanges(application_name, platform, properties_path) {
+                return this.getLocalChanges(LocalChangesUtils.buildFullPath(application_name, platform, properties_path)).length > 0;
+            },
+            clearLocalChanges(opts) {
+                if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
+                    local_changes[LocalChangesUtils.buildFullPath(opts.application_name, opts.platform, opts.properties_path)] = [];
+                } else {
+                    local_changes = {};
+                }
+                save();
+            },
+            smartClearLocalChanges(opts, properties) {
+                if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
+                    localChangesCleanup();
+                    var full_path = LocalChangesUtils.buildFullPath(opts.application_name, opts.platform, opts.properties_path);
+                    var length = local_changes[full_path].length;
+                    local_changes[full_path] = _.filter(local_changes[full_path], function (elem) {
+                        return !_.some(properties, { 'name': elem.properties_name, 'filtrable_value': elem.properties_value });
+                    });
+                    save();
+                    return length !== local_changes[full_path].length;
+                }
+                return false;
+            },
+        };
+        return LocalChangesDAO;
+    },
+]);

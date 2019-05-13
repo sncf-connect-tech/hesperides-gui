@@ -14,12 +14,8 @@ It lets you easily generate content from a template file (using mustache) in a g
 
 Go to <https://github.com/voyages-sncf-technologies/hesperides> to handle hesperides backend.
 
-Note : it has a custom date picker whose code is in a separate repo : [hesperides-datetime-picker](https://github.com/stidiovip/hesperides-datetime-picker)
-
 Build:
 =====
-
-Requirements : npm
 
 ```shell
 $ npm install
@@ -28,17 +24,11 @@ $ npm install
 Run:
 =====
 
-Install grunt-cli :
-```shell
-$ npm install grunt-cli -g
-```
-
-Run the server :
 ```shell
 $ npm start
 ```
 
-It should launch a server available at http://localhost:80 using back on http://localhost:8080
+It should launch a server available at http://localhost:80 using a backend on http://localhost:8080
 
 Tests:
 =====

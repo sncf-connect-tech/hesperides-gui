@@ -23,8 +23,7 @@
     - mergeWithModel function
     - IterablePropertiesContainer directive
  */
-var getIdentifier = function (){
-
+var getIdentifier = function () {
     /**
      * Private function for getting
      * a random number between a min and a max
@@ -32,13 +31,13 @@ var getIdentifier = function (){
      * This is used for calculating the unique identifier
      */
     var getRandomInt = function (min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min)) + min;
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
     };
 
     // Calculate the unique identifier
-    return (new Date()).getTime() + getRandomInt (100, 100000);
+    return (new Date()).getTime() + getRandomInt(100, 100000);
 };
 
 
@@ -51,40 +50,35 @@ var getIdentifier = function (){
  * @param {Object} property : the property the value should be added to
  * @param {Object} model : the model of the property
  */
-var addFromModel = function (property, model){
-
+var addFromModel = function (property, model) {
     var value = {
-        _id: getIdentifier(),
-        title: "",
-        values: []
+        id: getIdentifier(),
+        title: '',
+        values: [],
     };
 
-    _(model.fields).each(function(field){
-
-        if ( _.isUndefined (field.fields) ){
+    _.each(model.fields, function (field) {
+        if (_.isUndefined(field.fields)) {
             value.values.push({
                 name: field.name,
-                value: (field.required) ? undefined : "",
+                value: (field.required) ? null : '',
                 inModel: true,
-                comment: (field.comment) ? field.comment : "",
+                comment: (field.comment) ? field.comment : '',
                 password: (field.password) ? field.password : false,
-                defaultValue: (field.defaultValue) ? field.defaultValue : "",
+                defaultValue: (field.defaultValue) ? field.defaultValue : '',
                 required: (field.required) ? field.required : false,
-                pattern: (field.pattern) ? field.pattern : ""
+                pattern: (field.pattern) ? field.pattern : '',
             });
-        }else {
-
+        } else {
             // we add and then search just to make the object tracked by the browser.
             // No other way to do this yet ;)
             value.values.push({
                 name: field.name,
                 iterable_valorisation_items: [],
-                inModel: true
+                inModel: true,
             });
 
-            var subProperty = value.values[value.values.length - 1];
-
-            addFromModel (subProperty, field);
+            addFromModel(_.last(value.values), field);
         }
     });
 
@@ -94,1279 +88,1241 @@ var addFromModel = function (property, model){
 /**
  * Hesperides properties module
  */
-var propertiesModule = angular.module('hesperides.properties', ['hesperides.modals', 'hesperides.localChanges', 'cgNotify']);
+var propertiesModule = angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.localChanges', 'cgNotify' ]);
 
-propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'ApplicationService', '$translate',
-    function ($scope, $mdDialog, ApplicationService, $translate) {
-
-    $scope.$change = function (modal_data) {
+propertiesModule.controller('PlatformVersionModule', [
+    '$scope', '$mdDialog',
+    function ($scope, $mdDialog) {
+        $scope.$change = function (modal_data) {
         // sinon, on ne met à jour que la version de l'application
-        $scope.platform.application_version = modal_data.new_version;
+            $scope.platform.application_version = modal_data.new_version;
 
-        // sauvegarde de la plateforme
-        $scope.save_platform_from_box($scope.mainBox)
-            .then(function () {
-                $scope.properties = undefined;
-                $scope.instance = undefined;
-            });
-
-        $mdDialog.cancel();
-    };
-
-    $scope.setItem = function(name, value) {
-        $scope[name] = value;
-    }
-}]);
-
-
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q', '$rootScope', 'notify',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate, $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q, $rootScope, notify) {
-
-    $scope.platform = $routeParams.platform;
-    $scope.platforms = [];
-
-    $scope.fileEntries = [];
-
-    $scope.isPlatformOpen = 1;
-
-    $scope.isInstanceOpen = 0;
-
-    $scope.$closeDialog = function() {
-        $mdDialog.cancel();
-    };
-
-    $scope.contain_empty_module_status = {};
-
-    $scope.cached_empty_module = [];
-
-    $scope.test_obj = {"name": "demoKatana-war", "version": "1.1.2", "working_copy": false, "status": "toDO"};
-
-    $scope.quickOpen = false;
-
-    $scope.mainBox = null;
-
-    $scope.new_instance_name = undefined;
-
-    // The new global property info
-    $scope.new_kv_name = '';
-    $scope.new_kv_value = '';
-
-    /**
-     * An ugly copy for properties
-     */
-    $scope.oldProperties = undefined;
-
-    /**
-     * An ugly copy of global properties
-     */
-    $scope.oldGolbalProperties = undefined;
-
-    var Box = function (data) {
-        return angular.extend(this, {
-            parent_box: null,
-            name: "",
-            children: {},
-            modules: [],
-            opened: false,
-            isEmpty: function () {
-                return _.keys(this.children).length === 0 && this.modules.length === 0;
-            },
-            get_path: function () {
-                return (this.parent_box == null ? "" : (this.parent_box.get_path() + "#")) + this.name;
-            },
-            to_modules: function () {
-                var me = this;
-                _.forEach(this.modules, function (module) {
-                    module.path = me.get_path();
+            // sauvegarde de la plateforme
+            $scope.save_platform_from_box($scope.mainBox)
+                .then(function () {
+                    $scope.properties = null;
+                    $scope.instance = null;
                 });
-                return this.modules.concat(
-                    _.flatten(_.map(this.children, function (box) {
-                        return box.to_modules();
-                    }))
-                );
-            }
-        }, data);
-    };
 
-    $scope.is_module_has_model = function (module) {
-        return _.some($scope.cached_empty_module, {
-            "name": module.name,
-            "version": module.version,
-            "working_copy": module.working_copy,
-            "has_model": true
-        });
-    };
-
-    $scope.empty_module_status = function () {
-        var return_value = false;
-
-        Object.keys($scope.contain_empty_module_status).forEach(function (key) {
-            if ($scope.contain_empty_module_status[key]) {
-                return_value = true;
-            }
-        });
-        return return_value;
-    };
-
-    $scope.contain_empty_module = function (box) {
-
-        var return_value = "";
-
-        if (box) {
-
-            function check_modules_models(modules) {
-                _.forEach(modules, function (module) {
-                    var ref = {"name": module.name, "version": module.version, "working_copy": module.working_copy};
-
-                    if (!_.some($scope.cached_empty_module, ref)) {
-                        $scope.cached_empty_module.push(ref);
-                        var elem = _.find($scope.cached_empty_module, ref);
-
-                        ModuleService.search(module.name + " " + module.version + " " + module.working_copy).then(function (response) {
-                            if (elem && response)
-                                elem.has_model = true;
-                            else if (elem)
-                                elem.has_model = false;
-                        });
-                    }
-                })
-            }
-
-            check_modules_models(box.modules);
-
-            _.forEach(box.children, function (child) {
-                check_modules_models(child.modules)
-            });
-
-            _.forEach(box.modules, function (module) {
-                if (_.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": false}))
-                    return_value =  "contain_empty_module";
-            });
-
-            _.forEach(box.children, function (child) {
-                _.forEach(child.modules, function (module) {
-                    if (_.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": false}))
-                        return_value =  "contain_empty_module";
-                });
-            });
-
-        }
-
-        $scope.contain_empty_module_status[box ? box.name : "empty_key"] = return_value.length ? true : false;
-
-        return return_value;
-    };
-
-    $scope.update_main_box = function (platform) {
-
-        //Try to build the view depending on the different paths of the modules
-        var mainBox = new Box({parent_box: null});
-
-        var oldMainBox = $scope.mainBox;
-
-        var search_old_box = function(oldBoxes, box) {
-            var currentBox = box;
-
-            if (oldBoxes) {
-                var path = [];
-
-                // Recreate path
-                while (currentBox.parent_box) {
-                    path.push(currentBox.name);
-                    currentBox = currentBox.parent_box;
-                }
-
-                // Search box in path
-                var currentName;
-                currentBox = oldBoxes;
-
-                while (path.length && currentBox) {
-                    currentName = path.pop();
-                    currentBox = currentBox["children"][currentName];
-                }
-            }
-            return currentBox;
-        };
-
-        var update_modules = function(module, oldModules) {
-            var currentModule;
-
-            currentModule = _.filter(oldModules, { name: module.name });
-
-            if (currentModule.length > 0) {
-                module.opened = currentModule[0].opened;
-            }
-        }
-
-        var add_to_box = function (box, folders, level, module) {
-            if (level > folders.length) {
-                throw "Should have nether been here, wrong use of add_to_box recursive function";
-            }
-
-            var oldBox;
-
-            if (level === folders.length) {
-                //Found terminal level
-                box.modules.push(module);
-
-                oldBox = search_old_box(oldMainBox, box);
-
-                if (oldBox && oldBox.modules && oldBox.modules.length > 0) {
-                    update_modules(module, oldBox.modules);
-                }
-            } else {
-                var name = folders[level];
-
-                if (_.isUndefined(box["children"][name])) {
-                    var newBox = new Box({parent_box: box, name: name});
-                    box["children"][name] = newBox;
-
-                    oldBox = search_old_box(oldMainBox, newBox);
-
-                    if (oldBox) {
-                        newBox.opened = oldBox.opened;
-                    }
-                }
-
-                return add_to_box(box["children"][name], folders, level + 1, module);
-            }
-        };
-
-        _.each(platform.modules, function (module) {
-            var path = module.path;
-            if (path.charAt(0) === '#') { //Remove possible preceding #
-                path = path.substring(1, path.length);
-            }
-            var folders = path.split('#');
-            add_to_box(mainBox, folders, 0, module);
-        });
-       $scope.mainBox = mainBox;
-    };
-
-    $scope.add_box = function (name, box) {
-        box["children"][name] = new Box({parent_box: box, name: name});
-        return box["children"][name];
-    };
-
-    $scope.remove_box = function (name, box) {
-        delete box.parent_box["children"][name];
-    };
-
-    $scope.update_box_name = function (box, old_name, new_name) {
-        if (old_name !== new_name) {
-            box.name = new_name;
-            box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
-            delete box.parent_box["children"][old_name];
-            $scope.save_platform_from_box($scope.mainBox, true);
-        }
-    };
-
-    $scope.open_add_box_dialog = function (box) {
-        var modalScope = $scope.$new();
-
-        modalScope.$add = function(name) {
-            $scope.add_box(name, box);
             $mdDialog.cancel();
         };
 
-        $mdDialog.show({
-            templateUrl: 'application/add_box.html',
-            clickOutsideToClose:true,
-            scope: modalScope
-        });
-    };
+        $scope.setItem = function (name, value) {
+            $scope[name] = value;
+        };
+    },
+]);
 
-    /**
-     * This function will determine if the authenticated user
-     * is a production user or not.
-     * See hesperides.js for more details about : hesperidesUser
-     */
-     $scope.isProductionUser = function (){
-        return !_.isUndefined(hesperidesUser) ? hesperidesUser.isProdUser : false;
-     };
 
-    $scope.open_add_instance_dialog = function (module) {
-        var modalScope = $scope.$new();
+propertiesModule.controller('PropertiesCtrl', [
+    '$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout',
+    'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate',
+    '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q', '$rootScope', 'notify', 'session',
+    // A refactorer...
+    // eslint-disable-next-line max-statements
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout,
+        ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate,
+        $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q, $rootScope, notify, session) {
+        $scope.platform = $routeParams.platform;
+        $scope.platforms = [];
 
-        modalScope.$add = function(name) {
-            $scope.add_instance(name, module);
+        $scope.fileEntries = [];
+
+        $scope.isPlatformOpen = 1;
+
+        $scope.isInstanceOpen = 0;
+
+        $scope.$closeDialog = function () {
             $mdDialog.cancel();
         };
 
-        $mdDialog.show({
-            templateUrl: 'application/add_instance.html',
-            clickOutsideToClose:true,
-            scope: modalScope
-        });
-    };
+        $scope.contain_empty_module_status = {};
 
-    /**
-     * Met à jour la version de la plateforme.
-     *
-     * @param platform plateforme courante
-     */
-    $scope.change_platform_version = function (platform) {
-        var modalScope = $scope.$new();
-        modalScope.platform = platform;
-        modalScope.onLoading = true;
+        $scope.cached_empty_module = [];
 
-        modalScope.isValid = function (){
-            return !_.isUndefined(modalScope.newVersion) && !_.isEmpty(modalScope.newVersion);
-        }
+        $scope.test_obj = { 'name': 'demoKatana-war', 'version': '1.1.2', 'working_copy': false, 'status': 'toDO' };
 
-        $mdDialog.show({
-            templateUrl: 'application/change_platform_version.html',
-            controller: 'PlatformVersionModule',
-            clickOutsideToClose:true,
-            scope:modalScope,
-            onComplete: function() {
-                // Use to prevent display list of version at wrong position
-                modalScope.onLoading = false;
-            }
-        });
-    };
+        $scope.quickOpen = false;
 
-    $scope.search_module = function (box) {
-        var modalScope = $scope.$new();
+        $scope.mainBox = null;
 
-        modalScope.$add = function(module) {
-            $scope.add_module(module.name, module.version, module.is_working_copy, box);
-            $mdDialog.cancel();
-        };
+        $scope.new_instance_name = null;
 
-        $mdDialog.show({
-            templateUrl: 'application/search_module.html',
-            clickOutsideToClose:true,
-            scope: modalScope
-        });
-    };
-
-    $scope.change_module = function (module) {
-
-        var modalScope = $scope.$new();
-        modalScope.module = module;
-        modalScope.copyProperties = store.get('copy_properties') || false;
-        modalScope.searchText = module.name + ' ';
-
-        modalScope.$update = function (modal_data) {
-            var new_module = modal_data.new_module;
-            module.name = new_module.name;
-            module.version = new_module.version;
-            module.is_working_copy = new_module.is_working_copy;
-            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function () {
-                $scope.properties = undefined;
-                $scope.instance = undefined;
-                $mdDialog.cancel();
-            });
-        };
-
-        $mdDialog.show({
-            templateUrl: 'application/change_module_version.html',
-            clickOutsideToClose:true,
-            scope: modalScope
-        });
-
-    };
-
-    $scope.diff_properties = function (compare_module) {
-        // Need to be in global scope !
-        $scope.compare_module = compare_module;
-
-        var modalScope = $scope.$new();
-
-        // From platform info
-        modalScope.from = {
-           application: $scope.platform.application_name,
-           platform: $scope.platform.name,
-           date: undefined,
-           lookPast: false
-        }
-
-        // Get the list of platforms for an app
-        modalScope.get_target_platforms = function (application_name){
-           if ( !_.isUndefined(application_name)){
-               ApplicationService.get(application_name, true).then(function (application){
-                   modalScope.target_platforms = application.platforms;
-               }, function (){
-                   modalScope.target_platforms = [];
-               });
-           }else {
-               modalScope.target_platforms = [];
-           }
-        }
-
-        modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
-
-        modalScope.$diff = function() {
-            $mdDialog.hide();
-        }
-
-        modalScope.updatePlatformField = function(itemName) {
-             modalScope.from.platform = itemName;
-        };
-
-        modalScope.backgroundColor = function(item) {
-            //if(!$scope.$$phase) {
-                return PlatformColorService.calculateColor(item.name);
-            //}
-        };
-
-        modalScope.from.lookPast = false;
-        modalScope.switched = function (){
-            if ( !modalScope.from.lookPast){
-                $timeout(function (){
-                    var el = angular.element(document.querySelector("#look-past-date-time"));
-                    el.focus();
-                }, 200)
-            }
-        };
-
-        modalScope.isDiffAllowed = function () {
-            var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
-            return (!modalScope.from.lookPast || modalScope.from.dateValid)
-                && modalScope.target_platforms && modalScope.target_platforms.length >= 1
-                && selectedPlatformInList;
-        }
-
-        $mdDialog.show({
-            templateUrl: 'application/properties_diff_wizard.html',
-            clickOutsideToClose:true,
-            scope: modalScope
-        }).then(() => $scope.open_diff_page() );
-    };
-
-    $scope.open_diff_page = function () {
-        //Everything is set in the scope by the modal when calling this
-        //Not very safe but easier to manage with all scopes generated
-        var urlParams = {
-            application: $scope.platform.application_name,
-            platform: $scope.platform.name,
-            properties_path: $scope.compare_module.properties_path,
-            compare_application: $scope.compare_platform.application_name,
-            compare_platform: $scope.compare_platform.name,
-            compare_path: $scope.compare_platform.chosen_module.properties_path
-        };
-        if (!_.isUndefined($scope.compare_platform.timestamp)) {
-            urlParams.timestamp = $scope.compare_platform.timestamp;
-        }
-
-        $window.open('/#/diff?' + $.param(urlParams), '_blank');
-    };
-
-    $scope.diff_global_properties = function () {
-
-        var modalScope = $scope.$new();
-
-        // From platform info
-        modalScope.from = {
-            application: $scope.platform.application_name,
-            platform: $scope.platform.name,
-            date: undefined,
-            lookPast: false
-        }
-
-        // Get the list of platforms for an app
-        modalScope.get_target_platforms = function (application_name){
-            if ( !_.isUndefined(application_name)){
-                ApplicationService.get(application_name).then(function (application){
-                    modalScope.target_platforms = application.platforms;
-                }, function (){
-                    modalScope.target_platforms = [];
-                });
-            }else {
-                modalScope.target_platforms = [];
-            }
-        }
-
-        modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
-
-        modalScope.updatePlatformField = function(itemName) {
-             modalScope.from.platform = itemName;
-        };
-
-        modalScope.backgroundColor = function(item) {
-            return PlatformColorService.calculateColor(item.name);
-        };
-
-        modalScope.$diff = function(from) {
-            $mdDialog.cancel();
-            $scope.open_global_diff_page(from);
-        };
-
-        modalScope.from.lookPast = false;
-        modalScope.switched = function (){
-            if ( !modalScope.from.lookPast){
-                $timeout(function (){
-                    var el = angular.element(document.querySelector("#look-past-date-time"));
-                    el.focus();
-                }, 200)
-            }
-        };
-
-        modalScope.isDiffAllowed = function () {
-            var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
-            return (!modalScope.from.lookPast || modalScope.from.dateValid)
-                && modalScope.target_platforms && modalScope.target_platforms.length >= 1
-                && selectedPlatformInList;
-        }
-
-        $mdDialog.show({
-            templateUrl: 'application/global_properties_diff_wizard.html',
-            clickOutsideToClose:true,
-            scope: modalScope
-        });
-    };
-
-    $scope.open_global_diff_page = function (from) {
-        //Everything is set in the scope by the modal when calling this
-        //Not very safe but easier to manage with all scopes generated
-        var urlParams = {
-            application: $scope.platform.application_name,
-            platform: $scope.platform.name,
-            properties_path: '#',
-            compare_application: from.application,
-            compare_platform: from.platform,
-            compare_path: '#'
-        };
-
-        if (!_.isUndefined(from.date)) {
-            urlParams.timestamp = +moment(from.date, "YYYY-MM-DD HH:mm:ss Z");
-        }
-
-        $window.open('/#/diff?' + $.param(urlParams), '_blank');
-    };
-
-    $scope.quickDisplayInstance = function () {
-        $scope.$broadcast((!$scope.quickOpen ? 'quickDisplayInstanceDetails' : 'quickHideInstanceDetails'), {})
-        $scope.quickOpen = !$scope.quickOpen;
-    };
-
-    $scope.find_modules_by_name = function (name) {
-        return ModuleService.with_name_like(name);
-    };
-
-    $scope.add_module = function (name, version, is_working_copy, box) {
-        if (!_.some(box.modules, {'name': name, 'version': version, 'is_working_copy': is_working_copy})) {
-            box.modules.push(new Module(
-                {
-                    name: name,
-                    version: version,
-                    is_working_copy: is_working_copy,
-                    deployment_group: "",
-                    path: box.get_path()
-                }
-            ));
-
-            $scope.save_platform_from_box($scope.mainBox).then(function (response) {
-                $scope.properties = undefined;
-                $scope.instance = undefined;
-            });
-        }
-    };
-
-    $scope.add_instance = function (name, module) {
-        module.create_new_instance(name);
-        $scope.save_platform_from_box($scope.mainBox);
-    };
-
-    /**
-     * This is used to preview an instance data.
-     */
-    $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
-        simulate = simulate || false;
-
-        var modalScope = $scope.$new();
-
-        modalScope.codeMirrorOptions = {
-            'readOnly' : true,
-            'autoRefresh' : true
-        };
-
-        instance = instance == undefined ? {"name": "default"} : instance;
-        modalScope.instance = instance;
-        modalScope.isOpen = undefined;
-
-        FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy, simulate).then(function (entries){
-            modalScope.fileEntries = entries;
-
-            var modal = $mdDialog.show({
-                templateUrl: 'file/file-modal.html',
-                clickOutsideToClose:true,
-                scope: modalScope
-            });
-        });
-
-        // Download all the files
-        modalScope.download_all_instance_files = function (){
-            FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
-        };
-
-        // Manager accordion open/close
-        modalScope.open = function (index){
-            if ( index === modalScope.isOpen){
-                modalScope.isOpen = undefined;
-            }else{
-                modalScope.isOpen = index;
-            }
-        };
-    };
-
-    /**
-     * This used to show the event lists.
-     * Added by Tidiane SIDIBE on 08/03/2016
-     */
-    $scope.show_events = function (param1, param2, action) {
-        var modalScope = $scope.$new(true);
-        // used for events filtering
-        modalScope.filtering = {};
-
-        var page = 1; // the starting page is 1.
-        var events = [];
-
-        // used for events diff
-        modalScope.selectedEvents = [];
-
-        // Creating the stream name
-        var stream = undefined;
-        if ( action === 'platform'){
-            stream = action + '-' + param1.name + '-' + param2.name;
-            modalScope.title = param1.name + '-' + param2.name;
-        }else {
-            stream = action + '-' + param2.name + '-' + param2.version + '-';
-            if (param2.is_working_copy){
-                stream = stream + 'wc';
-            }else{
-                stream = stream + 'release';
-            }
-
-            modalScope.title =  param2.name + '-' + param2.version;
-        }
+        // The new global property info
+        $scope.new_kv_name = '';
+        $scope.new_kv_value = '';
 
         /**
-         * Private function to preload next events
+         * An ugly copy for properties
          */
-        var preloadNextEvents = function (){
-            var _events = [];
-            EventService.get(stream, page).then(function (nextEntries){
-                events = nextEntries;
-                page ++;
+        $scope.oldProperties = null;
+
+        /**
+         * An ugly copy of global properties
+         */
+        $scope.oldGolbalProperties = null;
+
+        var Box = function (data) {
+            return angular.extend(this, {
+                parent_box: null,
+                name: '',
+                children: {},
+                modules: [],
+                opened: false,
+                isEmpty() {
+                    return _.keys(this.children).length === 0 && this.modules.length === 0;
+                },
+                get_path() {
+                    return (this.parent_box ? `${ this.parent_box.get_path() }#` : '') + this.name;
+                },
+                to_modules() {
+                    var me = this;
+                    _.forEach(this.modules, function (module) {
+                        module.path = me.get_path();
+                    });
+                    return this.modules.concat(
+                        _.flatten(_.map(this.children, function (box) {
+                            return box.to_modules();
+                        }))
+                    );
+                },
+            }, data);
+        };
+
+        $scope.is_module_has_model = function (module) {
+            return _.some($scope.cached_empty_module, {
+                'name': module.name,
+                'version': module.version,
+                'working_copy': module.working_copy,
+                'has_model': true,
             });
         };
 
-        /**
-         * Private function for index calculation
-         */
-        var _setIds = function(lengthOfAll, entries){
-            for (var i = 0; i < entries.length; i ++){
-                entries[i].id = lengthOfAll + i;
-            }
+        $scope.empty_module_status = function () {
+            var return_value = false;
 
-            return entries;
-        }
-
-        // Get evevents
-        EventService.get(stream, page).then (function (entries){
-
-            modalScope.eventEntries = _setIds(0, entries);
-            page ++;
-
-            /**
-             * Private function used to check if the events are selectabled or not
-              */
-            modalScope.checkSelectStatus = function (){
-
-                // get the target items
-                var isGlobal = undefined;
-                if ( modalScope.selectedEvents.length == 1){
-                    isGlobal = modalScope.selectedEvents[0].isGlobal;
+            Object.keys($scope.contain_empty_module_status).forEach(function (key) {
+                if ($scope.contain_empty_module_status[key]) {
+                    return_value = true;
                 }
-
-                _(modalScope.eventEntries).each (function (e){
-                    if ( modalScope.selectedEvents.length == 2 ){
-                        if ( _.isUndefined(_.find(modalScope.selectedEvents, {id: e.id})) ){
-                            e.isSelectable = false;
-                        }
-                    }else{
-                        if ( !_.isUndefined(isGlobal) && e.isGlobal != isGlobal ){
-                            e.isSelectable = false;
-                        }else{
-                            e.isSelectable = true;
-                        }
-                    }
-                });
-            };
-
-            //
-            // Show the modal
-            //
-            var modal = $mdDialog.show({
-                templateUrl: 'event/event-modal.html',
-                clickOutsideToClose:true,
-                scope: modalScope
             });
+            return return_value;
+        };
 
-            // Preload the next page
-            preloadNextEvents();
+        $scope.contain_empty_module = function (box) {
+            var return_value = '';
 
-            //
-            // Close the events modal
-            //
-            modalScope.$closeDialog = function() {
-                $mdDialog.cancel();
-            };
+            if (box) {
+                var check_modules_models = function (modules) {
+                    _.forEach(modules, function (module) {
+                        var ref = { 'name': module.name, 'version': module.version, 'working_copy': module.working_copy };
 
-            /**
-             * Show more events
-             */
-            modalScope.noMoreEvents = false;
-            modalScope.msgMoreEvents = "Plus encore ...";
+                        if (!_.some($scope.cached_empty_module, ref)) {
+                            $scope.cached_empty_module.push(ref);
+                            var elem = _.find($scope.cached_empty_module, ref);
 
-            modalScope.showMoreEvents = function (){
-                if (events.length > 0) {
-
-                    // adding IDs to events
-                    events = _setIds(modalScope.eventEntries.length, events);
-
-                    // merging the events with the others
-                    modalScope.eventEntries = _.union(modalScope.eventEntries, events);
-
-                    // check status
-                    modalScope.checkSelectStatus();
-
-                    // disable filters
-                    modalScope.filtering = {};
-
-                    preloadNextEvents();
-                }else {
-                    // no more events to load
-                    modalScope.noMoreEvents = true;
-                }
-            };
-
-            /**
-             * This function show the diff page between the
-             * selected events.
-             * This show the diff page of both simple and global properties
-             */
-            modalScope.showDiff = function (){
-
-                var from = modalScope.selectedEvents[0];
-                var to = modalScope.selectedEvents[1];
-
-                var urlParams = {
-                    application: from.data.applicationName,
-                    platform: from.data.platformName,
-                    properties_path: from.data.path,
-                    compare_application: to.data.applicationName,
-                    compare_platform: to.data.platformName,
-                    compare_path: to.data.path
+                            ModuleService.search(`${ module.name } ${ module.version } ${ module.working_copy }`).then(function (response) {
+                                if (elem && response) {
+                                    elem.has_model = true;
+                                } else if (elem) {
+                                    elem.has_model = false;
+                                }
+                            });
+                        }
+                    });
                 };
 
-                urlParams.origin_timestamp = from.timestamp;
-                if (!_.isUndefined(to.timestamp)) {
-                    urlParams.timestamp = to.timestamp;
-                }
-                $window.open('/#/diff?' + $.param(urlParams), '_blank');
+                check_modules_models(box.modules);
 
-            };
-
-        });
-    };
-
-    $scope.delete_instance = function (instance, module) {
-        module.delete_instance(instance);
-        $scope.save_platform_from_box($scope.mainBox);
-    };
-
-    $scope.update_instance_name = function (instance, new_name) {
-        instance.name = new_name;
-        $scope.save_platform_from_box($scope.mainBox);
-    };
-
-    $scope.delete_module = function (module, box) {
-        _.remove(box.modules, function (existing) {
-            return _.isEqual(existing, module);
-        });
-        $scope.save_platform_from_box($scope.mainBox);
-    };
-
-    /**
-     * That function saves the instance properties
-     */
-    $scope.save_platform_from_box = function (box, copyPropertiesOfUpdatedModules) {
-        $scope.platform.modules = box.to_modules();
-        return ApplicationService.save_platform($scope.platform, copyPropertiesOfUpdatedModules).then(function (platform) {
-            $scope.platform = platform;
-            //Replace platforms in the list by the new one
-            var existing_index = 0;
-            _.find($scope.platforms, function (existing_platform, index) {
-                existing_index = index;
-                return existing_platform.name === platform.name;
-            });
-            $scope.platforms[existing_index] = platform;
-
-            // Updating reference of instance to keep it synchronized and thus to prevent loss of information in the next save
-            if ($scope.instance != undefined) {
-
-                module = _.filter(platform.modules, function (module) { return module.properties_path == $scope.instance.properties_path })[0];
-
-                var tmp_instance = _.filter(module.instances, function (instance) {
-					return instance.name == ($scope.new_instance_name != undefined ? $scope.new_instance_name : $scope.instance.name)
-				})[0];
-
-                tmp_instance.properties_path = $scope.instance.properties_path;
-
-                ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
-                    $scope.instance = tmp_instance.mergeWithModel(model);
+                _.forEach(box.children, function (child) {
+                    check_modules_models(child.modules);
                 });
 
-                $scope.new_instance_name = undefined;
-            }
-
-            //Update the view
-            $scope.update_main_box(platform);
-        }, function () {
-            //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
-            $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
-            $route.reload(); //Force reload if needed
-        });
-    };
-
-    $scope.on_edit_platform = function (platform) {
-        $scope.$broadcast('quickHideInstanceDetails', {});
-        $scope.quickOpen = false;
-        $location.url('/properties/' + platform.application_name + '?platform=' + platform.name);
-
-        ApplicationService.get_platform(platform.application_name, platform.name).then(function (searchPlatform) {
-            $scope.platform = searchPlatform;
-            $scope.selected_module = undefined;
-            $scope.instance = undefined;
-            $scope.properties = undefined;
-            $scope.update_main_box(searchPlatform);
-            store.set('current_platform_versionID', searchPlatform.version_id);
-        });
-    };
-
-    $scope.edit_properties = function (platform, module) {
-        if ($scope.platform.global_properties_usage === null) {
-            $scope.refreshGlobalPropertiesData();
-        }
-        ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
-            ModuleService.get_model(module).then(function (model) {
-                $scope.properties = properties.mergeWithModel(model);
-                $scope.model = model;
-
-                //Merge with global properties
-                $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
-                $scope.oldProperties = angular.copy($scope.properties);
-
-                $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
-                $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
-
-                $scope.selected_module = module;
-                $scope.instance = undefined; //hide the instance panel if opened
-                $scope.showGlobalProperties = undefined;
-                $scope.showButtonAndEye = undefined;
-
-                // Auto scroll to the properties list
-                $location.hash('properties-list');
-                $anchorScroll();
-            });
-        });
-    };
-
-    /**
-     * Clean properties.
-     * Used to delete unsed properties in module template.
-     */
-    $scope.clean_properties = function (properties) {
-        //Filter to keep properties only existing in model
-        properties.filter_according_to_model();
-    };
-
-    /**
-     * Clean instance properties.
-     * Used to deleted unused instance properties.
-     */
-    $scope.clean_instance_properties = function (instance) {
-        instance.key_values = _.filter (instance.key_values, function (item) {
-            return item.inModel;
-        });
-    };
-
-    $scope.save_global_properties = function (properties, save) {
-        // Getting information with querySelector, this is because there is
-        // a scope problem
-        var nameEl = angular.element(document.querySelector('#new_kv_name'));
-        var valueEl = angular.element(document.querySelector('#new_kv_value'));
-
-        // Check if there is new global property then add before saving
-        if ( !_.isEmpty(nameEl.val().trim())){
-            properties.addKeyValue({'name':  nameEl.val().trim(), 'value': valueEl.val(),'comment': ''});
-
-            // Clear contents
-            nameEl.val("");
-            valueEl.val("");
-        }
-
-        if (save) {
-
-            if ( _.isEqual(properties, $scope.oldGolbalProperties) ){
-                $translate('properties-not-changed.message').then(function(label) {
-                    notify({classes: ['warn'], message: label});
+                _.forEach(box.modules, function (module) {
+                    if (_.some($scope.cached_empty_module, { 'name': module.name, 'version': module.version, 'working_copy': module.working_copy, 'has_model': false })) {
+                        return_value = 'contain_empty_module';
+                    }
                 });
-                return;
+
+                _.forEach(box.children, function (child) {
+                    _.forEach(child.modules, function (module) {
+                        if (_.some($scope.cached_empty_module, { 'name': module.name, 'version': module.version, 'working_copy': module.working_copy, 'has_model': false })) {
+                            return_value = 'contain_empty_module';
+                        }
+                    });
+                });
             }
 
-            // Save the global properties
-            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
-                ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment ).then(function (properties) {
-                    if (!_.isUndefined($scope.properties)) {
-                        $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
+            $scope.contain_empty_module_status[box ? box.name : 'empty_key'] = Boolean(return_value.length);
+
+            return return_value;
+        };
+
+        $scope.update_main_box = function (platform) {
+        // Try to build the view depending on the different paths of the modules
+            var mainBox = new Box({ parent_box: null });
+
+            var oldMainBox = $scope.mainBox;
+
+            var search_old_box = function (oldBoxes, box) {
+                var currentBox = box;
+                if (oldBoxes) {
+                    var path = [];
+
+                    // Recreate path
+                    while (currentBox.parent_box) {
+                        path.push(currentBox.name);
+                        currentBox = currentBox.parent_box;
                     }
 
-                    //Increase platform number
-                    $scope.platform.version_id = $scope.platform.version_id + 1;
-                    $scope.refreshGlobalPropertiesData();
+                    // Search box in path
+                    currentBox = oldBoxes;
+                    while (path.length && currentBox) {
+                        currentBox = currentBox.children[path.pop()];
+                    }
+                }
+                return currentBox;
+            };
 
-                    // Key the saved as old
-                    $scope.oldGolbalProperties = angular.copy( properties );
+            var update_modules = function (module, oldModules) {
+                var currentModule = _.filter(oldModules, { name: module.name });
+                if (currentModule.length > 0) {
+                    module.opened = currentModule[0].opened;
+                }
+            };
+
+            var add_to_box = function (box, folders, level, module) {
+                if (level > folders.length) {
+                    throw new Error('Should have nether been here, wrong use of add_to_box recursive function');
+                }
+
+                var oldBox = null;
+
+                if (level === folders.length) {
+                // Found terminal level
+                    box.modules.push(module);
+
+                    oldBox = search_old_box(oldMainBox, box);
+
+                    if (oldBox && oldBox.modules && oldBox.modules.length > 0) {
+                        update_modules(module, oldBox.modules);
+                    }
+                } else {
+                    var name = folders[level];
+
+                    if (_.isUndefined(box.children[name])) {
+                        var newBox = new Box({ parent_box: box, name });
+                        box.children[name] = newBox;
+
+                        oldBox = search_old_box(oldMainBox, newBox);
+
+                        if (oldBox) {
+                            newBox.opened = oldBox.opened;
+                        }
+                    }
+
+                    add_to_box(box.children[name], folders, level + 1, module);
+                }
+            };
+
+            _.each(platform.modules, function (module) {
+                var path = module.path;
+                if (path.charAt(0) === '#') { // Remove possible preceding #
+                    path = path.substring(1, path.length);
+                }
+                var folders = path.split('#');
+                add_to_box(mainBox, folders, 0, module);
+            });
+            $scope.mainBox = mainBox;
+        };
+
+        $scope.add_box = function (name, box) {
+            box.children[name] = new Box({ parent_box: box, name });
+            return box.children[name];
+        };
+
+        $scope.remove_box = function (name, box) {
+            delete box.parent_box.children[name];
+        };
+
+        $scope.update_box_name = function (box, old_name, new_name) {
+            if (old_name !== new_name) {
+                box.name = new_name;
+                box.parent_box.children[new_name] = box.parent_box.children[old_name];
+                delete box.parent_box.children[old_name];
+                $scope.save_platform_from_box($scope.mainBox, true);
+            }
+        };
+
+        $scope.open_add_box_dialog = function (box) {
+            var modalScope = $scope.$new();
+
+            modalScope.$add = function (name) {
+                $scope.add_box(name, box);
+                $mdDialog.cancel();
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/add_box.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            });
+        };
+
+        $scope.isProductionUser = session.isProdUser;
+
+        $scope.open_add_instance_dialog = function (module) {
+            var modalScope = $scope.$new();
+
+            modalScope.$add = function (name) {
+                $scope.add_instance(name, module);
+                $mdDialog.cancel();
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/add_instance.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            });
+        };
+
+        /**
+         * Met à jour la version de la plateforme.
+         *
+         * @param platform plateforme courante
+         */
+        $scope.change_platform_version = function (platform) {
+            var modalScope = $scope.$new();
+            modalScope.platform = platform;
+            modalScope.onLoading = true;
+
+            modalScope.isValid = function () {
+                return !_.isUndefined(modalScope.newVersion) && !_.isEmpty(modalScope.newVersion);
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/change_platform_version.html',
+                controller: 'PlatformVersionModule',
+                clickOutsideToClose: true,
+                scope: modalScope,
+                onComplete() {
+                // Use to prevent display list of version at wrong position
+                    modalScope.onLoading = false;
+                },
+            });
+        };
+
+        $scope.search_module = function (box) {
+            var modalScope = $scope.$new();
+
+            modalScope.$add = function (module) {
+                $scope.add_module(module.name, module.version, module.is_working_copy, box);
+                $mdDialog.cancel();
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/search_module.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            });
+        };
+
+        $scope.change_module = function (module) {
+            var modalScope = $scope.$new();
+            modalScope.module = module;
+            modalScope.copyProperties = store.get('copy_properties') || false;
+            modalScope.searchText = `${ module.name } `;
+
+            modalScope.$update = function (modal_data) {
+                var new_module = modal_data.new_module;
+                module.name = new_module.name;
+                module.version = new_module.version;
+                module.is_working_copy = new_module.is_working_copy;
+                $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function () {
+                    $scope.properties = null;
+                    $scope.instance = null;
+                    $mdDialog.cancel();
+                });
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/change_module_version.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            });
+        };
+
+        $scope.diff_properties = function (compare_module) {
+        // Need to be in global scope !
+            $scope.compare_module = compare_module;
+
+            var modalScope = $scope.$new();
+
+            // From platform info
+            modalScope.from = {
+                application: $scope.platform.application_name,
+                platform: $scope.platform.name,
+                date: null,
+                lookPast: false,
+            };
+
+            // Get the list of platforms for an app
+            modalScope.get_target_platforms = function (application_name) {
+                if (application_name) {
+                    ApplicationService.get(application_name, true).then(function (application) {
+                        modalScope.target_platforms = application.platforms;
+                    }, function () {
+                        modalScope.target_platforms = [];
+                    });
+                } else {
+                    modalScope.target_platforms = [];
+                }
+            };
+
+            modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
+
+            modalScope.$diff = function () {
+                $mdDialog.hide();
+            };
+
+            modalScope.updatePlatformField = function (itemName) {
+                modalScope.from.platform = itemName;
+            };
+
+            modalScope.backgroundColor = function (item) {
+            // if(!$scope.$$phase) {
+                return PlatformColorService.calculateColor(item.name);
+            // }
+            };
+
+            modalScope.from.lookPast = false;
+            modalScope.switched = function () {
+                if (!modalScope.from.lookPast) {
+                    $timeout(function () {
+                        var el = angular.element(document.querySelector('#look-past-date-time'));
+                        el.focus();
+                    }, 200);
+                }
+            };
+
+            modalScope.isDiffAllowed = function () {
+                var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
+                return (!modalScope.from.lookPast || modalScope.from.dateValid) &&
+                modalScope.target_platforms && modalScope.target_platforms.length >= 1 &&
+                selectedPlatformInList;
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/properties_diff_wizard.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            }).then(() => $scope.open_diff_page());
+        };
+
+        $scope.open_diff_page = function () {
+        // Everything is set in the scope by the modal when calling this
+        // Not very safe but easier to manage with all scopes generated
+            var urlParams = {
+                application: $scope.platform.application_name,
+                platform: $scope.platform.name,
+                properties_path: $scope.compare_module.properties_path,
+                compare_application: $scope.compare_platform.application_name,
+                compare_platform: $scope.compare_platform.name,
+                compare_path: $scope.compare_platform.chosen_module.properties_path,
+            };
+            if (!_.isUndefined($scope.compare_platform.timestamp)) {
+                urlParams.timestamp = $scope.compare_platform.timestamp;
+            }
+
+            var url = `/#/diff?${ Object.keys(urlParams).map(function (key) {
+                return `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`;
+            }).join('&') }`;
+            $window.open(url, '_blank');
+        };
+
+        $scope.diff_global_properties = function () {
+            var modalScope = $scope.$new();
+
+            // From platform info
+            modalScope.from = {
+                application: $scope.platform.application_name,
+                platform: $scope.platform.name,
+                date: null,
+                lookPast: false,
+            };
+
+            // Get the list of platforms for an app
+            modalScope.get_target_platforms = function (application_name) {
+                if (application_name) {
+                    ApplicationService.get(application_name).then(function (application) {
+                        modalScope.target_platforms = application.platforms;
+                    }, function () {
+                        modalScope.target_platforms = [];
+                    });
+                } else {
+                    modalScope.target_platforms = [];
+                }
+            };
+
+            modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
+
+            modalScope.updatePlatformField = function (itemName) {
+                modalScope.from.platform = itemName;
+            };
+
+            modalScope.backgroundColor = function (item) {
+                return PlatformColorService.calculateColor(item.name);
+            };
+
+            modalScope.$diff = function (from) {
+                $mdDialog.cancel();
+                $scope.open_global_diff_page(from);
+            };
+
+            modalScope.from.lookPast = false;
+            modalScope.switched = function () {
+                if (!modalScope.from.lookPast) {
+                    $timeout(function () {
+                        var el = angular.element(document.querySelector('#look-past-date-time'));
+                        el.focus();
+                    }, 200);
+                }
+            };
+
+            modalScope.isDiffAllowed = function () {
+                var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
+                return (!modalScope.from.lookPast || modalScope.from.dateValid) &&
+                modalScope.target_platforms && modalScope.target_platforms.length >= 1 &&
+                selectedPlatformInList;
+            };
+
+            $mdDialog.show({
+                templateUrl: 'application/global_properties_diff_wizard.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            });
+        };
+
+        $scope.open_global_diff_page = function (from) {
+        // Everything is set in the scope by the modal when calling this
+        // Not very safe but easier to manage with all scopes generated
+            var urlParams = {
+                application: $scope.platform.application_name,
+                platform: $scope.platform.name,
+                properties_path: '#',
+                compare_application: from.application,
+                compare_platform: from.platform,
+                compare_path: '#',
+            };
+
+            if (from.date) {
+                urlParams.timestamp = Number(moment(from.date, 'YYYY-MM-DD HH:mm:ss Z'));
+            }
+
+            var url = `/#/diff?${ Object.keys(urlParams).map(function (key) {
+                return `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`;
+            }).join('&') }`;
+            $window.open(url, '_blank');
+        };
+
+        $scope.quickDisplayInstance = function () {
+            $scope.$broadcast(($scope.quickOpen ? 'quickHideInstanceDetails' : 'quickDisplayInstanceDetails'), {});
+            $scope.quickOpen = !$scope.quickOpen;
+        };
+
+        $scope.find_modules_by_name = function (name) {
+            return ModuleService.with_name_like(name);
+        };
+
+        $scope.add_module = function (name, version, is_working_copy, box) {
+            if (!_.some(box.modules, { name, version, is_working_copy })) {
+                box.modules.push(new Module(
+                    {
+                        name,
+                        version,
+                        is_working_copy,
+                        deployment_group: '',
+                        path: box.get_path(),
+                    }
+                ));
+
+                $scope.save_platform_from_box($scope.mainBox).then(function () {
+                    $scope.properties = null;
+                    $scope.instance = null;
+                });
+            }
+        };
+
+        $scope.add_instance = function (name, module) {
+            module.create_new_instance(name);
+            $scope.save_platform_from_box($scope.mainBox);
+        };
+
+        /**
+         * This is used to preview an instance data.
+         */
+        $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
+            simulate = simulate || false;
+
+            var modalScope = $scope.$new();
+
+            modalScope.codeMirrorOptions = {
+                'readOnly': true,
+                'autoRefresh': true,
+            };
+
+            instance = instance ? instance : { name: 'default' };
+            modalScope.instance = instance;
+            modalScope.isOpen = null;
+
+            FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy, simulate).then(function (entries) {
+                modalScope.fileEntries = entries;
+
+                $mdDialog.show({
+                    templateUrl: 'file/file-modal.html',
+                    clickOutsideToClose: true,
+                    scope: modalScope,
                 });
             });
-        } else {
-            // Triggrer event to refresh instantly the virtual container of global properties, instead of waiting really long time
-            $scope.$broadcast('$md-resize');
-        }
 
-    };
+            // Download all the files
+            modalScope.download_all_instance_files = function () {
+                FileService.download_files(modalScope.fileEntries, modalScope.instance.name);
+            };
 
-    // Why United Nations ? They are solving conflicts, rights ? :D
-    $scope.show_united_nations_modal = function () {
+            // Manager accordion open/close
+            modalScope.open = function (index) {
+                modalScope.isOpen = (index === modalScope.isOpen) ? null : index;
+            };
+        };
 
-        var modalScope = $scope.$new(false);
+        /**
+         * This used to show the event lists.
+         * Added by Tidiane SIDIBE on 08/03/2016
+         */
+        $scope.show_events = function (param1, param2, action) {
+            var modalScope = $scope.$new(true);
+            // used for events filtering
+            modalScope.filtering = {};
 
-        $scope.instance = undefined;
-        $scope.properties = undefined;
-        $scope.showGlobalProperties = undefined;
-        $scope.showButtonAndEye = undefined;
+            var page = 1; // the starting page is 1.
+            var events = [];
 
-        modalScope.dialog = $mdDialog.show({
-            templateUrl: 'local_changes/united-nations-modal.html',
-            controller: 'UnitedNationsController',
-            clickOutsideToClose: false,
-            escapeToClose: true,
-            preserveScope: false, // requiered for not freez menu see https://github.com/angular/material/issues/5041
-            scope:modalScope
-        });
-    }
+            // used for events diff
+            modalScope.selectedEvents = [];
 
-    $scope.platformLocalChangesCount = function () {
-        return LocalChanges.platformLocalChangesCount($scope.platform);
-    }
+            // Creating the stream name
+            var stream = null;
+            if (action === 'platform') {
+                stream = `${ action }-${ param1.name }-${ param2.name }`;
+                modalScope.title = `${ param1.name }-${ param2.name }`;
+            } else {
+                stream = `${ action }-${ param2.name }-${ param2.version }-`;
+                if (param2.is_working_copy) {
+                    stream = `${ stream }wc`;
+                } else {
+                    stream = `${ stream }release`;
+                }
 
-    $scope.delete_platform = function () {
-        ApplicationService.delete_platform($scope.platform.application_name, $scope.platform.name)
-            .then(() => {
-                $location.url('/properties/' + $scope.platform.application_name)
-                _.remove($scope.platforms, platform => platform.name == $scope.platform.name);
-                $scope.platform = null;
-            }).catch(function (error) {
-                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.delete_platform'});
-                throw error;
-            });
-    };
-
-    $scope.restore_platform = function (platformToRestore) {
-        ApplicationService.restore_platform($routeParams.application, platformToRestore)
-            .then(() => {
-                $location.search({platform: platformToRestore});
-            }).catch(function (error) {
-                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.restore_platform'});
-                throw error;
-            });
-    };
-
-    $scope.save_properties_locally = function (properties, module) {
-
-        if (
-            _.isEqual(properties.key_value_properties, $scope.oldProperties.key_value_properties) &&
-            // we use angular copy for these to remove the $$hashKey
-            _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperties.iterable_properties)) ){
-            $translate('properties-not-changed.message').then(function(label) {
-                notify({classes: ['warn'], message: label});
-            });
-            return false;
-        }
-
-        var hasSavedLocalChange = false;
-
-        store.set('current_platform_versionID', $scope.platform.version_id);
-
-        properties.key_value_properties.forEach( function (elem) {
-
-            if (('filtrable_value' in elem && elem['filtrable_value'] != elem['value']) ||
-                (!('filtrable_value' in elem) && elem['value'] && elem['value'].toString().length > 0 && !elem['inGlobal'])) {
-                    LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem['name'], elem['value']);
-                    hasSavedLocalChange = true;
+                modalScope.title = `${ param2.name }-${ param2.version }`;
             }
-        });
 
-        if (hasSavedLocalChange) {
+            /**
+             * Private function to preload next events
+             */
+            var preloadNextEvents = function () {
+                EventService.get(stream, page).then(function (nextEntries) {
+                    events = nextEntries;
+                    page++;
+                });
+            };
 
-            LocalChanges.smartClearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path}, properties);
+            /**
+             * Private function for index calculation
+             */
+            var setIds = function (lengthOfAll, entries) {
+                _.each(entries, (entry, index) => {
+                    entry.id = lengthOfAll + index;
+                });
+                return entries;
+            };
 
-            $translate('properties.module.editProperties.savedLocally').then(function(label) {
-                notify({classes: ['error'], message: label});
+            // Get evevents
+            EventService.get(stream, page).then(function (entries) {
+                modalScope.eventEntries = setIds(0, entries);
+                page++;
+
+                /**
+                 * Private function used to check if the events are selectabled or not
+                  */
+                modalScope.checkSelectStatus = function () {
+                // get the target items
+                    var isGlobal = null;
+                    if (modalScope.selectedEvents.length === 1) {
+                        isGlobal = modalScope.selectedEvents[0].isGlobal;
+                    }
+
+                    _.each(modalScope.eventEntries, function (eventEntry) {
+                        if (modalScope.selectedEvents.length === 2) {
+                            if (_.isUndefined(_.find(modalScope.selectedEvents, { id: eventEntry.id }))) {
+                                eventEntry.isSelectable = false;
+                            }
+                        } else {
+                            eventEntry.isSelectable = !isGlobal || eventEntry.isGlobal === isGlobal;
+                        }
+                    });
+                };
+
+                //
+                // Show the modal
+                //
+                $mdDialog.show({
+                    templateUrl: 'event/event-modal.html',
+                    clickOutsideToClose: true,
+                    scope: modalScope,
+                });
+
+                // Preload the next page
+                preloadNextEvents();
+
+                //
+                // Close the events modal
+                //
+                modalScope.$closeDialog = function () {
+                    $mdDialog.cancel();
+                };
+
+                /**
+                 * Show more events
+                 */
+                modalScope.noMoreEvents = false;
+                modalScope.msgMoreEvents = 'Plus encore ...';
+
+                modalScope.showMoreEvents = function () {
+                    if (events.length > 0) {
+                    // adding IDs to events
+                        events = setIds(modalScope.eventEntries.length, events);
+
+                        // merging the events with the others
+                        modalScope.eventEntries = _.union(modalScope.eventEntries, events);
+
+                        // check status
+                        modalScope.checkSelectStatus();
+
+                        // disable filters
+                        modalScope.filtering = {};
+
+                        preloadNextEvents();
+                    } else {
+                    // no more events to load
+                        modalScope.noMoreEvents = true;
+                    }
+                };
+
+                /**
+                 * This function show the diff page between the
+                 * selected events.
+                 * This show the diff page of both simple and global properties
+                 */
+                modalScope.showDiff = function () {
+                    var from = modalScope.selectedEvents[0];
+                    var to = modalScope.selectedEvents[1];
+
+                    var urlParams = {
+                        application: from.data.applicationName,
+                        platform: from.data.platformName,
+                        properties_path: from.data.path,
+                        compare_application: to.data.applicationName,
+                        compare_platform: to.data.platformName,
+                        compare_path: to.data.path,
+                    };
+
+                    urlParams.origin_timestamp = from.timestamp;
+                    if (!_.isUndefined(to.timestamp)) {
+                        urlParams.timestamp = to.timestamp;
+                    }
+                    var url = `/#/diff?${ Object.keys(urlParams).map(function (key) {
+                        return `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`;
+                    }).join('&') }`;
+                    $window.open(url, '_blank');
+                };
             });
-        }
+        };
 
-        properties = LocalChanges.tagWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, properties);
-        return true;
-    }
+        $scope.delete_instance = function (instance, module) {
+            module.delete_instance(instance);
+            $scope.save_platform_from_box($scope.mainBox);
+        };
 
-    $scope.hasLocalChanges = function (module) {
-        return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform ? $scope.platform.name : '', module ? module.properties_path : '');
-    }
+        $scope.update_instance_name = function (instance, new_name) {
+            instance.name = new_name;
+            $scope.save_platform_from_box($scope.mainBox);
+        };
 
-    $scope.hasDeletedProperties = function () {
-        return _.filter($scope.properties ? $scope.properties.key_value_properties : [] , function (prop) { return prop.inModel == false }).length > 0 ? true :false;
-    }
+        $scope.delete_module = function (module, box) {
+            _.remove(box.modules, function (existing) {
+                return _.isEqual(existing, module);
+            });
+            $scope.save_platform_from_box($scope.mainBox);
+        };
 
-    $scope.instanceHasDeletedProperties = function (instance) {
-        return _.filter(instance ? instance.key_values : [] , function (prop) { return prop.inModel == false }).length > 0 ? true :false;
-    }
+        /**
+         * That function saves the instance properties
+         */
+        $scope.save_platform_from_box = function (box, copyPropertiesOfUpdatedModules) {
+            $scope.platform.modules = box.to_modules();
+            return ApplicationService.save_platform($scope.platform, copyPropertiesOfUpdatedModules).then(function (platform) {
+                $scope.platform = platform;
+                // Replace platforms in the list by the new one
+                var existing_index = _.findIndex($scope.platforms, { name: platform.name });
+                $scope.platforms[existing_index] = platform;
 
-    $scope.cleanLocalChanges = function (module) {
-        LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
-        $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, $scope.properties);
-    }
+                // Updating reference of instance to keep it synchronized and thus to prevent loss of information in the next save
+                if ($scope.instance) {
+                    var module = _.filter(platform.modules, function (mod) {
+                        return mod.properties_path === $scope.instance.properties_path;
+                    })[0];
 
+                    var tmp_instance = _.filter(module.instances, function (instance) {
+                        return instance.name === ($scope.new_instance_name ? $scope.new_instance_name : $scope.instance.name);
+                    })[0];
 
-    $scope.save_properties = function (properties, module) {
+                    tmp_instance.properties_path = $scope.instance.properties_path;
 
-        if ($scope.save_properties_locally(properties, module)) {
-
-            // Save properties
-            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
-                ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
-                    //Merge properties with model
-                    ModuleService.get_model(module).then(function (model) {
-                        $scope.properties = properties.mergeWithModel(model);
-
-                        // Keep the saved properties as old
-                        $scope.oldProperties = angular.copy($scope.properties);
+                    ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
+                        $scope.instance = tmp_instance.mergeWithModel(model);
                     });
 
-                    //Merge with global properties
+                    $scope.new_instance_name = null;
+                }
+
+                // Update the view
+                $scope.update_main_box(platform);
+            }, function () {
+            // If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
+                $location.url(`/properties/${ $scope.platform.application_name }`).search({ platform: $scope.platform.name });
+                $route.reload(); // Force reload if needed
+            });
+        };
+
+        $scope.on_edit_platform = function (platform) {
+            $scope.$broadcast('quickHideInstanceDetails', {});
+            $scope.quickOpen = false;
+            $location.url(`/properties/${ platform.application_name }?platform=${ platform.name }`);
+
+            ApplicationService.get_platform(platform.application_name, platform.name).then(function (searchPlatform) {
+                $scope.platform = searchPlatform;
+                $scope.selected_module = null;
+                $scope.instance = null;
+                $scope.properties = null;
+                $scope.update_main_box(searchPlatform);
+                store.set('current_platform_versionID', searchPlatform.version_id);
+            });
+        };
+
+        $scope.edit_properties = function (platform, module) {
+            if ($scope.platform.global_properties_usage === null) {
+                $scope.refreshGlobalPropertiesData();
+            }
+            ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
+                ModuleService.get_model(module).then(function (model) {
+                    $scope.properties = properties.mergeWithModel(model);
+                    $scope.model = model;
+
+                    // Merge with global properties
                     $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+                    $scope.oldProperties = angular.copy($scope.properties);
 
-                    //Increase platform number
-                    $scope.platform.version_id = $scope.platform.version_id + 1;
+                    $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
+                    $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
 
-                    //Specify that the global_properties_usage = null means that data may have become outdated.
-                    // So next time user wants global_properties we reload then instead of using cached ones.
-                    $scope.platform.global_properties_usage = null;
+                    $scope.selected_module = module;
+                    $scope.instance = null; // hide the instance panel if opened
+                    $scope.showGlobalProperties = null;
+                    $scope.showButtonAndEye = null;
 
-                    //Cleanning up local change because they have been saved already
-                    LocalChanges.clearLocalChanges({'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path});
-
-                    // Dismiss the modal
-                    //modalScope.$closeDialog();
-
-                }, function () {
-                    //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
-                    $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
-                    $route.reload(); //Force reload if needed
+                    // Auto scroll to the properties list
+                    $location.hash('properties-list');
+                    $anchorScroll();
                 });
             });
-        }
-    };
+        };
 
-    $scope.edit_instance = function (instance, properties_path) {
-        ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
-            $scope.instance = instance.mergeWithModel(model);
-            $scope.instance.properties_path = properties_path;
-            $scope.instance.key_values.forEach(function (elem) {
-                if (elem.value.length)
-                    elem.filtrable_value = elem.value;
-            })
-            $scope.properties = undefined; //hide the properties panel if opened
-            $scope.showGlobalProperties = undefined;
-        });
-    };
+        /**
+         * Clean properties.
+         * Used to delete unsed properties in module template.
+         */
+        $scope.clean_properties = function (properties) {
+        // Filter to keep properties only existing in model
+            properties.filter_according_to_model();
+        };
 
-    $scope.refreshGlobalPropertiesData = function() {
-        var platform = $scope.platform;
-        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent('#');
+        /**
+         * Clean instance properties.
+         * Used to deleted unused instance properties.
+         */
+        $scope.clean_instance_properties = function (instance) {
+            instance.key_values = _.filter(instance.key_values, function (item) {
+                return item.inModel;
+            });
+        };
 
-        $http.get(url).then(function (response) {
-            return new Properties(response.data);
-        }, function (error) {
-            notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_properties'});
-            throw error;
-        }).then(function (response) {
-            platform.global_properties = response;
+        $scope.save_global_properties = function (properties, save) {
+        // Getting information with querySelector, this is because there is
+        // a scope problem
+            var nameEl = angular.element(document.querySelector('#new_kv_name'));
+            var valueEl = angular.element(document.querySelector('#new_kv_value'));
 
-            // making a copy, for changes detection
-            $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
-        });
+            // Check if there is new global property then add before saving
+            if (!_.isEmpty(nameEl.val().trim())) {
+                properties.addKeyValue({ 'name': nameEl.val().trim(), 'value': valueEl.val(), 'comment': '' });
 
-        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_properties_usage';
+                // Clear contents
+                nameEl.val('');
+                valueEl.val('');
+            }
 
-        $http.get(url).then(function (response) {
-            return response.data;
-        }, function (error) {
-            notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_global_properties_usage'});
-            throw error;
-        }).then(function (response) {
-            platform.global_properties_usage = response;
-        });
-    }
+            if (save) {
+                if (_.isEqual(properties, $scope.oldGolbalProperties)) {
+                    $translate('properties-not-changed.message').then(function (label) {
+                        notify({ classes: [ 'warn' ], message: label });
+                    });
+                    return;
+                }
 
-    $scope.showGlobalPropertiesDisplay = function () {
+                // Save the global properties
+                HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function (comment) {
+                    ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment).then(function (savedProperties) {
+                        if (!_.isUndefined($scope.properties)) {
+                            $scope.properties = $scope.properties.mergeWithGlobalProperties(savedProperties);
+                        }
+
+                        // Increase platform number
+                        $scope.platform.version_id++;
+                        $scope.refreshGlobalPropertiesData();
+
+                        // Key the saved as old
+                        $scope.oldGolbalProperties = angular.copy(savedProperties);
+                    });
+                });
+            } else {
+            // Triggrer event to refresh instantly the virtual container of global properties, instead of waiting really long time
+                $scope.$broadcast('$md-resize');
+            }
+        };
+
+        // Why United Nations ? They are solving conflicts, rights ? :D
+        $scope.show_united_nations_modal = function () {
+            var modalScope = $scope.$new(false);
+
+            $scope.instance = null;
+            $scope.properties = null;
+            $scope.showGlobalProperties = null;
+            $scope.showButtonAndEye = null;
+
+            modalScope.dialog = $mdDialog.show({
+                templateUrl: 'local_changes/united-nations-modal.html',
+                controller: 'UnitedNationsController',
+                clickOutsideToClose: false,
+                escapeToClose: true,
+                preserveScope: false, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+                scope: modalScope,
+            });
+        };
+
+        $scope.platformLocalChangesCount = function () {
+            return LocalChanges.platformLocalChangesCount($scope.platform);
+        };
+
+        $scope.delete_platform = function () {
+            ApplicationService.delete_platform($scope.platform.application_name, $scope.platform.name)
+                .then(() => {
+                    $location.url(`/properties/${ $scope.platform.application_name }`);
+                    _.remove($scope.platforms, (platform) => platform.name === $scope.platform.name);
+                    $scope.platform = null;
+                }).catch(function (error) {
+                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.delete_platform' });
+                    throw error;
+                });
+        };
+
+        $scope.restore_platform = function (platformToRestore) {
+            ApplicationService.restore_platform($routeParams.application, platformToRestore)
+                .then(() => {
+                    $location.search({ platform: platformToRestore });
+                }).catch(function (error) {
+                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.restore_platform' });
+                    throw error;
+                });
+        };
+
+        $scope.save_properties_locally = function (properties, module) {
+            if (
+                _.isEqual(properties.key_value_properties, $scope.oldProperties.key_value_properties) &&
+            // we use angular copy for these to remove the $$hashKey
+            _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperties.iterable_properties))) {
+                $translate('properties-not-changed.message').then(function (label) {
+                    notify({ classes: [ 'warn' ], message: label });
+                });
+                return false;
+            }
+
+            var hasSavedLocalChange = false;
+
+            store.set('current_platform_versionID', $scope.platform.version_id);
+
+            properties.key_value_properties.forEach(function (elem) {
+                if (('filtrable_value' in elem && elem.filtrable_value !== elem.value) ||
+                (!('filtrable_value' in elem) && elem.value && elem.value.toString().length > 0 && !elem.inGlobal)) {
+                    LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem.name, elem.value);
+                    hasSavedLocalChange = true;
+                }
+            });
+
+            if (hasSavedLocalChange) {
+                LocalChanges.smartClearLocalChanges({ 'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path }, properties);
+
+                $translate('properties.module.editProperties.savedLocally').then(function (label) {
+                    notify({ classes: [ 'success' ], message: label });
+                });
+            }
+
+            properties = LocalChanges.tagWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, properties);
+            return true;
+        };
+
+        $scope.hasLocalChanges = function (module) {
+            return LocalChanges.hasLocalChanges($routeParams.application, $scope.platform ? $scope.platform.name : '', module ? module.properties_path : '');
+        };
+
+        $scope.hasDeletedProperties = function () {
+            return _.filter($scope.properties ? $scope.properties.key_value_properties : [], function (prop) {
+                return !prop.inModel;
+            }).length > 0;
+        };
+
+        $scope.instanceHasDeletedProperties = function (instance) {
+            return _.filter(instance ? instance.key_values : [], function (prop) {
+                return !prop.inModel;
+            }).length > 0;
+        };
+
+        $scope.cleanLocalChanges = function (module) {
+            LocalChanges.clearLocalChanges({ 'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path });
+            $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, $scope.properties);
+        };
+
+
+        $scope.save_properties = function (properties, module) {
+            if ($scope.save_properties_locally(properties, module)) {
+            // Save properties
+                HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function (comment) {
+                    ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (savedProperties) {
+                    // Merge properties with model
+                        ModuleService.get_model(module).then(function (model) {
+                            $scope.properties = savedProperties.mergeWithModel(model);
+
+                            // Keep the saved properties as old
+                            $scope.oldProperties = angular.copy($scope.properties);
+                        });
+
+                        // Merge with global properties
+                        $scope.properties = savedProperties.mergeWithGlobalProperties($scope.platform.global_properties);
+
+                        // Increase platform number
+                        $scope.platform.version_id++;
+
+                        // Specify that the global_properties_usage = null means that data may have become outdated.
+                        // So next time user wants global_properties we reload then instead of using cached ones.
+                        $scope.platform.global_properties_usage = null;
+
+                        // Cleanning up local change because they have been saved already
+                        LocalChanges.clearLocalChanges({
+                            application_name: $routeParams.application,
+                            platform: $scope.platform.name,
+                            properties_path: module.properties_path,
+                        });
+
+                        // Dismiss the modal
+                        // modalScope.$closeDialog();
+                    }, function () {
+                    // If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
+                        $location.url(`/properties/${ $scope.platform.application_name }`).search({ platform: $scope.platform.name });
+                        $route.reload(); // Force reload if needed
+                    });
+                });
+            }
+        };
+
+        $scope.edit_instance = function (instance, properties_path) {
+            ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
+                $scope.instance = instance.mergeWithModel(model);
+                $scope.instance.properties_path = properties_path;
+                $scope.instance.key_values.forEach(function (elem) {
+                    if (elem.value.length) {
+                        elem.filtrable_value = elem.value;
+                    }
+                });
+                $scope.properties = null; // hide the properties panel if opened
+                $scope.showGlobalProperties = null;
+            });
+        };
+
+        $scope.refreshGlobalPropertiesData = function () {
+            var platform = $scope.platform;
+            var getPropertiesUrl = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms/${ encodeURIComponent(platform.name) }/properties?path=${ encodeURIComponent('#') }`;
+
+            $http.get(getPropertiesUrl).then(function (response) {
+                return new Properties(response.data);
+            }, function (error) {
+                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_properties' });
+                throw error;
+            }).then(function (response) {
+                platform.global_properties = response;
+
+                // making a copy, for changes detection
+                $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
+            });
+
+            var getGlobalPropertyUsagesUrl = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms/${ encodeURIComponent(platform.name) }/global_properties_usage`;
+
+            $http.get(getGlobalPropertyUsagesUrl).then(function (response) {
+                return response.data;
+            }, function (error) {
+                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl.refreshGlobalPropertiesData.get_global_properties_usage' });
+                throw error;
+            }).then(function (response) {
+                platform.global_properties_usage = response;
+            });
+        };
+
+        $scope.showGlobalPropertiesDisplay = function () {
         // --- Testing retrive on demand
         // If the usage is already filled, we don't call the backend, and serve cache instead
-        if ($scope.platform.global_properties_usage === null) {
-            $scope.refreshGlobalPropertiesData();
-        }
-
-        $scope.instance = undefined;
-        $scope.properties = undefined;
-        $scope.showGlobalProperties = !$scope.showGlobalProperties;
-        $scope.showButtonAndEye = !$scope.showButtonAndEye;
-    };
-
-    $scope.get_platform_to_compare = function (application, platform, lookPast, date) {
-        $scope.loading_compare_platform = true;
-        if (lookPast) {
-            if (_.isUndefined(date)) {
-                date = (new Date().getTime());
-            }else{
-                date = +moment(date, "YYYY-MM-DD HH:mm:ss Z");
+            if ($scope.platform.global_properties_usage === null) {
+                $scope.refreshGlobalPropertiesData();
             }
-            var platform_promise = ApplicationService.get_platform(application, platform, date);
-        } else {
-            var platform_promise = ApplicationService.get_platform(application, platform);
-        }
 
-        platform_promise.then(function (platform) {
-            $scope.compare_platform = platform;
-            $scope.loading_compare_platform = false;
-        }).then(function () {
-            //Try to detect module
-            $scope.compare_platform.chosen_module = _.find($scope.compare_platform.modules, function (module) {
-                return module.name == $scope.compare_module.name;
+            $scope.instance = null;
+            $scope.properties = null;
+            $scope.showGlobalProperties = !$scope.showGlobalProperties;
+            $scope.showButtonAndEye = !$scope.showButtonAndEye;
+        };
+
+        $scope.get_platform_to_compare = function (application, platform, lookPast, date) {
+            $scope.loading_compare_platform = true;
+            if (lookPast) {
+                date = date ? Number(moment(date, 'YYYY-MM-DD HH:mm:ss Z')) : new Date().getTime();
+            } else {
+                date = null;
+            }
+            ApplicationService.get_platform(application, platform, date).then(function (platformFetched) {
+                $scope.compare_platform = platformFetched;
+                $scope.loading_compare_platform = false;
+            }).then(function () {
+            // Try to detect module
+                $scope.compare_platform.chosen_module = _.find($scope.compare_platform.modules, { name: $scope.compare_module.name });
             });
-        });
-    };
+        };
 
-    $scope.open_module_page = function (name, version, is_working_copy) {
-        var url;
+        $scope.open_module_page = function (name, version, is_working_copy) {
+            var url = `/module/${ name }/${ version }?`;
+            if (is_working_copy) {
+                url += '?type=workingcopy';
+            }
+            $location.url(url);
+            $route.reload(); // Force reload if needed
+        };
 
-        if(is_working_copy){
-            url = '/module/' + name + '/' + version + '?type=workingcopy';
+        /**
+         * This will display the properties in the box mode.
+         */
+        $scope.boxModeShow = function () {
+            if (!$scope.box) {
+                $rootScope.isLoading = true;
+                $scope.box = true;
+                $scope.tree = false;
+                $scope.properties = null;
+                $scope.instance = null;
+            }
+        };
+
+        /**
+         * This will display the properties in the tree mode.
+         */
+        $scope.treeModeShow = function () {
+            if (!$scope.tree) {
+                $rootScope.isLoading = true;
+                $scope.box = false;
+                $scope.tree = true;
+                $scope.properties = null;
+                $scope.instance = null;
+            }
+        };
+
+        Page.setTitle('Properties');
+
+        /**
+         * Instances display relative vars
+         * The hide mode is displayed by default
+         */
+        if (store.get('instance_properties')) {
+            $scope.isInstanceOpen = 1;
         } else {
-            url = '/module/' + name + '/' + version + '?';
+            $scope.isInstanceOpen = 0;
         }
 
-        $location.url(url);
-        $route.reload(); //Force reload if needed
-    };
-
-    /**
-     * This will display the properties in the box mode.
-     */
-    $scope.boxModeShow = function (){
-        if (!$scope.box){
-            $rootScope.isLoading = true;
-            $scope.box = true;
-            $scope.tree = false;
-            $scope.properties = undefined;
-            $scope.instance = undefined;
-        }
-    }
-
-    /**
-     * This will display the properties in the tree mode.
-     */
-    $scope.treeModeShow = function (){
-        if (!$scope.tree){
-            $rootScope.isLoading = true;
+        /**
+         * Box and tree display relative vars
+         * The tree mode is displayed by default
+         */
+        if (store.get('display_mode') === 'arbre') {
             $scope.box = false;
             $scope.tree = true;
-            $scope.properties = undefined;
-            $scope.instance = undefined;
+        } else {
+            $scope.box = true;
+            $scope.tree = false;
         }
-    }
 
-    Page.setTitle("Properties");
-
-    /**
-     * Instances display relative vars
-     * The hide mode is displayed by default
-     */
-    if (store.get('instance_properties') == true) {
-        $scope.isInstanceOpen = 1;
-    } else {
-        $scope.isInstanceOpen = 0;
-    }
-
-    /**
-     * Box and tree display relative vars
-     * The tree mode is displayed by default
-     */
-    if (store.get('display_mode') == 'arbre') {
-        $scope.box = false;
-        $scope.tree = true;
-    } else {
-        $scope.box = true;
-        $scope.tree = false;
-    }
-    
-    var loadPlatform = function(ApplicationService, application_name, platform_name) {
-        return $q(function(resolve, reject) {
+        var loadPlatform = function (application_name, platform_name) {
+            return $q(function (resolve, reject) {
             /* Get the application */
-            ApplicationService
-                    .get(application_name)
+                ApplicationService.get(application_name)
                     .then(function (application) {
                         /* If platform was mentionned in the route, try to find it */
                         /* If it does not exist show error */
-                        var platform;
+                        var platform = null;
 
                         if (platform_name) {
-                            platform = _.find(application.platforms, function (platform) {
-                                return platform.name === platform_name;
-                            });
-                        } else {
-                            platform = null;
+                            platform = _.find(application.platforms, { name: platform_name });
                         }
 
                         return {
-                            application: application,
-                            platform: platform
+                            application,
+                            platform,
                         };
                     }).then(function (selected_platform) {
-                if (_.isUndefined(selected_platform.platform)) {
-                    reject('Selected platform not found !');
-                } else if (selected_platform.platform === null) {
-                    resolve({
-                        application: selected_platform.application,
-                        platform: null
+                        if (_.isUndefined(selected_platform.platform)) {
+                            reject('Selected platform not found !');
+                        } else if (selected_platform.platform === null) {
+                            resolve({
+                                application: selected_platform.application,
+                                platform: null,
+                            });
+                        } else {
+                            ApplicationService.get_platform(selected_platform.platform.application_name, selected_platform.platform.name).then(function (platform) {
+                                resolve({
+                                    application: selected_platform.application,
+                                    platform,
+                                });
+                            });
+                        }
                     });
-                } else {
-                    ApplicationService.get_platform(selected_platform.platform.application_name, selected_platform.platform.name).then(function (platform) {
-                        resolve({
-                            application: selected_platform.application,
-                            platform: platform
-                        });
-                    });
-                }
             });
-        });
-    };
+        };
 
-    loadPlatform(ApplicationService, $routeParams.application, $routeParams.platform)
-            .then(function(result) {
+        loadPlatform($routeParams.application, $routeParams.platform)
+            .then(function (result) {
                 $scope.application = result.application;
                 $scope.platforms = result.application.platforms;
 
@@ -1376,252 +1332,253 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     $scope.update_main_box(result.platform);
                 }
             }).catch(function (error) {
-                notify({classes: ['error'], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl constructor'});
+                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesCtrl constructor' });
                 throw error;
             });
-}]);
+    },
+]);
 
 /**
  * Directive for rendering properties on box mode.
  */
-propertiesModule.directive('boxProperties', ['$timeout', '$rootScope', function ($timeout, $rootScope) {
-    return {
-        restrict : 'E',
-        templateUrl: 'application/box_properties.html',
-        link: function (){
-            $timeout(() => $rootScope.isLoading = false, 0);
-        }
-    }
-}]);
+propertiesModule.directive('boxProperties', [
+    '$timeout', '$rootScope', function ($timeout, $rootScope) {
+        return {
+            restrict: 'E',
+            templateUrl: 'application/box_properties.html',
+            link() {
+                $timeout(() => {
+                    $rootScope.isLoading = false;
+                }, 0);
+            },
+        };
+    },
+]);
 
 /**
  * Directive for rendering properties on tree mode.
  */
-propertiesModule.directive('treeProperties', ['$timeout', '$rootScope', function ($timeout, $rootScope) {
-    return {
-        restrict : 'E',
-        templateUrl: 'application/tree_properties.html',
-        link: function ($scope, element, attrs, ctrl){
-            $timeout(() => $rootScope.isLoading = false, 0);
-        }
-    }
-}]);
+propertiesModule.directive('treeProperties', [
+    '$timeout', '$rootScope', function ($timeout, $rootScope) {
+        return {
+            restrict: 'E',
+            templateUrl: 'application/tree_properties.html',
+            link() {
+                $timeout(() => {
+                    $rootScope.isLoading = false;
+                }, 0);
+            },
+        };
+    },
+]);
 
-propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', 'notify',
-        function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, notify) {
-
-    var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
+propertiesModule.controller('DiffCtrl', [
+    '$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', 'notify',
+    function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, notify) {
+        var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
         // 1 -> on both and identical values
         // 2 -> on both and different values
         // 3 -> only on to_compare_to
-        this.status = status;
-        this.property_name = property_name;
-        this.property_to_modify = property_to_modify;
-        this.property_to_compare_to = property_to_compare_to;
-        this.modified = false;
-        this.selected = false;
-    };
+            this.status = status;
+            this.property_name = property_name;
+            this.property_to_modify = property_to_modify;
+            this.property_to_compare_to = property_to_compare_to;
+            this.modified = false;
+            this.selected = false;
+        };
 
-    $scope.application_name = $routeParams.application;
-    $scope.platform_name = $routeParams.platform;
+        $scope.application_name = $routeParams.application;
+        $scope.platform_name = $routeParams.platform;
 
-    $scope.compare_application = $routeParams.compare_application;
-    $scope.compare_platform = $routeParams.compare_platform;
+        $scope.compare_application = $routeParams.compare_application;
+        $scope.compare_platform = $routeParams.compare_platform;
 
-    $scope.origin_timestamp = $routeParams.origin_timestamp;
-    $scope.timestamp = $routeParams.timestamp;
+        $scope.origin_timestamp = $routeParams.origin_timestamp;
+        $scope.timestamp = $routeParams.timestamp;
 
-    $scope.show_only_modified = false;
+        $scope.show_only_modified = false;
 
-    $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
-    $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
+        $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
+        $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
 
-    $scope.propertiesKeyFilter0 = "";
-    $scope.propertiesKeyFilter1 = "";
-    $scope.propertiesKeyFilter2 = "";
-    $scope.propertiesKeyFilter3 = "";
+        $scope.propertiesKeyFilter0 = '';
+        $scope.propertiesKeyFilter1 = '';
+        $scope.propertiesKeyFilter2 = '';
+        $scope.propertiesKeyFilter3 = '';
 
-    var splitedPropertiesPath = $routeParams.properties_path.split('#');
-    $scope.module = {
-        "name": splitedPropertiesPath[splitedPropertiesPath.length - 3],
-        "version": splitedPropertiesPath[splitedPropertiesPath.length - 2],
-        "is_working_copy": splitedPropertiesPath[splitedPropertiesPath.length - 1] == "WORKINGCOPY" ? true : false
-    }
+        var splitedPropertiesPath = $routeParams.properties_path.split('#');
+        $scope.module = {
+            'name': splitedPropertiesPath[splitedPropertiesPath.length - 3],
+            'version': splitedPropertiesPath[splitedPropertiesPath.length - 2],
+            'is_working_copy': splitedPropertiesPath[splitedPropertiesPath.length - 1] === 'WORKINGCOPY',
+        };
 
-    var compareSplitedPath = $routeParams.compare_path.split('#');
-    $scope.compare_module = {
-        "name": compareSplitedPath[compareSplitedPath.length - 3],
-        "version": compareSplitedPath[compareSplitedPath.length - 2],
-        "is_working_copy": compareSplitedPath[compareSplitedPath.length - 1] == "WORKINGCOPY" ? true : false
-    };
+        var compareSplitedPath = $routeParams.compare_path.split('#');
+        $scope.compare_module = {
+            'name': compareSplitedPath[compareSplitedPath.length - 3],
+            'version': compareSplitedPath[compareSplitedPath.length - 2],
+            'is_working_copy': compareSplitedPath[compareSplitedPath.length - 1] === 'WORKINGCOPY',
+        };
 
-    //Get the platform to get the version id
-    ApplicationService.get_platform($routeParams.application, $routeParams.platform).then(platform => $scope.platform = platform);
+        // Get the platform to get the version id
+        ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
+            $scope.platform = platform;
+        });
 
-    //Then get the properties, version id could have changed but it is really marginal
-    ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path).then(function (properties) {
-        $scope.properties_to_modify = properties;
-        if ($scope.module.name && $scope.module.version) {
-            return ModuleService.get_model($scope.module).then(function (model) {
-                $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
-            });
-        } else {
+        // Then get the properties, version id could have changed but it is really marginal
+        ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path).then(function (properties) {
+            $scope.properties_to_modify = properties;
+            if ($scope.module.name && $scope.module.version) {
+                return ModuleService.get_model($scope.module).then(function (model) {
+                    $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
+                });
+            }
             return Promise.resolve();
-        }
-    }).then(function () {
-        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
-    }).then(function (globalProperties) {
-        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(globalProperties);
-        return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
-    }).then(function (properties) {
-        $scope.properties_to_compare_to = properties;
-        if ($scope.compare_module.name && $scope.compare_module.version) {
-            return ModuleService.get_model($scope.compare_module).then(function (model) {
-                $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
-            });
-        } else {
+        }).then(function () {
+            return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
+        }).then(function (globalProperties) {
+            $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(globalProperties);
+            return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
+        }).then(function (properties) {
+            $scope.properties_to_compare_to = properties;
+            if ($scope.compare_module.name && $scope.compare_module.version) {
+                return ModuleService.get_model($scope.compare_module).then(function (model) {
+                    $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
+                });
+            }
             return Promise.resolve();
-        }
-    }).then(function () {
-        // Get global properties
-        return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, '#');
-    }).then(function (model) {
-        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
-        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
-        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
-        $scope.generate_diff_containers($routeParams.properties_path !== '#');
-    });
+        })
+            .then(function () {
+                // Get global properties
+                return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, '#');
+            })
+            .then(function (model) {
+                $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
+                $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
+                $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
+                $scope.generate_diff_containers($routeParams.properties_path !== '#');
+            });
 
-    //Everything needs to be in scope for this function to work
-    /**
-     * Generate diff container.
-     *
-     * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
-     */
-    $scope.generate_diff_containers = function (filterInModel) {
-        $scope.diff_containers = [];
-        //Group properties, this is a O(n^2) algo but is enough for the use case
-        //Only focus on key/value properties
-        //We set create a container for each property with a diff status, a property_to_modify, a property_to_compare_to
-        //First we look in the properties to modify, for each try:
-        //  - to check if value is empty -> status 3
-        //  - to find a property to compare to
-        //        - with identical value -> status 1
-        //        - with different value -> status 2
-        //  - if no matching property -> status 0
-        if (filterInModel) {
+        // Everything needs to be in scope for this function to work
+        /**
+         * Generate diff container.
+         *
+         * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
+         */
+        $scope.generate_diff_containers = function (filterInModel) {
+            $scope.diff_containers = [];
+            // Group properties, this is a O(n^2) algo but is enough for the use case
+            // Only focus on key/value properties
+            // We set create a container for each property with a diff status, a property_to_modify, a property_to_compare_to
+            // First we look in the properties to modify, for each try:
+            //  - to check if value is empty -> status 3
+            //  - to find a property to compare to
+            //        - with identical value -> status 1
+            //        - with different value -> status 2
+            //  - if no matching property -> status 0
+            if (filterInModel) {
             // There's not need to keep removed properties because readability is better without them
-            $scope.properties_to_modify.key_value_properties = _.filter($scope.properties_to_modify.key_value_properties, {inModel: true});
-            $scope.properties_to_compare_to.key_value_properties = _.filter($scope.properties_to_compare_to.key_value_properties, {inModel: true});
-        }
+                $scope.properties_to_modify.key_value_properties = _.filter($scope.properties_to_modify.key_value_properties, { inModel: true });
+                $scope.properties_to_compare_to.key_value_properties = _.filter($scope.properties_to_compare_to.key_value_properties, { inModel: true });
+            }
 
-        _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
-
+            _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
             // Search if property found on other platform
-            var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
+                var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
 
-            if (countItem === 0) {
-                //Avoid null pointer create prop to compare to with an empty value
-                var prop_to_compare_to = angular.copy(prop_to_modify);
-                prop_to_compare_to.value = '';
-                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
-                return;
-            }
-
-            //else try to find a matching prop_to_compare_to
-            var prop_to_compare_to = _.find($scope.properties_to_compare_to.key_value_properties, function (prop) {
-                return prop_to_modify.name === prop.name;
-            });
-
-            if (_.isUndefined(prop_to_compare_to)) {
-                //Avoid null pointer create prop to compare to with an empty value
-                var prop_to_compare_to = angular.copy(prop_to_modify);
-                prop_to_compare_to.value = '';
-                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
-            } else if (prop_to_modify.value === prop_to_compare_to.value) {
-                $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-            } else {
-                $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-            }
-        });
-
-        //Check properties remaining in compare_to (not existing or value equals to ''). The one we missed when iterating through properties_to_modify
-        _.each($scope.properties_to_compare_to.key_value_properties, function (prop_to_compare_to) {
-            var some = _.some($scope.properties_to_modify.key_value_properties, function (prop) {
-                return prop_to_compare_to.name === prop.name;
-            });
-
-            if (!some) {
-                //Avoid null pointer create prop to modify with an empty value
-                var prop_to_modify = angular.copy(prop_to_compare_to);
-                prop_to_modify.value = '';
-                $scope.diff_containers.push(new DiffContainer(3, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-            }
-        });
-    }
-
-    $scope.properties_compare_values_empty = "";
-
-    $translate('properties.compare.values.empty').then(function (translation) {
-        $scope.properties_compare_values_empty = translation;
-    });
-
-    $scope.formatProperty = function (property) {
-
-        if (property.globalValue) {
-
-            var compiled = property.value;
-
-            Object.keys(property.globalValue).forEach(function(key,index) {
-                compiled = compiled.split("{{"+ key + "}}").join(property.globalValue[key]);
-            });
-
-            return compiled;
-        }
-        if (!property.value) {
-            return $scope.properties_compare_values_empty;
-        }
-
-        return property.value;
-
-    }
-
-    //Helper for diff conainers ids
-    $scope.dot_to_underscore = function (string) {
-        return string.replace(/\./g, '_');
-    }
-
-    /*
-     * Select the containers that corresponds to the filters (ex: status = 2).
-     */
-    $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
-        _($scope.diff_containers).filter(function (container) {
-            //If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
-            if (propertiesKeyFilter) {
-                var name = '.*' + propertiesKeyFilter.toLowerCase().split(' ').join('.*');
-                try {
-                    var regex_name = new RegExp(name, 'i');
-                } catch(e) {
+                if (countItem === 0) {
+                    $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
+                    return;
                 }
-                if (!regex_name.test(container.property_name)) {
-                    return false;
+
+                // else try to find a matching prop_to_compare_to
+                var prop_to_compare_to = _.find($scope.properties_to_compare_to.key_value_properties, { name: prop_to_modify.name });
+
+                if (_.isUndefined(prop_to_compare_to)) {
+                    $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
+                } else if (prop_to_modify.value === prop_to_compare_to.value) {
+                    $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
+                } else {
+                    $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
                 }
-            }
+            });
 
-            //We apply the other filters to select the containers that we want
-            for (var key in filter) {
-                if (!_.isEqual(filter[key], container[key])) return false;
-            }
+            // Check properties remaining in compare_to (not existing or value equals to ''). The one we missed when iterating through properties_to_modify
+            _.each($scope.properties_to_compare_to.key_value_properties, function (prop_to_compare_to) {
+                var some = _.some($scope.properties_to_modify.key_value_properties, function (prop) {
+                    return prop_to_compare_to.name === prop.name;
+                });
 
-            return true;
-        }).each(function (container) {
-            //Finally, we change the selection of the selected containers
-            container.selected = selected;
+                if (!some) {
+                // Avoid null pointer create prop to modify with an empty value
+                    var prop_to_modify = angular.copy(prop_to_compare_to);
+                    prop_to_modify.value = '';
+                    $scope.diff_containers.push(new DiffContainer(3, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
+                }
+            });
+        };
+
+        $scope.properties_compare_values_empty = '';
+
+        $translate('properties.compare.values.empty').then(function (translation) {
+            $scope.properties_compare_values_empty = translation;
         });
-    };
 
-    $scope.apply_diff = function () {
+        $scope.formatProperty = function (property) {
+            if (property.globalValue) {
+                var compiled = property.value;
+
+                Object.keys(property.globalValue).forEach(function (key) {
+                    compiled = compiled.split(`{{${ key }}}`).join(property.globalValue[key]);
+                });
+
+                return compiled;
+            }
+            if (!property.value) {
+                return $scope.properties_compare_values_empty;
+            }
+
+            return property.value;
+        };
+
+        // Helper for diff conainers ids
+        $scope.dot_to_underscore = function (text) {
+            return text.replace(/\./g, '_');
+        };
+
+        /*
+         * Select the containers that corresponds to the filters (ex: status = 2).
+         */
+        $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
+            $scope.diff_containers.filter(function (container) {
+            // If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
+                if (propertiesKeyFilter) {
+                    try {
+                        var regex_name = new RegExp(`.*${ propertiesKeyFilter.toLowerCase().split(' ').join('.*') }`, 'i');
+                        if (!regex_name.test(container.property_name)) {
+                            return false;
+                        }
+                    } catch (error) {
+                        return false;
+                    }
+                }
+
+                // We apply the other filters to select the containers that we want
+                for (var key in filter) {
+                    if (!_.isEqual(filter[key], container[key])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }).forEach(function (container) {
+            // Finally, we change the selection of the selected containers
+                container.selected = selected;
+            });
+        };
+
+        $scope.apply_diff = function () {
         /* Filter the diff container that have been selected
          depending on the status apply different behaviors
          if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
@@ -1630,136 +1587,140 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
          if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
          if status == 3 : same behavior as status == 2
          */
-        _($scope.diff_containers).filter(function (diff_container) {
-            return diff_container.selected
-        }).each(function (diff_container) {
-            switch (diff_container.status) {
+            $scope.diff_containers.filter(function (diff_container) {
+                return diff_container.selected;
+            }).forEach(function (diff_container) {
+                switch (diff_container.status) {
                 case 0:
                     break;
                 case 1:
-                    //Revert modifs
+                    // Revert modifs
                     diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
                     delete diff_container.property_to_modify.old_value;
 
-                    //Change status and reset markers. Keep selected for user experience
-                    //Status depends on old_value, if it was empty status is 3 otherwise it is 2
-                    diff_container.status = diff_container.property_to_modify.value != '' ? 2 : 3;
+                    // Change status and reset markers. Keep selected for user experience
+                    // Status depends on old_value, if it was empty status is 3 otherwise it is 2
+                    diff_container.status = diff_container.property_to_modify.value === '' ? 3 : 2;
                     diff_container.modified = false;
                     break;
                 case 2:
-                    //Store old value and apply modifs
+                    // Store old value and apply modifs
                     diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
                     diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
-                    //Change status and reset markers. Keep selected for user experience
+                    // Change status and reset markers. Keep selected for user experience
                     diff_container.modified = true;
                     diff_container.status = 1;
                     break;
                 case 3:
-                    //Same as 2, copy paste (bad :p )
-                    //Store old value and apply modifs
+                    // Same as 2, copy paste (bad :p )
+                    // Store old value and apply modifs
                     diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
                     diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
-                    //Change status and reset markers. Keep selected for user experience
+                    // Change status and reset markers. Keep selected for user experience
                     diff_container.modified = true;
                     diff_container.status = 1;
                     break;
                 default:
-                    console.error("Diff container with invalid status -> " + container.status + ". It will be ignored");
+                    console.error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
                     break;
+                }
+            });
+        };
+
+        $scope.save_diff = function () {
+        // Get all the properties modified
+            var key_value_properties = $scope.diff_containers.filter(function (diff_container) {
+                return diff_container.property_to_modify;
+            }).map(function (diff_container) {
+                return diff_container.property_to_modify;
+            });
+
+            // Is some diff item selected ?
+            var hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
+
+            if (!hasSomeDiffSelected) {
+                $translate('properties-not-changed.message').then(function (label) {
+                    notify({ classes: [ 'error' ], message: label });
+                });
+                return;
             }
-        });
 
-    };
+            $scope.properties_to_modify.key_value_properties = key_value_properties;
 
-    $scope.save_diff = function () {
-        //Get all the properties modified
-        var key_value_properties = _($scope.diff_containers).filter(function (diff_container) {
-            return diff_container.property_to_modify != null;
-        }).map(function (diff_container) {
-            return diff_container.property_to_modify;
-        }).value();
-
-        // Is some diff item selected ?
-        var hasSomeDiffSelected = _.some($scope.diff_containers, {selected : true});
-
-        if ( !hasSomeDiffSelected ){
-            $translate('properties-not-changed.message').then(function(label) {
-                notify({classes: ['error'], message: label});
+            // Save the properties
+            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function (comment) {
+                ApplicationService.save_properties($routeParams.application, $scope.platform, $scope.properties_to_modify, $routeParams.properties_path, comment).then(function () {
+                    $route.reload();
+                });
             });
-            return;
-        }
-
-        $scope.properties_to_modify.key_value_properties = key_value_properties;
-
-        // Save the properties
-        HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function ( comment ){
-            ApplicationService.save_properties($routeParams.application, $scope.platform, $scope.properties_to_modify, $routeParams.properties_path, comment ).then(function (properties) {
-                $route.reload();
-            });
-        });
-    };
-
-}]);
+        };
+    },
+]);
 
 /**
  * This directive will display only the simple properties list.
  * Added by Tidiane SIDIBE on 11/03/2016
  */
- propertiesModule.directive('simplePropertiesList', ['LocalChanges', function (LocalChanges) {
+propertiesModule.directive('simplePropertiesList', [
+    'LocalChanges', function (LocalChanges) {
+        return {
+            restrict: 'E',
+            scope: {
+                properties: '=',
+                platform: '=',
+                module: '=',
+            },
+            templateUrl: 'properties/simple-properties-list.html',
+            link(scope) {
+                scope.propertiesKeyFilter = '';
+                scope.propertiesValueFilter = '';
 
-     return {
-         restrict: 'E',
-         scope: {
-             properties: '=',
-             platform: '=',
-             module: '='
-         },
-         templateUrl: "properties/simple-properties-list.html",
-         link: function (scope, element, attrs) {
-             scope.propertiesKeyFilter = "";
-             scope.propertiesValueFilter = "";
+                scope.hasLocalChanges = function () {
+                    return LocalChanges.hasLocalChanges(scope.platform.application_name, scope.platform.name, scope.module ? scope.module.properties_path : '');
+                };
 
-             scope.hasLocalChanges = function () {
-                return LocalChanges.hasLocalChanges(scope.platform.application_name, scope.platform.name, scope.module ? scope.module.properties_path : '');
-             }
+                scope.hasSyncedChanges = function () {
+                    return LocalChanges.hasSyncedChanges({ 'key_value_properties': scope.properties });
+                };
 
-             scope.hasSyncedChanges = function () {
-                return LocalChanges.hasSyncedChanges({'key_value_properties' :scope.properties});
-             }
+                scope.areFullySynced = function () {
+                    var properties_path = scope.module ? scope.module.properties_path : '';
+                    var platform = scope.platform;
 
-             scope.areFullySynced = function () {
-                var properties_path = scope.module ? scope.module.properties_path : '';
-                var platform = scope.platform;
+                    return LocalChanges.areFullySynced(platform ? platform.application_name : '', platform ? platform.name : '', properties_path, { 'key_value_properties': scope.properties });
+                };
 
-                return LocalChanges.areFullySynced(platform != undefined ? platform.application_name : '', platform != undefined ? platform.name : '', properties_path, {'key_value_properties': scope.properties});
-             }
+                scope.cleanLocalChanges = function () {
+                    LocalChanges.clearLocalChanges({ 'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path });
+                    scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
+                };
+            },
+        };
+    },
+]);
 
-             scope.cleanLocalChanges = function () {
-                LocalChanges.clearLocalChanges({'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path});
-                scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, {'key_value_properties': scope.properties}).key_value_properties;
-             }
-         }
-     };
- }]);
-
-propertiesModule.directive('adjustHeightToTextContent', ['$timeout', function ($timeout) {
-    return {
-        restrict: 'A',
-        scope: {
-            property: '=',
-        },
-        link: function (scope, element) {
-            scope.$watch('property', function () {
-                var textarea = element[0];
-                // Recipe from: https://stackoverflow.com/a/995374/636849
-                textarea.style.height = '1px';
-                $timeout(() => textarea.style.height = textarea.scrollHeight + 'px', 0);
-            });
-        }
-    };
-}]);
+propertiesModule.directive('adjustHeightToTextContent', [
+    '$timeout', function ($timeout) {
+        return {
+            restrict: 'A',
+            scope: {
+                property: '=',
+            },
+            link(scope, element) {
+                scope.$watch('property', function () {
+                    var textarea = element[0];
+                    // Recipe from: https://stackoverflow.com/a/995374/636849
+                    textarea.style.height = '1px';
+                    $timeout(() => {
+                        textarea.style.height = `${ textarea.scrollHeight }px`;
+                    }, 0);
+                });
+            },
+        };
+    },
+]);
 
 
 /**
@@ -1768,66 +1729,62 @@ propertiesModule.directive('adjustHeightToTextContent', ['$timeout', function ($
  *  2. Iterable probperties
  * Added by Tidiane SIDIBE on 11/03/2016
  */
-propertiesModule.directive('propertiesList', ['LocalChanges', function (LocalChanges) {
+propertiesModule.directive('propertiesList', [
+    'LocalChanges', function (LocalChanges) {
+        return {
+            restrict: 'E',
+            scope: {
+                properties: '=',
+                propertiesModel: '=',
+                platform: '=',
+                module: '=',
+            },
+            templateUrl: 'properties/properties-list.html',
+            link(scope) {
+            // Simple properties filters
+                scope.propertiesKeyFilter = '';
+                scope.propertiesValueFilter = '';
 
-    return {
-        restrict: 'E',
-        scope: {
-            properties: '=',
-            propertiesModel: '=',
-            platform: '=',
-            module: '='
-        },
-        templateUrl: "properties/properties-list.html",
-        link: function (scope) {
-            //Simple properties filters
-            scope.propertiesKeyFilter = "";
-            scope.propertiesValueFilter = "";
+                // Iterable properties filters
+                scope.iterablePropertiesNameFilter = '';
+                scope.iterablePropertiesValueFilter = '';
 
-            //Iterable properties filters
-            scope.iterablePropertiesNameFilter =  "";
-            scope.iterablePropertiesValueFilter = "";
-
-            scope.isOpen = 1;
-            /**
-             * Gets the properties values from the model name.
-             * This is for iterable properties only.
-             */
-            scope.getValues = function (name){
-                if (scope.properties){
-                    var values = _.find(scope.properties.iterable_properties, {name : name});
-                    if(!values) {
+                scope.isOpen = 1;
+                /**
+                 * Gets the properties values from the model name.
+                 * This is for iterable properties only.
+                 */
+                scope.getValues = function (name) {
+                    if (!scope.properties) {
+                        return null;
+                    }
+                    var values = _.find(scope.properties.iterable_properties, { name });
+                    if (!values) {
                         values = {
                             inModel: true,
                             iterable_valorisation_items: [],
-                            name: name
+                            name,
                         };
                         scope.properties.iterable_properties.push(values);
                     }
                     return values;
-                }
-            };
+                };
 
-            // Manager accordion open/close
-            scope.open = function (index){
-                if ( index === scope.isOpen){
-                    scope.isOpen = undefined;
-                }else{
-                    scope.isOpen = index;
-                }
-            };
+                // Manager accordion open/close
+                scope.open = function (index) {
+                    scope.isOpen = (index === scope.isOpen) ? null : index;
+                };
 
-            scope.hasLocalChange = function () {
+                scope.hasLocalChange = function () {
+                    var properties_path = scope.module ? scope.module.properties_path : '';
+                    var platform = scope.platform;
 
-                var properties_path = scope.module ? scope.module.properties_path : '';
-                var platform = scope.platform;
-
-                return LocalChanges.hasLocalChanges(platform != undefined ? platform.application_name : '', platform != undefined ? platform.name : '', properties_path);
-
-            };
-        }
-    };
-}]);
+                    return LocalChanges.hasLocalChanges(platform ? platform.application_name : '', platform ? platform.name : '', properties_path);
+                };
+            },
+        };
+    },
+]);
 
 /**
  * Display the deleted properties button.
@@ -1835,12 +1792,11 @@ propertiesModule.directive('propertiesList', ['LocalChanges', function (LocalCha
  * @see toggleDeletedIterableProperties for iterable properties
  */
 propertiesModule.directive('toggleDeletedProperties', function () {
-
     return {
         restrict: 'E',
         scope: {
             keyValueProperties: '=',
-            toggle: '='
+            toggle: '=',
         },
         template: '<md-switch id="toggle-deleted-properties_switch" class="md-primary md-block" ' +
             'ng-model="toggle"' +
@@ -1849,7 +1805,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
             '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties() }})          ' +
             '</md-switch>',
-        link: function (scope) {
+        link(scope) {
             scope.getNumberOfDeletedProperties = function () {
                 var count = 0;
 
@@ -1865,9 +1821,8 @@ propertiesModule.directive('toggleDeletedProperties', function () {
                 }
                 return count;
             };
-        }
-    }
-
+        },
+    };
 });
 
 /**
@@ -1876,8 +1831,8 @@ propertiesModule.directive('toggleDeletedProperties', function () {
  */
 propertiesModule.directive('focusSaveGlobalProperties', function () {
     return function (scope, element) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
+        element.bind('keydown keypress', function (event) {
+            if (event.which === 13) {
                 scope.$parent.save_global_properties(scope.$parent.platform.global_properties, false);
                 event.preventDefault();
             }
@@ -1889,12 +1844,11 @@ propertiesModule.directive('focusSaveGlobalProperties', function () {
  * Diplay warning message when value is same/or not and source of value is different.
  */
 propertiesModule.directive('warningValue', function () {
-
     return {
         restrict: 'E',
         scope: {
             propertyToModify: '=',
-            propertyToCompareTo: '='
+            propertyToCompareTo: '=',
         },
         template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
         '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
@@ -1902,21 +1856,19 @@ propertiesModule.directive('warningValue', function () {
         'La valeur sur l\'application' +
         'est valorisée depuis une valeur par défaut' +
         '</md-tooltip>' +
-        '</span>'
-    }
-
+        '</span>',
+    };
 });
 
 propertiesModule.factory('Properties', function () {
     var Properties = function (data) {
-
         angular.extend(this, {
             key_value_properties: [],
             iterable_properties: [],
-            versionID: -1
+            versionID: -1,
         }, data);
 
-        //Add a property that allows to filter other properties values
+        // Add a property that allows to filter other properties values
         _.each(this.key_value_properties, function (kvp) {
             kvp.filtrable_value = kvp.value;
         });
@@ -1937,97 +1889,87 @@ propertiesModule.factory('Properties', function () {
             if (!this.hasKey(key_value_property.name)) {
                 this.key_value_properties.push(key_value_property);
             }
-        }
+        };
 
         this.deleteKeyValue = function (key_value_property) {
-            var index = this.key_value_properties.indexOf(key_value_property);
-            if (index > -1) {
-                this.key_value_properties.splice(index, 1);
-            }
-        }
+            _.remove(this.key_value_properties, key_value_property);
+        };
 
         this.mergeWithGlobalProperties = function (global_properties) {
-            //Here we just want to mark the one existing identical in the global properties,
-            //because they wont be editable
-            //Mark also the ones just using a global in their valorisation
+            // Here we just want to mark the one existing identical in the global properties,
+            // because they wont be editable
+            // Mark also the ones just using a global in their valorisation
             _.each(this.key_value_properties, function (key_value) {
-                //First clean, in case there has been updates from the server
+                // First clean, in case there has been updates from the server
                 key_value.inGlobal = false;
                 key_value.useGlobal = false;
 
-                var existing_global_property = _.find(global_properties.key_value_properties, function (kvp) {
-                    return key_value.name === kvp.name;
-                }, 'value');
-                if (!_.isUndefined(existing_global_property)) {
+                var existing_global_property = _.find(global_properties.key_value_properties, { name: key_value.name });
+                if (existing_global_property) {
                     key_value.inGlobal = true;
                     key_value.value = existing_global_property.value;
-                } else {
-                    //Try to check if it uses a global in the valorisation
-                    if (_.some(global_properties.key_value_properties, function (kvp) {
-                        return !_.isUndefined(key_value.value) && key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
-                    })) {
-                        key_value.useGlobal = true;
-                        key_value.globalValue = {};
+                } else if (_.some(global_properties.key_value_properties, (kvp) =>
+                    key_value.value && _.includes(key_value.value, `{{${ kvp.name }}}`)
+                )) { // Try to check if it uses a global in the valorisation
+                    key_value.useGlobal = true;
+                    key_value.globalValue = {};
 
-                        _.forEach(global_properties.key_value_properties, function (kvp) {
-                                                                    if (key_value.value.indexOf('{{' + kvp.name + '}}') != -1) {
-                                                                       key_value.globalValue[kvp.name] = kvp.value;
-                                                                    }
-                                                                });
-                    }
+                    _.forEach(global_properties.key_value_properties, function (kvp) {
+                        if (_.includes(key_value.value, `{{${ kvp.name }}}`)) {
+                            key_value.globalValue[kvp.name] = kvp.value;
+                        }
+                    });
                 }
             });
 
             return this;
-        }
+        };
 
         this.mergeWithModel = function (model) {
-            var me = this;
             /* Mark key_values that are in the model */
             _.each(this.key_value_properties, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
 
                 if (key_value.inModel) {
                     // Add required/default
-                    var prop = _.find(model.key_value_properties, function (kvp) {
-                        return kvp.name === key_value.name;
-                    });
+                    var prop = _.find(model.key_value_properties, { name: key_value.name });
 
                     key_value.required = (prop.required) ? prop.required : false;
                     key_value.password = (prop.password) ? prop.password : false;
-                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
-                    key_value.pattern = (prop.pattern) ? prop.pattern : "";
+                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : '';
+                    key_value.pattern = (prop.pattern) ? prop.pattern : '';
                 } else {
                     key_value.required = false;
                     key_value.password = false;
-                    key_value.defaultValue = "";
-                    key_value.pattern = "";
+                    key_value.defaultValue = '';
+                    key_value.pattern = '';
                 }
             });
 
             // Add key_values that are only in the model
-            _(model.key_value_properties).filter(function (model_key_value) {
+            var me = this;
+            model.key_value_properties.filter(function (model_key_value) {
                 return !me.hasKey(model_key_value.name);
-            }).each(function (model_key_value) {
+            }).forEach(function (model_key_value) {
                 me.key_value_properties.push({
                     name: model_key_value.name,
                     comment: model_key_value.comment,
-                    value: (model_key_value.required) ? undefined : "", // 'undefined' to make difference with void string.
+                    value: (model_key_value.required) ? null : '', // 'null' to make difference with void string.
                     inModel: true,
                     required: (model_key_value.required) ? model_key_value.required : false,
                     password: (model_key_value.password) ? model_key_value.password : false,
-                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : "",
-                    pattern: (model_key_value.pattern) ? model_key_value.pattern : ""
+                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : '',
+                    pattern: (model_key_value.pattern) ? model_key_value.pattern : '',
                 });
             });
 
             // Add iterable property that are only in the model
             _.each(this.iterable_properties, function (iterable) {
-                iterable.inModel = !_.isUndefined(_(model.iterable_properties).find({name: iterable.name}));
+                iterable.inModel = !_.isUndefined(_.find(model.iterable_properties, { name: iterable.name }));
             });
 
             /**
-             * Merge model and value for iterate value.
+             * Merge model and value for iterable value.
              *
              * @param iterable_properties -> array with properties
              *                              {
@@ -2061,97 +2003,86 @@ propertiesModule.factory('Properties', function () {
              *                              }
              */
             var scanIterableItems = function (iterable_model, iterable_properties) {
-                _(iterable_model).each(function (model_iterable) {
-                    // Found iterate properties for iterable_model
-                    var it = _(iterable_properties).filter({name: model_iterable.name});
+                _.each(iterable_model, function (modelIterable) {
+                    // Found iterable properties for iterable_model
+                    var itProps = _.filter(iterable_properties, { name: modelIterable.name });
 
-                    // Get current model part
-                    var currentModel = model_iterable.fields;
-
-                    // For each item in iterate found
-                    it.each(function (itProp) {
-                        // For each valorisation of iterate
-                        _(itProp.iterable_valorisation_items).each(function (val) {
-
-                            // For each values in iterate
-                            _(val.values).each(function (item) {
+                    // For each item in iterable found
+                    _.each(itProps, function (itProp) {
+                        // For each valorisation of iterable
+                        _.each(itProp.iterable_valorisation_items, function (val) {
+                            // For each values in iterable
+                            _.each(val.values, function (item) {
                                 // give it an identifier
-                                val._id = getIdentifier ();
+                                val.id = getIdentifier();
 
                                 // clean the title if necessary
-                                if ( _.isEqual (val.title, "not used") ){
-                                   val.title = "";
+                                if (_.isEqual(val.title, 'not used')) {
+                                    val.title = '';
                                 }
 
                                 if (item.iterable_valorisation_items) {
-                                    // New iterate
-                                    _(currentModel).filter({name: item.name}).each(function (prop) {
+                                    // New iterable
+                                    _.filter(modelIterable.fields, { name: item.name }).each(function (prop) {
                                         item.inModel = true;
-                                        scanIterableItems([prop], [item]);
+                                        scanIterableItems([ prop ], [ item ]);
                                     });
                                 } else {
                                     // Search model
-                                    _(currentModel).filter({name: item.name}).each(function (prop) {
+                                    _.each(_.filter(modelIterable.fields, { name: item.name }), function (prop) {
                                         item.comment = prop.comment;
                                         item.inModel = true;
                                         item.required = (prop.required) ? prop.required : false;
                                         item.password = (prop.password) ? prop.password : false;
-                                        item.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
-                                        item.pattern = (prop.pattern) ? prop.pattern : "";
+                                        item.defaultValue = (prop.defaultValue) ? prop.defaultValue : '';
+                                        item.pattern = (prop.pattern) ? prop.pattern : '';
                                     });
                                 }
                             });
 
-                            _(currentModel).each(function (prop){
-                                var found = _.find(val.values, {name: prop.name});
-
-                                if ( _.isUndefined (found) ){
+                            _.each(modelIterable.fields, function (prop) {
+                                if (!_.find(val.values, { name: prop.name })) {
                                     // is it an iterable ?
-                                    if ( !_.isUndefined ( prop.fields ) ){
-
+                                    if (prop.fields) {
                                         val.values.push({
                                             name: prop.name,
                                             iterable_valorisation_items: [],
-                                            inModel: true
+                                            inModel: true,
                                         });
-
-                                        var iterable = val.values[ val.values.length - 1];
-
                                         // add iterable values based on the model
-                                        addFromModel(iterable, prop);
-                                    }else{
+                                        addFromModel(_.last(val.values), prop);
+                                    } else {
                                         val.values.push({
                                             name: prop.name,
-                                            value: (prop.required) ? undefined : "",
+                                            value: (prop.required) ? null : '',
                                             comment: prop.comment,
                                             inModel: true,
                                             required: (prop.required) ? prop.required : false,
                                             password: (prop.password) ? prop.password : false,
-                                            defaultValue: (prop.defaultValue) ? prop.defaultValue : "",
-                                            pattern: (prop.pattern) ? prop.pattern : ""
+                                            defaultValue: (prop.defaultValue) ? prop.defaultValue : '',
+                                            pattern: (prop.pattern) ? prop.pattern : '',
                                         });
                                     }
                                 }
                             });
-
                         });
                     });
                 });
             };
 
-            scanIterableItems(model.iterable_properties, me.iterable_properties);
+            scanIterableItems(model.iterable_properties, this.iterable_properties);
 
             // Taking care of missing values
             // for each model in iterable
-            _(model.iterable_properties).each(function(_model){
+            _.each(model.iterable_properties, function (_model) {
                 // find the values
-                var values = _.find(me.iterable_properties, {name : _model.name});
+                var values = _.find(me.iterable_properties, { name: _model.name });
 
-                if (_.isUndefined(values)){
+                if (_.isUndefined(values)) {
                     values = {
                         inModel: true,
                         iterable_valorisation_items: [],
-                        name: _model.name
+                        name: _model.name,
                     };
 
                     // add it
@@ -2168,94 +2099,33 @@ propertiesModule.factory('Properties', function () {
             });
 
             // for iterable properties
-            // TODO : needs to be updated for iterable of iterable properties ?
             this.iterable_properties = _.filter(this.iterable_properties, function (property) {
-                if (property.inModel){
-
-                    _(property.iterable_valorisation_items).each (function (valorisation){
-                        var inModelVals = undefined;
-                        inModelVals = _.filter(valorisation.values, function (val){
-                            return val.inModel;
-                        });
-
-                        // set by the filtered
-                        valorisation.values = inModelVals;
-                    });
-
-                    return true;
+                if (!property.inModel) {
+                    return false;
                 }
+                _.each(property.iterable_valorisation_items, function (valorisation) {
+                    var inModelVals = null;
+                    inModelVals = _.filter(valorisation.values, (val) => val.inModel);
+                    // set by the filtered
+                    valorisation.values = inModelVals;
+                });
+                return true;
             });
-        }
+        };
 
         this.to_rest_entity = function () {
-
-            /**
-             * Private function
-             * This convert inner iterable properties to rest entity
-             * Makes use of recursion
-             * @param {Object} iterable : the iterable property
-             * @param {Object} _iterable : the values of the iterable property
-             */
-            var innerIterable = function (iterable, _iterable){
-                _(iterable.iterable_valorisation_items).each(function (item){
-
-                    _iterable.iterable_valorisation_items.push({
-                       title: item.title,
-                       values: []
-                    });
-
-                    var _item = _iterable.iterable_valorisation_items [ _iterable.iterable_valorisation_items.length - 1];
-
-                    _(item.values).each(function (value){
-                        if ( _.isUndefined ( value.iterable_valorisation_items ) ){
-                            _item.values.push({
-                                name: value.name,
-                                value: value.value
-                            });
-                        }else {
-                            _item.values.push({
-                               name: value.name,
-                               iterable_valorisation_items: []
-                            });
-
-                            var _inner = _item.values[ _item.values.length - 1];
-                            innerIterable(value, _inner);
-                        }
-                    })
-                })
-            };
-
-            // The rest entity of properties
-            var entity = {
+            return {
                 versionID: this.versionID,
-                key_value_properties: _.map(this.key_value_properties, function (kvp) {
-                    return {
-                        name: kvp.name,
-                        comment: kvp.comment,
-                        value: kvp.value || ''
-                    }
-                }),
-                iterable_properties:  []
-            };
-
-            // doing conversion for iterable properties
-            var iterableEntity = entity.iterable_properties;
-
-            _(this.iterable_properties).each(function (iterable){
-
-                var _iterable = {
+                key_value_properties: _.map(this.key_value_properties, (kvp) => ({
+                    name: kvp.name,
+                    comment: kvp.comment,
+                    value: kvp.value || '',
+                })),
+                iterable_properties: _.map(this.iterable_properties, (iterable) => ({
                     name: iterable.name,
-                    iterable_valorisation_items: []
-                };
-
-                // do it for inners
-                innerIterable(iterable, _iterable);
-
-                // add the value
-                iterableEntity.push(_iterable);
-            });
-
-            return entity;
+                    iterable_valorisation_items: _.cloneDeep(iterable.iterable_valorisation_items),
+                })),
+            };
         };
 
         this.mergeWithDefaultValue = function () {
@@ -2264,8 +2134,8 @@ propertiesModule.factory('Properties', function () {
             _.each(me.key_value_properties, function (key_value) {
                 if (key_value.inModel) {
                     // Default value are not avaible for deleted properties
-                    if (_.isString(key_value.value) && _.isEmpty(key_value.value)
-                        && _.isString(key_value.defaultValue) && !_.isEmpty(key_value.defaultValue)) {
+                    if (_.isString(key_value.value) && _.isEmpty(key_value.value) &&
+                        _.isString(key_value.defaultValue) && !_.isEmpty(key_value.defaultValue)) {
                         key_value.inDefault = true;
                         key_value.value = key_value.defaultValue;
                     } else {
@@ -2278,21 +2148,21 @@ propertiesModule.factory('Properties', function () {
             // Updated by tidiane_sidibe on 29/02/2016
             var mergeWithDefaultValueOfIterable = function (iterable_props) {
                 _.each(iterable_props, function (iterable) {
-                    if ( iterable.inModel ){
-                        _.each (iterable.iterable_valorisation_items, function (item){
-                           if (!_.isUndefined(item.iterable_valorisation_items)){
-                               // Recur again on the item
-                               mergeWithDefaultValueOfIterable(item);
-                           }else {
-                               _(item.values).each(function (field){
-                                    if (_.isString(field.value) && _.isEmpty(field.value) && _.isString(field.defaultValue) && !_.isEmpty(field.defaultValue)){
-                                      field.inDefault = true;
-                                      field.value = item.defaultValue;
-                                   }else {
-                                      field.inDefault = false;
-                                   }
-                               });
-                           }
+                    if (iterable.inModel) {
+                        _.each(iterable.iterable_valorisation_items, function (item) {
+                            if (item.iterable_valorisation_items) {
+                                // Recur again on the item
+                                mergeWithDefaultValueOfIterable(item);
+                            } else {
+                                _.each(item.values, function (field) {
+                                    if (_.isString(field.value) && _.isEmpty(field.value) && _.isString(field.defaultValue) && !_.isEmpty(field.defaultValue)) {
+                                        field.inDefault = true;
+                                        field.value = item.defaultValue;
+                                    } else {
+                                        field.inDefault = false;
+                                    }
+                                });
+                            }
                         });
                     }
                 });
@@ -2302,7 +2172,7 @@ propertiesModule.factory('Properties', function () {
             mergeWithDefaultValueOfIterable(me.iterable_properties);
 
             return this;
-        }
+        };
     };
 
     return Properties;
@@ -2313,45 +2183,40 @@ propertiesModule.factory('Properties', function () {
  * Used only for simple properties.
  */
 propertiesModule.filter('displayProperties', function () {
-
     return function (items, display) {
-        return _.filter(items, function(item) {
+        return _.filter(items, function (item) {
             return (display ? !item.inModel : _.isUndefined(display) || display || item.inModel);
         });
     };
-
 });
 
 propertiesModule.filter('filterBox', function () {
     return function (boxes_object, searchString) {
-        //A box is filtered by its name or its modules names or its children boxes
-        var filter_one_box = function(box) {
-            //See if the parent box was previously fitered thanks to its name
-            if(!_.isUndefined(box.parent_box) && box.parent_box.name_filtered == true){
-                //If the parent box was filtered by its name, we want to display the children boxes, just return true
+        // A box is filtered by its name or its modules names or its children boxes
+        var filter_one_box = function (box) {
+            // See if the parent box was previously fitered thanks to its name
+            if (!_.isUndefined(box.parent_box) && box.parent_box.name_filtered) {
+                // If the parent box was filtered by its name, we want to display the children boxes, just return true
                 return true;
             }
 
-            //See if this box can be filtered by its name
-            if(box.name.toUpperCase().indexOf(searchString) > -1) {
-
-                //If so, hold a boolean on that box. It will be helpful when the filter will be called by one of the box's children
+            // See if this box can be filtered by its name
+            if (_.includes(box.name.toUpperCase(), searchString)) {
+                // If so, hold a boolean on that box. It will be helpful when the filter will be called by one of the box's children
                 box.name_filtered = true;
-
                 return true;
             }
 
-            //We couldn't filter by name so we try to iterate over the modules directly located in that box and filter by their name
+            // We couldn't filter by name so we try to iterate over the modules directly located in that box and filter by their name
             var found_matching_module = false;
 
-            _(box.modules).each(function(module) {
-                if(module.name.toUpperCase().indexOf(searchString) > -1) {
-
+            _.each(box.modules, function (module) {
+                if (_.includes(module.name.toUpperCase(), searchString)) {
                     found_matching_module = true;
                 } else {
                     // Search in each instance
-                    _(module.instances).each(function(instance) {
-                        if (instance.name.toUpperCase().indexOf(searchString) > -1) {
+                    _.each(module.instances, function (instance) {
+                        if (_.includes(instance.name.toUpperCase(), searchString)) {
                             found_matching_module = true;
                             module.opened = true;
                         }
@@ -2359,16 +2224,16 @@ propertiesModule.filter('filterBox', function () {
                 }
             });
 
-            if(found_matching_module) {
+            if (found_matching_module) {
                 box.name_filtered = false;
                 return true;
             }
 
             var found_matching_children_box = false;
 
-            _(box.children).each(function(box){
-                if(filter_one_box(box)) {
-                    box.opened = true;
+            _.each(box.children, function (boxChild) {
+                if (filter_one_box(boxChild)) {
+                    boxChild.opened = true;
                     found_matching_children_box = true;
                 }
             });
@@ -2381,16 +2246,15 @@ propertiesModule.filter('filterBox', function () {
         if (!_.isEmpty(searchString)) {
             searchString = searchString.toUpperCase();
 
-            var picked = _.pick(boxes_object, function(box) {
+            var picked = _.pick(boxes_object, function (box) {
                 box.opened = filter_one_box(box);
 
                 return box.opened;
             });
 
             return picked;
-        } else {
-            return boxes_object;
         }
+        return boxes_object;
     };
 });
 
@@ -2398,10 +2262,10 @@ propertiesModule.directive('initInstanceFunctions', function () {
     return {
         restrict: 'E',
         replace: true,
-        template: "<div></div>",
+        template: '<div></div>',
         scope: false,
-        link: function (scope, element, attrs) {
-            var setSign = function() {
+        link(scope, element, attrs) {
+            var setSign = function () {
                 scope.treedisplay = scope.ngModel.opened;
                 scope.sign = scope.ngModel.opened ? '-' : '+';
             };
@@ -2412,21 +2276,21 @@ propertiesModule.directive('initInstanceFunctions', function () {
                 setSign();
             };
 
-            scope.$on('quickDisplayInstanceDetails',function(event, data){
+            scope.$on('quickDisplayInstanceDetails', function () {
                 scope.ngModel.opened = true;
 
                 Object.keys(scope.ngModel.children).forEach(function (key) {
-                   scope.ngModel.children[key].opened = true;
+                    scope.ngModel.children[key].opened = true;
                 });
 
                 setSign();
             });
 
-            scope.$on('quickHideInstanceDetails',function(event, data){
+            scope.$on('quickHideInstanceDetails', function () {
                 scope.ngModel.opened = false;
 
                 Object.keys(scope.ngModel.children).forEach(function (key) {
-                   scope.ngModel.children[key].opened = false;
+                    scope.ngModel.children[key].opened = false;
                 });
 
                 setSign();
@@ -2434,24 +2298,24 @@ propertiesModule.directive('initInstanceFunctions', function () {
 
 
             // We can't use isolate scope. We take attribut and parse it.
-            if(attrs.ngModel){
+            if (attrs.ngModel) {
                 scope.ngModel = scope.$eval(attrs.ngModel);
             }
 
             scope.displayInstanceDetails = displayInstanceDetails;
 
             setSign();
-        }
-    }
+        },
+    };
 });
 
 propertiesModule.directive('initInstances', function () {
     return {
         restrict: 'E',
         replace: true,
-        template: "<div></div>",
-        link: function (scope, element, attrs) {
-            var setSign = function() {
+        template: '<div></div>',
+        link(scope, element, attrs) {
+            var setSign = function () {
                 scope.instancedisplay = scope.ngModel.opened;
                 scope.sign = scope.ngModel.opened ? '-' : '+';
             };
@@ -2463,11 +2327,11 @@ propertiesModule.directive('initInstances', function () {
             };
 
             // We can't use isolate scope. We take attribut and parse it.
-            if(attrs.ngModel){
+            if (attrs.ngModel) {
                 scope.ngModel = scope.$eval(attrs.ngModel);
 
                 // Watch attribut for filter
-                scope.$watch('ngModel.opened', function() {
+                scope.$watch('ngModel.opened', function () {
                     setSign();
                 });
             }
@@ -2479,24 +2343,20 @@ propertiesModule.directive('initInstances', function () {
                 displayInstances();
                 scope.ngModel.opened = true;
             }
-        }
-    }
+        },
+    };
 });
 
 
-propertiesModule.filter('orderObjectBy', function() {
-    return function(items, field) {
-        // items as an object 'children' where key is name
+propertiesModule.filter('orderObjectBy', function () {
+    return function (items, field) {
         var filtered = [];
-
-        angular.forEach(items, function(item) {
+        angular.forEach(items, function (item) {
             filtered.push(item);
         });
-
-        filtered.sort(function (a, b) {
-            return a[field].localeCompare(b[field]);
+        filtered.sort(function (item1, item2) {
+            return item2[field].localeCompare(item1[field]);
         });
-
         return filtered;
     };
 });
@@ -2507,30 +2367,17 @@ propertiesModule.filter('orderObjectBy', function() {
  * The filter text and by the simple text or a regex.
  * @see filterIterablePropertiesValues for value filtering
  */
-propertiesModule.filter('filterIterablePropertiesNames', function (){
-    return function (items, filter){
-
-        if (!filter){
+propertiesModule.filter('filterIterablePropertiesNames', function () {
+    return function (items, filter) {
+        if (!filter) {
             return items;
         }
-
-        var _name = '.*' + filter.toLowerCase().split(' ').join('.*');
-        var regex_name  = undefined;
-
         try {
-            regex_name = new RegExp(_name, 'i');
-        }catch (e){
+            var regex_name = new RegExp(`.*${ filter.toLowerCase().split(' ').join('.*') }`, 'i');
+            return _.filter(items, (item) => regex_name.test(item.name));
+        } catch (error) {
             return items;
         }
-
-        var filtered = [];
-        _(items).each (function (item){
-            if (regex_name.test(item.name)){
-                filtered.push(item);
-            }
-        });
-
-        return filtered;
     };
 });
 
@@ -2538,67 +2385,34 @@ propertiesModule.filter('filterIterablePropertiesNames', function (){
  * Function wich filter the properties' display with string or regex.
  * Modified by Sahar CHAILLOU on 12/01/2016
  */
-propertiesModule.filter('filterProperties', function() {
-    return function(input, filter) {
+propertiesModule.filter('filterProperties', function () {
+    return function (input, filter) {
         if (!filter) {
             return input;
         }
 
         // Format the filters to construct the regex
-        var name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
-        var value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+        var regex_name = null;
+        var regex_value = null;
 
         // Create the regex
         try {
-            var regex_name = new RegExp(name, 'i');
-            var regex_value = new RegExp(value, 'i');
-        } catch(e) {
+            regex_name = new RegExp(`.*${ filter.name.toLowerCase().split(' ').join('.*') }`, 'i');
+            regex_value = new RegExp(`.*${ filter.filtrable_value.toLowerCase().split(' ').join('.*') }`, 'i');
+        } catch (error) {
             return input;
         }
 
-        /**
-         * Private function for filtering by name.
-         */
-        var applyNameFilter = function (input) {
-            var output = [];
-
-            angular.forEach(input, function(item) {
-
-                if (!_.isEmpty(filter.name)){
-                    if (regex_name.test(item.name)){
-                        output.push(item);
-                    }
-                }else{
-                    output.push(item);
-                }
-            });
-
-            return output;
+        var applyNameFilter = function (inputList) {
+            return _.filter(inputList, (item) => !filter.name || regex_name.test(item.name));
         };
 
-        /**
-         * Private function for filtering by value.
-         */
-        var applyValueFilter = function (input) {
-            var output = [];
-
-            angular.forEach(input, function(item) {
-
-                if ( !_.isEmpty(filter.filtrable_value) ) {
-                    if (regex_value.test(item.filtrable_value)){
-                        output.push(item);
-                    }
-                }else{
-                    output.push(item);
-                }
-            });
-
-            return output;
+        var applyValueFilter = function (inputList) {
+            return _.filter(inputList, (item) => !filter.filtrable_value || regex_value.test(item.filtrable_value));
         };
 
         // make the filter
         return applyValueFilter(applyNameFilter(input));
-
     };
 });
 
@@ -2607,12 +2421,12 @@ propertiesModule.filter('filterProperties', function() {
  * This takes care of the hesperides predefined properties which will not be displayed
  * and then not counted even if they have not values.
  */
-propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
+propertiesModule.directive('toggleUnspecifiedProperties', function () {
     return {
         restrict: 'E',
         scope: {
             keyValueProperties: '=',
-            toggle: '='
+            toggle: '=',
         },
         template: '<md-switch id="toggle-unspecified-properties_switch" class="md-primary md-block" ' +
                   'ng-model="toggle"' +
@@ -2621,31 +2435,33 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
                   'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
                   '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
                   '</md-switch>',
-        controller: ['$scope', '$filter', function ($scope, $filter){
+        controller: [
+            '$scope', '$filter', function ($scope, $filter) {
             /**
              * This calculate the number of unspecified properties.
              */
-            $scope.getNumberOfUnspecifiedProperties = function (tab) {
-                var count = 0;
+                $scope.getNumberOfUnspecifiedProperties = function (tab) {
+                    var count = 0;
 
-                tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
+                    tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
 
-                if (tab) {
-                    for (var index = 0; index < tab.length; index++) {
+                    if (tab) {
+                        for (var index = 0; index < tab.length; index++) {
                         // if default value is present, so the prop is not counted as unspecified
-                        if ((!tab[index].filtrable_value && _.isEmpty(tab[index].defaultValue))|| (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue))) {
-                            count++;
+                            if ((!tab[index].filtrable_value && _.isEmpty(tab[index].defaultValue)) || (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue))) {
+                                count++;
+                            }
                         }
                     }
-                }
 
-                if (count == 0) {
-                    $scope.toggle = false;
-                }
-                return count;
-            };
-        }]
-    }
+                    if (count === 0) {
+                        $scope.toggle = false;
+                    }
+                    return count;
+                };
+            },
+        ],
+    };
 });
 
 /**
@@ -2653,33 +2469,35 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
  * This is shared between all properties display :
         Global Properties, Simple Properties, Iterable Properties and Instance Properties.
  */
-propertiesModule.directive('toggleSortProperties', function (){
+propertiesModule.directive('toggleSortProperties', function () {
     return {
-        restrict : 'E',
+        restrict: 'E',
         scope: {
-            sortOrder: "="
+            sortOrder: '=',
         },
         templateUrl: '/shared/toggle-sort-properties.html',
-        controller: ['$scope', function ($scope){
+        controller: [
+            '$scope', function ($scope) {
             /**
              * Inverse the sort order
              */
-            $scope.switchOrder = function (){
-               $scope.sortOrder = !$scope.sortOrder;
-            }
-        }]
-    }
+                $scope.switchOrder = function () {
+                    $scope.sortOrder = !$scope.sortOrder;
+                };
+            },
+        ],
+    };
 });
 
 /**
  * This directive is for filtering only the no global properties.
  */
-propertiesModule.directive('toggleGlobalProperties', function ($filter) {
+propertiesModule.directive('toggleGlobalProperties', function () {
     return {
         restrict: 'E',
         scope: {
             keyValueProperties: '=',
-            toggle: '='
+            toggle: '=',
         },
         template: '<md-switch id="toggle-global-properties_switch" class="md-primary md-block" ' +
         'ng-model="toggle"' +
@@ -2687,25 +2505,26 @@ propertiesModule.directive('toggleGlobalProperties', function ($filter) {
         'aria-label="{{ \'properties.globalPropertiesValues.switch\' | translate }}">' +
         '{{ \'properties.globalPropertiesValues.switch\' | translate }} ({{ getNumberOfGlobalProperties(keyValueProperties) }})' +
         '</md-switch>',
-        controller: ['$scope', '$filter', function ($scope, $filter) {
+        controller: [
+            '$scope', '$filter', function ($scope, $filter) {
             /**
              * This calculate the number of global properties.
              */
-            $scope.getNumberOfGlobalProperties = function (tab) {
-                var count = 0;
-
-                tab = $filter('displayGlobalProperties')(tab, true);
-
-                if (tab) {
-                    _.each(tab, function (item) {
-                       item.inGlobal ? count++ : false;
-                    });
-                }
-
-                return count;
-            };
-        }]
-    }
+                $scope.getNumberOfGlobalProperties = function (tab) {
+                    var count = 0;
+                    tab = $filter('displayGlobalProperties')(tab, true);
+                    if (tab) {
+                        _.each(tab, function (item) {
+                            if (item.inGlobal) {
+                                count++;
+                            }
+                        });
+                    }
+                    return count;
+                };
+            },
+        ],
+    };
 });
 
 /**
@@ -2713,8 +2532,11 @@ propertiesModule.directive('toggleGlobalProperties', function ($filter) {
  */
 propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
-        return _.filter(items, function(item) {
-            return _.isUndefined(display) || !display || !item.filtrable_value && _.isEmpty(item.defaultValue) || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
+        return _.filter(items, function (item) {
+            return _.isUndefined(display) ||
+                !display ||
+                (!item.filtrable_value && _.isEmpty(item.defaultValue)) ||
+                (_.isEmpty(item.defaultValue) && _.isEmpty(item.value));
         });
     };
 });
@@ -2724,8 +2546,8 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
  */
 propertiesModule.filter('displayGlobalProperties', function () {
     return function (items, display) {
-        return _.filter(items, function(item) {
-            return display || !display && !item.inGlobal;
+        return _.filter(items, function (item) {
+            return display || (!display && !item.inGlobal);
         });
     };
 });
@@ -2741,21 +2563,8 @@ propertiesModule.filter('displayGlobalProperties', function () {
  */
 propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
     return function (items) {
-        return _.filter(items, function(item) {
-            return !item.name.startsWith("hesperides.");
+        return _.filter(items, function (item) {
+            return !item.name.startsWith('hesperides.');
         });
     };
-});
-
-propertiesModule.filter('orderObjectBy', function() {
-  return function(items, field) {
-    var filtered = [];
-    angular.forEach(items, function(item) {
-      filtered.push(item);
-    });
-    filtered.sort(function (a, b) {
-      return (a[field] > b[field] ? 1 : -1);
-    });
-    return filtered;
-  };
 });
