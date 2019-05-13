@@ -59,7 +59,7 @@ templateModule.factory('HesperidesTemplateModal', [
                     return 'hesperides-token'; // return the style for syntax highlight even if we reached end of line
                 }
                 // eslint-disable-next-line no-empty
-                while (stream.next() !== null && !stream.match('{{', false)) {} // Skip everything unless we find an hesperides token or reach the end of line
+                while (stream.next() && !stream.match('{{', false)) {} // Skip everything unless we find an hesperides token or reach the end of line
                 return null;
             },
         };
