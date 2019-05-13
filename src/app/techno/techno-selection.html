@@ -27,7 +27,7 @@
             {{techno.version}}
         </button>
         <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
-                ng-really-message="Supprimer la techno '{{techno.name}}'"
+                ng-really-message="{{ 'message.techno.delete.confirm' | translate: { name: techno.name } }}"
                 ng-really-click="del_techno(techno, editing_unit)" class="btn btn-danger btn-sm padding-left-20px padding-right-20px"><span
                 class="glyphicon glyphicon-trash"></span></button>
     </li>
