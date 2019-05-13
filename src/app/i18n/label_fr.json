@@ -266,6 +266,8 @@
   "settings.close": "Fermer",
   "settings.save": "Sauvegarder",
   "message.delete": "Etes-vous sur de vouloir supprimer {{name}} ?",
+  "message.platform.delete.confirm": "Voulez-vous vraiment supprimer cette plateforme ? Nous ne pouvons vous garantir qu'il sera possible de la restaurer.",
+  "message.techno.delete.confirm": "Êtes-vous sur de vouloir supprimer la techno {{name}} ?",
   "message.emptyResult": "Aucun résultat trouvé",
   "placeholder.search": "Rechercher...",
   "placeholder.application.name": "Nom de l'application ...",

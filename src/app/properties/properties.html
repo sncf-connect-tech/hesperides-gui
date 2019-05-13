@@ -104,7 +104,7 @@
         <div flex layout-align="center top">
             <h3>
                 <md-button id="properties_delete-button" aria-label="{{ 'properties.platform.delete' | translate }}"
-                           ng-click="delete_platform()" class="md-xs">
+                           ng-really-click="delete_platform()" ng-really-message="{{ 'message.platform.delete.confirm' | translate }}" class="md-xs">
                     <span class="fa fa-trash fa-2x"></span>
                     <span class="title">{{ 'properties.platform.delete' | translate }}</span>
                 </md-button>
