@@ -19,7 +19,7 @@
     };
 
     var DatetimePicker = function ($compile, $document, $controller) {
-        var datetimePickerCtrl = $controller('DatetimePickerCtrl'); // directive controller
+        var datetimePickerCtrl = $controller('DatetimePickerController'); // directive controller
         return {
             open(options) {
                 datetimePickerCtrl.openDatetimePicker(options);
@@ -105,7 +105,7 @@
         };
     };
     DatetimePickerCtrl.$inject = [ '$compile', '$document' ];
-    angular.module('angularjs-datetime-picker').controller('DatetimePickerCtrl', DatetimePickerCtrl);
+    angular.module('angularjs-datetime-picker').controller('DatetimePickerController', DatetimePickerCtrl);
 
     var tmpl = [
         '<div class="angularjs-datetime-picker">',
@@ -291,7 +291,7 @@
         return {
             restrict: 'A',
             template: tmpl,
-            controller: 'DatetimePickerCtrl',
+            controller: 'DatetimePickerController',
             replace: true,
             scope: {
                 year: '=',

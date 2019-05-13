@@ -16,11 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var localChangesModule = angular.module('hesperides.localChanges');
-
-
 // Why United Nations ? They are solving conflicts, rights ? :D
-localChangesModule.controller('UnitedNationsController', [
+angular.module('hesperides.localChanges').controller('UnitedNationsController', [
     '$scope', 'Comments', 'ApplicationService', 'LocalChanges', 'LocalChangesUtils', 'ModuleService', '$mdDialog', '$translate', 'notify',
     function ($scope, Comments, ApplicationService, LocalChanges, LocalChangesUtils, ModuleService, $mdDialog, $translate, notify) {
         $scope.comments = new Comments();

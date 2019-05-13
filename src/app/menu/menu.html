@@ -24,7 +24,7 @@
         <md-menu-bar class="menu">
             <a id="title" href="/">{{ Page.title() }}</a>
             <span class="menu-header"> / {{ 'menu.template.title' | translate }} <i class="fa fa-arrow-right"></i></span>
-            <md-menu ng-controller="MenuTechnoCtrl">
+            <md-menu ng-controller="MenuTechnoController">
                 <button id="menu_techno-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.techno.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
@@ -58,7 +58,7 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
-            <md-menu ng-controller="MenuModuleCtrl">
+            <md-menu ng-controller="MenuModuleController">
                 <button id="menu_module-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.module.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
@@ -93,7 +93,7 @@
                 </md-menu-content>
             </md-menu>
             <span class="menu-header">{{ 'menu.properties.title' | translate }} <i class="fa fa-arrow-right"></i></span>
-            <md-menu ng-controller="MenuPropertiesCtrl">
+            <md-menu ng-controller="MenuPropertiesController">
                 <button id="menu_application-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.platform.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
@@ -128,7 +128,7 @@
             </md-menu>
 
 
-            <div class="menu-language" ng-controller="MenuHelpCtrl">
+            <div class="menu-language" ng-controller="MenuHelpController">
                 <md-button id="menu_language-fr-flag" ng-click="change_language('fr')" class="menu-language--fr" aria-label="{{ 'menu.language.fr.aria' | translate }}">
                     fr
                 </md-button>
@@ -137,7 +137,7 @@
                     en
                 </md-button>
             </div>
-            <md-menu class="menu-help" ng-controller="MenuHelpCtrl">
+            <md-menu class="menu-help" ng-controller="MenuHelpController">
                 <button id="menu_help-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                 </button>
@@ -162,7 +162,7 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
-            <div class="menu-user" ng-controller="MenuHelpCtrl">
+            <div class="menu-user" ng-controller="MenuHelpController">
                 <md-button id="menu_settings-menu" ng-click="display_settings()">
                     <i class="fa fa-cog" aria-label="{{ 'menu.help.settings' | translate }}"></i>
                 </md-button>

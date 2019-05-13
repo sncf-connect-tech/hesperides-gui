@@ -25,6 +25,17 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2019-05-13
+### Fixed
+
+- Boucle infinie évitée dans `HesperidesTemplateModal.token` - close #199 (#200) [Lucas Cimon]
+
+- Correction du parsing du config.json (#198) [Lucas Cimon]
+
+- ? en trop dans l'URL du détail des modules en workingCopy (#197) [Lucas Cimon]
+
+
+
 ## 2019-05-03
 ### Added
 
