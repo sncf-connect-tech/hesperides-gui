@@ -1226,7 +1226,7 @@ propertiesModule.controller('PropertiesCtrl', [
         };
 
         $scope.open_module_page = function (name, version, is_working_copy) {
-            var url = `/module/${ name }/${ version }?`;
+            var url = `/module/${ name }/${ version }`;
             if (is_working_copy) {
                 url += '?type=workingcopy';
             }
