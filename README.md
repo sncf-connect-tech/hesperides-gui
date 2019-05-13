@@ -6,23 +6,28 @@
 [![](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Hesperides-gui
-========
+==============
 
 Hesperides is an open source tool with a frontend (hesperides-gui) and a backend (hesperides).
 
 It lets you easily generate content from a template file (using mustache) in a given environment.
 
-Go to <https://github.com/voyages-sncf-technologies/hesperides> to handle hesperides backend.
+The backend part is here: <https://github.com/voyages-sncf-technologies/hesperides>.
 
-Build:
+Documentation
+=============
+
+<https://voyages-sncf-technologies.github.io/hesperides-gui/>
+
+Build
 =====
 
 ```shell
 $ npm install
 ```
 
-Run:
-=====
+Run
+===
 
 ```shell
 $ npm start
@@ -30,20 +35,25 @@ $ npm start
 
 It should launch a server available at http://localhost:80 using a backend on http://localhost:8080
 
-Tests:
+Tests
 =====
+
+Linter:
+```shell
+$ npm run lint
+```
+
+Karma unit tests:
+```shell
+$ npm test
+```
 
 Run the webdriver-manager :
 ```shell
 $ npm run webdriver-start
 ```
 
-Run the protractor tests in other window :
+Run the protractor tests in another window :
 ```shell
 $ npm run protractor
 ```
-
-Documentation:
-=====
-
-Available at <https://voyages-sncf-technologies.github.io/hesperides-gui/>

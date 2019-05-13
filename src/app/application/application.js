@@ -357,10 +357,16 @@ applicationModule.service('ApplicationService', [
                     $translate('platform.event.deleted').then(function (label) {
                         notify({ classes: [ 'success' ], message: label });
                     });
+                }).catch((error) => {
+                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.delete_platform' });
+                    throw error;
                 });
             },
             restore_platform(application_name, platform_name) {
-                return $http.post(`rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/restore`);
+                return $http.post(`rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/restore`).catch((error) => {
+                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.restore_platform' });
+                    throw error;
+                });
             },
             get_properties(application_name, platform_name, path, timestamp) {
                 var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties?path=${ encodeURIComponent(path) }`;
