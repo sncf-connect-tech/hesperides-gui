@@ -56,7 +56,7 @@
                                id="platformApplicationVersion"
                                placeholder="{{ 'platform.modal.applicationVersion.placeholder' | translate }}"/>
                     </md-input-container>
-                    <md-switch id="platform-menu-modal-from_is-production-switch" class="md-primary" ng-model="new_platform.production" ng-disabled="!isProductionUser" aria-label="Plateforme production" class="md-block">
+                    <md-switch id="platform-menu-modal-from_is-production-switch" class="md-primary" ng-model="new_platform.production" ng-disabled="!user.isProdUser" aria-label="Plateforme production" class="md-block">
                         <strong>{{ 'platform.modal.isProduction' | translate }}</strong>
                     </md-switch>
                     <md-switch id="platform-menu-modal_copy-instance-switch" class="md-primary" ng-model="new_platform.copyInstances" aria-label="Plateforme production" class="md-block">

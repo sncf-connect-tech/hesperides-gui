@@ -18,7 +18,7 @@
             (`0${ offset % 60 }`).slice(-2) }`;
     };
 
-    var DatetimePicker = function ($compile, $document, $controller) {
+    var DatetimePicker = function ($compile, $rootElement, $controller) {
         var datetimePickerCtrl = $controller('DatetimePickerController'); // directive controller
         return {
             open(options) {
@@ -29,15 +29,15 @@
             },
         };
     };
-    DatetimePicker.$inject = [ '$compile', '$document', '$controller' ];
+    DatetimePicker.$inject = [ '$compile', '$rootElement', '$controller' ];
     angular.module('angularjs-datetime-picker').factory('DatetimePicker', DatetimePicker);
 
-    var DatetimePickerCtrl = function ($compile, $document) {
+    var DatetimePickerCtrl = function ($compile, $rootElement) {
         var datetimePickerEl;
         var _this = this;
         var removeEl = function (el) {
             el && el.remove();
-            $document[0].body.removeEventListener('click', _this.closeDatetimePicker);
+            $rootElement.off('click', _this.closeDatetimePicker);
         };
 
         this.openDatetimePicker = function (options) {
@@ -62,7 +62,7 @@
             datetimePickerEl = $compile(div)(options.scope)[0];
             datetimePickerEl.triggerEl = options.triggerEl;
 
-            $document[0].body.appendChild(datetimePickerEl);
+            $rootElement.appendChild(datetimePickerEl);
 
             // show datetimePicker below triggerEl
             var bcr = triggerEl.getBoundingClientRect();
@@ -85,12 +85,12 @@
                 datetimePickerEl.style.top = `${ bcr.top - datePickerElBcr.height - 250 + window.scrollY }px`;
             }
 
-            $document[0].body.addEventListener('click', this.closeDatetimePicker);
+            $rootElement.on('click', this.closeDatetimePicker);
         };
 
         this.closeDatetimePicker = function (evt) {
             var target = evt && evt.target;
-            var popupEl = $document[0].querySelector('div[datetime-picker-popup]');
+            var popupEl = $rootElement.querySelector('div[datetime-picker-popup]');
             if (evt && target) {
                 if (target.hasAttribute('datetime-picker')) { // element with datetimePicker behaviour
                     // do nothing
@@ -104,7 +104,7 @@
             }
         };
     };
-    DatetimePickerCtrl.$inject = [ '$compile', '$document' ];
+    DatetimePickerCtrl.$inject = [ '$compile', '$rootElement' ];
     angular.module('angularjs-datetime-picker').controller('DatetimePickerController', DatetimePickerCtrl);
 
     var tmpl = [
@@ -331,7 +331,7 @@
                 // Checking the bindEvent attr, click event is the default
                 var bEvent = (attrs.bindEvent && attrs.bindEvent != undefined) ? attrs.bindEvent : 'click';
 
-                element[0].addEventListener(bEvent, function () {
+                element.on(bEvent, function () {
                     DatetimePicker.open({
                         triggerEl: element[0],
                         dateFormat: attrs.dateFormat,

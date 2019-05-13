@@ -16,15 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!_.isFunction(String.prototype.startsWith)) {
-    String.prototype.startsWith = function (str) {
-        return str.length > 0 && this.substring(0, str.length) === str;
-    };
-}
-RegExp.escape = function (text) {
-    return (text || '').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-
 angular.module('hesperides', [
     'ngRoute',
     'hesperides.module',
@@ -53,12 +44,13 @@ angular.module('hesperides', [
 }).value('scDateTimeI18n', {
     weekdays: [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
     calendar: 'Calendrier',
+// Valeurs par défaut écrasées par config.json si présent, cf. ~100 lignes plus bas :
 }).value('globalConfig', {
     eventPaginationSize: 25,
     documentationLink: 'https://voyages-sncf-technologies.github.io/hesperides-gui/',
     localChangesTTL: 50,
     swaggerLink: 'http://localhost:8080/rest/swagger-ui.html',
-}).value('session', {})
+})
 
     .config([
         '$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider', '$locationProvider',
@@ -129,7 +121,7 @@ angular.module('hesperides', [
         },
     ])
 
-    .run(function (globalConfig, editableOptions, editableThemes, $rootScope, $http, $location, $route, $document) {
+    .run(function (globalConfig, editableOptions, editableThemes, $rootScope, $http, $location, $route, $document, UserService) {
         editableOptions.theme = 'default';
 
         // overwrite submit button template
@@ -197,6 +189,9 @@ angular.module('hesperides', [
             }
             lastHash = $location.hash();
         });
+
+        // On tente de se connecter systématiquement :
+        UserService.authenticate();
     })
 
 
@@ -214,15 +209,8 @@ angular.module('hesperides', [
     })
 
     .controller('TitleController', [
-        '$scope', 'Page', 'UserService', 'session', function ($scope, Page, UserService, session) {
+        '$scope', 'Page', function ($scope, Page) {
             $scope.Page = Page;
-
-            // authenticate the user
-            $scope.authenticate = function () {
-                UserService.authenticate().then(function (user) {
-                    session.user = user;
-                });
-            };
         },
     ])
 
@@ -346,18 +334,18 @@ angular.module('hesperides', [
         },
     ])
 
-    .directive('konami', function ($document) {
+    .directive('konami', function ($rootElement) {
         return {
             restrict: 'E',
             scope: { name: '@' },
             link(scope, element) {
                 var keys = [ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65 ];
                 var seqIndex = 0;
-                $document.addEventListener('keydown', function (event) {
+                $rootElement.on('keydown', function (event) {
                     if (event.keyCode === keys[seqIndex++]) {
                         if (seqIndex === keys.length) {
                         // eslint-disable-next-line no-caller
-                            $document.removeEventListener('keydown', arguments.callee);
+                            $rootElement.off('keydown', arguments.callee);
                             // Konami code is active, do some fun stuff here
                             element.append(`<img src="img/${ scope.name }" width="100%" />`);
                         }
@@ -537,7 +525,7 @@ angular.module('hesperides', [
                     return [];
                 },
                 getCommentsLike(application_name, query) {
-                    query = RegExp.escape(query).split(' ').join('.*').toLowerCase();
+                    query = (query || '').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&').split(' ').join('.*').toLowerCase();
                     return _.filter(this.getComments(application_name), function (item) {
                         return item.comment.toLowerCase().match(`.*${ query ? query : '' }.*`);
                     }).sort((comment1, comment2) => comment2.date - comment1.date);

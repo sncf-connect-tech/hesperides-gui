@@ -117,8 +117,8 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
 
     .controller('MenuPropertiesController', [
-        '$hesperidesHttp', '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'session',
-        function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify, session) {
+        '$hesperidesHttp', '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'UserService',
+        function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify, UserService) {
             $scope.find_applications_by_name = function (name) {
                 return ApplicationService.with_name_like(name);
             };
@@ -161,7 +161,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             };
 
             $scope.open_create_platform_dialog = function () {
-                $scope.isProductionUser = session.isProdUser;
+                $scope.user = {};
+                UserService.authenticate().then(function (user) {
+                    $scope.user = user;
+                });
 
                 $mdDialog.show({
                     templateUrl: 'properties/platform-menu-modal.html',
@@ -176,7 +179,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 var modalScope = $scope.$new(true);
 
                 modalScope.applicationSearched = '';
-                modalScope.isProductionUser = session.isProdUser;
+                modalScope.user = {};
+                UserService.authenticate().then(function (user) {
+                    modalScope.user = user;
+                });
 
                 $mdDialog.show({
                     templateUrl: 'properties/platform-menu-modal-from.html',
