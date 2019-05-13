@@ -106,7 +106,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope, $htt
             },
         ],
     }).then(function success(response) {
-        Object.keys(response.data, (key) => {
+        Object.keys(response.data).forEach((key) => {
             globalConfig[key] = response.data[key];
         });
     }, function (error) {
