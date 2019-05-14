@@ -25,7 +25,19 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Boutont de déconnexion + nettoyage du CSS du menu. [Lucas Cimon]
+
+
+
 ## 2019-05-14
+### Added
+
+- Bouton de déconnexion + nettoyage du CSS du menu (#215) [Lucas Cimon]
+
+
 ### Fixed
 
 - #202 Sauvegarde des préférences à nouveau fonctionnelle (#213) [Thomas L'Hostis]
