@@ -63,7 +63,7 @@
         </div>
         <md-dialog-actions>
             <md-button id="techno-menu-modal-from_create-button" ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)" class="md-raised md-primary" ng-disabled="technoForm.$invalid">{{ 'button.modal.create' | translate }}</md-button>
-            <md-button id="techno-menu-modal-from_create-button" ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="techno-menu-modal-from_create-button" ng-click="closeTechnoDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>
