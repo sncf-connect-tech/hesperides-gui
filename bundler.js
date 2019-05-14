@@ -29,6 +29,7 @@ exports.generateAppBundles = function () {
         'src/app/css/font-awesome-min.css',
         'src/app/datepicker/datepicker.css',
         'src/app/css/hesperides.css',
+        'src/app/menu/menu.css',
         'src/app/css/iterable-properties-container.css',
         'src/app/css/localChanges.css',
         'src/app/sc-date-time/sc-date-time.css',

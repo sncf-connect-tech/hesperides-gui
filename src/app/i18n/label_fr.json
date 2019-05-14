@@ -18,6 +18,8 @@
   "menu.help.documentation": "Documentation",
   "menu.help.title": "Aide",
   "menu.help.support": "Support",
+  "menu.help.logout": "Déconnexion",
+  "auth.logout.success": "Déconnexion réussie",
   "event.nocomment": "Pas de commentaire",
   "template.event.created": "Le template a bien été créé",
   "template.event.updated": "Le template a été mis à jour",

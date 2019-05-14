@@ -1,0 +1,91 @@
+.menu, .menu-title, .menu-header {
+    background-color: #009587;
+    color: rgba(255, 255, 255, 0.84);
+}
+
+.menu-side {
+    align-items: center;
+}
+
+.menu-title {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item {
+    color: black;
+}
+
+md-menu-item > * {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+md-menu-content.md-menu-bar-menu.md-dense {
+    padding-top: 16px;
+    padding-bottom: 10px;
+}
+
+.menu-header {
+    font-size: 14px;
+    font-family: AvenirBook,Arial,sans-serif;
+    padding: 0;
+    margin: 0 1rem;
+    display: flex;
+    align-items: center;
+}
+.menu-header > i {
+    margin-left: .5rem;
+}
+
+.menu-search-input {
+    border: none;
+    background:transparent;
+    font-size: 14px;
+}
+
+.menu-properties-search-input {
+    width: 420px !important;
+}
+
+.menu-language--fr, .menu-language--en {
+    margin-top: 10px;
+    min-width: 40px;
+    max-width: 40px;
+    max-height: 20px;
+    min-height: 20px;
+    text-indent:-10000px;
+    background-size: 100% ;
+    background-repeat: no-repeat;
+}
+.menu-language--fr {
+    background-image: url('/img/french-flag-small.png');
+}
+.menu-language--en {
+    background-image: url('/img/british-flag-small.png');
+}
+
+.menu-settings {
+    margin-top: 0px;
+    min-width: 25px;
+    max-width: 25px;
+    background-repeat: no-repeat;
+}
+
+.md-menu-toolbar{
+    min-height: inherit;
+}
+
+md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-open > button, md-menu-bar.md-default-theme md-menu > button:focus, md-menu-bar md-menu > button:focus {
+    outline: none;
+    background-color: #007C6E;
+}
+
+md-switch#platform-menu-modal_override-existing-switch {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+

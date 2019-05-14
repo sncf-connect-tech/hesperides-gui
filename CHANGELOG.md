@@ -25,12 +25,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-05-14
 ### Fixed
 
-- Le bouton "Close" de la modale des paramètres fonctionne à nouveau - close #206. [Lucas Cimon]
-
-  \+ ajout des événements PlatformRestore dans la modale d'historique
+- #202 Sauvegarde des préférences à nouveau fonctionnelle (#213) [Thomas L'Hostis]
 
 - Le bouton "Close" de la modale des paramètres fonctionne à nouveau - close #206. [Lucas Cimon]
 

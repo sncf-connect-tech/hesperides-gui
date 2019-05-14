@@ -26,7 +26,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.open_create_techno_dialog = function () {
                 $mdDialog.show({
-                    templateUrl: 'techno/techno-menu-modal.html',
+                    templateUrl: 'menu/techno-menu-modal.html',
                     controller: 'MenuTechnoController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
@@ -36,7 +36,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.open_create_techno_from_dialog = function () {
                 $mdDialog.show({
-                    templateUrl: 'techno/techno-menu-modal-from.html',
+                    templateUrl: 'menu/techno-menu-modal-from.html',
                     controller: 'MenuTechnoController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
@@ -94,7 +94,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.open_create_module_dialog = function () {
                 $mdDialog.show({
-                    templateUrl: 'module/module-menu-modal.html',
+                    templateUrl: 'menu/module-menu-modal.html',
                     controller: 'MenuModuleController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
@@ -104,7 +104,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.open_create_module_from_dialog = function () {
                 $mdDialog.show({
-                    templateUrl: 'module/module-menu-modal-from.html',
+                    templateUrl: 'menu/module-menu-modal-from.html',
                     controller: 'MenuModuleController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
@@ -131,6 +131,8 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 $location.path(`/properties/${ application_name }`);
                 if (platform_name) {
                     $location.search({ platform: platform_name });
+                } else {
+                    $location.search({});
                 }
                 $scope.applicationSearched = '';
                 $mdMenu.cancel();
@@ -167,7 +169,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 });
 
                 $mdDialog.show({
-                    templateUrl: 'properties/platform-menu-modal.html',
+                    templateUrl: 'menu/platform-menu-modal.html',
                     controller: 'MenuPropertiesController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
@@ -185,7 +187,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 });
 
                 $mdDialog.show({
-                    templateUrl: 'properties/platform-menu-modal-from.html',
+                    templateUrl: 'menu/platform-menu-modal-from.html',
                     controller: 'MenuPropertiesController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
@@ -223,9 +225,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
     })
 
     .controller('MenuHelpController', [
-        '$scope', '$mdDialog', '$hesperidesHttp', '$translate', '$parse', '$window', 'ApplicationService', 'PlatformColorService', 'globalConfig',
-        function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, globalConfig) {
+        '$scope', '$mdDialog', '$hesperidesHttp', '$translate', '$parse', '$window', 'ApplicationService', 'PlatformColorService', 'UserService', 'globalConfig',
+        function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, UserService, globalConfig) {
             $scope.config = globalConfig;
+            $scope.logout = UserService.logout;
 
             $scope.change_language = function (langKey) {
                 $translate.use(langKey);
@@ -264,7 +267,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 });
 
                 $mdDialog.show({
-                    templateUrl: 'hesperides/help-menu-modal.html',
+                    templateUrl: 'menu/help-menu-modal.html',
                     controller: 'MenuHelpController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
@@ -272,7 +275,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 });
             };
 
-            $scope.closeSettingsDialog = function() {
+            $scope.closeSettingsDialog = function () {
                 $mdDialog.cancel();
             };
 
@@ -328,7 +331,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     $mdDialog.cancel();
                 };
                 $mdDialog.show({
-                    templateUrl: 'hesperides/settings-modal.html',
+                    templateUrl: 'menu/settings-modal.html',
                     controller: 'MenuHelpController',
                     clickOutsideToClose: true,
                     preserveScope: true, // requiered for not freez menu
