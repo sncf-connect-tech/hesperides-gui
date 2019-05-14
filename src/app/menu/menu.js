@@ -229,7 +229,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.change_language = function (langKey) {
                 $translate.use(langKey);
-                store.set('language', langKey);
+                store.set('language', langKey || null);
             };
 
             // Refactoring TO DO
@@ -315,15 +315,15 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 };
 
                 $scope.saveSettings = function () {
-                    store.set('display_mode', $scope.settings_display);
-                    store.set('language', $scope.settings_language);
-                    store.set('instance_properties', $scope.settings_instance);
-                    store.set('copy_properties', $scope.settings_copy);
+                    store.set('display_mode', $scope.settings_display || null);
+                    store.set('language', $scope.settings_language || null);
+                    store.set('instance_properties', $scope.settings_instance || null);
+                    store.set('copy_properties', $scope.settings_copy || null);
                     store.set('color_active', $scope.settings_color || null);
-                    store.set('color_red', $scope.color.red);
-                    store.set('color_green', $scope.color.green);
-                    store.set('color_blue', $scope.color.blue);
-                    store.set('applications', $scope.applications);
+                    store.set('color_red', $scope.color.red || null);
+                    store.set('color_green', $scope.color.green || null);
+                    store.set('color_blue', $scope.color.blue || null);
+                    store.set('applications', $scope.applications || null);
                     location.reload();
                     $mdDialog.cancel();
                 };
