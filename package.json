@@ -44,6 +44,7 @@
     "eslint-config-strict": "latest",
     "eslint-plugin-angular": "latest",
     "eslint-plugin-lodash": "latest",
+    "eslint-plugin-promise": "latest",
     "grunt": "latest",
     "grunt-connect-proxy": "latest",
     "grunt-contrib-connect": "latest",

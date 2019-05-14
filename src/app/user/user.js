@@ -37,10 +37,15 @@ angular.module('hesperides.user', [])
  */
     .factory('UserService', [
         '$http', 'User', function ($http, User) {
+            var userCache = null;
             return {
                 authenticate() {
+                    if (userCache) {
+                        return Promise.resolve(userCache);
+                    }
                     return $http.get('/rest/users/auth').then(function (response) {
-                        return new User(response.data);
+                        userCache = new User(response.data);
+                        return userCache;
                     }, function (error) {
                         throw error;
                     });

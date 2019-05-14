@@ -453,11 +453,15 @@ angular.module('hesperides.event', [])
  * This is the events filtering by user name or my events
  */
     .filter('myEventsFilter', [
-        '$filter', 'session', function ($filter, session) {
+        '$filter', 'UserService', function ($filter, UserService) {
+            var currentUser = null;
+            UserService.authenticate().then(function (user) {
+                currentUser = user;
+            });
             return function (events, myevents) {
-                if (myevents) {
+                if (myevents && currentUser) {
                     // reuse a above filter
-                    return $filter('eventsFilter')(events, session.user.username);
+                    return $filter('eventsFilter')(events, currentUser.username);
                 }
                 return events;
             };

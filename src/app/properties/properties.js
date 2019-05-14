@@ -116,12 +116,12 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
     .controller('PropertiesController', [
         '$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout',
         'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate',
-        '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q', '$rootScope', 'notify', 'session', '$document',
+        '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q', '$rootScope', 'notify', 'UserService', '$document',
         // A refactorer...
         // eslint-disable-next-line max-statements
         function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout,
             ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate,
-            $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q, $rootScope, notify, session, $document) {
+            $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q, $rootScope, notify, UserService, $document) {
             $scope.platform = $routeParams.platform;
             $scope.platforms = [];
 
@@ -368,7 +368,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 });
             };
 
-            $scope.isProductionUser = session.isProdUser;
+            $scope.user = {};
+            UserService.authenticate().then(function (user) {
+                $scope.user = user;
+            });
 
             $scope.open_add_instance_dialog = function (module) {
                 var modalScope = $scope.$new();
@@ -2528,7 +2531,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
     .filter('hideHesperidesPredefinedProperties', function () {
         return function (items) {
             return _.filter(items, function (item) {
-                return !item.name.startsWith('hesperides.');
+                return !_.startsWith(item.name, 'hesperides.');
             });
         };
     });

@@ -53,7 +53,7 @@
                                id="platformApplicationVersion"
                                placeholder="{{ 'platform.modal.applicationVersion.placeholder' | translate }}"/>
                     </md-input-container>
-                    <md-switch id="platform-menu-modal_is-production-switch" class="md-primary" ng-model="new_platform.production" ng-disabled="!isProductionUser" aria-label="{{ 'platform.modal.isProduction' | translate }}" class="md-block">
+                    <md-switch id="platform-menu-modal_is-production-switch" class="md-primary" ng-model="new_platform.production" ng-disabled="!user.isProdUser" aria-label="{{ 'platform.modal.isProduction' | translate }}" class="md-block">
                         <strong>{{ 'platform.modal.isProduction' | translate }}</strong>
                     </md-switch>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>

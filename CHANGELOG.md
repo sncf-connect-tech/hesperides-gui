@@ -25,6 +25,17 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Il désormais à nouveau possible de flaguer une plateforme comme "de production" [Lucas Cimon]
+
+  \+ suppression de l'état partagé Angular "session"
+  \+ ajout d'un cache sur UserService.authenticate
+  \+ suppression des polyfills sur les classes natives Regex & String
+
+
+
 ## 2019-05-13
 ### Fixed
 

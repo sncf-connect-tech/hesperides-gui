@@ -1,5 +1,5 @@
 {
-    "plugins": ["lodash"],
+    "plugins": ["angular", "lodash"],
     "extends": ["strict", "plugin:angular/johnpapa", "plugin:lodash/recommended"],
     "globals": {
         "BUILD_TIME": "readonly",
@@ -46,7 +46,6 @@
         "max-params": 0,
         "no-alert": 0,
         "no-console": 0,
-        "no-extend-native": 0,
         "no-inline-comments": 0,
         "no-magic-numbers": 0,
         "no-var": 0,
