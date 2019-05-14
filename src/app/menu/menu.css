@@ -22,6 +22,9 @@ md-menu-item > * {
     padding-right: 0;
 }
 
+md-menu-content {
+    padding: 0;
+}
 md-menu-content.md-menu-bar-menu.md-dense {
     padding-top: 16px;
     padding-bottom: 10px;
@@ -30,13 +33,16 @@ md-menu-content.md-menu-bar-menu.md-dense {
 .menu-header {
     font-size: 14px;
     font-family: AvenirBook,Arial,sans-serif;
-    padding: 0;
-    margin: 0 1rem;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
 }
 .menu-header > i {
     margin-left: .5rem;
+}
+
+md-toolbar .md-menu {
+    margin: 0;
 }
 
 .menu-search-input {
@@ -67,7 +73,7 @@ md-menu-content.md-menu-bar-menu.md-dense {
 }
 
 .menu-settings {
-    margin-top: 0px;
+    margin: 0;
     min-width: 25px;
     max-width: 25px;
     background-repeat: no-repeat;
