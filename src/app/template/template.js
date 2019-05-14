@@ -114,7 +114,7 @@ angular.module('hesperides.template', [])
 
                     modalScope.isReadOnly = options.isReadOnly;
 
-                    modalScope.$closeDialog = function () {
+                    modalScope.closeTemplateEditor = function () {
                         $mdDialog.cancel();
                     };
 

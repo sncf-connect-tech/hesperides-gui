@@ -70,7 +70,6 @@
     "start": "grunt server",
     "lint": "eslint --fix src/app",
     "test": "karma start karma.conf.js --no-auto-watch --single-run",
-    "webdriver-start": "node node_modules/protractor/bin/webdriver-manager update && node node_modules/protractor/bin/webdriver-manager start",
-    "protractor": "node node_modules/protractor/bin/protractor test/protractor-conf.js --params.data_json=data/data_hesperides.json --suite all"
+    "e2e-tests": "protractor test/protractor-conf.js --suite all"
   }
 }

@@ -61,6 +61,7 @@
                             <platform-created-from-existing ng-switch-when="PlatformCreatedFromExistingEvent" event="event"></platform-created-from-existing>
                             <platform-updated ng-switch-when="PlatformUpdatedEvent" event="event"></platform-updated>
                             <platform-deleted ng-switch-when="PlatformDeletedEvent" event="event"></platform-deleted>
+                            <platform-restored ng-switch-when="RestoreDeletedPlatformEvent" event="event"></platform-restored>
 
                             <!-- Modules -->
                             <module-created ng-switch-when="ModuleCreatedEvent" event="event"></module-created>
@@ -101,7 +102,7 @@
             <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="!noMoreEvents">
                 {{ 'button.modal.more' | translate }}
             </md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.close' | translate }}</md-button>
+            <md-button ng-click="closeEventsDialog()" class="md-raised md-warn">{{ 'button.modal.close' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

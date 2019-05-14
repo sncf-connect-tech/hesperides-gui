@@ -88,10 +88,10 @@ angular.module('hesperides.event', [])
         function ($http, EventEntry, notify, globalConfig) {
             return {
                 /**
-         * Get events from the back.
-         * @param {String} stream : is the name of the stream, application or module
-         * @param {Integer} page : is the page number to retrieve.
-         */
+                 * Get events from the back.
+                 * @param {String} stream : is the name of the stream, application or module
+                 * @param {Integer} page : is the page number to retrieve.
+                 */
                 get(stream, page) {
                     var url = `rest/events/${ encodeURIComponent(stream) }?page=${ encodeURIComponent(page) }&size=${ encodeURIComponent(globalConfig.eventPaginationSize) }`;
                     return $http.get(url).then(function (response) {
@@ -178,6 +178,22 @@ angular.module('hesperides.event', [])
             controller: [
                 '$scope', function ($scope) {
                     $scope.event.buildLabel('platform.event.deletedByUser');
+                },
+            ],
+        };
+    })
+
+/* This is for platform restore event */
+    .directive('platformRestored', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                event: '=',
+            },
+            templateUrl: 'event/directives/platform/platform-restored.html',
+            controller: [
+                '$scope', function ($scope) {
+                    $scope.event.buildLabel('platform.event.restoredByuser');
                 },
             ],
         };

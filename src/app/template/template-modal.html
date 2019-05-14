@@ -88,7 +88,7 @@
         <md-dialog-actions>
             <md-button id="template-modal_save-template-button" ng-click="$save(template)" class="md-raised md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">{{ 'template.button.save' | translate }}</md-button>
             <md-button id="template-modal_save-and-close-template-button" ng-click="$close(template)" class="md-raised md-success md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">{{ 'template.button.saveAndClose' | translate }}</md-button>
-            <md-button id="template-modal_cancel-template-button" ng-click="$closeDialog('cancel')" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="template-modal_cancel-template-button" ng-click="closeTemplateEditor()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>
