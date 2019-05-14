@@ -18,8 +18,8 @@
 angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties' ])
 
     .controller('MenuTechnoController', [
-        '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'TechnoService',
-        function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
+        '$scope', '$mdDialog', '$location', '$timeout', 'TechnoService',
+        function ($scope, $mdDialog, $location, $timeout, TechnoService) {
             $scope.find_technos_by_name = function (name) {
                 return TechnoService.with_name_like(name);
             };
@@ -58,14 +58,18 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     $location.path(`/techno/${ name }/${ version }`).search({});
                 }
                 $scope.technoSearched = '';
-                $mdMenu.cancel();
+                $mdDialog.cancel();
             };
+
+            $scope.closeTechnoDialog = function () {
+                $mdDialog.cancel();
+            }
         },
     ])
 
     .controller('MenuModuleController', [
-        '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ModuleService', 'Module',
-        function ($scope, $mdDialog, $mdMenu, $location, $timeout, ModuleService, Module) {
+        '$scope', '$mdDialog', '$location', '$timeout', 'ModuleService', 'Module',
+        function ($scope, $mdDialog, $location, $timeout, ModuleService, Module) {
             $scope.find_modules_by_name = function (name) {
                 return ModuleService.with_name_like(name);
             };
@@ -89,7 +93,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     $location.search({ type: 'workingcopy' });
                 }
                 $scope.moduleSearched = '';
-                $mdMenu.cancel();
+                $mdDialog.cancel();
             };
 
             $scope.open_create_module_dialog = function () {
@@ -112,13 +116,17 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     // scope:$scope
                 });
             };
+
+            $scope.closeModuleDialog = function () {
+                $mdDialog.cancel();
+            };
         },
     ])
 
 
     .controller('MenuPropertiesController', [
-        '$hesperidesHttp', '$scope', '$mdDialog', '$mdMenu', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'UserService',
-        function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify, UserService) {
+        '$hesperidesHttp', '$scope', '$mdDialog', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'UserService',
+        function ($http, $scope, $mdDialog, $location, $timeout, ApplicationService, Platform, notify, UserService) {
             $scope.find_applications_by_name = function (name) {
                 return ApplicationService.with_name_like(name);
             };
@@ -135,7 +143,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     $location.search({});
                 }
                 $scope.applicationSearched = '';
-                $mdMenu.cancel();
+                $mdDialog.cancel();
             };
 
             $scope.create_platform = function (application_name, platform_name, production, application_version) {
@@ -211,6 +219,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     }
                 });
             };
+
+            $scope.closePlatformDialog = function () {
+                $mdDialog.cancel();
+            }
         },
     ])
 

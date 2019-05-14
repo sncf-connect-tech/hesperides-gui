@@ -124,7 +124,7 @@
                        ng-disabled="platformForm.$invalid || (new_platform_already_exist && !new_platform.override_existing)"
                        ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)"
             >{{ 'button.modal.create' | translate }}</md-button>
-            <md-button id="platform-menu-modal-from_cancel-button" ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="platform-menu-modal-from_cancel-button" ng-click="closePlatformDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

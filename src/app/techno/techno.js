@@ -314,7 +314,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                         }
                         return $http.put(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`, template).then(function (response) {
                             $translate('template.event.updated').then(function (label) {
-                                notify({ classes: [ 'error' ], message: label });
+                                notify({ classes: [ 'success' ], message: label });
                             });
                             return new Template(response.data);
                         }, function (error) {
