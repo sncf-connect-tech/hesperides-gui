@@ -63,7 +63,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.closeTechnoDialog = function () {
                 $mdDialog.cancel();
-            }
+            };
         },
     ])
 
@@ -222,7 +222,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
             $scope.closePlatformDialog = function () {
                 $mdDialog.cancel();
-            }
+            };
         },
     ])
 
@@ -237,8 +237,8 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
     })
 
     .controller('MenuHelpController', [
-        '$scope', '$mdDialog', '$hesperidesHttp', '$translate', '$parse', '$window', 'ApplicationService', 'PlatformColorService', 'UserService', 'globalConfig',
-        function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, UserService, globalConfig) {
+        '$scope', '$mdDialog', '$hesperidesHttp', '$translate', '$parse', '$window', 'ApplicationService', 'PlatformColorService', 'UserService', 'globalConfig', 'notify',
+        function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, UserService, globalConfig, notify) {
             $scope.config = globalConfig;
             $scope.logout = UserService.logout;
 
@@ -274,8 +274,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 $http.get('rest/versions').then(function (response) {
                     $scope.api_version = response.data.version || response.data.api_version || 'unknown';
                     $scope.api_build_time = response.data.build_time || 'unknown';
-                }, function (error) {
-                    throw error;
+                }, function (errorResp) {
+                    var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';
+                    notify({ classes: [ 'error' ], message: errorMsg });
+                    throw new Error(errorMsg);
                 });
 
                 $mdDialog.show({
@@ -292,11 +294,11 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             };
 
             /**
-     * That is the user settings modal.
-     * It's used to customize user relative settings on hesperides.
-     *
-     * Added by Sahar CHAILLOU
-     */
+             * That is the user settings modal.
+             * It's used to customize user relative settings on hesperides.
+             *
+             * Added by Sahar CHAILLOU
+             */
             $scope.display_settings = function () {
                 $scope.settings_instance = store.get('instance_properties');
                 $scope.settings_copy = store.get('copy_properties');

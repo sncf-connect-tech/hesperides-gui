@@ -167,7 +167,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     name: '',
                     children: {},
                     modules: [],
-                    opened: false,
+                    openBySearchFilter: true,
                     isEmpty() {
                         return _.keys(this.children).length === 0 && this.modules.length === 0;
                     },
@@ -286,7 +286,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 var update_modules = function (module, oldModules) {
                     var currentModule = _.filter(oldModules, { name: module.name });
                     if (currentModule.length > 0) {
-                        module.opened = currentModule[0].opened;
+                        module.openBySearchFilter = currentModule[0].openBySearchFilter;
                     }
                 };
 
@@ -316,7 +316,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                             oldBox = search_old_box(oldMainBox, newBox);
 
                             if (oldBox) {
-                                newBox.opened = oldBox.opened;
+                                newBox.openBySearchFilter = oldBox.openBySearchFilter;
                             }
                         }
 
@@ -632,6 +632,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 $scope.quickOpen = !$scope.quickOpen;
             };
 
+            $scope.resetOpenByClick = function () {
+                $scope.$broadcast('resetOpenByClick', {});
+            };
+
             $scope.find_modules_by_name = function (name) {
                 return ModuleService.with_name_like(name);
             };
@@ -866,8 +870,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             /**
-         * That function saves the instance properties
-         */
+             * That function saves the instance properties
+             */
             $scope.save_platform_from_box = function (box, copyPropertiesOfUpdatedModules) {
                 $scope.platform.modules = box.to_modules();
                 return ApplicationService.save_platform($scope.platform, copyPropertiesOfUpdatedModules).then(function (platform) {
@@ -878,18 +882,18 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
 
                     // Updating reference of instance to keep it synchronized and thus to prevent loss of information in the next save
                     if ($scope.instance) {
-                        var module = _.filter(platform.modules, function (mod) {
+                        var matchingModule = _.filter(platform.modules, function (mod) {
                             return mod.properties_path === $scope.instance.properties_path;
                         })[0];
 
-                        var tmp_instance = _.filter(module.instances, function (instance) {
+                        var tmpInstance = _.filter(matchingModule.instances, function (instance) {
                             return instance.name === ($scope.new_instance_name ? $scope.new_instance_name : $scope.instance.name);
                         })[0];
 
-                        tmp_instance.properties_path = $scope.instance.properties_path;
+                        tmpInstance.properties_path = $scope.instance.properties_path;
 
                         ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
-                            $scope.instance = tmp_instance.mergeWithModel(model);
+                            $scope.instance = tmpInstance.mergeWithModel(model);
                         });
 
                         $scope.new_instance_name = null;
@@ -1226,8 +1230,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             /**
-         * This will display the properties in the box mode.
-         */
+             * This will display the properties in the box mode.
+             */
             $scope.boxModeShow = function () {
                 if (!$scope.box) {
                     $rootScope.isLoading = true;
@@ -1239,8 +1243,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             /**
-         * This will display the properties in the tree mode.
-         */
+             * This will display the properties in the tree mode.
+             */
             $scope.treeModeShow = function () {
                 if (!$scope.tree) {
                     $rootScope.isLoading = true;
@@ -1254,19 +1258,15 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             Page.setTitle('Properties');
 
             /**
-         * Instances display relative vars
-         * The hide mode is displayed by default
-         */
-            if (store.get('instance_properties')) {
-                $scope.isInstanceOpen = 1;
-            } else {
-                $scope.isInstanceOpen = 0;
-            }
+             * Instances display relative vars
+             * The hide mode is displayed by default
+             */
+            $scope.isInstanceOpen = store.get('instance_properties') ? 1 : 0;
 
             /**
-         * Box and tree display relative vars
-         * The tree mode is displayed by default
-         */
+             * Box and tree display relative vars
+             * The tree mode is displayed by default
+             */
             if (store.get('display_mode') === 'arbre') {
                 $scope.box = false;
                 $scope.tree = true;
@@ -1326,7 +1326,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         '$timeout', '$rootScope', function ($timeout, $rootScope) {
             return {
                 restrict: 'E',
-                templateUrl: 'application/tree_properties.html',
+                templateUrl: 'properties/tree_properties.html',
                 link() {
                     $timeout(() => {
                         $rootScope.isLoading = false;
@@ -1544,13 +1544,13 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
 
             $scope.apply_diff = function () {
                 /* Filter the diff container that have been selected
-         depending on the status apply different behaviors
-         if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
-         if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
-         because the other ones have the same values. We can just apply the 'revert modification' mecanism
-         if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
-         if status == 3 : same behavior as status == 2
-         */
+                 depending on the status apply different behaviors
+                 if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
+                 if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
+                 because the other ones have the same values. We can just apply the 'revert modification' mecanism
+                 if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
+                 if status == 3 : same behavior as status == 2
+                 */
                 $scope.diff_containers.filter(function (diff_container) {
                     return diff_container.selected;
                 }).forEach(function (diff_container) {
@@ -1715,9 +1715,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
 
                     scope.isOpen = 1;
                     /**
-                 * Gets the properties values from the model name.
-                 * This is for iterable properties only.
-                 */
+                     * Gets the properties values from the model name.
+                     * This is for iterable properties only.
+                     */
                     scope.getValues = function (name) {
                         if (!scope.properties) {
                             return null;
@@ -1860,9 +1860,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             this.mergeWithGlobalProperties = function (global_properties) {
-            // Here we just want to mark the one existing identical in the global properties,
-            // because they wont be editable
-            // Mark also the ones just using a global in their valorisation
+                // Here we just want to mark the one existing identical in the global properties,
+                // because they wont be editable
+                // Mark also the ones just using a global in their valorisation
                 _.each(this.key_value_properties, function (key_value) {
                 // First clean, in case there has been updates from the server
                     key_value.inGlobal = false;
@@ -1908,6 +1908,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                         key_value.defaultValue = '';
                         key_value.pattern = '';
                     }
+                    key_value.tooltip = (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
+                                      (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
+                                      (key_value.password ? ' *password*' : '') +
+                                      (key_value.comment ? ` ${ key_value.comment }` : '');
                 });
 
                 // Add key_values that are only in the model
@@ -1933,39 +1937,39 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 });
 
                 /**
-             * Merge model and value for iterable value.
-             *
-             * @param iterable_properties -> array with properties
-             *                              {
-             *                                  comment: "",
-             *                                  defaultValue: "",
-             *                                  fields: Array[2],
-             *                                  name: "iterable",
-             *                                  password: false,
-             *                                  pattern: "",
-             *                                  required: false
-             *                              }
-             * @param current_item_value -> array with value of properties
-             *                              {
-             *                                  inModel: true,
-             *                                  iterable_valorisation_items: [
-             *                                      {
-             *                                          title: "blockOfProperties",
-             *                                          values: [
-             *                                              {
-             *                                                  iterable_valorisation_items: Array[1],
-             *                                                  name: "iterable2"
-             *                                              },
-             *                                              {
-             *                                                  name: "name2",
-             *                                                  value: "value2"
-             *                                              }
-             *                                          ]
-             *                                      }
-             *                                  ]
-             *                                  name: "iterable"
-             *                              }
-             */
+                 * Merge model and value for iterable value.
+                 *
+                 * @param iterable_properties -> array with properties
+                 *                              {
+                 *                                  comment: "",
+                 *                                  defaultValue: "",
+                 *                                  fields: Array[2],
+                 *                                  name: "iterable",
+                 *                                  password: false,
+                 *                                  pattern: "",
+                 *                                  required: false
+                 *                              }
+                 * @param current_item_value -> array with value of properties
+                 *                              {
+                 *                                  inModel: true,
+                 *                                  iterable_valorisation_items: [
+                 *                                      {
+                 *                                          title: "blockOfProperties",
+                 *                                          values: [
+                 *                                              {
+                 *                                                  iterable_valorisation_items: Array[1],
+                 *                                                  name: "iterable2"
+                 *                                              },
+                 *                                              {
+                 *                                                  name: "name2",
+                 *                                                  value: "value2"
+                 *                                              }
+                 *                                          ]
+                 *                                      }
+                 *                                  ]
+                 *                                  name: "iterable"
+                 *                              }
+                 */
                 var scanIterableItems = function (iterable_model, iterable_properties) {
                     _.each(iterable_model, function (modelIterable) {
                     // Found iterable properties for iterable_model
@@ -2156,159 +2160,61 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
 
     .filter('filterBox', function () {
         return function (boxes_object, searchString) {
-        // A box is filtered by its name or its modules names or its children boxes
-            var filter_one_box = function (box) {
-            // See if the parent box was previously fitered thanks to its name
-                if (!_.isUndefined(box.parent_box) && box.parent_box.name_filtered) {
-                // If the parent box was filtered by its name, we want to display the children boxes, just return true
-                    return true;
-                }
+            searchString = (searchString || '').toUpperCase();
 
-                // See if this box can be filtered by its name
-                if (_.includes(box.name.toUpperCase(), searchString)) {
-                // If so, hold a boolean on that box. It will be helpful when the filter will be called by one of the box's children
-                    box.name_filtered = true;
-                    return true;
-                }
-
-                // We couldn't filter by name so we try to iterate over the modules directly located in that box and filter by their name
-                var found_matching_module = false;
-
-                _.each(box.modules, function (module) {
-                    if (_.includes(module.name.toUpperCase(), searchString)) {
-                        found_matching_module = true;
-                    } else {
-                    // Search in each instance
-                        _.each(module.instances, function (instance) {
-                            if (_.includes(instance.name.toUpperCase(), searchString)) {
-                                found_matching_module = true;
-                                module.opened = true;
-                            }
-                        });
-                    }
+            // A box is filtered by its name or its modules names or its children boxes
+            var filterSingleBox = function (box) {
+                box.openBySearchFilter = !searchString || _.includes(box.name.toUpperCase(), searchString);
+                _.each(box.modules, (module) => {
+                    module.openBySearchFilter = !searchString ||
+                                                  _.includes(module.name.toUpperCase(), searchString) ||
+                                                  _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString));
+                    box.openBySearchFilter = box.openBySearchFilter || module.openBySearchFilter;
                 });
-
-                if (found_matching_module) {
-                    box.name_filtered = false;
-                    return true;
-                }
-
-                var found_matching_children_box = false;
-
-                _.each(box.children, function (boxChild) {
-                    if (filter_one_box(boxChild)) {
-                        boxChild.opened = true;
-                        found_matching_children_box = true;
-                    }
+                _.each(box.children, (boxChild) => {
+                    box.openBySearchFilter = box.openBySearchFilter || filterSingleBox(boxChild);
                 });
-
-                box.name_filtered = false;
-
-                return found_matching_children_box;
+                return box.openBySearchFilter;
             };
 
-            if (!_.isEmpty(searchString)) {
-                searchString = searchString.toUpperCase();
+            return _.filter(boxes_object, filterSingleBox);
+        };
+    })
 
-                var picked = _.pick(boxes_object, function (box) {
-                    box.opened = filter_one_box(box);
+    .controller('LogicalGroupInTreeController', function ($scope) {
+        $scope.$on('resetOpenByClick', function () {
+            $scope.openByClick = null;
+        });
 
-                    return box.opened;
-                });
+        $scope.$on('quickDisplayInstanceDetails', function () {
+            $scope.openByClick = true;
+        });
 
-                return picked;
+        $scope.$on('quickHideInstanceDetails', function () {
+            $scope.openByClick = false;
+        });
+
+        $scope.toggleLogicalGroupExpanded = function () {
+            if ($scope.openByClick === null) {
+                $scope.openByClick = !$scope.box.openBySearchFilter;
+            } else {
+                $scope.openByClick = !$scope.openByClick;
             }
-            return boxes_object;
         };
+
+        $scope.openByClick = null; /* null => user never clicked / true => user clicked to open it / false => user clicked to close it */
     })
 
-    .directive('initInstanceFunctions', function () {
-        return {
-            restrict: 'E',
-            replace: true,
-            template: '<div></div>',
-            scope: false,
-            link(scope, element, attrs) {
-                var setSign = function () {
-                    scope.treedisplay = scope.ngModel.opened;
-                    scope.sign = scope.ngModel.opened ? '-' : '+';
-                };
-
-                var displayInstanceDetails = function () {
-                    scope.ngModel.opened = !scope.ngModel.opened;
-
-                    setSign();
-                };
-
-                scope.$on('quickDisplayInstanceDetails', function () {
-                    scope.ngModel.opened = true;
-
-                    Object.keys(scope.ngModel.children).forEach(function (key) {
-                        scope.ngModel.children[key].opened = true;
-                    });
-
-                    setSign();
-                });
-
-                scope.$on('quickHideInstanceDetails', function () {
-                    scope.ngModel.opened = false;
-
-                    Object.keys(scope.ngModel.children).forEach(function (key) {
-                        scope.ngModel.children[key].opened = false;
-                    });
-
-                    setSign();
-                });
-
-
-                // We can't use isolate scope. We take attribut and parse it.
-                if (attrs.ngModel) {
-                    scope.ngModel = scope.$eval(attrs.ngModel);
-                }
-
-                scope.displayInstanceDetails = displayInstanceDetails;
-
-                setSign();
-            },
+    .controller('ModulesInTreeController', function ($scope) {
+        $scope.toggleModuleExpanded = function () {
+            if ($scope.openByClick === null) {
+                $scope.openByClick = !$scope.module.openBySearchFilter;
+            } else {
+                $scope.openByClick = !$scope.openByClick;
+            }
         };
-    })
 
-    .directive('initInstances', function () {
-        return {
-            restrict: 'E',
-            replace: true,
-            template: '<div></div>',
-            link(scope, element, attrs) {
-                var setSign = function () {
-                    scope.instancedisplay = scope.ngModel.opened;
-                    scope.sign = scope.ngModel.opened ? '-' : '+';
-                };
-
-                var displayInstances = function () {
-                    scope.ngModel.opened = !scope.ngModel.opened;
-
-                    setSign();
-                };
-
-                // We can't use isolate scope. We take attribut and parse it.
-                if (attrs.ngModel) {
-                    scope.ngModel = scope.$eval(attrs.ngModel);
-
-                    // Watch attribut for filter
-                    scope.$watch('ngModel.opened', function () {
-                        setSign();
-                    });
-                }
-
-                scope.displayInstances = displayInstances;
-
-                setSign();
-                if (scope.isInstanceOpen) {
-                    displayInstances();
-                    scope.ngModel.opened = true;
-                }
-            },
-        };
+        $scope.openByClick = $scope.isInstanceOpen === 1 ? true : null; /* null => user never clicked / true => user clicked to open it / false => user clicked to close it */
     })
 
 

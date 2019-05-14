@@ -20,11 +20,11 @@
   -->
 
 <!-- Debut bloc logic -->
-<init-instance-functions ng-model="box"></init-instance-functions>
+<div ng-controller="LogicalGroupInTreeController">
 
 <div class="property-tree-logic-bloc" layout="row"  ng-mouseleave="componentButtonsVisible=false">
     <div flex="none" layout="row" layout-align="none center">
-        <span id="tree-renderer_tree-sign-{{box.name}}" ng-click="displayInstanceDetails()" class="property-tree-sign">{{sign}}</span>
+        <span id="tree-renderer_tree-sign-{{box.name}}" class="property-tree-sign" ng-click="toggleLogicalGroupExpanded()">{{(openByClick === null ? box.openBySearchFilter : openByClick) ? '-' : '+'}}</span>
     </div>
     <div flex="none"
          ng-mouseenter="componentButtonsVisible=true"
@@ -57,26 +57,25 @@
         </md-button>
     </div>
 </div>
-
 <!-- fin bloc logic -->
-<div ng-if="treedisplay" flex="100">
+
+<div ng-if="openByClick === null ? box.openBySearchFilter : openByClick" flex="100">
     <div class="property-tree-logic-bloc-subbloc" flex="100"
          ng-repeat="box in (box.children | orderObjectBy:'name') | filterBox:searchInTree"
-         ng-include="'application/tree_renderer.html'"></div>
+         ng-include="'properties/tree_renderer.html'"></div>
 
     <!-- Debut des box affichant les modules -->
     <div
          ng-init="moduleButtonsVisible=false"
          ng-if="box.modules.length > 0"
-         ng-repeat="module in box.modules | orderObjectBy:'name'">
+         ng-repeat="module in box.modules | orderObjectBy:'name'"
+         ng-controller="ModulesInTreeController">
 
-        <init-instances ng-model="module"></init-instances>
         <div layout="row" class="property-tree-module">
             <div layout="row" layout-align="none center">
                 <span ng-switch="module.instances.length">
                     <span ng-switch-when="0">
-                        <span ng-click="displayInstances() "
-                              class="property-tree-sign">
+                        <span class="property-tree-sign" ng-click="toggleModuleExpanded()">
                             <md-button ng-click="preview_instance(box, application, platform, instance, module, true)" class="md-xs preview">
                                 <span class="fa fa-eye preview"></span>
                                 <md-tooltip>{{ 'properties.module.instance.preview' | translate }}</md-tooltip>
@@ -84,9 +83,8 @@
                         </span>
                     </span>
                     <span ng-switch-default>
-                        <span id="tree-renderer_tree-sign-{{module.title.split(',')[0]}}" ng-click="displayInstances() "
-                              class="property-tree-sign">
-                            {{sign}}
+                        <span id="tree-renderer_tree-sign-{{module.title.split(',')[0]}}" class="property-tree-sign" ng-click="toggleModuleExpanded()">
+                            {{(openByClick === null ? module.openBySearchFilter : openByClick) ? '-' : '+'}}
                         </span>
                     </span>
                 </span>
@@ -102,7 +100,7 @@
         </div>
 
         <!-- Debut des box affichant les instances -->
-        <div id="div_instance-tree-list-{{module.name}}" ng-if="instancedisplay">
+        <div id="div_instance-tree-list-{{module.name}}" ng-if="openByClick === null ? module.openBySearchFilter : openByClick">
             <ul>
                 <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
                     class="list-inline"
@@ -132,5 +130,7 @@
 
     </div>
     <!-- Fin des box affichant les modules -->
+
+</div>
 
 </div>

@@ -39,13 +39,13 @@
                               ng-focus="focusthis = true"
                               ng-blur="focusthis = false"
                               ng-class="{'text-stroke':!value.inModel, 'default-value-color': (value.defaultValue || value.pattern) && !value.value, 'default-value-color-focus': focusthis}"
-                              placeholder="{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}"
+                              placeholder="{{value.tooltip}}"
                               ng-pattern="value.pattern"
                               ng-required="value.required"
                               class="property-value"
                               id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{value.name}}"
                     ></textarea>
-                    <md-tooltip ng-show="value.defaultValue || value.pattern || value.comment" md-direction="top">{{value.defaultValue ? '[default=' + value.defaultValue + '] ' : ''}} {{value.pattern ? '[pattern=' + value.pattern + '] ' : ''}} {{value.comment}}</md-tooltip>
+                    <md-tooltip ng-if="value.tooltip" md-direction="top">{{value.tooltip}}</md-tooltip>
                 </div>
 
             </div>

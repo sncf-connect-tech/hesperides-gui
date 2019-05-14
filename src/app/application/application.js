@@ -114,7 +114,6 @@ angular.module('hesperides.application', [])
                     name: '',
                     version: '',
                     is_working_copy: true,
-                    opened: false,
                     instances: [],
                 }, data);
 
@@ -334,9 +333,7 @@ angular.module('hesperides.application', [])
                     var appService = this;
                     platform = platform.to_rest_entity();
                     var path = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms` +
-                `?from_application=${ encodeURIComponent(from_application)
-                }&from_platform=${ encodeURIComponent(from_platform)
-                }&copy_instances_and_properties=${ copyInstancesAndProperties }`;
+                               `?from_application=${ encodeURIComponent(from_application) }&from_platform=${ encodeURIComponent(from_platform) }&copy_instances_and_properties=${ copyInstancesAndProperties }`;
                     return $http.post(path, platform).then(function (response) {
                         $translate('platform.event.created').then(function (label) {
                             notify({ classes: [ 'success' ], message: label });

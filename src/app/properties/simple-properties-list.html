@@ -90,14 +90,13 @@
                                   ng-focus="focusthis = true"
                                   ng-blur="focusthis = false"
                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
-                                  placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}"
+                                  placeholder="{{key_value_property.tooltip}}"
                                   ng-pattern="key_value_property.pattern"
                                   ng-required="key_value_property.required"
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>
-                        <md-tooltip ng-show="key_value_property.defaultValue || key_value_property.pattern || key_value_property.comment"
-                                    md-direction="top">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
+                        <md-tooltip ng-if="key_value_property.tooltip" md-direction="top">{{key_value_property.tooltip}}</md-tooltip>
                     </div>
                 </div>
 
