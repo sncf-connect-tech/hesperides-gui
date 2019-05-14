@@ -287,6 +287,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 });
             };
 
+            $scope.closeAboutDialog = function () {
+                $mdDialog.cancel();
+            };
+
             $scope.closeSettingsDialog = function () {
                 $mdDialog.cancel();
             };
