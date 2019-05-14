@@ -59,7 +59,7 @@ angular.module('hesperides', [
 
             $translateProvider.useSanitizeValueStrategy('escaped');
 
-            $locationProvider.html5Mode(false).hashPrefix('!');
+            $locationProvider.html5Mode(false).hashPrefix('');
 
             var configureTranslation = function () {
                 $translateProvider.useStaticFilesLoader({
