@@ -2528,7 +2528,13 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
     .filter('hideHesperidesPredefinedProperties', function () {
         return function (items) {
             return _.filter(items, function (item) {
-                return !_.startsWith(item.name, 'hesperides.');
+                return !_.eq(item.name, 'hesperides.application.name') &&
+                    !_.eq(item.name, 'hesperides.application.version') &&
+                    !_.eq(item.name, 'hesperides.platform.name') &&
+                    !_.eq(item.name, 'hesperides.module.name') &&
+                    !_.eq(item.name, 'hesperides.module.version') &&
+                    !_.startsWith(item.name, 'hesperides.module.path.') &&
+                    !_.eq(item.name, 'hesperides.instance.name');
             });
         };
     });
