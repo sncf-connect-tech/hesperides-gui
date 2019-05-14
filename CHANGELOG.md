@@ -28,6 +28,14 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
+- Le bouton "Close" de la modale des paramètres fonctionne à nouveau - close #206. [Lucas Cimon]
+
+  \+ ajout des événements PlatformRestore dans la modale d'historique
+
+- Le bouton "Close" de la modale des paramètres fonctionne à nouveau - close #206. [Lucas Cimon]
+
+  \+ ajout des événements PlatformRestore dans la modale d'historique
+
 - Il désormais à nouveau possible de flaguer une plateforme comme "de production" - close #203. [Lucas Cimon]
 
   \+ suppression de l'état partagé Angular "session"
