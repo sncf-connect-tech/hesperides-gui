@@ -27,8 +27,9 @@
 	}
 
 body {
-     font-size: 0.813em;
-     font-family: AvenirBook,Arial,sans-serif;
+    font-size: 0.813em;
+    font-family: AvenirBook,Arial,sans-serif;
+    overflow: scroll; /* nécessaire car le body acquiert le style "position: fixed" lors d'un clic sur une liste déroulante du menu horizontal */
 }
 
 input,
@@ -185,13 +186,6 @@ textarea,
     width: 485px;
     height: 200px;
     background-image: url('/img/evolution-ordinateur.png');
-}
-
-/**
- * Title
- */
-#title {
-    text-decoration: initial;
 }
 
 /**
@@ -435,94 +429,6 @@ md-checkbox.diff {
     margin-left: 10px;
 }
 
-/******************************************************************************
- * Menu
- */
-.menu, .menu > a, .menu > span {
-    background-color: #009587;
-    color: rgba(255, 255, 255, 0.84);
-}
-
-.menu-item {
-    color: black;
-}
-
-md-menu-item > * {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-md-menu-content.md-menu-bar-menu.md-dense {
-    padding-top: 16px;
-    padding-bottom: 10px;
-}
-
-.menu-header {
-    font-size: 14px;
-    font-family: AvenirBook,Arial,sans-serif;
-    color: black;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    background-color: transparent;
-    height: 40px;
-}
-
-.menu-title {
-    color: #004032;
-    font-size: 14px;
-    margin: 0;
-    text-align: center;
-}
-
-
-.menu-search-input {
-    border: none;
-    background:transparent;
-    font-size: 14px;
-}
-
-.menu-properties-search-input {
-    width: 420px !important;
-}
-
-.menu-help {
-    float: right;
-}
-
-.menu-language {
-    float: right;
-    min-height: 40px;
-}
-
-.menu-language > button {
-    margin-top: 10px;
-    min-width: 40px;
-    max-width: 40px;
-    max-height: 20px;
-    min-height: 20px;
-    text-indent:-10000px;
-    background-size: 100% ;
-    background-repeat: no-repeat;
-}
-.menu-language--fr {
-    background-image: url('/img/french-flag-small.png');
-}
-.menu-language--en {
-    background-image: url('/img/british-flag-small.png');
-}
-
-.menu-user {
-    float: right;
-    min-height: 40px;
-}
-
-.menu-user > button {
-    margin-top: 0px;
-    min-width: 25px;
-    max-width: 25px;
-    background-repeat: no-repeat;
-}
 
 /******************************************************************************
  * Template
@@ -703,16 +609,6 @@ md-input-container.md-default-theme label, md-input-container label, md-input-co
     font-size: 14px !important;
 }
 
-/******************************************************************************
- * Material Design menu
- */
-.md-menu-toolbar{
-    min-height: inherit;
-}
-md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-open > button, md-menu-bar.md-default-theme md-menu > button:focus, md-menu-bar md-menu > button:focus {
-    outline: none;
-    background: #007C6E;
-}
 
 /******************************************************************************
  * Confirm button
@@ -1225,15 +1121,6 @@ repeated-item
 
 .zoom-in-property-icon {
     cursor: pointer;
-}
-
-/* Modal from */
-
-md-switch#platform-menu-modal_override-existing-switch {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
 }
 
 /* Code mirror line number style*/

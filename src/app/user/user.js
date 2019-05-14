@@ -17,9 +17,9 @@
  */
 angular.module('hesperides.user', [])
 
-/**
- * The user entity
- */
+    /**
+     * The user entity
+     */
     .factory('User', function () {
         var User = function (data) {
             _.assign(this, data);
@@ -28,15 +28,14 @@ angular.module('hesperides.user', [])
                 this.isProdUser = this.prodUser;
             }
         };
-
         return User;
     })
 
-/**
- * The authentication service for users.
- */
+    /**
+     * The authentication service for users.
+     */
     .factory('UserService', [
-        '$http', 'User', function ($http, User) {
+        '$http', 'User', '$translate', 'notify', function ($http, User, $translate, notify) {
             var userCache = null;
             return {
                 authenticate() {
@@ -46,8 +45,22 @@ angular.module('hesperides.user', [])
                     return $http.get('/rest/users/auth').then(function (response) {
                         userCache = new User(response.data);
                         return userCache;
-                    }, function (error) {
-                        throw error;
+                    }, function (errorResp) {
+                        var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';
+                        notify({ classes: [ 'error' ], message: errorMsg });
+                        throw new Error(errorMsg);
+                    });
+                },
+                logout() {
+                    userCache = null;
+                    return $http.get('/rest/users/auth?logout=true').then(() => {
+                        $translate('auth.logout.success')
+                            .then((label) => notify({ classes: [ 'success' ], message: label }))
+                            .then(() => location.reload());
+                    }).catch((errorResp) => {
+                        var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.logout';
+                        notify({ classes: [ 'error' ], message: errorMsg });
+                        throw new Error(errorMsg);
                     });
                 },
             };
