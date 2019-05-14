@@ -915,7 +915,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     $scope.instance = null;
                     $scope.properties = null;
                     $scope.update_main_box(searchPlatform);
-                    store.set('current_platform_versionID', searchPlatform.version_id);
+                    store.set('current_platform_versionID', searchPlatform.version_id || null);
                 });
             };
 
@@ -1060,7 +1060,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
 
                 var hasSavedLocalChange = false;
 
-                store.set('current_platform_versionID', $scope.platform.version_id);
+                store.set('current_platform_versionID', $scope.platform.version_id || null);
 
                 properties.key_value_properties.forEach(function (elem) {
                     if (('filtrable_value' in elem && elem.filtrable_value !== elem.value) ||

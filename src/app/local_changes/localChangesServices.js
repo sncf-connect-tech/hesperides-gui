@@ -126,7 +126,7 @@ angular.module('hesperides.localChanges')
             }
 
             function save() {
-                store.set(local_storage_key, local_changes);
+                store.set(local_storage_key, local_changes || null);
             }
 
             function localChangesCleanup() {

@@ -511,7 +511,7 @@ angular.module('hesperides', [
             }
 
             function save() {
-                store.set(local_storage_key, comments_history);
+                store.set(local_storage_key, comments_history || null);
             }
 
             Comments.prototype = {
