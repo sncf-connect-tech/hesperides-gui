@@ -272,6 +272,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 });
             };
 
+            $scope.closeSettingsDialog = function() {
+                $mdDialog.cancel();
+            };
+
             /**
      * That is the user settings modal.
      * It's used to customize user relative settings on hesperides.
@@ -315,7 +319,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     store.set('language', $scope.settings_language);
                     store.set('instance_properties', $scope.settings_instance);
                     store.set('copy_properties', $scope.settings_copy);
-                    store.set('color_active', $scope.settings_color);
+                    store.set('color_active', $scope.settings_color || null);
                     store.set('color_red', $scope.color.red);
                     store.set('color_green', $scope.color.green);
                     store.set('color_blue', $scope.color.blue);

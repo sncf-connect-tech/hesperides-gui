@@ -699,9 +699,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             /**
-         * This used to show the event lists.
-         * Added by Tidiane SIDIBE on 08/03/2016
-         */
+             * This used to show the event lists.
+             * Added by Tidiane SIDIBE on 08/03/2016
+             */
             $scope.show_events = function (param1, param2, action) {
                 var modalScope = $scope.$new(true);
                 // used for events filtering
@@ -730,8 +730,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 }
 
                 /**
-             * Private function to preload next events
-             */
+                 * Private function to preload next events
+                 */
                 var preloadNextEvents = function () {
                     EventService.get(stream, page).then(function (nextEntries) {
                         events = nextEntries;
@@ -740,8 +740,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 };
 
                 /**
-             * Private function for index calculation
-             */
+                 * Private function for index calculation
+                 */
                 var setIds = function (lengthOfAll, entries) {
                     _.each(entries, (entry, index) => {
                         entry.id = lengthOfAll + index;
@@ -755,8 +755,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     page++;
 
                     /**
-                 * Private function used to check if the events are selectabled or not
-                  */
+                     * Private function used to check if the events are selectabled or not
+                      */
                     modalScope.checkSelectStatus = function () {
                         // get the target items
                         var isGlobal = null;
@@ -787,10 +787,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     // Preload the next page
                     preloadNextEvents();
 
-                    //
-                    // Close the events modal
-                    //
-                    modalScope.$closeDialog = function () {
+                    modalScope.closeEventsDialog = function () {
                         $mdDialog.cancel();
                     };
 

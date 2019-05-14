@@ -46,6 +46,7 @@
   "platform.event.createdFromExisting": "a créé cette plateforme à partir de",
   "platform.event.updatedByUser": "a modifié la plateforme",
   "platform.event.deletedByUser": "a supprimé la plateforme",
+  "platform.event.restoredByuser": "a restauré la plateforme",
   "platform.event.created": "La plateforme a bien été créée",
   "platform.event.updated": "La plateforme a été mise à jour",
   "platform.event.deleted": "La plateforme a bien été supprimée",

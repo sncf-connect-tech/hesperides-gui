@@ -28,7 +28,7 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
-- Il désormais à nouveau possible de flaguer une plateforme comme "de production" [Lucas Cimon]
+- Il désormais à nouveau possible de flaguer une plateforme comme "de production" - close #203. [Lucas Cimon]
 
   \+ suppression de l'état partagé Angular "session"
   \+ ajout d'un cache sur UserService.authenticate

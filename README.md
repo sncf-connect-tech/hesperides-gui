@@ -53,7 +53,7 @@ Run the webdriver-manager :
 $ npm run webdriver-start
 ```
 
-Run the protractor tests in another window :
+Run the endto-end tests in another window :
 ```shell
-$ npm run protractor
+$ npm run e2e-tests
 ```
