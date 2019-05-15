@@ -43,17 +43,12 @@ Linter:
 $ npm run lint
 ```
 
-Karma unit tests:
+Unit tests:
 ```shell
 $ npm test
 ```
 
-Run the webdriver-manager :
-```shell
-$ npm run webdriver-start
-```
-
-Run the endto-end tests in another window :
+End-to-end tests :
 ```shell
 $ npm run e2e-tests
 ```

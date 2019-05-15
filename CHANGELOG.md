@@ -28,7 +28,7 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Added
 
-- Boutont de déconnexion + nettoyage du CSS du menu. [Lucas Cimon]
+- Une indication "password" dans le tooltip des propriétés correspondantes + refacto gestion des fonctionnalités de folding & search de la vue arborescente des modules de plateforme - fix #209. [Lucas Cimon]
 
 
 
@@ -39,6 +39,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 
 ### Fixed
+
+- #206 Bouton de fermeture de modal de création de techno, module et plateforme à nouveau fonctionnel (#216) [Thomas L'Hostis]
+
+- #205 Ouverture des liens dans un nouvel onglet - dont le diff - à nouveau fonctionnelle (#217) [Thomas L'Hostis]
 
 - #202 Sauvegarde des préférences à nouveau fonctionnelle (#213) [Thomas L'Hostis]
 
