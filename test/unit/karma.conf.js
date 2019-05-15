@@ -7,91 +7,80 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
+    plugins: [
+        'karma-coverage',
+        'karma-firefox-launcher',
+        'karma-jasmine',
+        'karma-verbose-reporter',
+    ],
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
-
     // list of files / patterns to load in the browser
     files: [
-      // libs
-      'src/app/vendor.min.js',
-      'src/app/app.js',
+      // libs : l'ordre importe ! + on exclut app.js / vendor.min.js
+      '../../src/app/vendor.js',
+      '../../src/app/utils.js',
+      '../../src/app/hesperides/hesperides.js',
+      '../../src/app/local_changes/localChanges.js', // doit venir avant les autres fichiers dans local_changes/
+      '../../src/app/properties/properties.js',      // doit venir avant iterable-properties-container.js
+      '../../src/app/*/**/*.js',
 
       // mocks
-      'node_modules/angular-mocks/angular-mocks.js',
-      'node_modules/angular-material/angular-material-mocks.js',
-
-      // app files
-      'src/app/hesperides/hesperides.js',
-      'src/app/menu/menu.js',
-      'src/app/local_changes/localChanges.js',
-      'src/app/local_changes/localChangeFactory.js',
-      'src/app/local_changes/localChangesServices.js',
-      'src/app/local_changes/localChangesControllers.js',
-      'src/app/application/application.js',
-      'src/app/file/file.js',
-      'src/app/user/user.js',
-      'src/app/event/event.js',
-      'src/app/module/module.js',
-      'src/app/model/model.js',
-      'src/app/properties/properties.js',
-      'src/app/properties/iterable-properties-container.js',
-      'src/app/techno/techno.js',
-      'src/app/template/template.js',
-      'src/app/shared/components.js',
+      '../../node_modules/angular-mocks/angular-mocks.js',
+      '../../node_modules/angular-material/angular-material-mocks.js',
 
       // hesperides karma testing utilities
-      'test/unit/utils.js',
+      'utils.js',
 
       // tests
-      'test/unit/*.spec.js'
+      '*.spec.js'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: { 'src/app/*/!(*spec).js': ['coverage'] },
-
+    preprocessors: {
+        // On exclut app.js / vendor.js / vendor.min.js
+        '../../src/app/*/**/*.js': ['coverage'],
+        '../../src/app/utils.js': ['coverage']
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'html', 'coverage'],
+    reporters: ['progress', 'coverage'],
 
     coverageReporter: {
       dir: 'reports',
       reporters: [
         {type: 'lcov', subdir: 'coverage'},
-        {type: 'cobertura', subdir: '.', file: 'cobertura.xml'}
+        {type: 'cobertura', subdir: '.', file: 'cobertura.xml'},
+        {type: 'text', subdir: '.', file: 'coverage.txt'},
       ]
     },
 
     // web server port
     port: 9876,
 
-
     // enable / disable colors in the output (reporters and logs)
     colors: true,
-
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
+    autoWatch: false,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Firefox'],
 
-
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous

@@ -17,7 +17,10 @@ The backend part is here: <https://github.com/voyages-sncf-technologies/hesperid
 Documentation
 =============
 
-<https://voyages-sncf-technologies.github.io/hesperides-gui/>
+The user manual is contained in the `docs/` directory,
+and available online here: <https://voyages-sncf-technologies.github.io/hesperides-gui/>
+
+Technical documentation can be found in `CONTRIBUTING.md` and the `tech_docs/` directory.
 
 Build
 =====

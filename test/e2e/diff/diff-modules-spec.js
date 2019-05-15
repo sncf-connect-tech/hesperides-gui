@@ -17,7 +17,7 @@
  */
 
 var rest = require('restling');
-var vsct_utils = require('../lib/lib.js');
+var utils = require('../utils.js');
 
 describe('Manage diff', function() {
 
@@ -30,10 +30,10 @@ describe('Manage diff', function() {
 
         // set bloc mode (in case the default mode change)
         var elm_bloc_mode = element(by.id("properties_show-box-mode-button"));
-        vsct_utils.clickOnElement(elm_bloc_mode);
+        utils.clickOnElement(elm_bloc_mode);
 
         var elm_diff = element(by.id("property-tool-button_diff-properties-button-"+data.new_module_name));
-        vsct_utils.clickOnElement(elm_diff);
+        utils.clickOnElement(elm_diff);
 
         var elm_from_app = element(by.model("from.application"));
 
@@ -42,7 +42,7 @@ describe('Manage diff', function() {
         expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(0);
 
-        vsct_utils.clearAndSendkeys(elm_from_app, "foo");
+        utils.clearAndSendkeys(elm_from_app, "foo");
 
         expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(0);
@@ -53,7 +53,7 @@ describe('Manage diff', function() {
 
         var elm_from_app = element(by.model("from.application"));
 
-        vsct_utils.clearAndSendkeys(elm_from_app, data.new_application);
+        utils.clearAndSendkeys(elm_from_app, data.new_application);
 
         expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         browser.sleep(1000);
@@ -62,15 +62,15 @@ describe('Manage diff', function() {
     });
     it('should display datepicker on compare two platform at a specific date switch', function () {
         var elm_switch_button = element(by.css('[ng-click="switched()"]'));
-        vsct_utils.clickOnElement(elm_switch_button);
+        utils.clickOnElement(elm_switch_button);
         expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(1);
 
         var elm_button_previous_month = element(by.css('[ng-click="addMonth(-1)"]'));
-        vsct_utils.clickOnElement(elm_button_previous_month);
+        utils.clickOnElement(elm_button_previous_month);
         expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(1);
 
         var elm_jour = element.all(by.cssContainingText(".adp-day.selectable","1")).get(0);
-        vsct_utils.clickOnElement(elm_jour);
+        utils.clickOnElement(elm_jour);
         browser.sleep(1000);
         expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(0);
     });
