@@ -193,7 +193,6 @@ textarea,
  */
 .CodeMirror {
   border: 1px solid #ddd;
-  height: auto;
 }
 
 .CodeMirror pre.CodeMirror-cursor {
@@ -1121,18 +1120,6 @@ repeated-item
 
 .zoom-in-property-icon {
     cursor: pointer;
-}
-
-/* Code mirror line number style*/
-.CodeMirror-sizer {
-    margin-left: 30px !important;
-}
-.CodeMirror-linenumbers {
-    width: 30px !important;
-}
-.CodeMirror-linenumber {
-    padding: 0 !important;
-    text-align: center !important;
 }
 
 .tri-switch {

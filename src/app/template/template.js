@@ -80,7 +80,7 @@ angular.module('hesperides.template', [])
                 ],
                 codeMirrorOptions: {
                     mode: 'hesperides',
-                    lineNumbers: false, // there is a bug on line numbers, so keep it h
+                    lineNumbers: true,
                     lineWrapping: true,
                     onLoad(_editor) {
                         defaultScope.editor = _editor;
