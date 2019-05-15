@@ -62,7 +62,7 @@
             datetimePickerEl = $compile(div)(options.scope)[0];
             datetimePickerEl.triggerEl = options.triggerEl;
 
-            $rootElement.appendChild(datetimePickerEl);
+            $rootElement[0].appendChild(datetimePickerEl);
 
             // show datetimePicker below triggerEl
             var bcr = triggerEl.getBoundingClientRect();
@@ -90,7 +90,7 @@
 
         this.closeDatetimePicker = function (evt) {
             var target = evt && evt.target;
-            var popupEl = $rootElement.querySelector('div[datetime-picker-popup]');
+            var popupEl = $rootElement[0].querySelector('div[datetime-picker-popup]');
             if (evt && target) {
                 if (target.hasAttribute('datetime-picker')) { // element with datetimePicker behaviour
                     // do nothing

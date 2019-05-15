@@ -501,7 +501,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 modalScope.switched = function () {
                     if (!modalScope.from.lookPast) {
                         $timeout(function () {
-                            var el = angular.element($document.querySelector('#look-past-date-time'));
+                            var el = angular.element($document[0].querySelector('#look-past-date-time'));
                             el.focus();
                         }, 200);
                     }
@@ -585,7 +585,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 modalScope.switched = function () {
                     if (!modalScope.from.lookPast) {
                         $timeout(function () {
-                            var el = angular.element($document.querySelector('#look-past-date-time'));
+                            var el = angular.element($document[0].querySelector('#look-past-date-time'));
                             el.focus();
                         }, 200);
                     }
@@ -973,8 +973,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             $scope.save_global_properties = function (properties, save) {
                 // Getting information with querySelector, this is because there is
                 // a scope problem
-                var nameEl = angular.element($document.querySelector('#new_kv_name'));
-                var valueEl = angular.element($document.querySelector('#new_kv_value'));
+                var nameEl = angular.element($document[0].querySelector('#new_kv_name'));
+                var valueEl = angular.element($document[0].querySelector('#new_kv_value'));
 
                 // Check if there is new global property then add before saving
                 if (!_.isEmpty(nameEl.val().trim())) {
