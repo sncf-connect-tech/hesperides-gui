@@ -136,7 +136,7 @@ angular.module('hesperides', [
          * @returns {string}
          */
         $rootScope.offsetMargin = function (calendar, cssClass) {
-            var objs = $document.querySelectorAll(`.${ cssClass }`);
+            var objs = $document[0].querySelectorAll(`.${ cssClass }`);
             var selectedObj = null;
             for (var index = 0; index < objs.length; index++) {
                 selectedObj = objs[index];

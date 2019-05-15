@@ -90,7 +90,7 @@
 
         this.closeDatetimePicker = function (evt) {
             var target = evt && evt.target;
-            var popupEl = $rootElement.querySelector('div[datetime-picker-popup]');
+            var popupEl = $rootElement[0].querySelector('div[datetime-picker-popup]');
             if (evt && target) {
                 if (target.hasAttribute('datetime-picker')) { // element with datetimePicker behaviour
                     // do nothing
