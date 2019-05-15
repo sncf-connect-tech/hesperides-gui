@@ -1,5 +1,4 @@
 var rest = require('restling');
-var vsct_utils = require('./lib.js');
 var path = require('path');
 
 // input : element
@@ -96,7 +95,7 @@ exports.clickToCreateAndCheckIfReallyCreated = function(id_button, id_elem_check
         // évite que l'appel soit lancé avant que le module soit vraiment créé
         elm_toCheckIfPageIsCorrectlyLoaded.isPresent().then(function(boolElemDisplayed){
             if (boolElemDisplayed) {
-                vsct_utils.checkResponseStatusCode(rest_url,200,rest_options);
+                exports.checkResponseStatusCode(rest_url,200,rest_options);
             }
         })
     });

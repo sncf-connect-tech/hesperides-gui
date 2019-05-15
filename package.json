@@ -28,6 +28,7 @@
     "arrive": "^2.4.1",
     "codemirror": "^5.46.0",
     "downloadjs": "^1.4.7",
+    "font-awesome": "^4.7.0",
     "html2canvas": "^0.5.0-beta4",
     "js-yaml": "^3.13.1",
     "jszip": "^3.2.1",
@@ -52,13 +53,9 @@
     "http-server-legacy": "latest",
     "jasmine-core": "latest",
     "karma": "latest",
-    "karma-chrome-launcher": "latest",
     "karma-coverage": "latest",
     "karma-firefox-launcher": "latest",
-    "karma-html-reporter": "latest",
     "karma-jasmine": "latest",
-    "karma-jasmine-html-reporter": "latest",
-    "karma-phantomjs-launcher": "latest",
     "karma-verbose-reporter": "latest",
     "protractor": "latest",
     "protractor-jasmine2-html-reporter": "latest",
@@ -69,7 +66,8 @@
     "postinstall": "node bundler.js",
     "start": "grunt server",
     "lint": "eslint --fix src/app",
-    "test": "karma start karma.conf.js --no-auto-watch --single-run",
-    "e2e-tests": "protractor test/protractor-conf.js --suite all"
+    "test": "karma start test/unit/karma.conf.js",
+    "webdriver-start": "webdriver-manager update && webdriver-manager start",
+    "e2e-tests": "protractor test/e2e/protractor-conf.js --suite menus"
   }
 }

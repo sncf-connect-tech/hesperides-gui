@@ -199,7 +199,7 @@
         });
 
         it ('should add a new iterable bloc', function (){
-            var beforeCount = scope.iterables[0].iterable_valorisation_items.length;
+            var count = scope.iterables[0].iterable_valorisation_items.length;
 
             // given
             var property = scope.iterables[0];
@@ -208,16 +208,13 @@
             scope.addOne(property);
 
             // then
-            expect(beforeCount).toEqual(scope.iterables[0].iterable_valorisation_items.length - 1);
+            expect(scope.iterables[0].iterable_valorisation_items.length).toEqual(count + 1);
 
-            var bloc = scope.iterables[0].iterable_valorisation_items[beforeCount];
+            var bloc = _.last(scope.iterables[0].iterable_valorisation_items);
             // all properties should be in new bloc
             _.each(['val1', 'val2', 'val3'], function (val){
                 expect(_.some(bloc.values, {name: val})).toBe(true);
             });
-
-            // The title should be a void string
-            expect( _.isEqual(bloc.title, "") ).toBe(true);
         });
 
         it ('should remove a iterable bloc', function (){

@@ -17,7 +17,7 @@
  */
 
 var rest = require('restling');
-var vsct_utils = require('../lib/lib.js');
+var utils = require('../utils.js');
 var fs = require('fs');
 
 describe('Manage technos', function() {
@@ -27,29 +27,29 @@ describe('Manage technos', function() {
         browser.get(hesperides_url);
         // delete techno on hesperides for cleaning
         var path_to_techno_wc = hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/workingcopy';
-        vsct_utils.deleteHttpRequest(path_to_techno_wc,200,rest_options);
+        utils.deleteHttpRequest(path_to_techno_wc,200,rest_options);
         var path_to_techno_release = hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/release';
-        vsct_utils.deleteHttpRequest(path_to_techno_release,200,rest_options);
+        utils.deleteHttpRequest(path_to_techno_release,200,rest_options);
         var path_to_techno_from = hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'_from/workingcopy';
-        vsct_utils.deleteHttpRequest(path_to_techno_from,200,rest_options);
+        utils.deleteHttpRequest(path_to_techno_from,200,rest_options);
     });
     it('should create techno in working copy', function() {
-        var elm_technoMenu = element(by.id("menu_techno-menu"));
-        vsct_utils.clickOnElement(elm_technoMenu);
-        var elm_createtechnoMenu = element(by.id("menu_techno-create-menu"));
-        vsct_utils.clickOnElement(elm_createtechnoMenu);
+        var elm_technoMenu = element(by.id("e2e-navbar-techno"));
+        utils.clickOnElement(elm_technoMenu);
+        var elm_createtechnoMenu = element(by.id("e2e-navbar-techno-create"));
+        utils.clickOnElement(elm_createtechnoMenu);
         
         var elm_technoName = element(by.id('technoName'));
         elm_technoName.sendKeys(data.new_techno_name);
         var elm_technoVersion = element(by.id('technoVersion'));
         elm_technoVersion.sendKeys(data.new_techno_version);
 
-        vsct_utils.clickToCreateAndCheckIfReallyCreated('techno-menu-modal_create-button','techno_create-release-button',hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/workingcopy');
+        utils.clickToCreateAndCheckIfReallyCreated('techno-menu-modal_create-button','techno_create-release-button',hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/workingcopy');
     });
 
     it('should add a template file to the new techno', function() {
         var elm_btn_add_template = element(by.id("template-list_create-template-button"));
-        vsct_utils.clickOnElement(elm_btn_add_template);
+        utils.clickOnElement(elm_btn_add_template);
 
         var input_template_name = element(by.id("templateName"));
         input_template_name.sendKeys(data.new_techno_conf_name);
@@ -74,10 +74,10 @@ describe('Manage technos', function() {
     });
 
     it('should download template file for a techno', function() {
-        var filename = vsct_utils.getDownloadsPath()+data.new_techno_conf_filename;
+        var filename = utils.getDownloadsPath()+data.new_techno_conf_filename;
 
         var elm_btn_download_file=element(by.id("template-list_download-template-module-button-"+data.new_techno_conf_name));
-        vsct_utils.clickOnElement(elm_btn_download_file);
+        utils.clickOnElement(elm_btn_download_file);
 
         browser.driver.wait(function() {
             // Wait until the file has been downloaded.
@@ -95,14 +95,14 @@ describe('Manage technos', function() {
         });
 
         var elm_btn_download_all_file=element(by.id("template-list_download-all-template-button"));
-        vsct_utils.clickOnElement(elm_btn_download_all_file);
+        utils.clickOnElement(elm_btn_download_all_file);
     });
 
     it('should find techno on autocomplete in menu "techno"', function() {
-        var elm_technoMenu = element(by.id("menu_techno-menu"));
-        vsct_utils.clickOnElement(elm_technoMenu);
+        var elm_technoMenu = element(by.id("e2e-navbar-techno"));
+        utils.clickOnElement(elm_technoMenu);
 
-        var elm_technoMenu_autocomplete = element(by.id("menu_techno-autocomplete"));
+        var elm_technoMenu_autocomplete = element(by.id("e2e-navbar-techno-autocomplete"));
         elm_technoMenu_autocomplete.sendKeys(data.new_techno_conf_name);
         browser.waitForAngular();
 

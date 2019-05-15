@@ -17,7 +17,7 @@
  */
 
 var rest = require('restling');
-var vsct_utils = require('../lib/lib.js');
+var utils = require('../utils.js');
 var fs = require('fs');
 
 describe('Manage modules', function() {
@@ -27,28 +27,28 @@ describe('Manage modules', function() {
         browser.get(hesperides_url);
         // delete module on hesperides for cleaning
         var path_to_module_wc = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy';
-        vsct_utils.deleteHttpRequest(path_to_module_wc,200,rest_options);
+        utils.deleteHttpRequest(path_to_module_wc,200,rest_options);
         var path_to_module_release = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release';
-        vsct_utils.deleteHttpRequest(path_to_module_release,200,rest_options);
+        utils.deleteHttpRequest(path_to_module_release,200,rest_options);
         var path_to_module_from = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy';
-        vsct_utils.deleteHttpRequest(path_to_module_from,200,rest_options);
+        utils.deleteHttpRequest(path_to_module_from,200,rest_options);
     });
     it('should create module in working copy', function() {
-        var elm_moduleMenu = element(by.id("menu_module-menu"));
-        vsct_utils.clickOnElement(elm_moduleMenu);
-        var elm_createModuleMenu = element(by.id("menu_module-create-menu"));
-        vsct_utils.clickOnElement(elm_createModuleMenu);
+        var elm_moduleMenu = element(by.id("e2e-navbar-module"));
+        utils.clickOnElement(elm_moduleMenu);
+        var elm_createModuleMenu = element(by.id("e2e-navbar-module-create"));
+        utils.clickOnElement(elm_createModuleMenu);
         
         var elm_moduleName = element(by.id('moduleName'));
         elm_moduleName.sendKeys(data.new_module_name);
         var elm_moduleVersion = element(by.id('moduleVersion'));
         elm_moduleVersion.sendKeys(data.new_module_version);
 
-        vsct_utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy');
+        utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy');
     });
     it('should find module on autocomplete in menu "module"', function() {
-        var elm_moduleMenu = element(by.id("menu_module-menu"));
-        vsct_utils.clickOnElement(elm_moduleMenu);
+        var elm_moduleMenu = element(by.id("e2e-navbar-module"));
+        utils.clickOnElement(elm_moduleMenu);
 
         var input_autocomplete_module = element(by.id("input-2"));
         input_autocomplete_module.sendKeys(data.new_module_name);
@@ -66,7 +66,7 @@ describe('Manage modules', function() {
 
         // open modal
         var elm_open_modal_add_template = element(by.id("template-list_create-template-button"));
-        vsct_utils.clickOnElement(elm_open_modal_add_template);
+        utils.clickOnElement(elm_open_modal_add_template);
 
         // fill in informations
         var elm_template_title= element(by.id("templateName"));
@@ -90,7 +90,7 @@ describe('Manage modules', function() {
 
         // open modal
         var elm_open_modal_add_template = element(by.id("template-list_create-template-button"));
-        vsct_utils.clickOnElement(elm_open_modal_add_template);
+        utils.clickOnElement(elm_open_modal_add_template);
 
         // fill in informations
         var elm_template_title= element(by.id("templateName"));
@@ -110,10 +110,10 @@ describe('Manage modules', function() {
     });
 
     it('should download template file for a techno', function() {
-        var filename = vsct_utils.getDownloadsPath()+data.json_new_template_filename;
+        var filename = utils.getDownloadsPath()+data.json_new_template_filename;
 
         var elm_btn_download_file=element(by.id("template-list_download-template-module-button-"+data.json_new_template_title));
-        vsct_utils.clickOnElement(elm_btn_download_file);
+        utils.clickOnElement(elm_btn_download_file);
 
         browser.driver.wait(function() {
             // Wait until the file has been downloaded.
@@ -131,7 +131,7 @@ describe('Manage modules', function() {
         });
 
         var elm_btn_download_all_file=element(by.id("template-list_download-all-template-button"));
-        vsct_utils.clickOnElement(elm_btn_download_all_file);
+        utils.clickOnElement(elm_btn_download_all_file);
     });
 
     it('should add a template in a working copy module and delete it', function() {
@@ -139,7 +139,7 @@ describe('Manage modules', function() {
 
         // open modal
         var elm_open_modal_add_template = element(by.id("template-list_create-template-button"));
-        vsct_utils.clickOnElement(elm_open_modal_add_template);
+        utils.clickOnElement(elm_open_modal_add_template);
 
         // fill in informations
         var elm_template_title= element(by.id("templateName"));
@@ -173,7 +173,7 @@ describe('Manage modules', function() {
 
         // open modal
         var elm_open_modal_release_button = element(by.id("module_create-release-button"));
-        vsct_utils.clickOnElement(elm_open_modal_release_button);
+        utils.clickOnElement(elm_open_modal_release_button);
 
         // fill in informations
         var elm_release_version_input = element(by.id("release_version"));
@@ -187,7 +187,7 @@ describe('Manage modules', function() {
                     elm_toCheckIfPageIsCorrectlyLoaded.isPresent().then(function(boolElemDisplayed){
                         if (boolElemDisplayed) {
                             var path_to_released_module = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release';
-                            vsct_utils.checkResponseStatusCode(path_to_released_module,200,rest_options);
+                            utils.checkResponseStatusCode(path_to_released_module,200,rest_options);
                             browser.waitForAngular();// ajout pour que le screenshot soit pris au bon moment
                         }
                     })
@@ -197,10 +197,10 @@ describe('Manage modules', function() {
         });
     });
     it('should create working copy module from an existing one', function() {
-        var elm_moduleMenu = element(by.id("menu_module-menu"));
-        vsct_utils.clickOnElement(elm_moduleMenu);
-        var elm_createModuleFromMenu = element(by.id("menu_module-create-from-menu"));
-        vsct_utils.clickOnElement(elm_createModuleFromMenu);
+        var elm_moduleMenu = element(by.id("e2e-navbar-module"));
+        utils.clickOnElement(elm_moduleMenu);
+        var elm_createModuleFromMenu = element(by.id("e2e-navbar-module-create-from"));
+        utils.clickOnElement(elm_createModuleFromMenu);
         
         var elm_moduleName = element(by.id('moduleName'));
         elm_moduleName.sendKeys(data.new_module_name);
@@ -212,11 +212,11 @@ describe('Manage modules', function() {
 
         browser.driver.findElements(by.css('.md-autocomplete-suggestions li')).
             then(function(elems) {
-                vsct_utils.clickOnElement(elems[0]);
+                utils.clickOnElement(elems[0]);
             }
         );
 
-        vsct_utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal-from_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy');
+        utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal-from_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy');
     });
 
     afterAll(function(done) {

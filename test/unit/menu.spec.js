@@ -57,19 +57,16 @@ describe('Testing hesperides menu', function() {
     // This is for testing the menu module controller
     describe('Testing MenuModuleController', function (){
 
-        var scope, dialog, location, timeout, ctrl;
+        var scope;
 
         beforeEach(inject(function($injector, $rootScope, $controller, ModuleService, Module){
             scope = $rootScope.$new();
-            dialog = $injector.get('$mdDialog');
-            location = $injector.get('$location');
-            timeout = $injector.get('$timeout');
 
-            ctrl = $controller('MenuModuleController', {
+            $controller('MenuModuleController', {
                 $scope: scope,
-                $mdDialog: dialog,
-                $location: location,
-                $timeout: timeout,
+                $mdDialog: $injector.get('$mdDialog'),
+                $location: $injector.get('$location'),
+                $timeout: $injector.get('$timeout'),
                 ModuleService: ModuleService,
                 Module: Module
             })

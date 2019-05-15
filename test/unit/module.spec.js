@@ -28,31 +28,21 @@ describe('Testing hesperides module', function (){
     beforeEach (module('hesperides.module'));
 
     // Services
-    var pageService, moduleService, technoService, fileService;
+    var pageService;
 
     describe('Testing the ModuleController', function (){
         var scope, routeParams, dialog, location, translator, ctrl;
 
         beforeEach(inject(function($injector, $rootScope, $controller, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page, FileService, Platform){
-            // get dependencies
-            scope = $rootScope.$new();
-            dialog = $injector.get('$mdDialog');
-            routeParams = $injector.get('$routeParams');
-            location = $injector.get('$location');
-            translator = $injector.get('$translate');
-
             // set the services
             pageService = Page;
-            moduleService = ModuleService;
-            technoService = technoService;
-            fileService = FileService;
 
             // get controller
             ctrl = $controller('ModuleController', {
-                $scope: scope,
-                $routeParams: routeParams,
-                $location: location,
-                $mdDialog: dialog,
+                $scope: $rootScope.$new(),
+                $routeParams: $injector.get('$routeParams'),
+                $location: $injector.get('$location'),
+                $mdDialog: $injector.get('$mdDialog'),
                 TechnoService: TechnoService,
                 ModuleService:ModuleService,
                 HesperidesTemplateModal: HesperidesTemplateModal,
@@ -60,7 +50,8 @@ describe('Testing hesperides module', function (){
                 Page: Page,
                 FileService: FileService,
                 Platform: Platform,
-                $translate: translator
+                $translate: $injector.get('$translate'),
+                $window: $injector.get('$window'),
             });
 
         }));

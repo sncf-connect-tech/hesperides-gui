@@ -7,13 +7,12 @@ tmp
 **/*.iml
 *.iml
 target/
-src/app/config.json*
-reports/
+/test-reports-e2e/
+/test/unit/reports
 npm-debug.log
 coverage/
-karma_html/
-config.json
 /src/app/app.css
 /src/app/app.js
 /src/app/vendor.css
 /src/app/vendor*.js
+/yarn.lock

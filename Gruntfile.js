@@ -3,26 +3,7 @@ const serveStatic = require('serve-static'),
 
 module.exports = function (grunt) {
 
-    /**
-     * Configuration
-     */
-    var config = {
-        // localhost
-        hesperides: {
-            targetHost: 'localhost',
-            targetPort: 8080
-        }
-    };
-
-    /**
-     * Grunt tasks configuration.
-     */
     grunt.initConfig({
-
-        /**
-         * Project settings.
-         */
-        config: config,
 
         /**
          * Watches files for changes.
@@ -48,23 +29,22 @@ module.exports = function (grunt) {
             options: {
                 hostname: 'localhost',
                 port: 80,
-                base: 'src/app'
+                base: 'src/app',
             },
             proxies: [
                 {
                     context: '/rest',
-                    host: '<%= config.hesperides.targetHost %>',
-                    port: '<%= config.hesperides.targetPort %>'
+                    host: 'localhost',
+                    port: 8080
                 }
             ],
             livereload: {
                 options: {
                     open: true,
                     middleware: function (connect, options) {
-                        var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
                         return [
                             // Include the proxy first
-                            proxy,
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic(options.base[0]),
                         ];
                     }
@@ -80,8 +60,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    //grunt.registerTask('bundler-generate-app-bundles', bundler.generateAppBundles);
-
     /**
      * Registers the 'server' task.
      */
@@ -90,5 +68,6 @@ module.exports = function (grunt) {
         'connect:livereload',
         'watch'
     ]);
+    //grunt.registerTask('bundler-generate-app-bundles', bundler.generateAppBundles);
 
 };

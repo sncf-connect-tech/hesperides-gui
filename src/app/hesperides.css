@@ -168,14 +168,6 @@ textarea,
     padding-bottom: 8px;
 }
 
-
-/**
- * Header
- */
-#header  input:focus{
-	outline-width: 0;
-}
-
 /**
  * Welcome
  */

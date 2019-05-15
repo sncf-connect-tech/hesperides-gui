@@ -11,14 +11,14 @@ exports.generateAppBundles = function () {
         'src/app/datepicker/datepicker.js',
         'src/app/event/event.js',
         'src/app/file/file.js',
-        'src/app/local_changes/localChanges.js',
+        'src/app/local_changes/localChanges.js', // doit venir avant les fichier suivants
         'src/app/local_changes/localChangeFactory.js',
         'src/app/local_changes/localChangesControllers.js',
         'src/app/local_changes/localChangesServices.js',
         'src/app/menu/menu.js',
         'src/app/model/model.js',
         'src/app/module/module.js',
-        'src/app/properties/properties.js',
+        'src/app/properties/properties.js', // doit venir le fichier ci-dessous
         'src/app/properties/iterable-properties-container.js',
         'src/app/shared/components.js',
         'src/app/techno/techno.js',
@@ -26,12 +26,11 @@ exports.generateAppBundles = function () {
         'src/app/user/user.js',
       ]).save('src/app/app.js');
     buildify().concat([
-        'src/app/css/font-awesome-min.css',
+        'src/app/hesperides.css',
         'src/app/datepicker/datepicker.css',
-        'src/app/css/hesperides.css',
         'src/app/menu/menu.css',
-        'src/app/css/iterable-properties-container.css',
-        'src/app/css/localChanges.css',
+        'src/app/properties/iterable-properties-container.css',
+        'src/app/local_changes/localChanges.css',
         'src/app/sc-date-time/sc-date-time.css',
       ]).save('src/app/app.css');
 };
@@ -55,8 +54,8 @@ exports.generateVendorBundles = function () {
         'node_modules/x2js/x2js.js', // Nécessaire pour la lib ci-dessous :
         'node_modules/angular-xeditable/dist/js/xeditable.js',
         'node_modules/angular-xml/angular-xml.js',
-        'node_modules/arrive/minified/arrive.min.js',
         'node_modules/angular-vs-repeat/dist/angular-vs-repeat.js',
+        'node_modules/arrive/minified/arrive.min.js',
         'node_modules/downloadjs/download.min.js',
         'node_modules/html2canvas/dist/html2canvas.js',
         'node_modules/js-yaml/dist/js-yaml.js',
@@ -83,6 +82,7 @@ exports.generateVendorBundles = function () {
         'node_modules/@cgross/angular-notify/dist/angular-notify.css',
         'node_modules/codemirror/addon/display/fullscreen.css',
         'node_modules/codemirror/lib/codemirror.css',
+        'node_modules/font-awesome/css/font-awesome.min.css',
       ]).save('src/app/vendor.css');
 };
 

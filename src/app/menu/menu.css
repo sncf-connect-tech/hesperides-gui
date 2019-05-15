@@ -1,3 +1,10 @@
+/* WIP: Ce composant est en cours de refacto pour suivre la nomenclature BEM,
+   cf. https://github.com/voyages-sncf-technologies/hesperides-gui/blob/master/tech_docs/css.md */
+
+.Navbar input:focus{
+	outline-width: 0;
+}
+
 .menu, .menu-title, .menu-header {
     background-color: #009587;
     color: rgba(255, 255, 255, 0.84);

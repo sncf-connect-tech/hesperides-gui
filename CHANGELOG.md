@@ -25,10 +25,15 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-05-15
 ### Added
 
-- Une indication "password" dans le tooltip des propriétés correspondantes + refacto gestion des fonctionnalités de folding & search de la vue arborescente des modules de plateforme - fix #209. [Lucas Cimon]
+- Une indication "password" dans le tooltip des propriétés correspondantes + refacto gestion des fonctionnalités de folding & search de la vue arborescente des modules de plateforme - fix #209 (#220) [Lucas Cimon]
+
+
+### Fixed
+
+- #211 Restriction des propriétés prédéfinies ignorées. [Thomas L'Hostis]
 
 
 
