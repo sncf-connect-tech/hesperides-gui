@@ -62,7 +62,7 @@
             datetimePickerEl = $compile(div)(options.scope)[0];
             datetimePickerEl.triggerEl = options.triggerEl;
 
-            $rootElement.appendChild(datetimePickerEl);
+            $rootElement[0].appendChild(datetimePickerEl);
 
             // show datetimePicker below triggerEl
             var bcr = triggerEl.getBoundingClientRect();
