@@ -219,14 +219,12 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                             if (!_.some($scope.cached_empty_module, ref)) {
                                 $scope.cached_empty_module.push(ref);
                                 var elem = _.find($scope.cached_empty_module, ref);
-
-                                ModuleService.search(`${ module.name } ${ module.version } ${ module.working_copy }`).then(function (response) {
-                                    if (elem && response) {
-                                        elem.has_model = true;
-                                    } else if (elem) {
-                                        elem.has_model = false;
-                                    }
-                                });
+                                if (elem) {
+                                    elem.has_model = false;
+                                    ModuleService.get(module.name, module.version, module.working_copy)
+                                        .then(() => { elem.has_model = true; })
+                                        .catch(_.noop);
+                                }
                             }
                         });
                     };
@@ -1890,7 +1888,14 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             this.mergeWithModel = function (model) {
-            /* Mark key_values that are in the model */
+                function buildTooltip(key_value) {
+                    return (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
+                           (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
+                           (key_value.password ? ' *password*' : '') +
+                           (key_value.comment ? ` ${ key_value.comment }` : '')
+                }
+
+                /* Mark key_values that are in the model */
                 _.each(this.key_value_properties, function (key_value) {
                     key_value.inModel = model.hasKey(key_value.name);
 
@@ -1908,10 +1913,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                         key_value.defaultValue = '';
                         key_value.pattern = '';
                     }
-                    key_value.tooltip = (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
-                                      (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
-                                      (key_value.password ? ' *password*' : '') +
-                                      (key_value.comment ? ` ${ key_value.comment }` : '');
+                    key_value.tooltip = buildTooltip(key_value);
                 });
 
                 // Add key_values that are only in the model
@@ -1928,6 +1930,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                         password: (model_key_value.password) ? model_key_value.password : false,
                         defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : '',
                         pattern: (model_key_value.pattern) ? model_key_value.pattern : '',
+                        tooltip: buildTooltip(model_key_value),
                     });
                 });
 
