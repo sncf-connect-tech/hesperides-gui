@@ -1991,7 +1991,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
 
                                     if (item.iterable_valorisation_items) {
                                     // New iterable
-                                        _.filter(modelIterable.fields, { name: item.name }).each(function (prop) {
+                                        _.each(_.filter(modelIterable.fields, { name: item.name }), (prop) => {
                                             item.inModel = true;
                                             scanIterableItems([ prop ], [ item ]);
                                         });
