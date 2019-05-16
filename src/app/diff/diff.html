@@ -1,4 +1,3 @@
-
 <!--
   ~ /*
   ~  * This file is part of the Hesperides distribution.
@@ -21,7 +20,7 @@
   -->
 
 <div layout = "row" class="center">
-    <h3 flex="49"><!--{{ 'properties.compare.title.part1' | translate }}-->
+    <h3 flex="49">{{ 'properties.compare.title.part1' | translate }}
         <span class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{displayable_properties_path}} </span></h3>
     <span flex="2"><h3>{{ 'common.word.and' | translate }}</h3></span>
     <h3 flex="49"><span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{displayable_compare_path}} </span></h3>
@@ -341,8 +340,6 @@
         </div>
     </div>
 </div>
-
-
 
 <div layout="row" layout-margin>
     <md-button class="md-raised md-primary" ng-click="apply_diff()">

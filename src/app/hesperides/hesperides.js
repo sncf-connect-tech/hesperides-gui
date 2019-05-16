@@ -17,24 +17,25 @@
  */
 
 angular.module('hesperides', [
+    'angularjs-datetime-picker',
+    'mgo-angular-wizard',
     'ngRoute',
+    'ngMaterial',
+    'ngAnimate',
+    'pascalprecht.translate',
+    'scDateTime',
+    'ui.codemirror',
+    'vs-repeat',
+    'xeditable',
+    'hesperides.components',
+    'hesperides.diff',
+    'hesperides.localChanges',
     'hesperides.module',
     'hesperides.menu',
     'hesperides.properties',
     'hesperides.techno',
     'hesperides.template',
-    'hesperides.components',
     'hesperides.user',
-    'hesperides.localChanges',
-    'ngMaterial',
-    'ngAnimate',
-    'xeditable',
-    'ui.codemirror',
-    'mgo-angular-wizard',
-    'vs-repeat',
-    'scDateTime',
-    'angularjs-datetime-picker',
-    'pascalprecht.translate',
 // cf. https://github.com/sc-date-time/sc-date-time#options pour les 2 configs ci-dessous :
 ]).value('scDateTimeConfig', {
     defaultTheme: 'sc-date-time/hesperides.tpl',
@@ -86,7 +87,7 @@ angular.module('hesperides', [
                     reloadOnSearch: false, // "reload route when only $location.search() or $location.hash() changes." - cf. routeUpdateListener au-dessus
                 })
                 .when('/diff', {
-                    templateUrl: 'properties/diff.html',
+                    templateUrl: 'diff/diff.html',
                     controller: 'DiffController',
                 })
                 .when('/techno/:name/:version', {
@@ -250,18 +251,11 @@ angular.module('hesperides', [
         };
     })
 
-    .directive('newChildScope', function () {
-        return {
-            restrict: 'A',
-            scope: true,
-        };
-    })
-
-/**
- * Popover button.
- *
- * Partial code from Material Design.
- */
+    /**
+     * Popover button.
+     *
+     * Partial code from Material Design.
+     */
     .factory('$propertyToolButtonService', [
         function () {
             return { currentPopup: null };
@@ -402,59 +396,9 @@ angular.module('hesperides', [
         },
     ])
 
-    .directive('hesperidesCompareDateTime', function () {
-        return {
-            scope: {
-                ngModel: '=',
-                isValid: '=',
-            },
-
-            templateUrl: 'hesperides/hesperides-compare-date-time.html',
-            link(scope) {
-            // -- date for start
-                var date = new Date();
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                var day = date.getDate();
-
-                if (day < 10) {
-                    day = `0${ day }`;
-                }
-
-                if (month < 10) {
-                    month = `0${ month }`;
-                }
-
-                // all in scope !
-                scope.year = year;
-                scope.month = month;
-                scope.day = day;
-                scope.holder = date;
-
-                // Private function for date validation
-                var validate = function () {
-                    scope.isValid = false;
-                    if (scope.ngModel && scope.ngModel.length > 0) {
-                        scope.isValid = Number(moment(scope.ngModel, 'YYYY-MM-DD HH:mm:ss Z')) < (new Date()).getTime();
-                    }
-                };
-
-                // Watch the model
-                scope.$watch('ngModel', validate);
-            },
-            controller: [
-                '$scope', function ($scope) {
-                    $scope.isInFutur = function () {
-                        return !$scope.isValid && $scope.ngModel && $scope.ngModel.length > 0;
-                    };
-                },
-            ],
-        };
-    })
-
-/**
- * A commom service for color calculation
- */
+    /**
+     * A commom service for color calculation
+     */
     .factory('PlatformColorService', function () {
         return {
 

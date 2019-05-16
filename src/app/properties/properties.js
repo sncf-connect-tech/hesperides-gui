@@ -88,7 +88,7 @@ var addFromModel = function (property, model) {
 /**
  * Hesperides properties module
  */
-angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.localChanges', 'cgNotify' ])
+angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify' ])
 
     .controller('PlatformVersionController', [
         '$scope', '$mdDialog',
@@ -114,14 +114,14 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
     ])
 
     .controller('PropertiesController', [
-        '$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout',
-        'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', '$translate',
-        '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$q', '$rootScope', 'notify', 'UserService', '$document',
+        '$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll',
+        'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', '$translate',
+        '$window', '$http', 'Properties', 'HesperidesModalFactory', 'LocalChanges', '$rootScope', 'notify', 'UserService', '$document',
         // A refactorer...
         // eslint-disable-next-line max-statements
-        function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout,
-            ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, $translate,
-            $window, $http, Properties, HesperidesModalFactory, LocalChanges, $q, $rootScope, notify, UserService, $document) {
+        function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll,
+            ApplicationService, FileService, EventService, ModuleService, Module, Page, $translate,
+            $window, $http, Properties, HesperidesModalFactory, LocalChanges, $rootScope, notify, UserService, $document) {
             $scope.platform = $routeParams.platform;
             $scope.platforms = [];
 
@@ -455,177 +455,27 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 });
             };
 
-            $scope.diff_properties = function (compare_module) {
-                // Need to be in global scope !
-                $scope.compare_module = compare_module;
-
-                var modalScope = $scope.$new();
-
-                // From platform info
-                modalScope.from = {
-                    application: $scope.platform.application_name,
-                    platform: $scope.platform.name,
-                    date: null,
-                    lookPast: false,
-                };
-
-                // Get the list of platforms for an app
-                modalScope.get_target_platforms = function (application_name) {
-                    if (application_name) {
-                        ApplicationService.get(application_name, true).then(function (application) {
-                            modalScope.target_platforms = application.platforms;
-                        }, function () {
-                            modalScope.target_platforms = [];
-                        });
-                    } else {
-                        modalScope.target_platforms = [];
-                    }
-                };
-
-                modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
-
-                modalScope.$diff = function () {
-                    $mdDialog.hide();
-                };
-
-                modalScope.updatePlatformField = function (itemName) {
-                    modalScope.from.platform = itemName;
-                };
-
-                modalScope.backgroundColor = function (item) {
-                    // if(!$scope.$$phase) {
-                    return PlatformColorService.calculateColor(item.name);
-                    // }
-                };
-
-                modalScope.from.lookPast = false;
-                modalScope.switched = function () {
-                    if (!modalScope.from.lookPast) {
-                        $timeout(function () {
-                            var el = angular.element($document[0].querySelector('#look-past-date-time'));
-                            el.focus();
-                        }, 200);
-                    }
-                };
-
-                modalScope.isDiffAllowed = function () {
-                    var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
-                    return (!modalScope.from.lookPast || modalScope.from.dateValid) &&
-                modalScope.target_platforms && modalScope.target_platforms.length >= 1 &&
-                selectedPlatformInList;
-                };
-
+            $scope.diffProperties = function (fromModule) {
+                const modalScope = $scope.$new();
+                modalScope.fromPlatform = { application_name: $scope.platform.application_name, platform: $scope.platform.name };
+                modalScope.fromModule = fromModule;
                 $mdDialog.show({
-                    templateUrl: 'application/properties_diff_wizard.html',
-                    clickOutsideToClose: true,
-                    scope: modalScope,
-                }).then(() => $scope.open_diff_page());
-            };
-
-            $scope.open_diff_page = function () {
-                // Everything is set in the scope by the modal when calling this
-                // Not very safe but easier to manage with all scopes generated
-                var urlParams = {
-                    application: $scope.platform.application_name,
-                    platform: $scope.platform.name,
-                    properties_path: $scope.compare_module.properties_path,
-                    compare_application: $scope.compare_platform.application_name,
-                    compare_platform: $scope.compare_platform.name,
-                    compare_path: $scope.compare_platform.chosen_module.properties_path,
-                };
-                if (!_.isUndefined($scope.compare_platform.timestamp)) {
-                    urlParams.timestamp = $scope.compare_platform.timestamp;
-                }
-
-                var url = `/#/diff?${ Object.keys(urlParams).map(function (key) {
-                    return `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`;
-                }).join('&') }`;
-                $window.open(url, '_blank');
-            };
-
-            $scope.diff_global_properties = function () {
-                var modalScope = $scope.$new();
-
-                // From platform info
-                modalScope.from = {
-                    application: $scope.platform.application_name,
-                    platform: $scope.platform.name,
-                    date: null,
-                    lookPast: false,
-                };
-
-                // Get the list of platforms for an app
-                modalScope.get_target_platforms = function (application_name) {
-                    if (application_name) {
-                        ApplicationService.get(application_name).then(function (application) {
-                            modalScope.target_platforms = application.platforms;
-                        }, function () {
-                            modalScope.target_platforms = [];
-                        });
-                    } else {
-                        modalScope.target_platforms = [];
-                    }
-                };
-
-                modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
-
-                modalScope.updatePlatformField = function (itemName) {
-                    modalScope.from.platform = itemName;
-                };
-
-                modalScope.backgroundColor = function (item) {
-                    return PlatformColorService.calculateColor(item.name);
-                };
-
-                modalScope.$diff = function (from) {
-                    $mdDialog.cancel();
-                    $scope.open_global_diff_page(from);
-                };
-
-                modalScope.from.lookPast = false;
-                modalScope.switched = function () {
-                    if (!modalScope.from.lookPast) {
-                        $timeout(function () {
-                            var el = angular.element($document[0].querySelector('#look-past-date-time'));
-                            el.focus();
-                        }, 200);
-                    }
-                };
-
-                modalScope.isDiffAllowed = function () {
-                    var selectedPlatformInList = _.some(modalScope.target_platforms, { 'name': modalScope.from.platform });
-                    return (!modalScope.from.lookPast || modalScope.from.dateValid) &&
-                modalScope.target_platforms && modalScope.target_platforms.length >= 1 &&
-                selectedPlatformInList;
-                };
-
-                $mdDialog.show({
-                    templateUrl: 'application/global_properties_diff_wizard.html',
+                    templateUrl: 'diff/properties_diff_wizard.html',
+                    controller: 'PropertiesDiffWizardController',
                     clickOutsideToClose: true,
                     scope: modalScope,
                 });
             };
 
-            $scope.open_global_diff_page = function (from) {
-                // Everything is set in the scope by the modal when calling this
-                // Not very safe but easier to manage with all scopes generated
-                var urlParams = {
-                    application: $scope.platform.application_name,
-                    platform: $scope.platform.name,
-                    properties_path: '#',
-                    compare_application: from.application,
-                    compare_platform: from.platform,
-                    compare_path: '#',
-                };
-
-                if (from.date) {
-                    urlParams.timestamp = Number(moment(from.date, 'YYYY-MM-DD HH:mm:ss Z'));
-                }
-
-                var url = `/#/diff?${ Object.keys(urlParams).map(function (key) {
-                    return `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`;
-                }).join('&') }`;
-                $window.open(url, '_blank');
+            $scope.diffGlobalProperties = function () {
+                const modalScope = $scope.$new();
+                modalScope.fromPlatform = { application_name: $scope.platform.application_name, platform: $scope.platform.name };
+                $mdDialog.show({
+                    templateUrl: 'diff/global_properties_diff_wizard.html',
+                    controller: 'GlobalPropertiesDiffWizardController',
+                    clickOutsideToClose: true,
+                    scope: modalScope,
+                });
             };
 
             $scope.quickDisplayInstance = function () {
@@ -797,8 +647,8 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     };
 
                     /**
-                 * Show more events
-                 */
+                     * Show more events
+                     */
                     modalScope.noMoreEvents = false;
                     modalScope.msgMoreEvents = 'Plus encore ...';
 
@@ -824,10 +674,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     };
 
                     /**
-                 * This function show the diff page between the
-                 * selected events.
-                 * This show the diff page of both simple and global properties
-                 */
+                     * This function show the diff page between the
+                     * selected events.
+                     * This show the diff page of both simple and global properties
+                     */
                     modalScope.showDiff = function () {
                         var from = modalScope.selectedEvents[0];
                         var to = modalScope.selectedEvents[1];
@@ -842,7 +692,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                         };
 
                         urlParams.origin_timestamp = from.timestamp;
-                        if (!_.isUndefined(to.timestamp)) {
+                        if (to.timestamp) {
                             urlParams.timestamp = to.timestamp;
                         }
                         var url = `/#/diff?${ Object.keys(urlParams).map(function (key) {
@@ -1205,22 +1055,6 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                 $scope.showButtonAndEye = !$scope.showButtonAndEye;
             };
 
-            $scope.get_platform_to_compare = function (application, platform, lookPast, date) {
-                $scope.loading_compare_platform = true;
-                if (lookPast) {
-                    date = date ? Number(moment(date, 'YYYY-MM-DD HH:mm:ss Z')) : new Date().getTime();
-                } else {
-                    date = null;
-                }
-                ApplicationService.get_platform(application, platform, date).then(function (platformFetched) {
-                    $scope.compare_platform = platformFetched;
-                    $scope.loading_compare_platform = false;
-                }).then(function () {
-                    // Try to detect module
-                    $scope.compare_platform.chosen_module = _.find($scope.compare_platform.modules, { name: $scope.compare_module.name });
-                });
-            };
-
             $scope.open_module_page = function (name, version, is_working_copy) {
                 var url = `/module/${ name }/${ version }`;
                 if (is_working_copy) {
@@ -1303,14 +1137,14 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         },
     ])
 
-/**
- * Directive for rendering properties on box mode.
- */
+    /**
+     * Directive for rendering properties on box mode.
+     */
     .directive('boxProperties', [
         '$timeout', '$rootScope', function ($timeout, $rootScope) {
             return {
                 restrict: 'E',
-                templateUrl: 'application/box_properties.html',
+                templateUrl: 'properties/box_properties.html',
                 link() {
                     $timeout(() => {
                         $rootScope.isLoading = false;
@@ -1320,9 +1154,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         },
     ])
 
-/**
- * Directive for rendering properties on tree mode.
- */
+    /**
+     * Directive for rendering properties on tree mode.
+     */
     .directive('treeProperties', [
         '$timeout', '$rootScope', function ($timeout, $rootScope) {
             return {
@@ -1337,297 +1171,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         },
     ])
 
-    .controller('DiffController', [
-        '$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', 'notify',
-        function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, notify) {
-            var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
-                // 0 -> only on to_modify
-                // 1 -> on both and identical values
-                // 2 -> on both and different values
-                // 3 -> only on to_compare_to
-                this.status = status;
-                this.property_name = property_name;
-                this.property_to_modify = property_to_modify;
-                this.property_to_compare_to = property_to_compare_to;
-                this.modified = false;
-                this.selected = false;
-            };
-
-            $scope.application_name = $routeParams.application;
-            $scope.platform_name = $routeParams.platform;
-
-            $scope.compare_application = $routeParams.compare_application;
-            $scope.compare_platform = $routeParams.compare_platform;
-
-            $scope.origin_timestamp = $routeParams.origin_timestamp;
-            $scope.timestamp = $routeParams.timestamp;
-
-            $scope.show_only_modified = false;
-
-            $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
-            $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
-
-            $scope.propertiesKeyFilter0 = '';
-            $scope.propertiesKeyFilter1 = '';
-            $scope.propertiesKeyFilter2 = '';
-            $scope.propertiesKeyFilter3 = '';
-
-            var splitedPropertiesPath = $routeParams.properties_path.split('#');
-            $scope.module = {
-                'name': splitedPropertiesPath[splitedPropertiesPath.length - 3],
-                'version': splitedPropertiesPath[splitedPropertiesPath.length - 2],
-                'is_working_copy': splitedPropertiesPath[splitedPropertiesPath.length - 1] === 'WORKINGCOPY',
-            };
-
-            var compareSplitedPath = $routeParams.compare_path.split('#');
-            $scope.compare_module = {
-                'name': compareSplitedPath[compareSplitedPath.length - 3],
-                'version': compareSplitedPath[compareSplitedPath.length - 2],
-                'is_working_copy': compareSplitedPath[compareSplitedPath.length - 1] === 'WORKINGCOPY',
-            };
-
-            // Get the platform to get the version id
-            ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
-                $scope.platform = platform;
-            });
-
-            // Then get the properties, version id could have changed but it is really marginal
-            ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path).then(function (properties) {
-                $scope.properties_to_modify = properties;
-                if ($scope.module.name && $scope.module.version) {
-                    return ModuleService.get_model($scope.module).then(function (model) {
-                        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
-                    });
-                }
-                return Promise.resolve();
-            }).then(function () {
-                return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
-            }).then(function (globalProperties) {
-                $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(globalProperties);
-                return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
-            }).then(function (properties) {
-                $scope.properties_to_compare_to = properties;
-                if ($scope.compare_module.name && $scope.compare_module.version) {
-                    return ModuleService.get_model($scope.compare_module).then(function (model) {
-                        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
-                    });
-                }
-                return Promise.resolve();
-            })
-                .then(function () {
-                // Get global properties
-                    return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, '#');
-                })
-                .then(function (model) {
-                    $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
-                    $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
-                    $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
-                    $scope.generate_diff_containers($routeParams.properties_path !== '#');
-                });
-
-            // Everything needs to be in scope for this function to work
-            /**
-         * Generate diff container.
-         *
-         * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
-         */
-            $scope.generate_diff_containers = function (filterInModel) {
-                $scope.diff_containers = [];
-                // Group properties, this is a O(n^2) algo but is enough for the use case
-                // Only focus on key/value properties
-                // We set create a container for each property with a diff status, a property_to_modify, a property_to_compare_to
-                // First we look in the properties to modify, for each try:
-                //  - to check if value is empty -> status 3
-                //  - to find a property to compare to
-                //        - with identical value -> status 1
-                //        - with different value -> status 2
-                //  - if no matching property -> status 0
-                if (filterInModel) {
-                    // There's not need to keep removed properties because readability is better without them
-                    $scope.properties_to_modify.key_value_properties = _.filter($scope.properties_to_modify.key_value_properties, { inModel: true });
-                    $scope.properties_to_compare_to.key_value_properties = _.filter($scope.properties_to_compare_to.key_value_properties, { inModel: true });
-                }
-
-                _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
-                    // Search if property found on other platform
-                    var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
-
-                    if (countItem === 0) {
-                        $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
-                        return;
-                    }
-
-                    // else try to find a matching prop_to_compare_to
-                    var prop_to_compare_to = _.find($scope.properties_to_compare_to.key_value_properties, { name: prop_to_modify.name });
-
-                    if (_.isUndefined(prop_to_compare_to)) {
-                        $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
-                    } else if (prop_to_modify.value === prop_to_compare_to.value) {
-                        $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                    } else {
-                        $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                    }
-                });
-
-                // Check properties remaining in compare_to (not existing or value equals to ''). The one we missed when iterating through properties_to_modify
-                _.each($scope.properties_to_compare_to.key_value_properties, function (prop_to_compare_to) {
-                    var some = _.some($scope.properties_to_modify.key_value_properties, function (prop) {
-                        return prop_to_compare_to.name === prop.name;
-                    });
-
-                    if (!some) {
-                        // Avoid null pointer create prop to modify with an empty value
-                        var prop_to_modify = angular.copy(prop_to_compare_to);
-                        prop_to_modify.value = '';
-                        $scope.diff_containers.push(new DiffContainer(3, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                    }
-                });
-            };
-
-            $scope.properties_compare_values_empty = '';
-
-            $translate('properties.compare.values.empty').then(function (translation) {
-                $scope.properties_compare_values_empty = translation;
-            });
-
-            $scope.formatProperty = function (property) {
-                if (property.globalValue) {
-                    var compiled = property.value;
-
-                    Object.keys(property.globalValue).forEach(function (key) {
-                        compiled = compiled.split(`{{${ key }}}`).join(property.globalValue[key]);
-                    });
-
-                    return compiled;
-                }
-                if (!property.value) {
-                    return $scope.properties_compare_values_empty;
-                }
-
-                return property.value;
-            };
-
-            // Helper for diff conainers ids
-            $scope.dot_to_underscore = function (text) {
-                return text.replace(/\./g, '_');
-            };
-
-            /*
-         * Select the containers that corresponds to the filters (ex: status = 2).
-         */
-            $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
-                $scope.diff_containers.filter(function (container) {
-                    // If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
-                    if (propertiesKeyFilter) {
-                        try {
-                            var regex_name = new RegExp(`.*${ propertiesKeyFilter.toLowerCase().split(' ').join('.*') }`, 'i');
-                            if (!regex_name.test(container.property_name)) {
-                                return false;
-                            }
-                        } catch (error) {
-                            return false;
-                        }
-                    }
-
-                    // We apply the other filters to select the containers that we want
-                    for (var key in filter) {
-                        if (!_.isEqual(filter[key], container[key])) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }).forEach(function (container) {
-                    // Finally, we change the selection of the selected containers
-                    container.selected = selected;
-                });
-            };
-
-            $scope.apply_diff = function () {
-                /* Filter the diff container that have been selected
-                 depending on the status apply different behaviors
-                 if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
-                 if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
-                 because the other ones have the same values. We can just apply the 'revert modification' mecanism
-                 if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
-                 if status == 3 : same behavior as status == 2
-                 */
-                $scope.diff_containers.filter(function (diff_container) {
-                    return diff_container.selected;
-                }).forEach(function (diff_container) {
-                    switch (diff_container.status) {
-                    case 0:
-                        break;
-                    case 1:
-                    // Revert modifs
-                        diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
-                        delete diff_container.property_to_modify.old_value;
-
-                        // Change status and reset markers. Keep selected for user experience
-                        // Status depends on old_value, if it was empty status is 3 otherwise it is 2
-                        diff_container.status = diff_container.property_to_modify.value === '' ? 3 : 2;
-                        diff_container.modified = false;
-                        break;
-                    case 2:
-                    // Store old value and apply modifs
-                        diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                        diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
-
-                        // Change status and reset markers. Keep selected for user experience
-                        diff_container.modified = true;
-                        diff_container.status = 1;
-                        break;
-                    case 3:
-                    // Same as 2, copy paste (bad :p )
-                    // Store old value and apply modifs
-                        diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                        diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
-
-                        // Change status and reset markers. Keep selected for user experience
-                        diff_container.modified = true;
-                        diff_container.status = 1;
-                        break;
-                    default:
-                        console.error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
-                        break;
-                    }
-                });
-            };
-
-            $scope.save_diff = function () {
-                // Get all the properties modified
-                var key_value_properties = $scope.diff_containers.filter(function (diff_container) {
-                    return diff_container.property_to_modify;
-                }).map(function (diff_container) {
-                    return diff_container.property_to_modify;
-                });
-
-                // Is some diff item selected ?
-                var hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
-
-                if (!hasSomeDiffSelected) {
-                    $translate('properties-not-changed.message').then(function (label) {
-                        notify({ classes: [ 'error' ], message: label });
-                    });
-                    return;
-                }
-
-                $scope.properties_to_modify.key_value_properties = key_value_properties;
-
-                // Save the properties
-                HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function (comment) {
-                    ApplicationService.save_properties($routeParams.application, $scope.platform, $scope.properties_to_modify, $routeParams.properties_path, comment).then(function () {
-                        $route.reload();
-                    });
-                });
-            };
-        },
-    ])
-
-/**
- * This directive will display only the simple properties list.
- * Added by Tidiane SIDIBE on 11/03/2016
- */
+    /**
+     * This directive will display only the simple properties list.
+     * Added by Tidiane SIDIBE on 11/03/2016
+     */
     .directive('simplePropertiesList', [
         'LocalChanges', function (LocalChanges) {
             return {
@@ -1687,13 +1234,12 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         },
     ])
 
-
-/**
- * This directive will display the properties list with contains :
- *  1. Simple properties
- *  2. Iterable probperties
- * Added by Tidiane SIDIBE on 11/03/2016
- */
+    /**
+     * This directive will display the properties list with contains :
+     *  1. Simple properties
+     *  2. Iterable probperties
+     * Added by Tidiane SIDIBE on 11/03/2016
+     */
     .directive('propertiesList', [
         'LocalChanges', function (LocalChanges) {
             return {
@@ -1751,11 +1297,11 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         },
     ])
 
-/**
- * Display the deleted properties button.
- * This is for simple properties.
- * @see toggleDeletedIterableProperties for iterable properties
- */
+    /**
+     * Display the deleted properties button.
+     * This is for simple properties.
+     * @see toggleDeletedIterableProperties for iterable properties
+     */
     .directive('toggleDeletedProperties', function () {
         return {
             restrict: 'E',
@@ -1790,10 +1336,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * Ths directive is for saving the global properties when the 'enter' key is pressed
- * on global properties fields.
- */
+    /**
+     * Ths directive is for saving the global properties when the 'enter' key is pressed
+     * on global properties fields.
+     */
     .directive('focusSaveGlobalProperties', function () {
         return function (scope, element) {
             element.bind('keydown keypress', function (event) {
@@ -1802,26 +1348,6 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     event.preventDefault();
                 }
             });
-        };
-    })
-
-/**
- * Diplay warning message when value is same/or not and source of value is different.
- */
-    .directive('warningValue', function () {
-        return {
-            restrict: 'E',
-            scope: {
-                propertyToModify: '=',
-                propertyToCompareTo: '=',
-            },
-            template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
-        '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
-        '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
-        'La valeur sur l\'application' +
-        'est valorisée depuis une valeur par défaut' +
-        '</md-tooltip>' +
-        '</span>',
         };
     })
 
@@ -2238,11 +1764,11 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
     })
 
 
-/**
- * This function will filter the iterable properties by values.
- * The filter text and by the simple text or a regex.
- * @see filterIterablePropertiesValues for value filtering
- */
+    /**
+     * This function will filter the iterable properties by values.
+     * The filter text and by the simple text or a regex.
+     * @see filterIterablePropertiesValues for value filtering
+     */
     .filter('filterIterablePropertiesNames', function () {
         return function (items, filter) {
             if (!filter) {
@@ -2257,10 +1783,10 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * Function wich filter the properties' display with string or regex.
- * Modified by Sahar CHAILLOU on 12/01/2016
- */
+    /**
+     * Function wich filter the properties' display with string or regex.
+     * Modified by Sahar CHAILLOU on 12/01/2016
+     */
     .filter('filterProperties', function () {
         return function (input, filter) {
             if (!filter) {
@@ -2292,11 +1818,11 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * This directive is for filtering only the unspecified properties.
- * This takes care of the hesperides predefined properties which will not be displayed
- * and then not counted even if they have not values.
- */
+    /**
+     * This directive is for filtering only the unspecified properties.
+     * This takes care of the hesperides predefined properties which will not be displayed
+     * and then not counted even if they have not values.
+     */
     .directive('toggleUnspecifiedProperties', function () {
         return {
             restrict: 'E',
@@ -2340,11 +1866,11 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * This directive is for sorting the properties list in asc and desc order of properties name
- * This is shared between all properties display :
-        Global Properties, Simple Properties, Iterable Properties and Instance Properties.
- */
+    /**
+     * This directive is for sorting the properties list in asc and desc order of properties name
+     * This is shared between all properties display :
+            Global Properties, Simple Properties, Iterable Properties and Instance Properties.
+     */
     .directive('toggleSortProperties', function () {
         return {
             restrict: 'E',
@@ -2365,9 +1891,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * This directive is for filtering only the no global properties.
- */
+    /**
+     * This directive is for filtering only the no global properties.
+     */
     .directive('toggleGlobalProperties', function () {
         return {
             restrict: 'E',
@@ -2403,9 +1929,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * Display only the 'empty' properties
- */
+    /**
+     * Display only the 'empty' properties
+     */
     .filter('displayUnspecifiedProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
@@ -2417,9 +1943,9 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * Display only the not globals properties
- */
+    /**
+     * Display only the not globals properties
+     */
     .filter('displayGlobalProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
@@ -2428,15 +1954,15 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
         };
     })
 
-/**
- * This is used to filter the 'hesperides predefined properties'.
- * Definition of terms:
- *  'Hesperides predefined properties' are the properties whith are provided by the hesperides system.
- *  They always start by "hesperides.".
- *  Example :
- *      - hesperides.application.name : is the name of the current application.
- *      - hesperides.instance.name : is the name of the current instance
- */
+    /**
+     * This is used to filter the 'hesperides predefined properties'.
+     * Definition of terms:
+     *  'Hesperides predefined properties' are the properties whith are provided by the hesperides system.
+     *  They always start by "hesperides.".
+     *  Example :
+     *      - hesperides.application.name : is the name of the current application.
+     *      - hesperides.instance.name : is the name of the current instance
+     */
     .filter('hideHesperidesPredefinedProperties', function () {
         return function (items) {
             return _.filter(items, function (item) {

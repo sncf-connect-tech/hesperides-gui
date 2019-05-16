@@ -28,7 +28,9 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
-- Aligenement en largeur du champ de filtrage des propriétés globales par nom - close #226. [Lucas Cimon]
+- Comparaison des propriétés à une date spécifique - close #229. [Lucas Cimon]
+
+- Alignement en largeur du champ de filtrage des propriétés globales par nom - close #226 (#230) [Lucas Cimon]
 
 
 
