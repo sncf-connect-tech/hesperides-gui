@@ -28,12 +28,14 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
-- Correction de bug dans properties.js qui empêchait l'affichage des propriétés itérables. [Lucas Cimon]
+- Aligenement en largeur du champ de filtrage des propriétés globales par nom - close #226. [Lucas Cimon]
 
 
 
 ## 2019-05-16
 ### Fixed
+
+- Le tooltip était manquant pour les propriétés sans valorisation + remplacement de l'appel à modules/search, plus pertinent fonctionnelement & en termes de perfs (#228) [Lucas Cimon]
 
 - Correction de bug dans properties.js qui empêchait l'affichage des propriétés itérables (#225) [Lucas Cimon]
 

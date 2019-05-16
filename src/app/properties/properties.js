@@ -220,10 +220,13 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                                 $scope.cached_empty_module.push(ref);
                                 var elem = _.find($scope.cached_empty_module, ref);
                                 if (elem) {
-                                    elem.has_model = false;
                                     ModuleService.get(module.name, module.version, module.working_copy)
-                                        .then(() => { elem.has_model = true; })
-                                        .catch(_.noop);
+                                        .then(() => {
+                                            elem.has_model = true;
+                                        })
+                                        .catch(() => {
+                                            elem.has_model = false;
+                                        });
                                 }
                             }
                         });
@@ -950,18 +953,18 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
             };
 
             /**
-         * Clean properties.
-         * Used to delete unsed properties in module template.
-         */
+             * Clean properties.
+             * Used to delete unsed properties in module template.
+             */
             $scope.clean_properties = function (properties) {
                 // Filter to keep properties only existing in model
                 properties.filter_according_to_model();
             };
 
             /**
-         * Clean instance properties.
-         * Used to deleted unused instance properties.
-         */
+             * Clean instance properties.
+             * Used to deleted unused instance properties.
+             */
             $scope.clean_instance_properties = function (instance) {
                 instance.key_values = _.filter(instance.key_values, function (item) {
                     return item.inModel;
@@ -994,7 +997,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     // Save the global properties
                     HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function (comment) {
                         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment).then(function (savedProperties) {
-                            if (!_.isUndefined($scope.properties)) {
+                            if ($scope.properties) {
                                 $scope.properties = $scope.properties.mergeWithGlobalProperties(savedProperties);
                             }
 
@@ -1892,7 +1895,7 @@ angular.module('hesperides.properties', [ 'hesperides.modals', 'hesperides.local
                     return (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
                            (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
                            (key_value.password ? ' *password*' : '') +
-                           (key_value.comment ? ` ${ key_value.comment }` : '')
+                           (key_value.comment ? ` ${ key_value.comment }` : '');
                 }
 
                 /* Mark key_values that are in the model */
