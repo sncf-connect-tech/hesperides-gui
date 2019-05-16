@@ -487,18 +487,6 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
                         return modules;
                     });
                 },
-                search(name) {
-                    if (_.isUndefined(name)) {
-                        var deferred = $q.defer();
-                        deferred.resolve([]);
-                        return deferred.promise;
-                    }
-                    return $http.post(`rest/modules/search?terms=${ encodeURIComponent(name.toLowerCase()) }`).then(function (response) {
-                        return response.data;
-                    }, function () {
-                        return null;
-                    });
-                },
             };
         },
     ]);

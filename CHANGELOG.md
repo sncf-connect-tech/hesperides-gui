@@ -25,6 +25,20 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Correction de bug dans properties.js qui empêchait l'affichage des propriétés itérables. [Lucas Cimon]
+
+
+
+## 2019-05-16
+### Fixed
+
+- Correction de bug dans properties.js qui empêchait l'affichage des propriétés itérables (#225) [Lucas Cimon]
+
+
+
 ## 2019-05-15
 ### Added
 
