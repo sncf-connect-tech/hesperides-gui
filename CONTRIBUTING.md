@@ -59,7 +59,7 @@ Vous aurez besoin d'une version récente de NodeJS et de `npm`.
 De plus, nous utilisons Docker pour _packager_ et déployer l'application.
 Vous en aurez besoin pour lancer le [_backend_](https://github.com/voyages-sncf-technologies/hesperides) :
 
-    docker run --rm -it -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides
+    docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides
 
 
 ## Intégration continue
