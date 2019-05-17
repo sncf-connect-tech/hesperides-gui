@@ -30,6 +30,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 - Comparaison des propriétés à une date spécifique - close #229. [Lucas Cimon]
 
+
+
+## 2019-05-17
+### Fixed
+
+- Comparaison des propriétés à une date spécifique - close #229 (#231) [Lucas Cimon]
+
 - Alignement en largeur du champ de filtrage des propriétés globales par nom - close #226 (#230) [Lucas Cimon]
 
 

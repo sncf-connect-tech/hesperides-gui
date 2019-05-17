@@ -357,13 +357,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             $scope.open_add_box_dialog = function (box) {
                 var modalScope = $scope.$new();
 
-                modalScope.$add = function (name) {
-                    $scope.add_box(name, box);
+                modalScope.$add = function (logicGroupName) {
+                    $scope.add_box(logicGroupName, box);
                     $mdDialog.cancel();
                 };
 
+                modalScope.okToAddNewLogicGroup = function (addComponentForm, logicGroupName) {
+                    return !(addComponentForm.$invalid || Object.keys(box.children).includes(logicGroupName));
+                };
+
                 $mdDialog.show({
-                    templateUrl: 'application/add_box.html',
+                    templateUrl: 'properties/add_box.html',
                     clickOutsideToClose: true,
                     scope: modalScope,
                 });

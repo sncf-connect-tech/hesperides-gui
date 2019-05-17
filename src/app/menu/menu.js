@@ -17,214 +17,204 @@
  */
 angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties' ])
 
-    .controller('MenuTechnoController', [
-        '$scope', '$mdDialog', '$location', '$timeout', 'TechnoService',
-        function ($scope, $mdDialog, $location, $timeout, TechnoService) {
-            $scope.find_technos_by_name = function (name) {
-                return TechnoService.with_name_like(name);
-            };
+    .controller('MenuTechnoController', function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
+        $scope.find_technos_by_name = function (name) {
+            return TechnoService.with_name_like(name);
+        };
 
-            $scope.open_create_techno_dialog = function () {
-                $mdDialog.show({
-                    templateUrl: 'menu/techno-menu-modal.html',
-                    controller: 'MenuTechnoController',
-                    clickOutsideToClose: true,
-                    preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
-                    scope: $scope,
-                });
-            };
+        $scope.open_create_techno_dialog = function () {
+            $mdDialog.show({
+                templateUrl: 'menu/techno-menu-modal.html',
+                controller: 'MenuTechnoController',
+                clickOutsideToClose: true,
+                preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+                scope: $scope,
+            });
+        };
 
-            $scope.open_create_techno_from_dialog = function () {
-                $mdDialog.show({
-                    templateUrl: 'menu/techno-menu-modal-from.html',
-                    controller: 'MenuTechnoController',
-                    clickOutsideToClose: true,
-                    preserveScope: true, // requiered for not freez menu
-                    // Remove scope cause else with autocomplete, window is closed
-                    // scope:$scope
-                });
-            };
+        $scope.open_create_techno_from_dialog = function () {
+            $mdDialog.show({
+                templateUrl: 'menu/techno-menu-modal-from.html',
+                controller: 'MenuTechnoController',
+                clickOutsideToClose: true,
+                preserveScope: true, // requiered for not freez menu
+                // Remove scope cause else with autocomplete, window is closed
+                // scope:$scope
+            });
+        };
 
-            $scope.create_techno_from = function (name, version, fromName, fromVersion, isFromWorkingCopy) {
-                TechnoService.create_workingcopy(name, version, fromName, fromVersion, isFromWorkingCopy).then(function () {
-                    $scope.open_techno_page(name, version, true);
-                });
-            };
+        $scope.create_techno_from = function (name, version, fromName, fromVersion, isFromWorkingCopy) {
+            TechnoService.create_workingcopy(name, version, fromName, fromVersion, isFromWorkingCopy).then(function () {
+                $scope.open_techno_page(name, version, true);
+            });
+        };
 
-            $scope.open_techno_page = function (name, version, is_working_copy) {
-                if (is_working_copy) {
-                    $location.path(`/techno/${ name }/${ version }`).search({ type: 'workingcopy' });
-                } else {
-                    $location.path(`/techno/${ name }/${ version }`).search({});
-                }
-                $scope.technoSearched = '';
+        $scope.open_techno_page = function (name, version, is_working_copy) {
+            if (is_working_copy) {
+                $location.path(`/techno/${ name }/${ version }`).search({ type: 'workingcopy' });
+            } else {
+                $location.path(`/techno/${ name }/${ version }`).search({});
+            }
+            $scope.technoSearched = '';
+            $mdMenu.cancel();
+        };
+
+        $scope.closeTechnoDialog = function () {
+            $mdDialog.cancel();
+        };
+    })
+
+    .controller('MenuModuleController', function ($scope, $mdDialog, $mdMenu, $location, $timeout, ModuleService, Module) {
+        $scope.find_modules_by_name = function (name) {
+            return ModuleService.with_name_like(name);
+        };
+
+        $scope.create_module = function (name, version) {
+            var module = new Module({ name, version });
+            ModuleService.save(module).then(function (mod) {
+                $scope.open_module_page(mod.name, mod.version, mod.is_working_copy);
+            });
+        };
+
+        $scope.create_module_from = function (name, version, moduleFrom) {
+            ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function () {
+                $scope.open_module_page(name, version, true);
+            });
+        };
+
+        $scope.open_module_page = function (name, version, is_working_copy) {
+            $location.path(`/module/${ name }/${ version }`).search({});
+            if (is_working_copy) {
+                $location.search({ type: 'workingcopy' });
+            }
+            $scope.moduleSearched = '';
+            $mdMenu.cancel();
+        };
+
+        $scope.open_create_module_dialog = function () {
+            $mdDialog.show({
+                templateUrl: 'menu/module-menu-modal.html',
+                controller: 'MenuModuleController',
+                clickOutsideToClose: true,
+                preserveScope: true, // requiered for not freez menu
+                scope: $scope,
+            });
+        };
+
+        $scope.open_create_module_from_dialog = function () {
+            $mdDialog.show({
+                templateUrl: 'menu/module-menu-modal-from.html',
+                controller: 'MenuModuleController',
+                clickOutsideToClose: true,
+                preserveScope: true, // requiered for not freez menu
+                // Remove scope cause else with autocomplete, window is closed
+                // scope:$scope
+            });
+        };
+
+        $scope.closeModuleDialog = function () {
+            $mdDialog.cancel();
+        };
+    })
+
+    .controller('MenuPropertiesController', function ($http, $scope, $mdDialog, $mdMenu, $location, $timeout, ApplicationService, Platform, notify, UserService) {
+        $scope.find_applications_by_name = function (name) {
+            return ApplicationService.with_name_like(name);
+        };
+
+        $scope.find_platforms_of_application = function (application_name, filter_env) {
+            return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
+        };
+
+        $scope.open_properties_page = function (application_name, platform_name) {
+            $location.path(`/properties/${ application_name }`);
+            if (platform_name) {
+                $location.search({ platform: platform_name });
+            } else {
+                $location.search({});
+            }
+            $scope.applicationSearched = '';
+            $mdMenu.cancel();
+        };
+
+        $scope.create_platform = function (application_name, platform_name, production, application_version) {
+            var platform = new Platform({ name: platform_name, application_name, application_version, production: production || false });
+            ApplicationService.save_platform(platform).then((ptf) => {
                 $mdDialog.cancel();
-            };
+                $scope.open_properties_page(ptf.application_name, ptf.platform_name);
+            });
+        };
 
-            $scope.closeTechnoDialog = function () {
-                $mdDialog.cancel();
-            };
-        },
-    ])
-
-    .controller('MenuModuleController', [
-        '$scope', '$mdDialog', '$location', '$timeout', 'ModuleService', 'Module',
-        function ($scope, $mdDialog, $location, $timeout, ModuleService, Module) {
-            $scope.find_modules_by_name = function (name) {
-                return ModuleService.with_name_like(name);
-            };
-
-            $scope.create_module = function (name, version) {
-                var module = new Module({ name, version });
-                ModuleService.save(module).then(function (mod) {
-                    $scope.open_module_page(mod.name, mod.version, mod.is_working_copy);
-                });
-            };
-
-            $scope.create_module_from = function (name, version, moduleFrom) {
-                ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function () {
-                    $scope.open_module_page(name, version, true);
-                });
-            };
-
-            $scope.open_module_page = function (name, version, is_working_copy) {
-                $location.path(`/module/${ name }/${ version }`).search({});
-                if (is_working_copy) {
-                    $location.search({ type: 'workingcopy' });
-                }
-                $scope.moduleSearched = '';
-                $mdDialog.cancel();
-            };
-
-            $scope.open_create_module_dialog = function () {
-                $mdDialog.show({
-                    templateUrl: 'menu/module-menu-modal.html',
-                    controller: 'MenuModuleController',
-                    clickOutsideToClose: true,
-                    preserveScope: true, // requiered for not freez menu
-                    scope: $scope,
-                });
-            };
-
-            $scope.open_create_module_from_dialog = function () {
-                $mdDialog.show({
-                    templateUrl: 'menu/module-menu-modal-from.html',
-                    controller: 'MenuModuleController',
-                    clickOutsideToClose: true,
-                    preserveScope: true, // requiered for not freez menu
-                    // Remove scope cause else with autocomplete, window is closed
-                    // scope:$scope
-                });
-            };
-
-            $scope.closeModuleDialog = function () {
-                $mdDialog.cancel();
-            };
-        },
-    ])
-
-
-    .controller('MenuPropertiesController', [
-        '$hesperidesHttp', '$scope', '$mdDialog', '$location', '$timeout', 'ApplicationService', 'Platform', 'notify', 'UserService',
-        function ($http, $scope, $mdDialog, $location, $timeout, ApplicationService, Platform, notify, UserService) {
-            $scope.find_applications_by_name = function (name) {
-                return ApplicationService.with_name_like(name);
-            };
-
-            $scope.find_platforms_of_application = function (application_name, filter_env) {
-                return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
-            };
-
-            $scope.open_properties_page = function (application_name, platform_name) {
-                $location.path(`/properties/${ application_name }`);
-                if (platform_name) {
-                    $location.search({ platform: platform_name });
-                } else {
-                    $location.search({});
-                }
-                $scope.applicationSearched = '';
-                $mdDialog.cancel();
-            };
-
-            $scope.create_platform = function (application_name, platform_name, production, application_version) {
-                var platform = new Platform({ name: platform_name, application_name, application_version, production: production || false });
-                ApplicationService.save_platform(platform).then((ptf) => {
+        $scope.create_platform_from = function (application_name, platform_name, production, application_version, from_application, from_platform, copyInstancesAndProperties) {
+            if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
+                ApplicationService.delete_platform(application_name, platform_name);
+            }
+            var platform = new Platform({ name: platform_name, application_name, application_version, production });
+            ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
+                .then((ptf) => {
                     $mdDialog.cancel();
-                    $scope.open_properties_page(ptf.application_name, ptf.platform_name);
+                    $scope.open_properties_page(ptf.application_name, ptf.name);
+                })
+                .catch(function (error) {
+                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesController.create_platform_from' });
+                    throw error;
                 });
-            };
+        };
 
-            $scope.create_platform_from = function (application_name, platform_name, production, application_version, from_application, from_platform, copyInstancesAndProperties) {
-                if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
-                    ApplicationService.delete_platform(application_name, platform_name);
-                }
-                var platform = new Platform({ name: platform_name, application_name, application_version, production });
-                ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
-                    .then((ptf) => {
-                        $mdDialog.cancel();
-                        $scope.open_properties_page(ptf.application_name, ptf.name);
-                    })
-                    .catch(function (error) {
-                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesController.create_platform_from' });
-                        throw error;
-                    });
-            };
+        $scope.open_create_platform_dialog = function () {
+            $scope.user = {};
+            UserService.authenticate().then(function (user) {
+                $scope.user = user;
+            });
 
-            $scope.open_create_platform_dialog = function () {
-                $scope.user = {};
-                UserService.authenticate().then(function (user) {
-                    $scope.user = user;
-                });
+            $mdDialog.show({
+                templateUrl: 'menu/platform-menu-modal.html',
+                controller: 'MenuPropertiesController',
+                clickOutsideToClose: true,
+                preserveScope: true, // requiered for not freez menu
+                scope: $scope,
+            });
+        };
 
-                $mdDialog.show({
-                    templateUrl: 'menu/platform-menu-modal.html',
-                    controller: 'MenuPropertiesController',
-                    clickOutsideToClose: true,
-                    preserveScope: true, // requiered for not freez menu
-                    scope: $scope,
-                });
-            };
+        $scope.open_create_platform_from_dialog = function () {
+            var modalScope = $scope.$new(true);
 
-            $scope.open_create_platform_from_dialog = function () {
-                var modalScope = $scope.$new(true);
+            modalScope.applicationSearched = '';
+            modalScope.user = {};
+            UserService.authenticate().then(function (user) {
+                modalScope.user = user;
+            });
 
-                modalScope.applicationSearched = '';
-                modalScope.user = {};
-                UserService.authenticate().then(function (user) {
-                    modalScope.user = user;
-                });
+            $mdDialog.show({
+                templateUrl: 'menu/platform-menu-modal-from.html',
+                controller: 'MenuPropertiesController',
+                clickOutsideToClose: true,
+                preserveScope: true, // requiered for not freez menu
+                scope: modalScope,
+            });
+        };
 
-                $mdDialog.show({
-                    templateUrl: 'menu/platform-menu-modal-from.html',
-                    controller: 'MenuPropertiesController',
-                    clickOutsideToClose: true,
-                    preserveScope: true, // requiered for not freez menu
-                    scope: modalScope,
-                });
-            };
+        $scope.new_platform_already_exist = false;
 
-            $scope.new_platform_already_exist = false;
-
-            $scope.check_new_platform_already_exist = function () {
-                return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
-                    $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
-                    if (_.some(response, { 'name': $scope.new_platform.platform_name })) {
-                        ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, null, true).then(function () {
-                            $scope.new_platform_already_exist = true;
-                        }, function () {
-                            $scope.new_platform_already_exist = false;
-                        });
-                    } else {
+        $scope.check_new_platform_already_exist = function () {
+            return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
+                $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
+                if (_.some(response, { 'name': $scope.new_platform.platform_name })) {
+                    ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, null, true).then(function () {
+                        $scope.new_platform_already_exist = true;
+                    }, function () {
                         $scope.new_platform_already_exist = false;
-                    }
-                });
-            };
+                    });
+                } else {
+                    $scope.new_platform_already_exist = false;
+                }
+            });
+        };
 
-            $scope.closePlatformDialog = function () {
-                $mdDialog.cancel();
-            };
-        },
-    ])
+        $scope.closePlatformDialog = function () {
+            $mdDialog.cancel();
+        };
+    })
 
     .directive('disableEditing', function () {
         return {
