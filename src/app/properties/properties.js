@@ -139,8 +139,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             $scope.cached_empty_module = [];
 
-            $scope.test_obj = { 'name': 'demoKatana-war', 'version': '1.1.2', 'working_copy': false, 'status': 'toDO' };
-
             $scope.quickOpen = false;
 
             $scope.mainBox = null;
@@ -192,7 +190,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 return _.some($scope.cached_empty_module, {
                     'name': module.name,
                     'version': module.version,
-                    'working_copy': module.working_copy,
+                    'is_working_copy': module.is_working_copy,
                     'has_model': true,
                 });
             };
@@ -214,13 +212,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 if (box) {
                     var check_modules_models = function (modules) {
                         _.forEach(modules, function (module) {
-                            var ref = { 'name': module.name, 'version': module.version, 'working_copy': module.working_copy };
+                            var ref = { 'name': module.name, 'version': module.version, 'is_working_copy': module.is_working_copy };
 
                             if (!_.some($scope.cached_empty_module, ref)) {
                                 $scope.cached_empty_module.push(ref);
                                 var elem = _.find($scope.cached_empty_module, ref);
                                 if (elem) {
-                                    ModuleService.get(module.name, module.version, module.working_copy)
+                                    ModuleService.get(module.name, module.version, module.is_working_copy)
                                         .then(() => {
                                             elem.has_model = true;
                                         })
@@ -239,14 +237,14 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     });
 
                     _.forEach(box.modules, function (module) {
-                        if (_.some($scope.cached_empty_module, { 'name': module.name, 'version': module.version, 'working_copy': module.working_copy, 'has_model': false })) {
+                        if (_.some($scope.cached_empty_module, { 'name': module.name, 'version': module.version, 'is_working_copy': module.is_working_copy, 'has_model': false })) {
                             return_value = 'contain_empty_module';
                         }
                     });
 
                     _.forEach(box.children, function (child) {
                         _.forEach(child.modules, function (module) {
-                            if (_.some($scope.cached_empty_module, { 'name': module.name, 'version': module.version, 'working_copy': module.working_copy, 'has_model': false })) {
+                            if (_.some($scope.cached_empty_module, { 'name': module.name, 'version': module.version, 'is_working_copy': module.is_working_copy, 'has_model': false })) {
                                 return_value = 'contain_empty_module';
                             }
                         });
