@@ -1540,6 +1540,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                                             item.password = (prop.password) ? prop.password : false;
                                             item.defaultValue = (prop.defaultValue) ? prop.defaultValue : '';
                                             item.pattern = (prop.pattern) ? prop.pattern : '';
+                                            item.tooltip = buildTooltip(item);
                                         });
                                     }
                                 });
@@ -1565,6 +1566,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                                                 password: (prop.password) ? prop.password : false,
                                                 defaultValue: (prop.defaultValue) ? prop.defaultValue : '',
                                                 pattern: (prop.pattern) ? prop.pattern : '',
+                                                tooltip: buildTooltip(prop),
                                             });
                                         }
                                     }

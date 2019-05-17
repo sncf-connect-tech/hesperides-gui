@@ -375,7 +375,7 @@ angular.module('hesperides.diff', [])
                 $scope.toPlatform.modules = platformFetched.modules;
                 $scope.toModule = _.find($scope.toPlatform.modules, { name: $scope.fromModule.name });
                 if ($scope.diffForm) {
-                    $scope.diffForm.$setValidity('matchingModule', !!$scope.toModule);
+                    $scope.diffForm.$setValidity('matchingModule', Boolean($scope.toModule));
                 }
             });
         };
@@ -385,7 +385,7 @@ angular.module('hesperides.diff', [])
         };
 
         $scope.selectToModule = function (module) {
-            $scope.toModule = module
+            $scope.toModule = module;
             if ($scope.diffForm) {
                 $scope.diffForm.$setValidity('matchingModule', true);
             }

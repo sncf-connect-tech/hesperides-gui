@@ -28,6 +28,8 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
+- Restauration des tooltips pour les propriétés itérables. [Lucas Cimon]
+
 - Correction du diff de plateformes - il était impossible de choisir une autre plateforme. [Lucas Cimon]
 
 
