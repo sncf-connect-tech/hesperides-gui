@@ -21,30 +21,40 @@
 
 <md-dialog flex="60">
     <md-dialog-content>
-        <div class="ng-binding">
-            <h2>{{ 'properties.platform.globalProperties.compare.modal.title' | translate }}
-                {{fromPlatform.application_name}} -
-                {{fromPlatform.name}}</h2>
-            <md-content layout-padding class="autoScroll">
-                <form name="comparedPlatformForm" ng-submit="comparedPlatformForm.$valid">
+        <form name="diffForm" ng-submit="openDiffPage()">
+            <div class="ng-binding">
+                <h2>{{ 'properties.platform.globalProperties.compare.modal.title' | translate }}
+                    {{fromPlatform.application_name}} -
+                    {{fromPlatform.platform}}</h2>
+                <md-content layout-padding class="autoScroll">
                     <div layout="row" flex="100">
                         <md-input-container md-no-float class="md-block" flex="50">
                             <label><strong>{{ 'properties.compare.modal.applicationName' | translate }}</strong></label>
-                            <input type="text" required ng-trim="true" ng-model="fromPlatform.application_name" ng-change="getTargetPlatforms()"
+                            <input type="text" name="toAppName" required ng-trim="true" ng-model="toPlatform.application_name" ng-change="getTargetPlatforms()"
                                    placeholder="{{ 'platform.modal.applicationName.placeholder' | translate }}" />
                         </md-input-container>
                         <md-input-container md-no-float class="md-block" flex="50">
                             <label><strong>{{ 'properties.compare.modal.platformName' | translate }}</strong></label>
-                            <input type="text" required ng-trim="true" ng-model="fromPlatform.platform" md-autofocus="true"
-                                   placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}"/>
+                            <input type="text" name="toPlatformName" list="availablePlatforms" required ng-trim="true" ng-model="toPlatform.platform" ng-change="checkToPlatformExist()"
+                                   placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}" md-autofocus="true"/>
+                            <datalist id="availablePlatforms">
+                                <option ng-repeat="platform in targetPlatforms" value="{{platform.name}}">
+                            </datalist>
                         </md-input-container>
+                    </div>
+
+                    <div ng-if="diffForm.toAppName.$error.exist" role="alert" class="error">
+                        {{ 'properties.compare.modal.error.toAppDoesNotExists' | translate }}
+                    </div>
+
+                    <div ng-if="diffForm.toPlatformName.$error.exist" role="alert" class="error">
+                        {{ 'properties.compare.modal.error.toPlatformDoesNotExists' | translate }}
                     </div>
 
                     <div layout="row" flex="100">
                         <ul class="shared-list-inline" flex>
                             <li ng-repeat="item in targetPlatforms | orderObjectBy:'name'">
-                                <md-button ng-model="scope.toPlatform"
-                                           ng-click="updatePlatformField(item.name)"
+                                <md-button ng-click="setFromPlatformName(item.name)"
                                            class="md-raised md-mini diff-platform-tag"
                                            ng-style="{'background-color': backgroundColor(item)}">
                                     {{item.name}}
@@ -54,19 +64,19 @@
                     </div>
 
                     <md-switch move-focus-when-enabled target="#look-past-date-time"
-                               class="md-primary md-block" aria-label="Comparer à une date" ng-model="scope.lookPast" ng-show="fromPlatform.application_name && fromPlatform.platform">
-                        <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: fromPlatform.application_name, platform: fromPlatform.platform} }}</strong>
+                               class="md-primary md-block" aria-label="Comparer à une date" ng-model="$ctrl.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
+                        <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>
                     </md-switch>
 
-                    <div ng-show="scope.lookPast">
-                        <compare-date-time ng-model="scope.date" is-valid="scope.dateValid"></compare-date-time>
+                    <div ng-show="$ctrl.lookPast">
+                        <compare-date-time ng-model="$ctrl.date" is-valid="$ctrl.dateValid"></compare-date-time>
                     </div>
-                </form>
-            </md-content>
-        </div>
-        <md-dialog-actions>
-            <md-button class="md-raised md-primary" ng-disabled="comparedPlatformForm.$invalid || !isDiffAllowed()" ng-click="openDiffPage()">{{ 'button.modal.runComparison' | translate }}</md-button>
-            <md-button ng-click="closeGlobalPropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
-        </md-dialog-actions>
+                </md-content>
+            </div>
+            <md-dialog-actions>
+                <md-button type="submit" class="md-raised md-primary" ng-disabled="diffForm.$invalid || !isDateValid()">{{ 'button.modal.runComparison' | translate }}</md-button>
+                <md-button ng-click="closeGlobalPropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            </md-dialog-actions>
+        </form>
     </md-dialog-content>
 </md-dialog>
