@@ -25,15 +25,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
-### Fixed
-
-- Comparaison des propriétés à une date spécifique - close #229. [Lucas Cimon]
-
-
-
 ## 2019-05-17
 ### Fixed
+
+- Fermeture du menu de la navbar une fois une techno / module / appli sélectionné + on empêche la création de nouveau groupe logique écrasant un existant avec le même nom - close #157 (#232) [Lucas Cimon]
 
 - Comparaison des propriétés à une date spécifique - close #229 (#231) [Lucas Cimon]
 
