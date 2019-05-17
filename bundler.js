@@ -9,6 +9,7 @@ exports.generateAppBundles = function () {
 
         'src/app/application/application.js',
         'src/app/datepicker/datepicker.js',
+        'src/app/diff/diff.js',
         'src/app/event/event.js',
         'src/app/file/file.js',
         'src/app/local_changes/localChanges.js', // doit venir avant les fichier suivants
@@ -28,6 +29,7 @@ exports.generateAppBundles = function () {
     buildify().concat([
         'src/app/hesperides.css',
         'src/app/datepicker/datepicker.css',
+        'src/app/diff/diff.css',
         'src/app/menu/menu.css',
         'src/app/properties/iterable-properties-container.css',
         'src/app/local_changes/localChanges.css',

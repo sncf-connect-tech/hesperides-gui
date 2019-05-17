@@ -292,105 +292,6 @@ button.preview {
                               horizontally inside the column */
 }
 
-
-/******************************************************************************
- * Diff page
- */
-/* Area to display all diff properties with scroll */
-.diff-area {
-    max-height: 400px;
-    white-space: normal;
-    overflow: auto;
-}
-
-/* Column repeat for each property */
-.diff-row-property {
-    width: 95%;
-}
-
-/* I don't really know if necessary */
-.diff-property {
-    margin-bottom: 0;
-    margin-top: 0;
-    width: 100%;
-}
-
-/* Property name */
-.diff-property-name {
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Property name, value, checkbox... */
-.diff-value {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Class for checkbox */
-.diff-checkbox {
-    margin-top:0px;
-}
-
-.diff-text-modifiable {
-    color: rgb(4, 158, 96);
-}
-
-.diff-text-unmodifiable {
-    color: rgb(158, 4, 4);
-}
-
-.diff-text-old {
-    color: #9C27B0;
-}
-
-/* Warning text in button */
-.diff-warning-text-button {
-    font-weight: bold;
-    text-decoration: underline
-}
-
-/* Header of row property */
-.diff-header-row-property {
-    margin-bottom: 0;
-    margin-top: 0
-}
-
-/* Align text next to toogle switch */
-.diff-toggle-text {
-    vertical-align: text-bottom;
-}
-
-/* Old text for identical property */
-.diff-identical-old {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 20px;
-    text-decoration: line-through;
-    text-align: right;
-}
-
-/* Modify text for identical property */
-.diff-identical-modify {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: right;
-}
-
-.diff-title {
-    padding-left: 10px;
-}
-
-md-checkbox.diff {
-    margin: 0 0 4px 0 !important;
-}
-
-.diff-line {
-    min-height: 20px;
-    padding-bottom: 4px;
-}
-
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 20px;
@@ -1129,19 +1030,6 @@ repeated-item
     margin-left:2% !important;
 }
 
-.diff-platform-tag {
-    height: 5px !important;
-    margin-top: 0px !important;
-    margin-botton: 0px !important;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-    padding-top: 0px !important;
-    padding-botton: 0px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    min-width: 80px !important;
-}
-
 /*Responsive text truncation*/
 .truncate-ellipsis {
   display: table;
@@ -1154,14 +1042,6 @@ repeated-item
   display: table-cell;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.diff-divider {
-    padding-bottom: 15px;
-}
-
-.diff-date-error-message {
-    color: rgb(255,87,34) !important;;
 }
 
 /* Welcome apps displaying style */
