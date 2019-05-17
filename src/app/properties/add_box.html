@@ -25,10 +25,10 @@
             <h2>{{ 'properties.logicGroup.add' | translate }}</h2>
             <md-content layout-padding class="autoScroll">
                 <form name="addComponentForm" novalidate
-                      ng-submit="addComponentForm.$valid && $add(new_component_name)">
+                      ng-submit="addComponentForm.$valid && $add(newComponentName)">
                     <md-input-container md-no-float class="md-block">
                         <label><strong>{{ 'properties.logicGroup.add.name' | translate }}</strong></label>
-                        <input id="add-box_new-logic-group-name" type="text" required ng-trim="true" ng-model="new_component_name" 
+                        <input id="add-box_new-logic-group-name" type="text" required ng-trim="true" ng-model="newComponentName" 
                                md-autofocus="true" placeholder="{{ 'properties.logicGroup.add.name.placeholder' | translate }}" />
                     </md-input-container>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
@@ -36,8 +36,8 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button id="add-box_create-logic-group-button" class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
-                       ng-click="$add(new_component_name)" ng-hide="isReadOnly">{{ 'button.modal.create' | translate }}</md-button>
+            <md-button id="add-box_create-logic-group-button" class="md-raised md-primary" ng-disabled="!okToAddNewLogicGroup(addComponentForm, newComponentName)"
+                       ng-click="$add(newComponentName)" ng-hide="isReadOnly">{{ 'button.modal.create' | translate }}</md-button>
             <md-button id="add-box_canel-logic-group-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>

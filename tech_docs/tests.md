@@ -33,4 +33,6 @@ Nous adoptons ce _pattern_ décrit en détails dans cet article :
 
 ### Options d'exécution
 
+    npm run e2e-tests -- --suite menus
+
     npm run e2e-tests -- --specs test/e2e/menus/menus-spec.js
