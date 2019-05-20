@@ -22,18 +22,15 @@ var utils = require('../utils.js');
 describe('Manage diff', function() {
 
     beforeAll(function() {
-        console.log("START describe Manage diff");
         browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
     });
 
     it('should not send notification on non-existing application name in from.application input', function() {
 
         // set bloc mode (in case the default mode change)
-        var elm_bloc_mode = element(by.id("properties_show-box-mode-button"));
-        utils.clickOnElement(elm_bloc_mode);
+        utils.clickOnElement(element(by.id("properties_show-box-mode-button")));
 
-        var elm_diff = element(by.id("property-tool-button_diff-properties-button-"+data.new_module_name));
-        utils.clickOnElement(elm_diff);
+        utils.clickOnElement(element(by.id("property-tool-button_diff-properties-button-"+data.new_module_name)));
 
         var elm_from_app = element(by.model("from.application"));
 

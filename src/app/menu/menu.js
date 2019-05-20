@@ -56,7 +56,8 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 $location.path(`/techno/${ name }/${ version }`).search({});
             }
             $scope.technoSearched = '';
-            $mdMenu.cancel();
+            $mdMenu.cancel(); // dans le cas où on est appelé par l'autocomplete de menu.html
+            $scope.closeTechnoDialog(); // dans le cas où on est appelé par techno-menu-modal*.html
         };
 
         $scope.closeTechnoDialog = function () {

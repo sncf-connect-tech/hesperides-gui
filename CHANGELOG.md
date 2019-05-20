@@ -25,12 +25,19 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-05-20
 ### Fixed
 
-- Restauration des tooltips pour les propriétés itérables. [Lucas Cimon]
+- Correction du scroll tout en bas dans la vue arborescente lors d'un clic sur un module - close #227 (#234) [Lucas Cimon]
 
-- Correction du diff de plateformes - il était impossible de choisir une autre plateforme. [Lucas Cimon]
+- Correction du diff de plateformes - il était impossible de choisir une autre plateforme (#233) [Lucas Cimon]
+
+  * Fix: correction du diff de plateformes - il était impossible de choisir une autre plateforme
+
+  * Fix: restauration des tooltips pour les propriétés itérables
+
+  * Minor fix: ModuleService.get était appelé avec un argument is_working_copy incorrect
+
 
 
 ## 2019-05-17

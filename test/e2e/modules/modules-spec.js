@@ -20,38 +20,30 @@ var rest = require('restling');
 var utils = require('../utils.js');
 var fs = require('fs');
 
-describe('Manage modules', function() {
+describe('Manage modules', () => {
 
-    beforeAll(function() {
-        console.log("START describe Manage modules");
+    beforeAll(() => {
         browser.get(hesperides_url);
         // delete module on hesperides for cleaning
-        var path_to_module_wc = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy';
-        utils.deleteHttpRequest(path_to_module_wc,200,rest_options);
-        var path_to_module_release = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release';
-        utils.deleteHttpRequest(path_to_module_release,200,rest_options);
-        var path_to_module_from = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy';
-        utils.deleteHttpRequest(path_to_module_from,200,rest_options);
+        utils.deleteHttpRequest(hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy');
+        utils.deleteHttpRequest(hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release');
+        utils.deleteHttpRequest(hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy');
     });
-    it('should create module in working copy', function() {
-        var elm_moduleMenu = element(by.id("e2e-navbar-module"));
-        utils.clickOnElement(elm_moduleMenu);
-        var elm_createModuleMenu = element(by.id("e2e-navbar-module-create"));
-        utils.clickOnElement(elm_createModuleMenu);
+
+    it('should create module in working copy', () => {
+        utils.clickOnElement(element(by.id("e2e-navbar-module")));
+        utils.clickOnElement(element(by.id("e2e-navbar-module-create")));
         
-        var elm_moduleName = element(by.id('moduleName'));
-        elm_moduleName.sendKeys(data.new_module_name);
-        var elm_moduleVersion = element(by.id('moduleVersion'));
-        elm_moduleVersion.sendKeys(data.new_module_version);
+        element(by.id('moduleName')).sendKeys(data.new_module_name);
+        element(by.id('moduleVersion')).sendKeys(data.new_module_version);
 
         utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy');
     });
-    it('should find module on autocomplete in menu "module"', function() {
-        var elm_moduleMenu = element(by.id("e2e-navbar-module"));
-        utils.clickOnElement(elm_moduleMenu);
 
-        var input_autocomplete_module = element(by.id("input-2"));
-        input_autocomplete_module.sendKeys(data.new_module_name);
+    it('should find module on autocomplete in menu "module"', () => {
+        utils.clickOnElement(element(by.id("e2e-navbar-module")));
+
+        element(by.id("input-2")).sendKeys(data.new_module_name);
         browser.waitForAngular();
 
         browser.driver.findElements(by.css('.md-autocomplete-suggestions li')).
@@ -61,59 +53,47 @@ describe('Manage modules', function() {
         );
     });
 
-    it('should add a template in a working copy module', function() {
+    it('should add a template in a working copy module', () => {
         browser.get(hesperides_url+"/#/module/"+data.new_module_name+"/"+data.new_module_version+"?type=workingcopy");
 
         // open modal
-        var elm_open_modal_add_template = element(by.id("template-list_create-template-button"));
-        utils.clickOnElement(elm_open_modal_add_template);
+        utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
         // fill in informations
-        var elm_template_title= element(by.id("templateName"));
-        elm_template_title.sendKeys(data.new_template_title);
-        var elm_template_filename= element(by.id("templateFilename"));
-        elm_template_filename.sendKeys(data.new_template_filename);
-        var elm_template_location= element(by.id("templateLocation"));
-        elm_template_location.sendKeys(data.new_template_location);
+        element(by.id("templateName")).sendKeys(data.new_template_title);
+        element(by.id("templateFilename")).sendKeys(data.new_template_filename);
+        element(by.id("templateLocation")).sendKeys(data.new_template_location);
         
         browser.executeScript("var editor = $('.CodeMirror')[0].CodeMirror;editor.setValue('"+data.new_template_content+"');");
 
-        var elm_save_and_close_template_button = element(by.id("template-modal_save-and-close-template-button"));
-        elm_save_and_close_template_button.click().then(function(){
-            var elm_template_title= element(by.id("template-list_template-module-link-"+data.new_template_title));
-            expect(elm_template_title.getText()).toBe(data.new_template_location+"/"+data.new_template_filename);
+        element(by.id("template-modal_save-and-close-template-button")).click().then(() => {
+            expect(element(by.id("template-list_template-module-link-"+data.new_template_title)).getText()).toBe(data.new_template_location+"/"+data.new_template_filename);
         });
     });
 
-    it('should add a json template in a working copy module', function() {
+    it('should add a json template in a working copy module', () => {
         browser.get(hesperides_url+"/#/module/"+data.new_module_name+"/"+data.new_module_version+"?type=workingcopy");
 
         // open modal
-        var elm_open_modal_add_template = element(by.id("template-list_create-template-button"));
-        utils.clickOnElement(elm_open_modal_add_template);
+        utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
         // fill in informations
-        var elm_template_title= element(by.id("templateName"));
-        elm_template_title.sendKeys(data.json_new_template_title);
-        var elm_template_filename= element(by.id("templateFilename"));
-        elm_template_filename.sendKeys(data.json_new_template_filename);
-        var elm_template_location= element(by.id("templateLocation"));
-        elm_template_location.sendKeys(data.json_new_template_location);
+        element(by.id("templateName")).sendKeys(data.json_new_template_title);
+        element(by.id("templateFilename")).sendKeys(data.json_new_template_filename);
+        element(by.id("templateLocation")).sendKeys(data.json_new_template_location);
 
         browser.executeScript("var editor = $('.CodeMirror')[0].CodeMirror;editor.setValue('"+data.json_new_template_content+"');");
 
-        var elm_save_and_close_template_button = element(by.id("template-modal_save-and-close-template-button"));
-        elm_save_and_close_template_button.click().then(function(){
-            var elm_template_title= element(by.id("template-list_template-module-link-"+data.json_new_template_title));
-            expect(elm_template_title.getText()).toBe(data.json_new_template_location+"/"+data.json_new_template_filename);
+        element(by.id("template-modal_save-and-close-template-button")).click().then(function(){
+            expect(element(by.id("template-list_template-module-link-"+data.json_new_template_title))
+                .getText()).toBe(data.json_new_template_location+"/"+data.json_new_template_filename);
         });
     });
 
     it('should download template file for a techno', function() {
         var filename = utils.getDownloadsPath()+data.json_new_template_filename;
 
-        var elm_btn_download_file=element(by.id("template-list_download-template-module-button-"+data.json_new_template_title));
-        utils.clickOnElement(elm_btn_download_file);
+        utils.clickOnElement(element(by.id("template-list_download-template-module-button-"+data.json_new_template_title)));
 
         browser.driver.wait(function() {
             // Wait until the file has been downloaded.
@@ -130,97 +110,75 @@ describe('Manage modules', function() {
             );
         });
 
-        var elm_btn_download_all_file=element(by.id("template-list_download-all-template-button"));
-        utils.clickOnElement(elm_btn_download_all_file);
+        utils.clickOnElement(element(by.id("template-list_download-all-template-button")));
     });
 
-    it('should add a template in a working copy module and delete it', function() {
+    it('should add a template in a working copy module and delete it', () => {
         browser.get(hesperides_url+"/#/module/"+data.new_module_name+"/"+data.new_module_version+"?type=workingcopy");
 
         // open modal
-        var elm_open_modal_add_template = element(by.id("template-list_create-template-button"));
-        utils.clickOnElement(elm_open_modal_add_template);
+        utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
         // fill in informations
-        var elm_template_title= element(by.id("templateName"));
-        elm_template_title.sendKeys(data.new_template_title+"_to_delete");
-        var elm_template_filename= element(by.id("templateFilename"));
-        elm_template_filename.sendKeys(data.new_template_filename+"_to_delete");
-        var elm_template_location= element(by.id("templateLocation"));
-        elm_template_location.sendKeys(data.new_template_location+"_to_delete");
+        element(by.id("templateName")).sendKeys(data.new_template_title+"_to_delete");
+        element(by.id("templateFilename")).sendKeys(data.new_template_filename+"_to_delete");
+        (by.id("templateLocation")).sendKeys(data.new_template_location+"_to_delete");
         
         browser.executeScript("var editor = $('.CodeMirror')[0].CodeMirror;editor.setValue('"+data.new_template_content+"');");
 
-        var elm_save_and_close_template_button = element(by.id("template-modal_save-and-close-template-button"));
-        elm_save_and_close_template_button.click().then(function(){
-            var elm_template_title= element(by.id("template-list_template-module-link-"+data.new_template_title+"_to_delete"));
-            expect(elm_template_title.getText()).toBe(data.new_template_location+"_to_delete/"+data.new_template_filename+"_to_delete");
+        element(by.id("template-modal_save-and-close-template-button")).click().then(function(){
+            expect(element(by.id("template-list_template-module-link-"+data.new_template_title+"_to_delete"))
+                .getText()).toBe(data.new_template_location+"_to_delete/"+data.new_template_filename+"_to_delete");
         });
 
-        var elm_delete_template_button = element(by.id("template-list_trash-template-module-button-"+data.new_template_title+"_to_delete"));
-        elm_delete_template_button.click().then(function(){
+        element(by.id("template-list_trash-template-module-button-"+data.new_template_title+"_to_delete")).click().then(function(){
             browser.switchTo().alert().accept().then(
                 function () {
-                    var elm_template_title= element(by.id("template-list_template-module-link-"+data.new_template_title+"_to_delete"));
-                    expect(browser.isElementPresent(elm_template_title)).toBe(false);
+                    expect(browser.isElementPresent(element(by.id("template-list_template-module-link-"+data.new_template_title+"_to_delete")))).toBe(false);
                 },
                 function () {return false;}
             );
         });
     });
-    it('should release an existing working copy module', function() {
+    it('should release an existing working copy module', () => {
         browser.get(hesperides_url+"/#/module/"+data.new_module_name+"/"+data.new_module_version+"?type=workingcopy");
 
         // open modal
-        var elm_open_modal_release_button = element(by.id("module_create-release-button"));
-        utils.clickOnElement(elm_open_modal_release_button);
+        utils.clickOnElement(element(by.id("module_create-release-button")));
 
         // fill in informations
-        var elm_release_version_input = element(by.id("release_version"));
-        elm_release_version_input.sendKeys(data.new_module_version);
-        var elm_create_module_release_button = element(by.id("create_release_create-button"));
-        elm_create_module_release_button.click().then(function(){
+        element(by.id("release_version")).sendKeys(data.new_module_version);
+        element(by.id("create_release_create-button")).click().then(() => {
             // we have to handle the alert box "are you sure to create the release"
             browser.switchTo().alert().accept().then(
-                function () {
-                    var elm_toCheckIfPageIsCorrectlyLoaded = element(by.id("module_associated-properties-button"));
-                    elm_toCheckIfPageIsCorrectlyLoaded.isPresent().then(function(boolElemDisplayed){
-                        if (boolElemDisplayed) {
+                () => {
+                    element(by.id("module_associated-properties-button")).isPresent().then((isPresent) => {
+                        if (isPresent) {
                             var path_to_released_module = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release';
-                            utils.checkResponseStatusCode(path_to_released_module,200,rest_options);
+                            utils.checkResponseStatusCode(path_to_released_module,200);
                             browser.waitForAngular();// ajout pour que le screenshot soit pris au bon moment
                         }
                     })
                 },
-                function () {return false;}
+                () => false
             );
         });
     });
-    it('should create working copy module from an existing one', function() {
-        var elm_moduleMenu = element(by.id("e2e-navbar-module"));
-        utils.clickOnElement(elm_moduleMenu);
-        var elm_createModuleFromMenu = element(by.id("e2e-navbar-module-create-from"));
-        utils.clickOnElement(elm_createModuleFromMenu);
+    it('should create working copy module from an existing one', () => {
+        utils.clickOnElement(element(by.id("e2e-navbar-module")));
+        utils.clickOnElement(element(by.id("e2e-navbar-module-create-from")));
         
-        var elm_moduleName = element(by.id('moduleName'));
-        elm_moduleName.sendKeys(data.new_module_name);
-        var elm_moduleVersion = element(by.id('moduleVersion'));
-        elm_moduleVersion.sendKeys(data.new_module_version+"_from");
-        var elm_moduleFrom = element(by.css('md-autocomplete input#module-menu-modal-from_input-module-autocomplete'));
-        elm_moduleFrom.sendKeys(data.new_module_name+" "+data.new_module_version);
+        element(by.id('moduleName')).sendKeys(data.new_module_name);
+        element(by.id('moduleVersion')).sendKeys(data.new_module_version+"_from");
+        element(by.css('md-autocomplete input#module-menu-modal-from_input-module-autocomplete')).sendKeys(data.new_module_name+" "+data.new_module_version);
         browser.waitForAngular();//ajout pour que l'autocompletion soit prise en compte au moment du test
 
-        browser.driver.findElements(by.css('.md-autocomplete-suggestions li')).
-            then(function(elems) {
-                utils.clickOnElement(elems[0]);
-            }
-        );
+        browser.driver.findElements(by.css('.md-autocomplete-suggestions li'))
+            .then((elems) => utils.clickOnElement(elems[0]) );
 
         utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal-from_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy');
     });
 
-    afterAll(function(done) {
-        process.nextTick(done);
-    });
+    afterAll((done) => process.nextTick(done) );
 
 });

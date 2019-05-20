@@ -26,7 +26,7 @@
                 <a class="menu-title" href="/">{{ Page.title() }}</a>
                 <div class="menu-header"> / {{ 'menu.template.title' | translate }} <i class="fa fa-arrow-right"></i></div>
                 <md-menu ng-controller="MenuTechnoController" md-position-mode="target bottom">
-                    <button class="menu-header" ng-click="$mdOpenMenu()" id="e2e-navbar-techno">
+                    <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-techno">
                         {{ 'menu.techno.title' | translate }} <i class="fa fa-caret-down"></i>
                     </button>
                     <md-menu-content class="menu-item">
@@ -60,7 +60,7 @@
                     </md-menu-content>
                 </md-menu>
                 <md-menu ng-controller="MenuModuleController" md-position-mode="target bottom">
-                    <button class="menu-header" ng-click="$mdOpenMenu()" id="e2e-navbar-module">
+                    <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-module">
                         {{ 'menu.module.title' | translate }} <i class="fa fa-caret-down"></i>
                     </button>
                     <md-menu-content class="menu-item">
@@ -94,7 +94,7 @@
                 </md-menu>
                 <div class="menu-header">{{ 'menu.properties.title' | translate }} <i class="fa fa-arrow-right"></i></div>
                 <md-menu ng-controller="MenuPropertiesController" md-position-mode="target bottom">
-                    <button class="menu-header" ng-click="$mdOpenMenu()" id="e2e-navbar-app">
+                    <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-app">
                         {{ 'menu.platform.title' | translate }} <i class="fa fa-caret-down"></i>
                     </button>
                     <md-menu-content class="menu-item">
@@ -132,7 +132,7 @@
                     <i class="fa fa-cog" aria-label="{{ 'menu.help.settings' | translate }}"></i>
                 </md-button>
                 <md-menu md-position-mode="target bottom">
-                    <button class="menu-header" ng-click="$mdOpenMenu()" id="e2e-navbar-help">
+                    <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-help">
                         {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                     </button>
                     <md-menu-content class="menu-item">
