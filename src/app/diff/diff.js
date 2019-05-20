@@ -19,10 +19,10 @@
 function buildDiffDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toPropertiesPath, lookPast, date) {
     const urlParams = {
         application: fromPlatform.application_name,
-        platform: fromPlatform.name,
+        platform: fromPlatform.platform,
         properties_path: fromPropertiesPath,
         compare_application: toPlatform.application_name,
-        compare_platform: toPlatform.name,
+        compare_platform: toPlatform.platform,
         compare_path: toPropertiesPath,
     };
     if (lookPast) {
@@ -323,19 +323,31 @@ angular.module('hesperides.diff', [])
             throw new Error('.fromModule must be provided');
         }
 
-        $scope.scope = $scope; // Pour permettre d'avoir un '.' dans les ng-model
-        $scope.toPlatform = null;
+        $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.toModule = null;
         $scope.lookPast = false;
         $scope.date = null;
+        $scope.targetPlatforms = [];
 
         // Get the list of platforms for an app
         $scope.getTargetPlatforms = function () {
             $scope.targetPlatforms = [];
-            if ($scope.fromPlatform.application_name) {
-                ApplicationService.get($scope.fromPlatform.application_name, true).then((application) => {
+            if ($scope.toPlatform.application_name) {
+                ApplicationService.get($scope.toPlatform.application_name, true).then((application) => {
+                    if ($scope.diffForm) {
+                        $scope.diffForm.$setValidity('matchingModule', true); // reset to default value
+                        $scope.diffForm.toAppName.$setValidity('exist', true);
+                    }
                     $scope.targetPlatforms = application.platforms;
-                }).catch(_.noop);
+                    $scope.checkToPlatformExist();
+                }).catch(() => $scope.diffForm.toAppName.$setValidity('exist', false));
+            }
+        };
+
+        $scope.checkToPlatformExist = function () {
+            if ($scope.diffForm) {
+                $scope.diffForm.$setValidity('matchingModule', true); // reset to default value
+                $scope.diffForm.toPlatformName.$setValidity('exist', _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform }));
             }
         };
 
@@ -343,31 +355,40 @@ angular.module('hesperides.diff', [])
             $mdDialog.cancel();
         };
 
-        $scope.updatePlatformField = function (itemName) {
-            $scope.fromPlatform.name = itemName;
+        $scope.setFromPlatformName = function (platformName) {
+            $scope.fromPlatform.platform = platformName;
         };
 
         $scope.backgroundColor = function (item) {
             return PlatformColorService.calculateColor(item.name);
         };
 
-        $scope.getPlatformToCompare = function () {
+        $scope.getModuleToCompare = function () {
             $scope.loadingComparePlatform = true;
             if ($scope.lookPast) {
                 $scope.date = $scope.date ? Number(moment($scope.date, 'YYYY-MM-DD HH:mm:ss Z')) : new Date().getTime();
             } else {
                 $scope.date = null;
             }
-            ApplicationService.get_platform($scope.fromPlatform.application_name, $scope.fromPlatform.name, $scope.date).then(function (platformFetched) {
+            ApplicationService.get_platform($scope.toPlatform.application_name, $scope.toPlatform.platform, $scope.date).then(function (platformFetched) {
                 $scope.loadingComparePlatform = false;
-                $scope.toPlatform = platformFetched;
+                $scope.toPlatform.modules = platformFetched.modules;
                 $scope.toModule = _.find($scope.toPlatform.modules, { name: $scope.fromModule.name });
+                if ($scope.diffForm) {
+                    $scope.diffForm.$setValidity('matchingModule', Boolean($scope.toModule));
+                }
             });
         };
 
-        $scope.isDiffAllowed = function () {
-            const selectedPlatformInList = $scope.targetPlatforms && _.some($scope.targetPlatforms, { name: $scope.fromPlatform.name });
-            return (!$scope.lookPast || $scope.dateValid) && selectedPlatformInList;
+        $scope.isDateValid = function () {
+            return (!$scope.lookPast || $scope.dateValid);
+        };
+
+        $scope.selectToModule = function (module) {
+            $scope.toModule = module;
+            if ($scope.diffForm) {
+                $scope.diffForm.$setValidity('matchingModule', true);
+            }
         };
 
         $scope.openDiffPage = function () {
@@ -384,18 +405,28 @@ angular.module('hesperides.diff', [])
             throw new Error('.fromPlatform must be provided');
         }
 
-        $scope.scope = $scope; // Pour permettre d'avoir un '.' dans les ng-model
-        $scope.toPlatform = null;
+        $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.lookPast = false;
         $scope.date = null;
+        $scope.targetPlatforms = [];
 
         // Get the list of platforms for an app
         $scope.getTargetPlatforms = function () {
             $scope.targetPlatforms = [];
             if ($scope.fromPlatform.application_name) {
                 ApplicationService.get($scope.fromPlatform.application_name, true).then((application) => {
+                    if ($scope.diffForm) {
+                        $scope.diffForm.toAppName.$setValidity('exist', true);
+                    }
                     $scope.targetPlatforms = application.platforms;
-                }).catch(_.noop);
+                    $scope.checkToPlatformExist();
+                }).catch(() => $scope.diffForm.toAppName.$setValidity('exist', false));
+            }
+        };
+
+        $scope.checkToPlatformExist = function () {
+            if ($scope.diffForm) {
+                $scope.diffForm.toPlatformName.$setValidity('exist', _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform }));
             }
         };
 
@@ -403,17 +434,16 @@ angular.module('hesperides.diff', [])
             $mdDialog.cancel();
         };
 
-        $scope.updatePlatformField = function (itemName) {
-            $scope.fromPlatform.name = itemName;
+        $scope.setFromPlatformName = function (itemName) {
+            $scope.fromPlatform.platform = itemName;
         };
 
         $scope.backgroundColor = function (item) {
             return PlatformColorService.calculateColor(item.name);
         };
 
-        $scope.isDiffAllowed = function () {
-            const selectedPlatformInList = $scope.targetPlatforms && _.some($scope.targetPlatforms, { name: $scope.fromPlatform.name });
-            return (!$scope.lookPast || $scope.dateValid) && selectedPlatformInList;
+        $scope.isDateValid = function () {
+            return (!$scope.lookPast || $scope.dateValid);
         };
 
         $scope.openDiffPage = function () {
@@ -450,7 +480,7 @@ angular.module('hesperides.diff', [])
                 ngModel: '=',
                 isValid: '=',
             },
-            templateUrl: './compare-date-time.html',
+            templateUrl: 'diff/compare-date-time.html',
             link(scope) {
             // -- date for start
                 var date = new Date();

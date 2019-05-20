@@ -21,31 +21,42 @@
 
 <md-dialog flex="60">
     <md-dialog-content>
-        <wizard>
-            <wz-step title="{{ 'properties.compare.modal.step1' | translate }}">
-                <div class="ng-binding">
-                    <h2>{{ 'properties.compare.modal.title' | translate }}
-                        {{fromPlatform.application_name}} -
-                        {{fromPlatform.name}}</h2>
-                    <md-content layout-padding class="autoScroll">
-                        <form name="comparedPlatformForm">
-                            <div layout="row" flex="100">
+        <form name="diffForm" ng-submit="openDiffPage()">
+            <wizard>
+                <wz-step title="{{ 'properties.compare.modal.step1' | translate }}">
+                    <div class="ng-binding">
+                        <h2>{{ 'properties.compare.modal.title' | translate }}
+                            {{fromPlatform.application_name}} -
+                            {{fromPlatform.platform}}</h2>
+                        <md-content layout-padding class="autoScroll">
+                            <div layout="row" flex="100" ng-init="setForm(diffForm)">
                                 <md-input-container md-no-float class="md-block" flex="50">
                                     <label><strong>{{ 'properties.compare.modal.applicationName' | translate }}</strong></label>
-                                    <input type="text" required ng-trim="true" ng-model="fromPlatform.application_name" ng-change="getTargetPlatforms()"
+                                    <input type="text" name="toAppName" required ng-trim="true" ng-model="toPlatform.application_name" ng-change="getTargetPlatforms()"
                                            placeholder="{{ 'platform.modal.applicationName.placeholder' | translate }}"/>
                                 </md-input-container>
                                 <md-input-container md-no-float class="md-block" flex="50">
                                     <label><strong>{{ 'properties.compare.modal.platformName' | translate }}</strong></label>
-                                    <input type="text" required ng-trim="true" ng-model="fromPlatform.name"
-                                           placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}"/>
+                                    <input type="text" name="toPlatformName" list="availablePlatforms" required ng-trim="true" ng-model="toPlatform.platform" ng-change="checkToPlatformExist()"
+                                           placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}" md-autofocus="true"/>
+                                    <datalist id="availablePlatforms">
+                                        <option ng-repeat="platform in targetPlatforms" value="{{platform.name}}">
+                                    </datalist>
                                 </md-input-container>
+                            </div>
+
+                            <div ng-if="diffForm.toAppName.$error.exist" role="alert" class="error">
+                                {{ 'properties.compare.modal.error.toAppDoesNotExists' | translate }}
+                            </div>
+
+                            <div ng-if="diffForm.toPlatformName.$error.exist" role="alert" class="error">
+                                {{ 'properties.compare.modal.error.toPlatformDoesNotExists' | translate }}
                             </div>
 
                             <div layout="row" flex="100">
                                 <ul class="shared-list-inline" flex>
                                     <li ng-repeat="item in targetPlatforms | orderObjectBy:'name'">
-                                        <md-button ng-model="scope.toPlatform" ng-click="updatePlatformField(item.name)"
+                                        <md-button ng-click="setFromPlatformName(item.name)"
                                                    class="md-raised md-mini diff-platform-tag"
                                                    ng-style="{'background-color': backgroundColor(item)}">
                                             {{item.name}}
@@ -55,81 +66,84 @@
                             </div>
                             <md-switch move-focus-when-enabled target="#look-past-date-time"
                                        class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version"
-                                       ng-model="scope.lookPast" ng-show="fromPlatform.application_name && fromPlatform.name">
-                                <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: fromPlatform.application_name, platform: fromPlatform.name} }}</strong>
+                                       ng-model="$ctrl.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
+                                <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>
                             </md-switch>
 
                             <div ng-show="lookPast">
-                                <compare-date-time ng-model="scope.date" is-valid="scope.dateValid"></compare-date-time>
+                                <compare-date-time ng-model="$ctrl.date" is-valid="$ctrl.dateValid"></compare-date-time>
                             </div>
-                        </form>
-                    </md-content>
-                </div>
-                <md-dialog-actions>
-                    <md-button ng-click="getPlatformToCompare()"
-                               class="md-raised md-primary" wz-next ng-disabled="comparedPlatformForm.$invalid || !isDiffAllowed()"
-                    >{{ 'button.modal.next' | translate }}</md-button>
-                    <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
-                </md-dialog-actions>
-            </wz-step>
-            <wz-step title="{{ 'properties.compare.modal.step2' | translate }}">
-                <div class="ng-binding">
-                    <h2>{{ 'properties.compare.modal.moduleChoice' | translate : {comparePlatformApplication:toPlatform.application_name,comparePlatformName:toPlatform.name,compareModule:toModule.title,platformApplication:fromPlatform.application_name,platform:fromPlatform.name} }}</h2>
-                    <md-content layout-padding class="autoScroll">
-                        <div layout="row" class="align-items-center" layout-margin>
-                            <div flex="66">
-                                <ul class="breadcrumb margin-bottom-2px">
-                                    <li>{{fromPlatform.application_name}}</li>
-                                    <li>{{fromPlatform.name}}</li>
-                                    <li ng-repeat="token in fromModule.path.substr(1).split('#')">{{token}}</li>
-                                    <li class="active">{{fromModule.title}}</a>
-                                    </li>
-                                </ul>
-                                <div layout="row" layout-align="space-around" layout-margin>
-                                    <i class="fa fa-arrows-v"></i>
-                                    <i class="fa fa-arrows-v"></i>
-                                    <i class="fa fa-arrows-v"></i>
+                        </md-content>
+                    </div>
+                    <md-dialog-actions>
+                        <md-button wz-next ng-click="getModuleToCompare()" class="md-raised md-primary" ng-disabled="diffForm.$invalid || !isDateValid()">
+                            {{ 'button.modal.next' | translate }}
+                        </md-button>
+                        <md-button ng-click="closePropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+                    </md-dialog-actions>
+                </wz-step>
+                <wz-step title="{{ 'properties.compare.modal.step2' | translate }}">
+                    <div class="ng-binding">
+                        <h2>{{ 'properties.compare.modal.moduleChoice' | translate : {comparePlatformApplication:toPlatform.application_name,comparePlatformName:toPlatform.platform,compareModule:toModule.title,platformApplication:fromPlatform.application_name,platform:fromPlatform.platform} }}</h2>
+                        <md-content layout-padding class="autoScroll">
+                            <div layout="row" class="align-items-center" layout-margin>
+                                <div flex="66">
+                                    <ul class="breadcrumb margin-bottom-2px">
+                                        <li>{{fromPlatform.application_name}}</li>
+                                        <li>{{fromPlatform.platform}}</li>
+                                        <li ng-repeat="token in fromModule.path.substr(1).split('#')">{{token}}</li>
+                                        <li class="active">{{fromModule.title}}</a>
+                                        </li>
+                                    </ul>
+                                    <div layout="row" layout-align="space-around" layout-margin>
+                                        <i class="fa fa-arrows-v"></i>
+                                        <i class="fa fa-arrows-v"></i>
+                                        <i class="fa fa-arrows-v"></i>
+                                    </div>
+                                    <ul class="breadcrumb margin-bottom-2px">
+                                        <li>{{fromPlatform.application_name}}</li>
+                                        <li>{{fromPlatform.platform}}</li>
+                                        <li ng-repeat="token in toModule.path.substr(1).split('#')">
+                                            {{token}}
+                                        </li>
+                                        <li class="active">{{toModule.title}}</a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul class="breadcrumb margin-bottom-2px">
-                                    <li>{{fromPlatform.application_name}}</li>
-                                    <li>{{fromPlatform.name}}</li>
-                                    <li ng-repeat="token in toModule.path.substr(1).split('#')">
-                                        {{token}}
-                                    </li>
-                                    <li class="active">{{toModule.title}}</a>
-                                    </li>
-                                </ul>
+                                <div flex class="text-align-end">
+                                    <md-button type="submit" class="md-raised md-primary" aria-label="{{ 'button.modal.runComparison' | translate }}"
+                                               ng-disabled="!toModule">{{ 'button.modal.runComparison' | translate }}</md-button>
+                                </div>
                             </div>
-                            <div flex class="text-align-end">
-                                <md-button ng-click="openDiffPage()" class="md-raised md-primary" wz-next aria-label="{{ 'button.modal.runComparison' | translate }}"
-                                           ng-disabled="!toModule">{{ 'button.modal.runComparison' | translate }}</md-button>
+                            <div ng-if="diffForm.$error.matchingModule" role="alert" class="error">
+                                {{ 'properties.compare.modal.error.matchingModule' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}
                             </div>
-                        </div>
-                        <div layout="row" layout-margin>
-                            <a href="" ng-click="toggleModules=!toggleModules">
-                                {{ 'properties.compare.modal.otherChoice' | translate }}
-                                {{fromPlatform.application_name}} -
-                                {{fromPlatform.name}}</a>
-                        </div>
-                        <div layout="row" layout-sm="column" layout-align="space-around">
-                            <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
-                                                  ng-show="loadingComparePlatform"></md-progress-circular>
-                            <div flex ng-hide="loadingComparePlatform">
-                                <ul class="breadcrumb margin-bottom-2px" ng-show="toggleModules"
-                                    ng-repeat="module in fromPlatform.modules | orderBy:'path'">
-                                    <li ng-repeat="token in module.path.split('#')">{{token}}</li>
-                                    <li class="active"><a href="" ng-click="toModule = module">{{module.title}}</a>
-                                    </li>
-                                </ul>
+                            <div layout="row" layout-margin>
+                                <a href="" ng-click="toggleModules=!toggleModules">
+                                    {{ 'properties.compare.modal.otherChoice' | translate }}
+                                    {{fromPlatform.application_name}} -
+                                    {{fromPlatform.platform}}</a>
                             </div>
-                        </div>
-                    </md-content>
-                </div>
-                <md-dialog-actions>
-                    <md-button class="md-raised md-primary" wz-previous>{{ 'button.modal.prev' | translate }}</md-button>
-                    <md-button ng-click="closePropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
-                </md-dialog-actions>
-            </wz-step>
-        </wizard>
+                            <div layout="row" layout-sm="column" layout-align="space-around">
+                                <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
+                                                      ng-show="loadingComparePlatform"></md-progress-circular>
+                                <div flex ng-hide="loadingComparePlatform">
+                                    <ul class="breadcrumb margin-bottom-2px" ng-show="toggleModules"
+                                        ng-repeat="module in toPlatform.modules | orderBy:'path'">
+                                        <li ng-repeat="token in module.path.split('#')">{{token}}</li>
+                                        <li class="active"><a href="" ng-click="selectToModule(module)">{{module.title}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </md-content>
+                    </div>
+                    <md-dialog-actions>
+                        <md-button class="md-raised md-primary" wz-previous>{{ 'button.modal.prev' | translate }}</md-button>
+                        <md-button ng-click="closePropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+                    </md-dialog-actions>
+                </wz-step>
+            </wizard>
+        </form>
     </md-dialog-content>
 </md-dialog>
