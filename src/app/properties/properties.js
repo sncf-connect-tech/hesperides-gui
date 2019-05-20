@@ -798,7 +798,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         $scope.showButtonAndEye = null;
 
                         // Auto scroll to the properties list
-                        $location.hash('properties-list');
+                        $location.hash('propertiesDivHolder');
                         $anchorScroll();
                     });
                 });

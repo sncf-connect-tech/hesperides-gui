@@ -33,7 +33,6 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 - Correction du diff de plateformes - il était impossible de choisir une autre plateforme. [Lucas Cimon]
 
 
-
 ## 2019-05-17
 ### Fixed
 
