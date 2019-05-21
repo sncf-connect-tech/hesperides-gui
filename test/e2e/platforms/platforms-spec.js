@@ -25,12 +25,10 @@ describe('Manage platforms', function() {
         console.log("START describe Manage platforms");
         browser.get(hesperides_url);
         // delete platform on hesperides for cleaning
-        var path_to_platform = hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform;
-        utils.deleteHttpRequest(path_to_platform,200,rest_options);
-
-        var path_to_platform_from = hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform+'_from';
-        utils.deleteHttpRequest(path_to_platform_from,200,rest_options);
+        utils.deleteHttpRequest(hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform);
+        utils.deleteHttpRequest(hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform+'_from');
     });
+
     it('should create platform', function() {
         var elm_applicationMenu = element(by.id("e2e-navbar-app"));
         utils.clickOnElement(elm_applicationMenu);

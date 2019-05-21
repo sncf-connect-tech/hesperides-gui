@@ -33,6 +33,12 @@ Nous adoptons ce _pattern_ décrit en détails dans cet article :
 
 ### Options d'exécution
 
-    npm run e2e-tests -- --suite menus
+    npm run e2e-tests -- --suite $suite
 
-    npm run e2e-tests -- --specs test/e2e/menus/menus-spec.js
+    npm run e2e-tests -- --specs test/e2e/menus/menus-spec.js --grep "$should"
+
+Pour exécuter un unique test, une alternative à `--grep` est de simplement remplacer temporairement
+un appel à `it($should, function...` par `fit(...`, le "f" signifiant "focus".
+De même il est possible d'utiliser `fdescribe`.
+
+Enfin, pour débuguer, vous pouvez insérer un appel à `browser.sleep(60000)` pour interrompre un test sur une ligne et garder le navigateur ouvert.

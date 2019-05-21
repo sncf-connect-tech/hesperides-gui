@@ -18,22 +18,12 @@ exports.config = {
   // For authentication required hesperides platforms, I did'nt find a better trick than putting
   // the menus tests on create_platform and create_modules otherwise, it doesn't work a reason I ignore ...
   suites: {
-    menus: 'menus/*spec.js',
-    create_technos: ['menus/*spec.js', 'technos/*spec.js'],
-    create_platforms: ['menus/*spec.js', 'platforms/*spec.js'],
-    create_modules: ['menus/*spec.js', 'modules/*spec.js'],
-    logic_representation: 'logic-representation/*spec.js',
-    createPlatforms_linkModules: ['platforms/*spec.js', 'modules/*spec.js', 'logic-representation/*spec.js'],
-    createPlatforms_linkModules_fillProperties: ['platforms/*spec.js', 'modules/*spec.js', 'logic-representation/*spec.js','annotations/*spec.js'],
-    preview_files : ['preview-files/*spec.js'],
-    properties: ['menus/*spec.js', 'properties/*spec.js'],
-    role_production: 'role_production/*spec.js',
-    diff: 'diff/*spec.js',
-    settings: 'settings/*spec.js',
-    all: ['menus/*spec.js', 'technos/*spec.js', 'platforms/*spec.js',
+    // L'ordre importe car, par exemple, platforms/*spec.js crée une plateforme employée par la suite :
+    all: ['menus/*spec.js', 'technos/*spec.js',
+        /* WIP: 'platforms/*spec.js',
           'modules/*spec.js', 'logic-representation/*spec.js',
           'properties/*spec.js', 'preview-files/*spec.js',
-          'role_production/*spec.js', 'diff/*spec.js', 'settings/*spec.js']
+          'role_production/*spec.js', 'diff/*spec.js', 'settings/*spec.js'*/]
   },
   onPrepare: function() {
     jasmine.getEnv().addReporter(
@@ -41,7 +31,11 @@ exports.config = {
         savePath: 'test-reports-e2e/'
       })
     );
-    data = require('./config.json'); // variable globale utilisée dans les scénarios
-    browser.get(data.endpoint_protocol+"://"+data.auth_username+":"+data.auth_password+"@"+data.endpoint_host+":"+data.endpoint_port);
+
+    // Variable globales utilisées dans les scénarios:
+    data = require('./config.json');
+    hesperides_url = data.endpoint_protocol+"://"+data.auth_username+":"+data.auth_password+"@"+data.endpoint_host+":"+data.endpoint_port
+    
+    browser.get(hesperides_url);
   }
 };

@@ -38,7 +38,7 @@ jobs:
       - sudo env "PATH=$PATH" npm start &
       - sudo env "PATH=$PATH" npm run webdriver-start &
       - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
-    script: npm run e2e-tests
+    script: npm run e2e-tests -- --suite all
 
   - name: Deploy to Docker hub
     stage: deploy

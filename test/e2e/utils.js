@@ -37,8 +37,8 @@ exports.checkIfElementIsDisabled = function(id,state){
 
 // input : element and code http
 // action : check if url returns specified http code
-exports.checkResponseStatusCode = function(url,code,options){
-    rest.get(url,options).then(function(result){
+exports.checkResponseStatusCode = function (url,code) {
+    rest.get(url).then(function(result){
         expect(result.response.statusCode).toBe(code);
     }, function(error){
     	console.log(error.message);
@@ -58,9 +58,9 @@ exports.checkResponseIsEmpty = function(url,options){
 
 // input : element and code http
 // action : run DELETE http request
-exports.deleteHttpRequest = function(url,code,options){
-    rest.del(url,options).then(function(result){
-        expect(result.response.statusCode).toBe(code);
+exports.deleteHttpRequest = function(url){
+    rest.del(url).then(function(result){
+        expect(result.response.statusCode).toBe(200);
     }, function(error){
     	console.log(error.message+" (maybe resource does not exist so you cannot delete it)");
     });
@@ -87,15 +87,13 @@ exports.selectFirstElemOfAutocomplete = function(elem, arrowDown, keyTab, sleepT
 // input : element to click, element checked to know if page is loaded, url to check if resource is really created
 exports.clickToCreateAndCheckIfReallyCreated = function(id_button, id_elem_checked, rest_url) {
 
-    var elm_button = element(by.id(id_button));
-    var elm_toCheckIfPageIsCorrectlyLoaded = element(by.id(id_elem_checked));
-    elm_button.click().then(function(){
+    element(by.id(id_button)).click().then(function(){
 
         // astuce pour vérifier que la page est bien affichée avant de lancer l'appel REST : 
         // évite que l'appel soit lancé avant que le module soit vraiment créé
-        elm_toCheckIfPageIsCorrectlyLoaded.isPresent().then(function(boolElemDisplayed){
+        element(by.id(id_elem_checked)).isPresent().then(function(boolElemDisplayed){
             if (boolElemDisplayed) {
-                exports.checkResponseStatusCode(rest_url,200,rest_options);
+                exports.checkResponseStatusCode(rest_url,200);
             }
         })
     });
@@ -139,13 +137,7 @@ exports.getCountOf = function(classSelector){
 
 exports.getDownloadsPath = function() {
     return path.format ({
-        dir: path.join(
-            __dirname,
-            '..',
-            '..',
-            '..',
-            'reports'
-        )
+        dir: __dirname
     });
 };
 
