@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var rest = require('restling');
 var utils = require('../utils.js');
 var fs = require('fs');
 
@@ -34,10 +33,15 @@ describe('Manage modules', () => {
         utils.clickOnElement(element(by.id("e2e-navbar-module")));
         utils.clickOnElement(element(by.id("e2e-navbar-module-create")));
         
-        element(by.id('moduleName')).sendKeys(data.new_module_name);
-        element(by.id('moduleVersion')).sendKeys(data.new_module_version);
+        element(by.css('#e2e-modal-module-create input[name="moduleName"]')).sendKeys(data.new_module_name);
+        element(by.css('#e2e-modal-module-create input[name="moduleVersion"]')).sendKeys(data.new_module_version);
 
-        utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy');
+        element(by.css('#e2e-modal-module-create button[type="submit"]')).click().then(() => {
+            element(by.id('e2e-module-create-release-button')).isPresent().then((isPresent) => {
+                expect(isPresent).toBe(true);
+                utils.checkResponseStatusCode(hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/workingcopy',200);
+            })
+        });
     });
 
     it('should find module on autocomplete in menu "module"', () => {
@@ -47,10 +51,7 @@ describe('Manage modules', () => {
         browser.waitForAngular();
 
         browser.driver.findElements(by.css('.md-autocomplete-suggestions li')).
-            then(function(elems) {
-                expect(elems.length).toBeGreaterThan(0);
-            }
-        );
+            then((elems) => expect(elems.length).toBeGreaterThan(0) );
     });
 
     it('should add a template in a working copy module', () => {
@@ -60,14 +61,14 @@ describe('Manage modules', () => {
         utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
         // fill in informations
-        element(by.id("templateName")).sendKeys(data.new_template_title);
-        element(by.id("templateFilename")).sendKeys(data.new_template_filename);
-        element(by.id("templateLocation")).sendKeys(data.new_template_location);
+        element(by.css('input[name="templateName"]')).sendKeys(data.new_template_title);
+        element(by.css('input[name="templateFilename"]')).sendKeys(data.new_template_filename);
+        element(by.css('input[name="templateLocation"]')).sendKeys(data.new_template_location);
         
-        browser.executeScript("var editor = $('.CodeMirror')[0].CodeMirror;editor.setValue('"+data.new_template_content+"');");
+        browser.executeScript("document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('"+data.new_template_content+"');");
 
-        element(by.id("template-modal_save-and-close-template-button")).click().then(() => {
-            expect(element(by.id("template-list_template-module-link-"+data.new_template_title)).getText()).toBe(data.new_template_location+"/"+data.new_template_filename);
+        element(by.css('button[type="submit"]')).click().then(() => {
+            expect(element(by.css('#e2e-template-list a[title="'+data.new_template_location+"/"+data.new_template_filename+'"]')).isPresent()).toBe(true);
         });
     });
 
@@ -78,30 +79,29 @@ describe('Manage modules', () => {
         utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
         // fill in informations
-        element(by.id("templateName")).sendKeys(data.json_new_template_title);
-        element(by.id("templateFilename")).sendKeys(data.json_new_template_filename);
-        element(by.id("templateLocation")).sendKeys(data.json_new_template_location);
+        element(by.css('input[name="templateName"]')).sendKeys(data.json_new_template_title);
+        element(by.css('input[name="templateFilename"]')).sendKeys(data.json_new_template_filename);
+        element(by.css('input[name="templateLocation"]')).sendKeys(data.json_new_template_location);
 
-        browser.executeScript("var editor = $('.CodeMirror')[0].CodeMirror;editor.setValue('"+data.json_new_template_content+"');");
+        browser.executeScript("document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('"+data.json_new_template_content+"');");
 
-        element(by.id("template-modal_save-and-close-template-button")).click().then(function(){
-            expect(element(by.id("template-list_template-module-link-"+data.json_new_template_title))
-                .getText()).toBe(data.json_new_template_location+"/"+data.json_new_template_filename);
+        element(by.css('button[type="submit"]')).click().then(() => {
+            expect(element(by.css('#e2e-template-list a[title="'+data.json_new_template_location+"/"+data.json_new_template_filename+'"]')).isPresent()).toBe(true);
         });
     });
 
-    it('should download template file for a techno', function() {
+    it('should download template file for a techno', () => {
         var filename = utils.getDownloadsPath()+data.json_new_template_filename;
 
-        utils.clickOnElement(element(by.id("template-list_download-template-module-button-"+data.json_new_template_title)));
+        utils.clickOnElement(element(by.id("e2e-template-list-download-button-for-" + data.json_new_template_title)));
 
-        browser.driver.wait(function() {
+        browser.driver.wait(() => {
             // Wait until the file has been downloaded.
             // We need to wait thus as otherwise protractor has a nasty habit of
             // trying to do any following tests while the file is still being
             // downloaded and hasn't been moved to its final location.
             return fs.existsSync(filename);
-        }, 2000).then(function() {
+        }, 2000).then(() => {
             // Do whatever checks you need here.  This is a simple comparison;
             // for a larger file you might want to do calculate the file's MD5
             // hash and see if it matches what you expect.
@@ -110,7 +110,7 @@ describe('Manage modules', () => {
             );
         });
 
-        utils.clickOnElement(element(by.id("template-list_download-all-template-button")));
+        utils.clickOnElement(element(by.id("e2e-template-list-download-all-button")));
     });
 
     it('should add a template in a working copy module and delete it', () => {
@@ -120,63 +120,65 @@ describe('Manage modules', () => {
         utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
         // fill in informations
-        element(by.id("templateName")).sendKeys(data.new_template_title+"_to_delete");
-        element(by.id("templateFilename")).sendKeys(data.new_template_filename+"_to_delete");
-        (by.id("templateLocation")).sendKeys(data.new_template_location+"_to_delete");
+        element(by.css('input[name="templateName"]')).sendKeys(data.new_template_title+"_to_delete");
+        element(by.css('input[name="templateFilename"]')).sendKeys(data.new_template_filename+"_to_delete");
+        element(by.css('input[name="templateLocation"]')).sendKeys(data.new_template_location+"_to_delete");
         
-        browser.executeScript("var editor = $('.CodeMirror')[0].CodeMirror;editor.setValue('"+data.new_template_content+"');");
+        browser.executeScript("document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('"+data.new_template_content+"');");
 
-        element(by.id("template-modal_save-and-close-template-button")).click().then(function(){
-            expect(element(by.id("template-list_template-module-link-"+data.new_template_title+"_to_delete"))
-                .getText()).toBe(data.new_template_location+"_to_delete/"+data.new_template_filename+"_to_delete");
+        element(by.css('button[type="submit"]')).click().then(() => {
+            expect(element(by.css('#e2e-template-list a[title="'+data.new_template_location+"_to_delete/"+data.new_template_filename+'_to_delete"]')).isPresent()).toBe(true);
         });
 
-        element(by.id("template-list_trash-template-module-button-"+data.new_template_title+"_to_delete")).click().then(function(){
+        element(by.id("e2e-template-list-trash-button-for-" + data.new_template_title+"_to_delete")).click().then(() => {
             browser.switchTo().alert().accept().then(
-                function () {
-                    expect(browser.isElementPresent(element(by.id("template-list_template-module-link-"+data.new_template_title+"_to_delete")))).toBe(false);
-                },
-                function () {return false;}
+                () => expect(element(by.css('#e2e-template-list a[title="'+data.new_template_location+"_to_delete/"+data.new_template_filename+'_to_delete"]')).isPresent()).toBe(false),
+                () => false
             );
         });
     });
+
     it('should release an existing working copy module', () => {
         browser.get(hesperides_url+"/#/module/"+data.new_module_name+"/"+data.new_module_version+"?type=workingcopy");
 
         // open modal
-        utils.clickOnElement(element(by.id("module_create-release-button")));
+        utils.clickOnElement(element(by.id("e2e-module-create-release-button")));
 
         // fill in informations
-        element(by.id("release_version")).sendKeys(data.new_module_version);
-        element(by.id("create_release_create-button")).click().then(() => {
+        element(by.css('input[name="release-version"]')).sendKeys(data.new_module_version);
+        element(by.css('button[type="submit"]')).click().then(() => {
             // we have to handle the alert box "are you sure to create the release"
             browser.switchTo().alert().accept().then(
                 () => {
-                    element(by.id("module_associated-properties-button")).isPresent().then((isPresent) => {
-                        if (isPresent) {
-                            var path_to_released_module = hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release';
-                            utils.checkResponseStatusCode(path_to_released_module,200);
-                            browser.waitForAngular();// ajout pour que le screenshot soit pris au bon moment
-                        }
+                    element(by.id("e2e-module-associated-properties-button")).isPresent().then((isPresent) => {
+                        expect(isPresent).toBe(true);
+                        utils.checkResponseStatusCode(hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'/release',200);
                     })
                 },
                 () => false
             );
         });
     });
+
     it('should create working copy module from an existing one', () => {
+        utils.waitForNotificationToDisappear(); // La notif peut masquer le menu des modules de la navbar
         utils.clickOnElement(element(by.id("e2e-navbar-module")));
         utils.clickOnElement(element(by.id("e2e-navbar-module-create-from")));
         
-        element(by.id('moduleName')).sendKeys(data.new_module_name);
-        element(by.id('moduleVersion')).sendKeys(data.new_module_version+"_from");
+        element(by.css('#e2e-modal-module-create-from input[name="moduleName"]')).sendKeys(data.new_module_name);
+        element(by.css('#e2e-modal-module-create-from input[name="moduleVersion"]')).sendKeys(data.new_module_version+"_from");
         element(by.css('md-autocomplete input#module-menu-modal-from_input-module-autocomplete')).sendKeys(data.new_module_name+" "+data.new_module_version);
         browser.waitForAngular();//ajout pour que l'autocompletion soit prise en compte au moment du test
 
         browser.driver.findElements(by.css('.md-autocomplete-suggestions li'))
             .then((elems) => utils.clickOnElement(elems[0]) );
 
-        utils.clickToCreateAndCheckIfReallyCreated('module-menu-modal-from_create-button','module_create-release-button',hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy');
+        element(by.css('#e2e-modal-module-create-from button[type="submit"]')).click().then(() => {
+            element(by.id('e2e-module-create-release-button')).isPresent().then((isPresent) => {
+                expect(isPresent).toBe(true);
+                utils.checkResponseStatusCode(hesperides_url+'/rest/modules/'+data.new_module_name+'/'+data.new_module_version+'_from/workingcopy',200);
+            })
+        });
     });
 
     afterAll((done) => process.nextTick(done) );

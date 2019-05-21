@@ -19,15 +19,15 @@
   ~
   -->
 
-<blockquote ng-if="templateEntries.length > 0" class="template-list">
+<blockquote ng-if="templateEntries.length > 0" class="template-list" id="e2e-template-list">
     <p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']"
        class="tempalte-list-item">
 
-        <md-button id="template-list_download-template-module-button-{{template_entry.name}}" class="md-icon-button md-xs"
+        <md-button id="e2e-template-list-download-button-for-{{template_entry.name}}" class="md-icon-button md-xs"
                    aria-label="{{ 'template.button.download' | translate : {name:template_entry.name} }}"
                    ng-click="download_template(template_entry)"
         ><i class="fa fa-download"></i></md-button>
-        <md-button id="template-list_trash-template-module-button-{{template_entry.name}}" class="md-icon-button md-warn md-xs"
+        <md-button id="e2e-template-list-trash-button-for-{{template_entry.name}}" class="md-icon-button md-warn md-xs"
                    ng-really-message="{{ 'template.message.delete' | translate : {name:template_entry.name} }}"
                    aria-label="{{ 'template.message.delete' | translate : {name:template_entry.name} }}"
                    ng-really-click="delete_template(template_entry.name)"
@@ -37,15 +37,14 @@
         ><i class="fa fa-trash"></i></md-button>
         <span ng-class="{'text-stroke': hover}">
             {{template_entry.name}}
-            <a id="template-list_template-module-link-{{template_entry.name}}"
-               class="module-link"
+            <a class="module-link"
                href=""
                title="{{template_entry.location}}/{{template_entry.filename}}"
                ng-click="edit_template(template_entry.name)"
             >{{template_entry.location}}/{{template_entry.filename}}</a>
-            <small id="template-list_template-module-rights-{{template_entry.name}}">  {{ 'template.rights' | translate : {list:template_entry.rights} }}</small>
+            <small>{{ 'template.rights' | translate : {list:template_entry.rights} }}</small>
         </span>
     </p>
 </blockquote>
 <md-button id="e2e-template-list-create-template-button" ng-click="add_template()" class="md-raised" ng-show="!isReadOnly">{{ 'template.button.add' | translate }}</md-button>
-<md-button id="template-list_download-all-template-button" ng-click="download_all_template(templateEntries)" class="md-raised">{{ 'template.button.download.all' | translate }}</md-button>
+<md-button id="e2e-template-list-download-all-button" ng-click="download_all_template(templateEntries)" class="md-raised">{{ 'template.button.download.all' | translate }}</md-button>

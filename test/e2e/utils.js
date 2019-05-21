@@ -8,6 +8,10 @@ exports.clickOnElement = function(elm){
     browser.waitForAngular();
 };
 
+exports.waitForNotificationToDisappear = function() {
+    browser.wait( ExpectedConditions.stalenessOf( element(by.css('.cg-notify-message')) ), 12000 ); // angular-notify: "Default message duration is now 10 seconds" + CSS transition
+};
+
 // input : element and text to check
 // action : check text if present in element
 exports.checkIfElementContainsText = function(elm,text){
@@ -46,17 +50,6 @@ exports.checkResponseStatusCode = function (url,code) {
 };
 
 // input : element and code http
-// action : check if get returns something empty
-exports.checkResponseIsEmpty = function(url,options){
-    rest.get(url,options).then(function(result){
-        console.log("ici :"+result.response);
-        expect(result.response).toBeNonEmptyString();
-    }, function(error){
-        console.log(error.message);
-    });
-};
-
-// input : element and code http
 // action : run DELETE http request
 exports.deleteHttpRequest = function(url){
     rest.del(url).then(function(result){
@@ -81,22 +74,6 @@ exports.selectFirstElemOfAutocomplete = function(elem, arrowDown, keyTab, sleepT
     if (keyTab) {
         elem.sendKeys(protractor.Key.TAB);
     }
-};
-
-// click on elem and check if resource is really created after page correctly displayed
-// input : element to click, element checked to know if page is loaded, url to check if resource is really created
-exports.clickToCreateAndCheckIfReallyCreated = function(id_button, id_elem_checked, rest_url) {
-
-    element(by.id(id_button)).click().then(function(){
-
-        // astuce pour vérifier que la page est bien affichée avant de lancer l'appel REST : 
-        // évite que l'appel soit lancé avant que le module soit vraiment créé
-        element(by.id(id_elem_checked)).isPresent().then(function(boolElemDisplayed){
-            if (boolElemDisplayed) {
-                exports.checkResponseStatusCode(rest_url,200);
-            }
-        })
-    });
 };
 
 // mouse move on element
@@ -125,32 +102,9 @@ exports.clearAndSendkeys = function(elm,newString) {
     })
 }
 
-// count the number of item of a css class
-// in the DOM
-exports.getCountOf = function(classSelector){
-
-    return element.all(by.css(classSelector)).then(function(items) {
-        return items.length;
-    });
-
-};
-
 exports.getDownloadsPath = function() {
     return path.format ({
         dir: __dirname
-    });
-};
-
-exports.getConfigPath = function() {
-    return path.format ({
-        dir: path.join(
-            __dirname,
-            '..',
-            '..',
-            '..',
-            'src',
-            'app'
-        )
     });
 };
 

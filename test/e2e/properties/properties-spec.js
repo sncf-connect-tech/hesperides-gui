@@ -174,7 +174,8 @@ describe('Manage iterable properties and annotations (default, comment, required
     it('should fill in iterable properties with right values (BLOC MODE) and check if save event is correctly stored', function() {
 
         // 0- Get the number of bloc : for avoiding errors in case of multiple tests
-        utils.getCountOf('.iterable-block').then(function (blocCount){
+        element.all(by.css('.iterable-block')).then((items) => {
+            let blocCount = items.length;
 
             // 1- Open iterable properties
             openIterableProperties();

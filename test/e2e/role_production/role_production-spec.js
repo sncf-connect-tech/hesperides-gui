@@ -36,7 +36,7 @@ describe('Checks around production role', function() {
         var elm_createPlatformMenu = element(by.id("e2e-navbar-app-create"));
         utils.clickOnElement(elm_createPlatformMenu);
         
-        utils.checkIfElementIsDisabled("platform-menu-modal_is-production-switch","true");
+        utils.checkIfElementIsDisabled("e2e-modal-platform-create-is-prod-switch","true");
     });
     it('should check that a "non production" user cannot create a production platform from another one', function() {
         var elm_applicationMenu = element(by.id("e2e-navbar-app"));

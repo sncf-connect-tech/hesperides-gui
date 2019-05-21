@@ -17,4 +17,6 @@ et les comparaisons avec `false` / `null` ou `''` quand il suffit de savoir la v
 
 > Whenever you have ng-model there’s gotta be a dot in there somewhere. If you don’t have a dot, you’re doing it wrong.
 
+Pour détecter ces cas : `grep 'ng-model="[^.]\+"' -R $(git ls-files src)`
+
 - comme on ne minifie pas le code, on évite le tableau listant le nom des dépendances lors de leur injection

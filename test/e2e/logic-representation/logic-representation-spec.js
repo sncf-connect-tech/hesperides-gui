@@ -60,7 +60,12 @@ describe('Manage logical representation', function() {
         var elm_instance_name = element(by.id("add-instance_instance-name-input"));
         elm_instance_name.sendKeys(data.new_instance_name);
 
-        utils.clickToCreateAndCheckIfReallyCreated('add-instance_create-instance-button','box-renderer_editmodule-button-'+data.new_module_name,hesperides_url+'/rest/files/applications/'+data.new_application+'/platforms/'+data.new_platform+'/%23'+data.logic_group_1+'%23'+data.logic_group_2+'/'+data.new_module_name+'/'+data.new_module_version+'/instances/'+data.new_instance_name+'?isWorkingCopy=true');
+        element(by.id('add-instance_create-instance-button')).click().then(() => {
+            element(by.id('box-renderer_editmodule-button-'+data.new_module_name)).isPresent().then((isPresent) => {
+                expect(isPresent).toBe(true);
+                utils.checkResponseStatusCode(hesperides_url+'/rest/files/applications/'+data.new_application+'/platforms/'+data.new_platform+'/%23'+data.logic_group_1+'%23'+data.logic_group_2+'/'+data.new_module_name+'/'+data.new_module_version+'/instances/'+data.new_instance_name+'?isWorkingCopy=true',200);
+            })
+        });
 
         // display/hide instance
         expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(0);
@@ -125,7 +130,12 @@ describe('Manage logical representation', function() {
         var elm_instance_name = element(by.id("add-instance_instance-name-input"));
         elm_instance_name.sendKeys(data.new_instance_name);
 
-        utils.clickToCreateAndCheckIfReallyCreated('add-instance_create-instance-button','tree-renderer_edit-properties-module-button-'+data.new_module_name,hesperides_url+'/rest/files/applications/'+data.new_application+'/platforms/'+data.new_platform+'/%23'+data.logic_group_1+'%23'+data.logic_group_2+'/'+data.new_module_name+'/'+data.new_module_version+'/instances/'+data.new_instance_name+'?isWorkingCopy=true');
+        element(by.id('add-instance_create-instance-button')).click().then(() => {
+            element(by.id('tree-renderer_edit-properties-module-button-'+data.new_module_name)).isPresent().then((isPresent) => {
+                expect(isPresent).toBe(true);
+                utils.checkResponseStatusCode(hesperides_url+'/rest/files/applications/'+data.new_application+'/platforms/'+data.new_platform+'/%23'+data.logic_group_1+'%23'+data.logic_group_2+'/'+data.new_module_name+'/'+data.new_module_version+'/instances/'+data.new_instance_name+'?isWorkingCopy=true',200);
+            })
+        });
     });
     afterAll(function(done) {
         process.nextTick(done);

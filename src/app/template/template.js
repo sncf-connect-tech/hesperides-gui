@@ -136,16 +136,14 @@ angular.module('hesperides.template', [])
                         scope: modalScope,
                     });
 
-                    modalScope.$close = function (template) {
+                    modalScope.saveTemplateAndClose = function (template) {
                         modalScope.save(template).then(function (savedTemplate) {
                             modalScope.template = savedTemplate;
                             $mdDialog.cancel();
-                        }).catch(function () {
-                            // Do not close window if error
                         });
                     };
 
-                    modalScope.$save = function (template) {
+                    modalScope.saveTemplate = function (template) {
                         modalScope.save(template).then(function (savedTemplate) {
                             modalScope.template = savedTemplate;
                         });

@@ -9,6 +9,8 @@ tmp
 target/
 /test-reports-e2e/
 /test/unit/reports
+/test/e2e/config_testauto*
+/test/e2e/json_template_filename_added_by_ptor*
 npm-debug.log
 coverage/
 /src/app/app.css

@@ -54,12 +54,12 @@
                                 -->
                             </div>
 
-                            <div id="templateContentParent" flex="95">
+                            <div flex="95">
                                 <div ng-switch = "item.on_error">
                                     <div ng-switch-when="true" class="file-error">
                                         <strong>{{'file.error' | translate}}</i></strong> {{item.content}}
                                     </div>
-                                    <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
+                                    <ui-codemirror ui-codemirror-opts="codeMirrorOptions"
                                                    ng-model="item.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"
                                                    ng-switch-default
                                             ></ui-codemirror>

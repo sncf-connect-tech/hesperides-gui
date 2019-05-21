@@ -18,12 +18,19 @@ exports.config = {
   // For authentication required hesperides platforms, I did'nt find a better trick than putting
   // the menus tests on create_platform and create_modules otherwise, it doesn't work a reason I ignore ...
   suites: {
-    // L'ordre importe car, par exemple, platforms/*spec.js crée une plateforme employée par la suite :
-    all: ['menus/*spec.js', 'technos/*spec.js',
-        /* WIP: 'platforms/*spec.js',
-          'modules/*spec.js', 'logic-representation/*spec.js',
-          'properties/*spec.js', 'preview-files/*spec.js',
-          'role_production/*spec.js', 'diff/*spec.js', 'settings/*spec.js'*/]
+    // L'ordre importe car, par exemple, platforms/*spec.js crée une plateforme employée par diff/*spec.js :
+    all: [
+        'menus/*spec.js',
+        'technos/*spec.js',
+        'modules/*spec.js',
+        'platforms/*spec.js',
+        /* WIP: 'diff/*spec.js',
+        'logic-representation/*spec.js',
+        'preview-files/*spec.js',
+        'properties/*spec.js',
+        'role_production/*spec.js',
+        'settings/*spec.js'
+    /**/]
   },
   onPrepare: function() {
     jasmine.getEnv().addReporter(

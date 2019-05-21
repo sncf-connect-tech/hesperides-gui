@@ -94,11 +94,3 @@ md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-op
     outline: none;
     background-color: #007C6E;
 }
-
-md-switch#platform-menu-modal_override-existing-switch {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-

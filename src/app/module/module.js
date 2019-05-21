@@ -180,11 +180,11 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
             $scope.open_create_release_dialog = function (module) {
                 var modalScope = $scope.$new(true);
 
-                modalScope.$closeDialog = function () {
+                modalScope.closeCreateReleaseDialog = function () {
                     $mdDialog.cancel();
                 };
 
-                modalScope.$save = function (release_version) {
+                modalScope.saveReleaseAndClose = function (release_version) {
                     $scope.create_release(module, release_version);
                     $mdDialog.cancel();
                 };
@@ -198,8 +198,8 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
             };
 
             /**
-     * Affiche la liste des propriétés associées à un module.
-     */
+             * Affiche la liste des propriétés associées à un module.
+             */
             $scope.open_associated_properties_dialog = function (module) {
                 var modalScope = $scope.$new(true);
 
