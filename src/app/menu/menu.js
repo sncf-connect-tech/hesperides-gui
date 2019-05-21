@@ -73,12 +73,14 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         $scope.create_module = function (name, version) {
             var module = new Module({ name, version });
             ModuleService.save(module).then(function (mod) {
+                $scope.closeModuleDialog();
                 $scope.open_module_page(mod.name, mod.version, mod.is_working_copy);
             });
         };
 
         $scope.create_module_from = function (name, version, moduleFrom) {
             ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function () {
+                $scope.closeModuleDialog();
                 $scope.open_module_page(name, version, true);
             });
         };

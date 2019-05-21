@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2019-05-21
+### Fixed
+
+- Datepicker pour comparaison de propriétés front (#236) [Lucas Cimon]
+
+
+
 ## 2019-05-20
 ### Fixed
 

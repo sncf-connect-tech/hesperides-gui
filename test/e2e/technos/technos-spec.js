@@ -26,7 +26,6 @@ describe('Manage technos', () => {
         // delete techno on hesperides for cleaning
         utils.deleteHttpRequest(hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/workingcopy');
         utils.deleteHttpRequest(hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/release');
-        utils.deleteHttpRequest(hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'_from/workingcopy');
     });
 
     it('should create techno in working copy', () => {
@@ -38,9 +37,8 @@ describe('Manage technos', () => {
 
         element(by.css('#e2e-modal-techno-create button[type="submit"]')).click().then(() => {
             element(by.id('e2e-techno-create-release-button')).isPresent().then((isPresent) => {
-                if (isPresent) {
-                    utils.checkResponseStatusCode(hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/workingcopy',200);
-                }
+                expect(isPresent).toBe(true);
+                utils.checkResponseStatusCode(hesperides_url+'/rest/templates/packages/'+data.new_techno_name+'/'+data.new_techno_version+'/workingcopy',200);
             })
         });
     });
@@ -48,27 +46,26 @@ describe('Manage technos', () => {
     it('should add a template file to the new techno', () => {
         utils.clickOnElement(element(by.id("e2e-template-list-create-template-button")));
 
-        element(by.id("templateName")).sendKeys(data.new_techno_conf_name);
+        element(by.css('input[name="templateName"]')).sendKeys(data.new_techno_conf_name);
         browser.waitForAngular();
 
-        element(by.id("templateFilename")).sendKeys(data.new_techno_conf_filename);
+        element(by.css('input[name="templateFilename"]')).sendKeys(data.new_techno_conf_filename);
         browser.waitForAngular();
 
-        element(by.id("templateLocation")).sendKeys(data.new_techno_conf_location);
+        element(by.css('input[name="templateLocation"]')).sendKeys(data.new_techno_conf_location);
         browser.waitForAngular();
 
         browser.executeScript("document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('"+data.new_techno_conf_content+"');");
 
-        element(by.id("template-modal_save-and-close-template-button")).click().then(() => {
-            expect(element(by.id("template-list_template-module-link-"+data.new_techno_conf_name))
-                .getText()).toBe(data.new_techno_conf_location+"/"+data.new_techno_conf_filename);
+        element(by.css('button[type="submit"]')).click().then(() => {
+            expect(element(by.css('#e2e-template-list a[title="'+data.new_techno_conf_location+"/"+data.new_techno_conf_filename+'"]')).isPresent()).toBe(true);
         });
     });
 
     it('should download template file for a techno', () => {
         var filename = utils.getDownloadsPath()+data.new_techno_conf_filename;
 
-        utils.clickOnElement(element(by.id("template-list_download-template-module-button-"+data.new_techno_conf_name)));
+        utils.clickOnElement(element(by.id("e2e-template-list-download-button-for-" + data.new_techno_conf_name)));
 
         browser.driver.wait(() => {
             // Wait until the file has been downloaded.
@@ -85,7 +82,7 @@ describe('Manage technos', () => {
             );
         });
 
-        utils.clickOnElement(element(by.id("template-list_download-all-template-button")));
+        utils.clickOnElement(element(by.id("e2e-template-list-download-all-button")));
     });
 
     it('should find techno on autocomplete in menu "techno"', () => {

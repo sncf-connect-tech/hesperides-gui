@@ -21,13 +21,11 @@
 
 <md-dialog flex="50">
     <md-dialog-content>
-        <div class="ng-binding">
-            <h2 ng-if="add">{{ 'template.modal.add.title' | translate }}</h2>
-            <h2 ng-if="!add">{{ 'template.modal.edit.title' | translate }}</h2>
-
-            <md-content layout-padding class="autoScroll">
-
-                <form name="templateForm" novalidate>
+        <form name="templateForm" novalidate ng-submit="templateForm.$valid && saveTemplateAndClose(template)">
+            <div class="ng-binding">
+                <h2 ng-if="add">{{ 'template.modal.add.title' | translate }}</h2>
+                <h2 ng-if="!add">{{ 'template.modal.edit.title' | translate }}</h2>
+                <md-content layout-padding class="autoScroll">
 
                     <div layout="row" class="margin-bottom-minus-4pc">
                         <div flex="50">
@@ -37,7 +35,7 @@
                                        ng-disabled="!add"
                                        ng-focus="true"
                                        md-autofocus="true"
-                                       id="templateName" placeholder="{{ 'template.modal.name.placeholder' | translate }}" />
+                                       name="templateName" placeholder="{{ 'template.modal.name.placeholder' | translate }}" />
                             </md-input-container>
                         </div>
                         <div flex="50">
@@ -45,7 +43,7 @@
                                 <label><strong>{{ 'template.modal.fileName' | translate }}</strong></label>
                                 <input type="text" required ng-trim="true" ng-model="template.filename"
                                        ng-disabled="isReadOnly"
-                                       id="templateFilename" placeholder="{{ 'template.modal.fileName.placeholder' | translate }}"/>
+                                       name="templateFilename" placeholder="{{ 'template.modal.fileName.placeholder' | translate }}"/>
                             </md-input-container>
                         </div>
                     </div>
@@ -56,7 +54,7 @@
                                 <label><strong>{{ 'template.modal.directory' | translate }}</strong></label>
                                 <input type="text" required ng-trim="true" ng-model="template.location"
                                        ng-disabled="isReadOnly"
-                                       id="templateLocation" placeholder="{{ 'template.modal.directory.placeholder' | translate }}"/>
+                                       name="templateLocation" placeholder="{{ 'template.modal.directory.placeholder' | translate }}"/>
                             </md-input-container>
                         </div>
                     </div>
@@ -72,8 +70,8 @@
                             <select ng-init="selectedMode = codemirrorModes[0]" ng-options="mode.name for mode in codemirrorModes" ng-model="selectedMode" ng-change="changeCodeMirrorMode(selectedMode.mimetype)"></select>
                         </div>
                     </div>
-                    <div id="templateContentParent">
-                        <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
+                    <div>
+                        <ui-codemirror ui-codemirror-opts="codeMirrorOptions"
                                        ng-model="template.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"></ui-codemirror>
                     </div>
 
@@ -81,14 +79,14 @@
                         <file-rights model="template.rights.user" label="User :"></file-rights>
                         <file-rights model="template.rights.group" label="Group :"></file-rights>
                     </div>
-                </form>
-            </md-content>
-        </div>
+                </md-content>
+            </div>
 
-        <md-dialog-actions>
-            <md-button id="template-modal_save-template-button" ng-click="$save(template)" class="md-raised md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">{{ 'template.button.save' | translate }}</md-button>
-            <md-button id="template-modal_save-and-close-template-button" ng-click="$close(template)" class="md-raised md-success md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">{{ 'template.button.saveAndClose' | translate }}</md-button>
-            <md-button id="template-modal_cancel-template-button" ng-click="closeTemplateEditor()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
-        </md-dialog-actions>
+            <md-dialog-actions>
+                <md-button ng-click="saveTemplate(template)" class="md-raised md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">{{ 'template.button.save' | translate }}</md-button>
+                <md-button type="submit" class="md-raised md-success md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">{{ 'template.button.saveAndClose' | translate }}</md-button>
+                <md-button ng-click="closeTemplateEditor()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            </md-dialog-actions>
+        </form>
     </md-dialog-content>
 </md-dialog>

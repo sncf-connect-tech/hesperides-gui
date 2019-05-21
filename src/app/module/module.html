@@ -25,11 +25,11 @@
         <div class="bg-light">
             <h3><span> Module <strong><u>{{module.name}}</u></strong>, Version <strong><u>{{module.version}}</u></strong></span>
                 <span ng-show="is_workingcopy"> (Working Copy)</span></span>
-                <md-button id="module_create-release-button" class="md-raised md-primary"
+                <md-button id="e2e-module-create-release-button" class="md-raised md-primary"
                            ng-show="is_workingcopy"
                            ng-click="open_create_release_dialog(module)">
                     <i class="fa fa-code-fork"></i> {{ 'button.release.create' | translate }}</md-button>
-                <md-button id="module_associated-properties-button" class="md-raised md-warn"
+                <md-button id="e2e-module-associated-properties-button" class="md-raised md-warn"
                            ng-click="open_associated_properties_dialog(module)">
                     <i class="fa fa-list"></i> {{ 'button.associateProperties' | translate }}</md-button>
             </h3>
@@ -93,10 +93,3 @@
         </div>
     </div>
 </div>
-<!-- remplacé par la modal model-modal.html
-<div layout="row">
-    <div class="bg-light" flex>
-        <h3>Les propriétés associées</h3>
-        <hesperides-model model="model" loading="loading_model"></hesperides-model>
-    </div>
-</div>-->
