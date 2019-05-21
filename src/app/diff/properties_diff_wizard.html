@@ -70,7 +70,7 @@
                                 <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>
                             </md-switch>
 
-                            <div ng-show="lookPast">
+                            <div ng-show="$ctrl.lookPast">
                                 <compare-date-time ng-model="$ctrl.date" is-valid="$ctrl.dateValid"></compare-date-time>
                             </div>
                         </md-content>
