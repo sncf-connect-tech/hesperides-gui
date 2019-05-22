@@ -64,12 +64,12 @@
                     </div>
 
                     <md-switch move-focus-when-enabled target="#look-past-date-time"
-                               class="md-primary md-block" aria-label="Comparer à une date" ng-model="$ctrl.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
+                               class="md-primary md-block" aria-label="Comparer à une date" ng-model="formScope.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
                         <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>
                     </md-switch>
 
-                    <div ng-show="$ctrl.lookPast">
-                        <compare-date-time ng-model="$ctrl.date" is-valid="$ctrl.dateValid"></compare-date-time>
+                    <div ng-show="formScope.lookPast">
+                        <compare-date-time ng-model="formScope.date" is-valid="formScope.dateValid"></compare-date-time>
                     </div>
                 </md-content>
             </div>

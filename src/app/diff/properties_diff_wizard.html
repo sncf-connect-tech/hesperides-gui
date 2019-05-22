@@ -66,12 +66,12 @@
                             </div>
                             <md-switch move-focus-when-enabled target="#look-past-date-time"
                                        class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version"
-                                       ng-model="$ctrl.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
+                                       ng-model="formScope.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
                                 <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>
                             </md-switch>
 
-                            <div ng-show="$ctrl.lookPast">
-                                <compare-date-time ng-model="$ctrl.date" is-valid="$ctrl.dateValid"></compare-date-time>
+                            <div ng-show="formScope.lookPast">
+                                <compare-date-time ng-model="formScope.date" is-valid="formScope.dateValid"></compare-date-time>
                             </div>
                         </md-content>
                     </div>
@@ -117,6 +117,9 @@
                             </div>
                             <div ng-if="diffForm.$error.matchingModule" role="alert" class="error">
                                 {{ 'properties.compare.modal.error.matchingModule' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}
+                            </div>
+                            <div ng-if="diffForm.$error.platformExist" role="alert" class="error">
+                                {{ platformQueryError }}
                             </div>
                             <div layout="row" layout-margin>
                                 <a href="" ng-click="toggleModules=!toggleModules">
