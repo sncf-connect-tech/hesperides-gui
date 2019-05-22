@@ -150,13 +150,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             $scope.new_kv_value = '';
 
             /**
-         * An ugly copy for properties
-         */
+             * An ugly copy for properties
+             */
             $scope.oldProperties = null;
 
             /**
-         * An ugly copy of global properties
-         */
+             * An ugly copy of global properties
+             */
             $scope.oldGolbalProperties = null;
 
             var Box = function (data) {
@@ -385,17 +385,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 };
 
                 $mdDialog.show({
-                    templateUrl: 'application/add_instance.html',
+                    templateUrl: 'properties/add_instance.html',
                     clickOutsideToClose: true,
                     scope: modalScope,
                 });
             };
 
             /**
-         * Met à jour la version de la plateforme.
-         *
-         * @param platform plateforme courante
-         */
+             * Met à jour la version de la plateforme.
+             *
+             * @param platform plateforme courante
+             */
             $scope.change_platform_version = function (platform) {
                 var modalScope = $scope.$new();
                 modalScope.platform = platform;
@@ -406,7 +406,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 };
 
                 $mdDialog.show({
-                    templateUrl: 'application/change_platform_version.html',
+                    templateUrl: 'properties/change_platform_version.html',
                     controller: 'PlatformVersionController',
                     clickOutsideToClose: true,
                     scope: modalScope,
@@ -419,14 +419,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             $scope.search_module = function (box) {
                 var modalScope = $scope.$new();
+                modalScope.closeAddModuleDialog = function () {
+                    $mdDialog.cancel();
+                };
 
-                modalScope.$add = function (module) {
+                modalScope.addModule = function (module) {
                     $scope.add_module(module.name, module.version, module.is_working_copy, box);
                     $mdDialog.cancel();
                 };
 
                 $mdDialog.show({
-                    templateUrl: 'application/search_module.html',
+                    templateUrl: 'properties/search_module.html',
                     clickOutsideToClose: true,
                     scope: modalScope,
                 });
@@ -451,7 +454,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 };
 
                 $mdDialog.show({
-                    templateUrl: 'application/change_module_version.html',
+                    templateUrl: 'properties/change_module_version.html',
                     clickOutsideToClose: true,
                     scope: modalScope,
                 });
@@ -1128,7 +1131,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 $scope.platforms = match.application.platforms;
 
                 if ($routeParams.platform) {
-                // In thins case, platform field is null
                     $scope.platform = match.platform;
                     $scope.update_main_box($scope.platform);
                 }
@@ -1978,5 +1980,63 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     !_.startsWith(item.name, 'hesperides.module.path.') &&
                     !_.eq(item.name, 'hesperides.instance.name');
             });
+        };
+    })
+
+    .directive('deployedModuleControls', function () {
+        return {
+            restrict: 'E',
+            scope: true,
+            templateUrl: 'properties/deployed-module-controls.html',
+        };
+    })
+
+    .directive('deployedModuleControlsPopover', function ($mdUtil, $timeout, $rootElement) {
+        return {
+            restrict: 'E',
+            scope: true,
+            template: '<div class="popover"><deployed-module-controls></deployed-module-controls></div>',
+            link(scope, element) {
+                var parent = element.parent();
+                var popover = element.children();
+
+                // gestion d'un timer pour afficher la popup après 1 secondes (pour faciliter navigation mode arbre)
+                var timer = null;
+
+                // Display popup
+                parent.on('mouseenter', function () {
+                    timer = $timeout(
+                        function () {
+                            var tipRect = $mdUtil.offsetRect(popover, $rootElement);
+                            var parentRect = $mdUtil.offsetRect(parent, $rootElement);
+
+                            var newPosition = {
+                                left: parentRect.left + (parentRect.width / 2) - (tipRect.width / 2),
+                                top: parentRect.top - tipRect.height,
+                            };
+
+                            popover.css({
+                                left: `${ newPosition.left }px`,
+                                top: `${ newPosition.top }px`,
+                            });
+
+                            if (scope.currentPopup) {
+                                scope.currentPopup.removeClass('popover-hover');
+                            }
+
+                            element.children().addClass('popover-hover');
+                            scope.currentPopup = element.children();
+                        },
+                        1000
+                    );
+                });
+
+                // Hide popup
+                parent.on('mouseleave', function () {
+                    $timeout.cancel(timer);
+                    element.children().removeClass('popover-hover');
+                    scope.currentPopup = null;
+                });
+            },
         };
     });

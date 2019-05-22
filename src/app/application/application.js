@@ -150,6 +150,7 @@ angular.module('hesperides.application', [])
                         working_copy: this.is_working_copy,
                         deployment_group: this.deployment_group,
                         path: this.path,
+                        properties_path: this.properties_path,
                         instances: _.map(this.instances, function (instance) {
                             return instance.to_rest_entity();
                         }),
@@ -466,7 +467,7 @@ angular.module('hesperides.application', [])
                 platform: '=',
                 sortOrder: '=',
             },
-            templateUrl: 'application/properties/properties_globales.html',
+            templateUrl: 'application/properties_globales.html',
             link(scope) {
                 scope.isBox = true;
                 scope.globalPropertiesKeyFilter = '';
@@ -483,7 +484,7 @@ angular.module('hesperides.application', [])
                 platform: '=',
                 sortOrder: '=',
             },
-            templateUrl: 'application/properties/properties_globales.html',
+            templateUrl: 'application/properties_globales.html',
             link(scope) {
                 scope.isBox = false;
                 scope.globalPropertiesKeyFilter = '';
@@ -495,7 +496,7 @@ angular.module('hesperides.application', [])
     .directive('instanceProperties', function () {
         return {
             restrict: 'E',
-            templateUrl: 'application/properties/instance_properties.html',
+            templateUrl: 'application/instance_properties.html',
             link(scope) {
                 scope.isBox = true;
             },

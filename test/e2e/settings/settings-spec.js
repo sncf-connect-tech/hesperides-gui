@@ -26,12 +26,12 @@ describe('Manage settings', function() {
         browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
 
         // set box mode
-        var elm_box_mode = element(by.id("properties_show-box-mode-button"));
+        var elm_box_mode = element(by.id("e2e-properties-show-box-mode-button"));
         utils.clickOnElement(elm_box_mode);
     });
     it('should test instance block display when set show mode instance by default', function() {
         // Check no instance is displayed for an application
-        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-list-for-"+data.new_module_name)).count()).toEqual(0);
 
         // enter in the settings panel
         utils.clickOnElement(element(by.id("e2e-navbar-settings")));
@@ -51,7 +51,7 @@ describe('Manage settings', function() {
         utils.clickOnElement(elm_button_closeDialog);
 
         //Button clodeDialog don't valid the settings
-        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.id("e2e-instance-list-for-"+data.new_module_name)).count()).toEqual(0);
 
         // enter in the settings panel
         utils.clickOnElement(element(by.id("e2e-navbar-settings")));
@@ -62,7 +62,7 @@ describe('Manage settings', function() {
         utils.clickOnElement(elm_button_saveSettings);
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.id("e2e-instance-list-for-"+data.new_module_name)).count()).toEqual(1);
 
     });
     it('should test instance block display when set hide mode instance by default', function() {
@@ -85,7 +85,7 @@ describe('Manage settings', function() {
         utils.clickOnElement(elm_button_closeDialog);
 
         //Button clodeDialog don't valid the settings
-        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-instance-list-for-"+data.new_module_name)).count()).toEqual(1);
 
         // enter in the settings panel
         utils.clickOnElement(element(by.id("e2e-navbar-settings")));
@@ -96,7 +96,7 @@ describe('Manage settings', function() {
         utils.clickOnElement(elm_button_saveSettings);
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-list-for-"+data.new_module_name)).count()).toEqual(0);
     });
     it('should test instance tree display when set show mode instance by default', function() {
 
@@ -105,9 +105,9 @@ describe('Manage settings', function() {
 
         var elm_switch_hide_show_instance = element(by.id("switch_hide-show-instance"));
         var elm_button_saveSettings = element(by.id("button_saveSettings"));
-        var elm_button_sign_component = element(by.id("tree-renderer_tree-sign-"+data.logic_group_1));
-        var elm_button_sign_techno = element(by.id("tree-renderer_tree-sign-"+data.logic_group_2));
-        var elm_button_sign_module = element(by.id("tree-renderer_tree-sign-"+data.new_module_name));
+        var elm_button_sign_component = element(by.id("e2e-tree-renderer-tree-sign-"+data.logic_group_1));
+        var elm_button_sign_techno = element(by.id("e2e-tree-renderer-tree-sign-"+data.logic_group_2));
+        var elm_button_sign_module = element(by.id("e2e-tree-renderer-tree-sign-"+data.new_module_name));
 
         ////////////////////////////////////////////////////////////////////////////
         // * Show instance by defaults
@@ -119,14 +119,14 @@ describe('Manage settings', function() {
         utils.clickOnElement(element(by.id("properties_show-tree-mode-button")));
 
         // Check no instance is displayed for an application
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
 
         // Quick display the plateform
-        utils.clickOnElement(element(by.id("tree-properties_quick-display-button")));
+        utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -136,8 +136,8 @@ describe('Manage settings', function() {
         // Clic on sign module button close only instance list
         utils.clickOnElement(elm_button_sign_module);
 
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -147,8 +147,8 @@ describe('Manage settings', function() {
         // Clic on sign module button reopen only instance list
         utils.clickOnElement(elm_button_sign_module);
 
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -156,23 +156,23 @@ describe('Manage settings', function() {
         utils.checkIfElementContainsText(elm_button_sign_module,"-");
 
         // Quick hide the platform
-        utils.clickOnElement(element(by.id("tree-properties_quick-display-button")));
+        utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"+");
-        expect(element.all(by.id("tree-renderer_tree-sign-"+data.logic_group_2)).count()).toEqual(0);
-        expect(element.all(by.id("tree-renderer_tree-sign-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.id("e2e-tree-renderer-tree-sign-"+data.logic_group_2)).count()).toEqual(0);
+        expect(element.all(by.id("e2e-tree-renderer-tree-sign-"+data.new_module_name)).count()).toEqual(0);
 
         // Re Quick display the plateform
-        utils.clickOnElement(element(by.id("tree-properties_quick-display-button")));
+        utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -185,9 +185,9 @@ describe('Manage settings', function() {
 
         var elm_switch_hide_show_instance = element(by.id("switch_hide-show-instance"));
         var elm_button_saveSettings = element(by.id("button_saveSettings"));
-        var elm_button_sign_component = element(by.id("tree-renderer_tree-sign-"+data.logic_group_1));
-        var elm_button_sign_techno = element(by.id("tree-renderer_tree-sign-"+data.logic_group_2));
-        var elm_button_sign_module = element(by.id("tree-renderer_tree-sign-"+data.new_module_name));
+        var elm_button_sign_component = element(by.id("e2e-tree-renderer-tree-sign-"+data.logic_group_1));
+        var elm_button_sign_techno = element(by.id("e2e-tree-renderer-tree-sign-"+data.logic_group_2));
+        var elm_button_sign_module = element(by.id("e2e-tree-renderer-tree-sign-"+data.new_module_name));
 
         ////////////////////////////////////////////////////////////////////////////
         // * Hide instance by defaults
@@ -199,14 +199,14 @@ describe('Manage settings', function() {
         utils.clickOnElement(element(by.id("properties_show-tree-mode-button")));
 
         // Check no instance is displayed for an application
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
 
         // Quick display the plateform
-        utils.clickOnElement(element(by.id("tree-properties_quick-display-button")));
+        utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -216,8 +216,8 @@ describe('Manage settings', function() {
         // Clic on sign module button close only instance list
         utils.clickOnElement(elm_button_sign_module);
 
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -227,8 +227,8 @@ describe('Manage settings', function() {
         // Clic on sign module button reopen only instance list
         utils.clickOnElement(elm_button_sign_module);
 
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -240,23 +240,23 @@ describe('Manage settings', function() {
         utils.clickOnElement(elm_button_sign_module);
 
         // Quick hide the platform
-        utils.clickOnElement(element(by.id("tree-properties_quick-display-button")));
+        utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(0);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"+");
-        expect(element.all(by.id("tree-renderer_tree-sign-"+data.logic_group_2)).count()).toEqual(0);
-        expect(element.all(by.id("tree-renderer_tree-sign-"+data.new_module_name)).count()).toEqual(0);
+        expect(element.all(by.id("e2e-tree-renderer-tree-sign-"+data.logic_group_2)).count()).toEqual(0);
+        expect(element.all(by.id("e2e-tree-renderer-tree-sign-"+data.new_module_name)).count()).toEqual(0);
 
         // Re Quick display the plateform
-        utils.clickOnElement(element(by.id("tree-properties_quick-display-button")));
+        utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
 
         //Button saveSettings valid the settings
-        expect(element.all(by.css("#div_instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
-        expect(element.all(by.css("#tree-renderer_edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-instance-tree-list-"+data.new_module_name)).count()).toEqual(1);
+        expect(element.all(by.css("#e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button")).count()).toEqual(1);
 
         // Sign Button are all to -
         utils.checkIfElementContainsText(elm_button_sign_component,"-");
@@ -265,11 +265,11 @@ describe('Manage settings', function() {
     });
     it('should set activate copy property instance by default', function() {
         // Display Block mode
-        utils.clickOnElement(element(by.id("properties_show-box-mode-button")));
+        utils.clickOnElement(element(by.id("e2e-properties-show-box-mode-button")));
 
         // Display instance
         utils.clickOnElement(element(by.id("md-button_show-all-instance-"+data.new_module_name)));
-        var elem_update_instance = element(by.id("property-tool-button_update-version-button-"+data.new_module_name));
+        var elem_update_instance = element(by.id("e2e-deployed-module-controls-update-version-button-"+data.new_module_name));
 
         // enter in the settings panel
         utils.clickOnElement(element(by.id("e2e-navbar-settings")));
@@ -331,11 +331,11 @@ describe('Manage settings', function() {
         // * Deactivate copy property instance by defaults
 
         // Display Block mode
-        utils.clickOnElement(element(by.id("properties_show-box-mode-button")));
+        utils.clickOnElement(element(by.id("e2e-properties-show-box-mode-button")));
 
         // Display instance
         utils.clickOnElement(element(by.id("md-button_show-all-instance-"+data.new_module_name)));
-        var elem_update_instance = element(by.id("property-tool-button_update-version-button-"+data.new_module_name));
+        var elem_update_instance = element(by.id("e2e-deployed-module-controls-update-version-button-"+data.new_module_name));
 
         // enter in the settings panel
         // Check switch "active default option copy properties from application" is checked

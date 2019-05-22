@@ -16,58 +16,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var rest = require('restling');
 var utils = require('../utils.js');
 
-describe('Manage diff', function() {
+describe('Manage diff', () => {
 
-    beforeAll(function() {
+    beforeAll(() => {
         browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
     });
 
-    it('should not send notification on non-existing application name in from.application input', function() {
-
+    it('should display two platform for TEST_AUTO application', () => {
         // set bloc mode (in case the default mode change)
-        utils.clickOnElement(element(by.id("properties_show-box-mode-button")));
+        utils.clickOnElement(element(by.id("e2e-properties-show-box-mode-button")));
 
-        utils.clickOnElement(element(by.id("property-tool-button_diff-properties-button-"+data.new_module_name)));
+        utils.clickOnElement(element(by.id('e2e-deployed-module-controls-diff-properties-button-' + data.new_module_name)));
 
-        var elm_from_app = element(by.model("from.application"));
-
-        elm_from_app.sendKeys(protractor.Key.BACK_SPACE);
-
-        expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
-        expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(0);
-
-        utils.clearAndSendkeys(elm_from_app, "foo");
-
-        expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
-        expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(0);
-
-    });
-
-    it('should display two platform for TEST_AUTO application', function() {
-
-        var elm_from_app = element(by.model("from.application"));
-
-        utils.clearAndSendkeys(elm_from_app, data.new_application);
+        utils.clearAndSendkeys(element(by.css('input[name="toPlatformName"]')), data.new_application);
 
         expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         browser.sleep(1000);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(2);
-
     });
-    it('should display datepicker on compare two platform at a specific date switch', function () {
-        var elm_switch_button = element(by.css('[ng-click="switched()"]'));
-        utils.clickOnElement(elm_switch_button);
+
+    it('should display datepicker on compare two platform at a specific date switch', () => {
+        utils.clickOnElement(element(by.id('e2e-properties-diff-wizard-switch')));
         expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(1);
 
-        var elm_button_previous_month = element(by.css('[ng-click="addMonth(-1)"]'));
-        utils.clickOnElement(elm_button_previous_month);
+        utils.clickOnElement(element(by.css('.adp-prev')));
         expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(1);
 
-        var elm_jour = element.all(by.cssContainingText(".adp-day.selectable","1")).get(0);
-        utils.clickOnElement(elm_jour);
+        utils.clickOnElement(element.all(by.cssContainingText(".adp-day.selectable","1")).get(0));
         browser.sleep(1000);
         expect(element.all(by.css(".angularjs-datetime-picker")).count()).toEqual(0);
     });

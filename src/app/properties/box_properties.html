@@ -25,16 +25,16 @@
         <span class="padding-right-10px" >{{ 'properties.boxMode.title' | translate }}</span>
     </h3>
     <div layout="row" >
-        <md-button id="box-properties_display-global-properties-button" ng-click="showGlobalPropertiesDisplay()"
+        <md-button ng-click="showGlobalPropertiesDisplay()"
                    class="md-fab md-primary md-mini" aria-label="Deplier/Plier le menu">
             <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
             <i class="fa" ng-class="{'fa-expand': !showButtonAndEye, 'fa-compress': showButtonAndEye}"></i>
         </md-button>
 
-        <md-button id="box-properties_compare-global-properties-button" class="md-raised md-mini" ng-show="showButtonAndEye"
+        <md-button class="md-raised md-mini" ng-show="showButtonAndEye"
                    ng-click="diffGlobalProperties()"><i class="fa fa-exchange"></i> {{ 'properties.platform.globalProperties.compare' | translate }}</md-button>
 
-        <md-button id="box-properties_save-global-properties-button" class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
+        <md-button class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
                    ng-click="save_global_properties(platform.global_properties, true)"><i class="fa fa-check"></i> {{ 'properties.platform.globalProperties.save' | translate }}</md-button>
 
         <toggle-sort-properties ng-show="showButtonAndEye" sort-order="order"></toggle-sort-properties>
@@ -52,7 +52,7 @@
 
 <div layout="row" layout-wrap>
     <div flex="5">
-        <md-button id="box-properties_add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"
+        <md-button id="e2e-box-properties-add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"
                    aria-label="{{ 'properties.logicGroup.add' | translate }}">
             <span class="fa fa-inbox"></span>
             <md-tooltip>
@@ -62,7 +62,7 @@
     </div>
     <div flex="95" class="list-inline">
         <ul class="box list-inline">
-            <li class="jumbotron" ng-repeat="box in (mainBox.children | orderObjectBy:'name')" ng-include="'application/box_renderer.html'"/>
+            <li class="jumbotron" ng-repeat="box in (mainBox.children | orderObjectBy:'name')" ng-include="'properties/box_renderer.html'"/>
 
             <li class="jumbotron" ng-if="box.modules.length > 0">
                 <md-button ng-repeat="module in mainBox.modules" class="md-fab"
@@ -83,19 +83,19 @@
     </div>
     <div flex="50">
         <div id="propertiesButtonsContainer" layout="row" layout-align="end">
-            <md-button id="box-properties_clean-module-properties-button" id="cleanPropertiesButton" class="md-raised"
+            <md-button id="cleanPropertiesButton" class="md-raised"
                        ng-really-click="clean_properties(properties)" ng-if="hasDeletedProperties()"
                        ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
-            <md-button id="box-properties_save-module-properties-local-button" ng-click="save_properties_locally(properties, selected_module)"
+            <md-button id="e2e-box-properties-save-module-properties-local-button" ng-click="save_properties_locally(properties, selected_module)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-warn">
                 <span class="fa fa-floppy-o"></span>
                 <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
             </md-button>
-            <md-button id="box-properties_clean-local-module-properties-button" ng-if="hasLocalChanges(selected_module)"
+            <md-button ng-if="hasLocalChanges(selected_module)"
                        ng-really-click="cleanLocalChanges(selected_module)"
                        ng-really-message="{{ 'properties.module.editProperties.cleanLocalChangesConfirm' | translate }}"
                        ng-disabled="technoForm.$invalid"
@@ -103,7 +103,7 @@
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
             </md-button>
-            <md-button id="box-properties_save-module-properties-button" ng-click="save_properties(properties, selected_module)"
+            <md-button ng-click="save_properties(properties, selected_module)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <span class="fa fa-floppy-o"></span>
@@ -124,14 +124,14 @@
                 <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }} <strong><a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
             </h3>
 
-            <md-button id="box-properties_clean-instance-properties-button" class="md-raised"
+            <md-button class="md-raised"
                        ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
                        ng-really-click="clean_instance_properties(instance)" ng-if="instanceHasDeletedProperties(instance)">
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
 
-            <md-button id="box-properties_save-instance-properties-button" ng-click="save_platform_from_box(mainBox)"
+            <md-button ng-click="save_platform_from_box(mainBox)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <i class="fa fa-floppy-o"></i>

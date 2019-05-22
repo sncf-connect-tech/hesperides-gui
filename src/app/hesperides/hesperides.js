@@ -251,75 +251,6 @@ angular.module('hesperides', [
         };
     })
 
-    /**
-     * Popover button.
-     *
-     * Partial code from Material Design.
-     */
-    .factory('$propertyToolButtonService', [
-        function () {
-            return { currentPopup: null };
-        },
-    ])
-
-    .directive('propertyToolButton', function () {
-        return {
-            restrict: 'E',
-            scope: true,
-            templateUrl: 'properties/property-tool-button.html',
-        };
-    })
-
-    .directive('propertyToolButtonOver', function ($mdUtil, $propertyToolButtonService, $timeout, $rootElement) {
-        return {
-            restrict: 'E',
-            scope: true,
-            template: '<div class="popover" ><property-tool-button /></div>',
-            link(scope, element) {
-                var parent = element.parent();
-                var popover = element.children();
-
-                // gestion d'un timer pour afficher la popup après 1 secondes (pour faciliter navigation mode arbre)
-                var timer = null;
-
-                // Display popup
-                parent.on('mouseenter', function () {
-                    timer = $timeout(
-                        function () {
-                            var tipRect = $mdUtil.offsetRect(popover, $rootElement);
-                            var parentRect = $mdUtil.offsetRect(parent, $rootElement);
-
-                            var newPosition = {
-                                left: parentRect.left + (parentRect.width / 2) - (tipRect.width / 2),
-                                top: parentRect.top - tipRect.height,
-                            };
-
-                            popover.css({
-                                left: `${ newPosition.left }px`,
-                                top: `${ newPosition.top }px`,
-                            });
-
-                            if ($propertyToolButtonService.currentPopup) {
-                                $propertyToolButtonService.currentPopup.removeClass('popover-hover');
-                            }
-
-                            element.children().addClass('popover-hover');
-                            $propertyToolButtonService.currentPopup = element.children();
-                        },
-                        1000
-                    );
-                });
-
-                // Hide popup
-                parent.on('mouseleave', function () {
-                    $timeout.cancel(timer);
-                    element.children().removeClass('popover-hover');
-                    $propertyToolButtonService.currentPopup = null;
-                });
-            },
-        };
-    })
-
     .filter('interpolate', [
         'version', function (version) {
             return function (text) {
@@ -522,7 +453,7 @@ angular.module('hesperides.modals', []).factory('HesperidesModalFactory', [
                 modalScope.application_name = application;
 
                 $mdDialog.show({
-                    templateUrl: 'application/properties/save-properties-modal.html',
+                    templateUrl: 'hesperides/save-properties-modal.html',
                     clickOutsideToClose: true,
                     scope: modalScope,
                 });
