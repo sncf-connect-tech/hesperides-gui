@@ -323,6 +323,7 @@ angular.module('hesperides.diff', [])
             throw new Error('.fromModule must be provided');
         }
 
+        $scope.formScope = $scope;
         $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.toModule = null;
         $scope.lookPast = false;
@@ -370,13 +371,18 @@ angular.module('hesperides.diff', [])
             } else {
                 $scope.date = null;
             }
-            ApplicationService.get_platform($scope.toPlatform.application_name, $scope.toPlatform.platform, $scope.date).then(function (platformFetched) {
+            ApplicationService.get_platform($scope.toPlatform.application_name, $scope.toPlatform.platform, $scope.date).then((platformFetched) => {
                 $scope.loadingComparePlatform = false;
                 $scope.toPlatform.modules = platformFetched.modules;
                 $scope.toModule = _.find($scope.toPlatform.modules, { name: $scope.fromModule.name });
                 if ($scope.diffForm) {
+                    $scope.diffForm.$setValidity('platformExist', true);
                     $scope.diffForm.$setValidity('matchingModule', Boolean($scope.toModule));
                 }
+            }).catch((resp) => {
+                $scope.loadingComparePlatform = false;
+                $scope.platformQueryError = resp.data;
+                $scope.diffForm.$setValidity('platformExist', false);
             });
         };
 
@@ -405,6 +411,7 @@ angular.module('hesperides.diff', [])
             throw new Error('.fromPlatform must be provided');
         }
 
+        $scope.formScope = $scope;
         $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.lookPast = false;
         $scope.date = null;
