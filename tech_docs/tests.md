@@ -22,10 +22,11 @@ Ces tests nécessitent que le composant _backend_ soit lancé.
 Ils sont implémentés dans le dossier [test/e2e/](https://github.com/voyages-sncf-technologies/hesperides-gui/tree/master/test/e2e)
 et sont lancés par la commande `npm run e2e-tests`, qui instrumente le navigateur Chrome.
 
-### Sélection d'éléments
-Afin de permettre de sélectionner des élements de la page,
-nous ne permettons l'introduction d'IDs HTML dédiés, débutant par le préfix `e2e-`.
+### Bonnes pratiques
+- pour sélectionner des élements de la page, introduisez des IDs HTML dédiés préfixés avec `e2e-`.
 Ces IDs doivent uniquement être utilisé pour les tests _end-to-end_, et jamais dans le code applicatif.
+
+- privilégier l'utilisation de `browser.wait( ExpectedConditions... )` à l'utilisation de `browser.sleep`
 
 ### En cas d'erreur
 Un rapport HTMl avec capture d'écran est généré dans `test-reports-e2e/htmlReport.html`.
