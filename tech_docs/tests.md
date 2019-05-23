@@ -27,9 +27,10 @@ Afin de permettre de sélectionner des élements de la page,
 nous ne permettons l'introduction d'IDs HTML dédiés, débutant par le préfix `e2e-`.
 Ces IDs doivent uniquement être utilisé pour les tests _end-to-end_, et jamais dans le code applicatif.
 
-### Page objects
-Nous adoptons ce _pattern_ décrit en détails dans cet article :
-[Using Page Objects to Overcome Protractor's Shortcomings](http://www.thoughtworks.com/insights/blog/using-page-objects-overcome-protractors-shortcomings)
+### En cas d'erreur
+Un rapport HTMl avec capture d'écran est généré dans `test-reports-e2e/htmlReport.html`.
+
+Sur Travis CI, il devrait être également possible d'avoir accès à ce rapport d'après [cette réponse sur StackOverflow](https://stackoverflow.com/a/55243704/636849) (non encore testé).
 
 ### Options d'exécution
 

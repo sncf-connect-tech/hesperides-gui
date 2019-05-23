@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2019-05-22
+### Fixed
+
+- Il était impossible de choisir une date -> query param "timestamp" manquant dans URL page de diff (#240) [Lucas Cimon]
+
+
+
 ## 2019-05-21
 ### Fixed
 

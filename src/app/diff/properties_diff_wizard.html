@@ -64,7 +64,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <md-switch move-focus-when-enabled target="#look-past-date-time"
+                            <md-switch id="e2e-properties-diff-wizard-switch" move-focus-when-enabled target="#look-past-date-time"
                                        class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version"
                                        ng-model="formScope.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
                                 <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>

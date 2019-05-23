@@ -21,19 +21,17 @@
 
 <md-dialog flex="30">
     <md-dialog-content>
-        <div class="ng-binding">
-            <h2>{{ 'properties.module.add' | translate }}</h2>
-            <md-content layout-padding class="autoScroll">
-                <form name="searchModuleForm" novalidate
-                      ng-submit="searchModuleForm.$valid && $add(moduleSearched)">
-                    <!--<md-input-container class="md-block">-->
+        <form name="searchModuleForm" novalidate
+              ng-submit="searchModuleForm.$valid && addModule(moduleSearched)">
+            <div class="ng-binding">
+                <h2>{{ 'properties.module.add' | translate }}</h2>
+                <md-content layout-padding class="autoScroll">
                         <label><strong>{{ 'placeholder.search' | translate }}</strong></label>
                         <br/>
                         <md-autocomplete
                                 required
-                                id="search-module_module-autocomplete"
-                                md-input-id="search-module_input-module-autocomplete"
-                                ng-model="newVersion"
+                                md-input-id="e2e-search-module-input-module-autocomplete"
+                                ng-model="moduleSearched"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
                                 md-search-text="ctrl.searchText"
@@ -47,15 +45,13 @@
                             <span md-highlight-text="ctrl.searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>
                         </md-autocomplete>
-                    <!--</md-input-container>-->
-                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-                </form>
-            </md-content>
-        </div>
-        <md-dialog-actions>
-            <md-button id="search-module_add-module-button" class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
-                       ng-click="$add(moduleSearched)" ng-hide="isReadOnly">{{ 'button.modal.add' | translate }}</md-button>
-            <md-button id="search-module_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
-        </md-dialog-actions>
+                </md-content>
+            </div>
+            <md-dialog-actions>
+                <md-button id="e2e-search-module-add-module-button" class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
+                           type="submit" ng-hide="isReadOnly">{{ 'button.modal.add' | translate }}</md-button>
+                <md-button ng-click="closeAddModuleDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            </md-dialog-actions>
+        </form>
     </md-dialog-content>
 </md-dialog>

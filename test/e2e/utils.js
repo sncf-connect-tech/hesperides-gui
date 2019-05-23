@@ -41,22 +41,25 @@ exports.checkIfElementIsDisabled = function(id,state){
 
 // input : element and code http
 // action : check if url returns specified http code
-exports.checkResponseStatusCode = function (url,code) {
-    rest.get(url).then(function(result){
-        expect(result.response.statusCode).toBe(code);
-    }, function(error){
-    	console.log(error.message);
+exports.checkResponseStatusCode = function (url, code) {
+    rest.get(url).then((result) => expect(result.response.statusCode).toBe(code),
+                       (error) => console.log(error.message));
+};
+
+exports.putHttpRequest = function(url, payloadBody) {
+    if (payloadBody.version_id) {
+        return rest.putJson(url, payloadBody).catch((error) => console.error(error.message, error.statusCode, error.data));
+    }
+    // On récupère le version_id
+    return rest.get(url + '/' + payloadBody.platform_name).then((resp) => {
+        payloadBody.version_id = resp.data.version_id;
+        return rest.putJson(url, payloadBody).catch((error) => console.error(error.message, error.statusCode, error.data));
     });
 };
 
-// input : element and code http
-// action : run DELETE http request
 exports.deleteHttpRequest = function(url){
-    rest.del(url).then(function(result){
-        expect(result.response.statusCode).toBe(200);
-    }, function(error){
-    	console.log(error.message+" (maybe resource does not exist so you cannot delete it)");
-    });
+    rest.del(url).then((result) => expect(result.response.statusCode).toBe(200),
+                       (error) => console.error(error.message+" (maybe resource does not exist so you cannot delete it)"));
 };
 
 exports.displayBrowserLogs = function(){
@@ -76,13 +79,9 @@ exports.selectFirstElemOfAutocomplete = function(elem, arrowDown, keyTab, sleepT
     }
 };
 
-// mouse move on element
-// input : id of the element
-exports.moveMouseOnElement = function(id,sleepTime) {
-    var elm = element(by.id(id));
-    browser.actions().mouseMove(elm).perform();
-    browser.waitForAngular();
-    browser.sleep(sleepTime);
+exports.moveMouseOnElement = function(targetId, waitForElemWithId) {
+    browser.actions().mouseMove(element(by.id(targetId))).perform();
+    browser.wait( ExpectedConditions.visibilityOf( element(by.id(waitForElemWithId)) ), 4000 );
 };
 
 // generate string for data tests

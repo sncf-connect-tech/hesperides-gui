@@ -34,19 +34,19 @@
         <div id="header" layout="row">
             <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' | translate }}</h3></div>
             <div flex="grow" layout="row" layout-align="none center">
-                <md-button id="tree-properties_add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
+                <md-button id="e2e-tree-properties-add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
                     <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button id="tree-properties_display-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay()">
+                <md-button id="e2e-tree-properties-display-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay()">
                     <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button id="tree-properties_compare-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diffGlobalProperties()">
+                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diffGlobalProperties()">
                     <md-tooltip>{{ 'properties.platform.globalProperties.compare' | translate }}</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
-                <md-button id="tree-properties_quick-display-button" class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
+                <md-button id="e2e-tree-properties-quick-display-button" class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
                     <md-tooltip>{{ 'properties.platform.quickDisplay' | translate }}</md-tooltip>
                     <i class="fa fa-bolt" ng-class="{'fa-rotate-270': quickOpen}"></i>
                 </md-button>
@@ -66,7 +66,7 @@
     <div id="propertiesDivHolder">
         <!-- Bouton sauvegarder -->
         <div layout="row" layout-align="end start" ng-show="showGlobalProperties">
-            <md-button id="tree-properties_save-global-properties-button" class="md-raised md-primary"
+            <md-button id="e2e-tree-properties-save-global-properties-button" class="md-raised md-primary"
                        ng-click="save_global_properties(platform.global_properties, true)">
                 <i class="fa fa-check"></i>
                 {{ 'properties.platform.globalProperties.save' | translate }}
@@ -90,20 +90,20 @@
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>
-                <md-button id="tree-properties_clean-module-properties-button" class="md-raised"
+                <md-button class="md-raised"
                            ng-really-click="clean_properties(properties)" ng-if="hasDeletedProperties()"
                            ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
-                <md-button id="tree-properties_save-module-properties-local-button" ng-click="save_properties_locally(properties, selected_module)"
+                <md-button id="e2e-tree-properties-save-module-properties-local-button" ng-click="save_properties_locally(properties, selected_module)"
 
                            ng-disabled="technoForm.$invalid"
                            class="md-raised md-warn">
                     <span class="fa fa-floppy-o"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
                 </md-button>
-                <md-button id="tree-properties_clean-local-module-properties-button" ng-if="hasLocalChanges(selected_module)"
+                <md-button ng-if="hasLocalChanges(selected_module)"
                            ng-really-click="cleanLocalChanges(selected_module)"
                            ng-really-message="{{ 'properties.module.editProperties.cleanLocalChangesConfirm' | translate }}"
                            ng-disabled="technoForm.$invalid"
@@ -111,7 +111,7 @@
                     <span class="fa fa-trash"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
                 </md-button>
-                <md-button id="tree-properties_save-module-properties-button"
+                <md-button id="e2e-tree-properties-save-module-properties-button"
                            ng-click="save_properties(properties, selected_module)"
                            class="md-raised md-primary">
                     <i class="fa fa-floppy-o"></i>
@@ -136,14 +136,14 @@
                     </span>
                 </h3>
 
-                <md-button id="tree-properties_clean-instance-properties-button" class="md-raised" ng-if="instanceHasDeletedProperties(instance)"
+                <md-button class="md-raised" ng-if="instanceHasDeletedProperties(instance)"
                            ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
                            ng-really-click="clean_instance_properties(instance)">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
 
-                <md-button id="tree-properties_save-instance-properties-button" ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
+                <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
                     <i class="fa fa-floppy-o"></i>
                     <span>{{ 'properties.module.editProperties.save' | translate }}</span>
                 </md-button>
