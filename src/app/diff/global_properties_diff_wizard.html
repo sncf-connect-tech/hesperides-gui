@@ -24,43 +24,36 @@
         <form name="diffForm" ng-submit="openDiffPage()">
             <div class="ng-binding">
                 <h2>{{ 'properties.platform.globalProperties.compare.modal.title' | translate }}
-                    {{fromPlatform.application_name}} -
-                    {{fromPlatform.platform}}</h2>
+                    {{fromPlatform.application_name}} - {{fromPlatform.platform}} ({{ 'editable' | translate }})</h2>
                 <md-content layout-padding class="autoScroll">
                     <div layout="row" flex="100">
                         <md-input-container md-no-float class="md-block" flex="50">
-                            <label><strong>{{ 'properties.compare.modal.applicationName' | translate }}</strong></label>
+                            <label><strong>{{ 'properties.compare.modal.toApplicationName' | translate }} ({{ 'readonly' | translate }})</strong></label>
                             <input type="text" name="toAppName" required ng-trim="true" ng-model="toPlatform.application_name" ng-change="getTargetPlatforms()"
                                    placeholder="{{ 'platform.modal.applicationName.placeholder' | translate }}" />
                         </md-input-container>
-                        <md-input-container md-no-float class="md-block" flex="50">
-                            <label><strong>{{ 'properties.compare.modal.platformName' | translate }}</strong></label>
-                            <input type="text" name="toPlatformName" list="availablePlatforms" required ng-trim="true" ng-model="toPlatform.platform" ng-change="checkToPlatformExist()"
-                                   placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}" md-autofocus="true"/>
-                            <datalist id="availablePlatforms">
-                                <option ng-repeat="platform in targetPlatforms" value="{{platform.name}}">
-                            </datalist>
-                        </md-input-container>
+                    </div>
+
+                    <label><strong>{{ 'properties.compare.modal.toPlatformNameButtonsLabel' | translate }} ({{ 'readonly' | translate }})</strong></label>
+                    <div layout="row" flex="100">
+                        <ul class="shared-list-inline" flex>
+                            <li ng-repeat="item in targetPlatforms | orderObjectBy:'name'">
+                                <md-button ng-click="toPlatform.platform = item.name; checkToPlatformExist()"
+                                           class="md-raised md-mini diff-platform-tag"
+                                           ng-class="{'md-primary': item.name === toPlatform.platform}"
+                                           ng-style="item.name === toPlatform.platform ? {} : {'background-color': backgroundColor(item)}">
+                                    {{item.name}}
+                                </md-button>
+                            </li>
+                        </ul>
                     </div>
 
                     <div ng-if="diffForm.toAppName.$error.exist" role="alert" class="error">
                         {{ 'properties.compare.modal.error.toAppDoesNotExists' | translate }}
                     </div>
 
-                    <div ng-if="diffForm.toPlatformName.$error.exist" role="alert" class="error">
+                    <div ng-if="diffForm.$error.toPlatformExist" role="alert" class="error">
                         {{ 'properties.compare.modal.error.toPlatformDoesNotExists' | translate }}
-                    </div>
-
-                    <div layout="row" flex="100">
-                        <ul class="shared-list-inline" flex>
-                            <li ng-repeat="item in targetPlatforms | orderObjectBy:'name'">
-                                <md-button ng-click="setFromPlatformName(item.name)"
-                                           class="md-raised md-mini diff-platform-tag"
-                                           ng-style="{'background-color': backgroundColor(item)}">
-                                    {{item.name}}
-                                </md-button>
-                            </li>
-                        </ul>
                     </div>
 
                     <md-switch move-focus-when-enabled target="#look-past-date-time"
@@ -74,7 +67,7 @@
                 </md-content>
             </div>
             <md-dialog-actions>
-                <md-button type="submit" class="md-raised md-primary" ng-disabled="diffForm.$invalid || !isDateValid()">{{ 'button.modal.runComparison' | translate }}</md-button>
+                <md-button type="submit" class="md-raised md-primary" ng-disabled="!isDateValid() || diffForm.$invalid">{{ 'button.modal.runComparison' | translate }}</md-button>
                 <md-button ng-click="closeGlobalPropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
             </md-dialog-actions>
         </form>

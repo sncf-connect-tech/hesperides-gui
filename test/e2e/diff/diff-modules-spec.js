@@ -30,8 +30,6 @@ describe('Manage diff', () => {
 
         utils.clickOnElement(element(by.id('e2e-deployed-module-controls-diff-properties-button-' + data.new_module_name)));
 
-        utils.clearAndSendkeys(element(by.css('input[name="toPlatformName"]')), data.new_application);
-
         expect(element.all(by.css(".cg-notify-message")).count()).toEqual(0);
         browser.sleep(1000);
         expect(element.all(by.css(".diff-platform-tag")).count()).toEqual(2);
