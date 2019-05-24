@@ -47,13 +47,14 @@ angular.module('hesperides.diff', [])
             this.selected = false;
         };
 
+        $scope.loadingDiff = true;
+
         $scope.application_name = $routeParams.application;
         $scope.platform_name = $routeParams.platform;
 
         $scope.compare_application = $routeParams.compare_application;
         $scope.compare_platform = $routeParams.compare_platform;
 
-        $scope.origin_timestamp = $routeParams.origin_timestamp;
         $scope.timestamp = $routeParams.timestamp;
 
         $scope.show_only_modified = false;
@@ -115,6 +116,7 @@ angular.module('hesperides.diff', [])
                 $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
                 $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
                 $scope.generate_diff_containers($routeParams.properties_path !== '#');
+                $scope.loadingDiff = false;
             });
 
         // Everything needs to be in scope for this function to work
@@ -241,17 +243,16 @@ angular.module('hesperides.diff', [])
              if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
              if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
              because the other ones have the same values. We can just apply the 'revert modification' mecanism
-             if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
+             if status == 2 : this is when we want to apply modification from source platform to destination platform
              if status == 3 : same behavior as status == 2
              */
-            $scope.diff_containers.filter(function (diff_container) {
-                return diff_container.selected;
-            }).forEach(function (diff_container) {
+            $scope.diff_containers.filter((diff_container) => diff_container.selected)
+                                  .forEach((diff_container) => {
                 switch (diff_container.status) {
                 case 0:
                     break;
                 case 1:
-                // Revert modifs
+                    // Revert modifs
                     diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
                     delete diff_container.property_to_modify.old_value;
 
@@ -261,7 +262,7 @@ angular.module('hesperides.diff', [])
                     diff_container.modified = false;
                     break;
                 case 2:
-                // Store old value and apply modifs
+                    // Store old value and apply modifs
                     diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
                     diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
@@ -270,8 +271,8 @@ angular.module('hesperides.diff', [])
                     diff_container.status = 1;
                     break;
                 case 3:
-                // Same as 2, copy paste (bad :p )
-                // Store old value and apply modifs
+                    // Same as 2, copy paste (bad :p )
+                    // Store old value and apply modifs
                     diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
                     diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
@@ -280,19 +281,15 @@ angular.module('hesperides.diff', [])
                     diff_container.status = 1;
                     break;
                 default:
-                    console.error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
-                    break;
+                    throw new Error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
                 }
             });
         };
 
         $scope.save_diff = function () {
             // Get all the properties modified
-            var key_value_properties = $scope.diff_containers.filter(function (diff_container) {
-                return diff_container.property_to_modify;
-            }).map(function (diff_container) {
-                return diff_container.property_to_modify;
-            });
+            var key_value_properties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
+                                                             .map((diff_container) => diff_container.property_to_modify);
 
             // Is some diff item selected ?
             var hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
@@ -341,23 +338,22 @@ angular.module('hesperides.diff', [])
                     }
                     $scope.targetPlatforms = application.platforms;
                     $scope.checkToPlatformExist();
-                }).catch(() => $scope.diffForm.toAppName.$setValidity('exist', false));
+                }).catch(() => {
+                    $scope.diffForm.toAppName.$setValidity('exist', false);
+                });
             }
         };
 
         $scope.checkToPlatformExist = function () {
             if ($scope.diffForm) {
                 $scope.diffForm.$setValidity('matchingModule', true); // reset to default value
-                $scope.diffForm.toPlatformName.$setValidity('exist', _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform }));
+                let appHasPlatform = _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform });
+                $scope.diffForm.$setValidity('toPlatformExist', appHasPlatform);
             }
         };
 
         $scope.closePropertiesDiffWizard = function () {
             $mdDialog.cancel();
-        };
-
-        $scope.setFromPlatformName = function (platformName) {
-            $scope.fromPlatform.platform = platformName;
         };
 
         $scope.backgroundColor = function (item) {
@@ -376,17 +372,18 @@ angular.module('hesperides.diff', [])
                 $scope.toPlatform.modules = platformFetched.modules;
                 $scope.toModule = _.find($scope.toPlatform.modules, { name: $scope.fromModule.name });
                 if ($scope.diffForm) {
-                    $scope.diffForm.$setValidity('platformExist', true);
+                    $scope.diffForm.$setValidity('toPlatformExistAtTime', true);
                     $scope.diffForm.$setValidity('matchingModule', Boolean($scope.toModule));
                 }
             }).catch((resp) => {
                 $scope.loadingComparePlatform = false;
                 $scope.platformQueryError = resp.data;
-                $scope.diffForm.$setValidity('platformExist', false);
+                $scope.diffForm.$setValidity('toPlatformExistAtTime', false);
             });
         };
 
         $scope.isDateValid = function () {
+            $scope.diffForm.$setValidity('toPlatformExistAtTime', true);
             return (!$scope.lookPast || $scope.dateValid);
         };
 
@@ -427,22 +424,21 @@ angular.module('hesperides.diff', [])
                     }
                     $scope.targetPlatforms = application.platforms;
                     $scope.checkToPlatformExist();
-                }).catch(() => $scope.diffForm.toAppName.$setValidity('exist', false));
+                }).catch(() => {
+                    $scope.diffForm.toAppName.$setValidity('exist', false);
+                });
             }
         };
 
         $scope.checkToPlatformExist = function () {
             if ($scope.diffForm) {
-                $scope.diffForm.toPlatformName.$setValidity('exist', _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform }));
+                let appHasPlatform = _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform });
+                $scope.diffForm.$setValidity('toPlatformExist', appHasPlatform);
             }
         };
 
         $scope.closeGlobalPropertiesDiffWizard = function () {
             $mdDialog.cancel();
-        };
-
-        $scope.setFromPlatformName = function (itemName) {
-            $scope.fromPlatform.platform = itemName;
         };
 
         $scope.backgroundColor = function (item) {

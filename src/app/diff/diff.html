@@ -25,11 +25,7 @@
     <span flex="2"><h3>{{ 'common.word.and' | translate }}</h3></span>
     <h3 flex="49"><span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{displayable_compare_path}} </span></h3>
 </div>
-<div layout = "row" class="center" ng-show="origin_timestamp">
-    <h3 flex="49"><span class="diff-text-modifiable"> ( {{'properties.compare.origin' | translate}} <span ng-show = "origin_timestamp"> : {{'hesperides.date' | translate: {timestamp : origin_timestamp} }}</span> )</span> </span></h3>
-    <span flex="2"><h3>/</h3></span>
-    <h3 flex="49"><span class="diff-text-unmodifiable">( {{'properties.compare.compare' | translate}} <span ng-show = "timestamp"> : {{'hesperides.date' | translate: {timestamp : timestamp} }}</span> )</span></h3>
-</div>
+<div ng-show="timestamp">( date : {{'hesperides.date' | translate: {timestamp : timestamp} }} )</div>
 
 <div layout="row" layout-margin>
     <md-button class="md-raised md-primary" ng-click="apply_diff()">
@@ -39,6 +35,9 @@
         2/ <span class="diff-warning-text-button">{{ 'properties.compare.saveChanges.part1' | translate }} </span>{{ 'properties.compare.saveChanges.part2' | translate }}
     </md-button>
 </div>
+
+<md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
+                      ng-show="loadingDiff"></md-progress-circular>
 
 <!-- Seulement à gauche -->
 <div layout="column" class="bg-light">
@@ -60,7 +59,7 @@
         <div flex="20">
             <md-input-container class="md-block">
                 <label>{{ 'properties.filter.byKey' | translate }}</label>
-                <input type="text"required ng-trim="true"
+                <input type="text" required ng-trim="true"
                        ng-model="propertiesKeyFilter0">
             </md-input-container>
         </div>
@@ -126,15 +125,15 @@
         <div flex="20">
             <md-input-container class="md-block">
                 <label>{{ 'properties.filter.byKey' | translate }}</label>
-                <input type="text"required ng-trim="true"
+                <input type="text" required ng-trim="true"
                        ng-model="propertiesKeyFilter1">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
                 <span>{{ 'properties.compare.values.selectToReport' | translate }} <span
-                        class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
-                        class="fa fa-stop diff-text-modifiable"></span></span>
+                        class="fa fa-stop diff-text-modifiable"></span> &lt;===== <span
+                        class="fa fa-stop diff-text-unmodifiable"></span></span>
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
@@ -214,21 +213,21 @@
         <div flex="20">
             <md-input-container class="md-block">
                 <label>{{ 'properties.filter.byKey' | translate }}</label>
-                <input type="text"required ng-trim="true"
+                <input type="text" required ng-trim="true"
                        ng-model="propertiesKeyFilter2">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
                 <span>{{ 'properties.compare.values.selectToReport' | translate }} <span
-                        class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
-                        class="fa fa-stop diff-text-modifiable"></span></span>
+                        class="fa fa-stop diff-text-modifiable"></span> &lt;===== <span
+                        class="fa fa-stop diff-text-unmodifiable"></span></span>
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
                 <md-checkbox aria-label="Sélectionner toutes les valeurs" ng-model="toggle_diff"
-                         ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff, propertiesKeyFilter2)">
+                             ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff, propertiesKeyFilter2)">
                 </md-checkbox>
             </div>
         </div>
@@ -295,15 +294,16 @@
         <div flex="20">
             <md-input-container class="md-block">
                 <label>{{ 'properties.filter.byKey' | translate }}</label>
-                <input type="text"required ng-trim="true"
+                <input type="text" required ng-trim="true"
                        ng-model="propertiesKeyFilter3">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
                 <span>{{ 'properties.compare.values.selectToReport' | translate }} <span
-                        class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
-                        class="fa fa-stop diff-text-modifiable"></span></span>            </div>
+                        class="fa fa-stop diff-text-modifiable"></span> &lt;===== <span
+                        class="fa fa-stop diff-text-unmodifiable"></span></span>
+            </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
