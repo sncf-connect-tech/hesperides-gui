@@ -3,6 +3,12 @@
     "extends": ["strict", "plugin:angular/johnpapa", "plugin:lodash/recommended"],
     "globals": {
         "BUILD_TIME": "readonly",
+        "DOCUMENTATION_LINK": "readonly",
+        "EVENT_PAGINATION_SIZE": "readonly",
+        "LOCALCHANGES_TTL": "readonly",
+        "SUPPORT_URL": "readonly",
+        "SWAGGER_LINK": "readonly",
+        "globalConfig": "readonly",
         "addFromModel": "writable",
         "_": "readonly",
         "angular": "readonly",

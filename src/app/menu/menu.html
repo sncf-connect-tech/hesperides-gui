@@ -136,7 +136,7 @@
                         {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                     </button>
                     <md-menu-content class="menu-item">
-                        <md-menu-item ng-if="config.swaggerLink">
+                        <md-menu-item ng-if="swaggerLink">
                             <md-button ng-click="display_swagger()">Swagger</md-button>
                         </md-menu-item>
                         <md-menu-item>
@@ -149,8 +149,8 @@
                                 {{ 'menu.help.about' | translate}}
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item ng-if="config.supportUrl">
-                            <md-button href="{{ config.supportUrl }}" target="_blank">
+                        <md-menu-item ng-if="supportUrl">
+                            <md-button href="{{ supportUrl }}" target="_blank">
                                 {{ 'menu.help.support' | translate}}
                             </md-button>
                         </md-menu-item>

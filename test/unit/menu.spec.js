@@ -18,11 +18,12 @@
 
 'use strict';
 
-/**
- * This is for testing the module 'hesperides.menu'
- */
+const SUPPORT_URL = '';
+const SWAGGER_LINK = '';
+
 describe('Testing hesperides menu', function() {
 
+      
       // load the module to be tested
       beforeEach (module('hesperides.menu'));
 

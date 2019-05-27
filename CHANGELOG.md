@@ -25,10 +25,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-05-24
 ### Fixed
 
-- Retour à la logique originale du _diff wizard_ (fromPlatform non modifiable) + ajout loading spinner & date sur /diff - solve #238. [Lucas Cimon]
+- Retour à la logique originale du _diff wizard_ (fromPlatform non modifiable) + ajout loading spinner & date sur /diff - solve #238 (#243) [Lucas Cimon]
 
 
 

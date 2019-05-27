@@ -115,9 +115,7 @@ angular.module('hesperides.localChanges')
         },
     ])
 
-    .factory('LocalChangesDAO', [
-        'LocalChange', 'LocalChangesUtils', 'globalConfig',
-        function (LocalChange, LocalChangesUtils, globalConfig) {
+    .factory('LocalChangesDAO', function (LocalChange, LocalChangesUtils) {
             var local_storage_key = 'local_changes';
             var local_changes = {};
 
@@ -132,7 +130,7 @@ angular.module('hesperides.localChanges')
             function localChangesCleanup() {
                 local_changes = store.get(local_storage_key) || {};
                 Object.keys(local_changes).forEach((key) => {
-                    _.remove(local_changes[key], (elem) => getCurrentVersionID() - elem.version_id > globalConfig.localChangesTTL);
+                    _.remove(local_changes[key], (elem) => getCurrentVersionID() - elem.version_id > LOCALCHANGES_TTL);
                 });
                 save();
             }
@@ -202,5 +200,4 @@ angular.module('hesperides.localChanges')
                 },
             };
             return LocalChangesDAO;
-        },
-    ]);
+        });

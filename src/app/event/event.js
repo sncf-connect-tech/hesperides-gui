@@ -83,9 +83,7 @@ angular.module('hesperides.event', [])
 /**
  * Hesperides event http service
  */
-    .factory('EventService', [
-        '$hesperidesHttp', 'EventEntry', 'notify', 'globalConfig',
-        function ($http, EventEntry, notify, globalConfig) {
+    .factory('EventService', function ($http, EventEntry, notify) {
             return {
                 /**
                  * Get events from the back.
@@ -93,7 +91,7 @@ angular.module('hesperides.event', [])
                  * @param {Integer} page : is the page number to retrieve.
                  */
                 get(stream, page) {
-                    var url = `rest/events/${ encodeURIComponent(stream) }?page=${ encodeURIComponent(page) }&size=${ encodeURIComponent(globalConfig.eventPaginationSize) }`;
+                    var url = `rest/events/${ encodeURIComponent(stream) }?page=${ encodeURIComponent(page) }&size=${ EVENT_PAGINATION_SIZE }`;
                     return $http.get(url).then(function (response) {
                         return response.data.map(function (item) {
                             var event = new EventEntry(item);
@@ -105,8 +103,7 @@ angular.module('hesperides.event', [])
                     });
                 },
             };
-        },
-    ])
+        })
 
 /**
  * This is the list of directives used to display each type of events
