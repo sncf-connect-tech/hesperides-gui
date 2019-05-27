@@ -7,7 +7,8 @@ COPY bundler.js .
 COPY src src
 # Using yarn instead of npm as long as we need http-server-legacy: https://github.com/indexzero/http-server/issues/518
 RUN yarn install
-RUN sed -i "s/BUILD_TIME = '.*'/BUILD_TIME = '$(date +%F_%T)'/" src/app/index.html
+RUN sed "s/BUILD_TIME = '.*'/BUILD_TIME = '$(date +%F_%T)'/" src/app/index.html > src/app/index.html.template
+RUn rm src/app/index.html
 
 FROM nginx:1.15-alpine
 COPY --from=0 /usr/src/app/src/app                  /usr/share/nginx/html/

@@ -45,12 +45,6 @@ angular.module('hesperides', [
 }).value('scDateTimeI18n', {
     weekdays: [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
     calendar: 'Calendrier',
-// Valeurs par défaut écrasées par config.json si présent, cf. ~100 lignes plus bas :
-}).value('globalConfig', {
-    eventPaginationSize: 25,
-    documentationLink: 'https://voyages-sncf-technologies.github.io/hesperides-gui/',
-    localChangesTTL: 50,
-    swaggerLink: 'http://localhost:8080/rest/swagger-ui.html',
 })
 
     .config([
@@ -122,7 +116,7 @@ angular.module('hesperides', [
         },
     ])
 
-    .run(function (globalConfig, editableOptions, editableThemes, $rootScope, $http, $location, $route, $document, UserService) {
+    .run(function (editableOptions, editableThemes, $rootScope, $http, $location, $route, $document, UserService) {
         editableOptions.theme = 'default';
 
         // overwrite submit button template
@@ -153,27 +147,6 @@ angular.module('hesperides', [
             }
             return `${ calendarOffsetMagin }px`;
         };
-
-        $http({
-            method: 'GET',
-            url: './config.json',
-            transformResponse: [
-                function (data) {
-                    try {
-                        return JSON.parse(data);
-                    } catch (error) {
-                        console.warn(`Error while parsing config.json: ${ error }`);
-                        return null;
-                    }
-                },
-            ],
-        }).then(function success(response) {
-            Object.keys(response.data).forEach((key) => {
-                globalConfig[key] = response.data[key];
-            });
-        }, function (error) {
-            console.warn('[Hesperides] Config file not found or empty:', error);
-        });
 
         // reloadOnSearch ne fait pas de distinction entre $location.search() & $location.hash()
         // Or nous voulons uniquement déclencher un reload en cas de changement de search :

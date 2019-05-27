@@ -229,10 +229,9 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         };
     })
 
-    .controller('MenuHelpController', [
-        '$scope', '$mdDialog', '$hesperidesHttp', '$translate', '$parse', '$window', 'ApplicationService', 'PlatformColorService', 'UserService', 'globalConfig', 'notify',
-        function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, UserService, globalConfig, notify) {
-            $scope.config = globalConfig;
+    .controller('MenuHelpController', function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, UserService, notify) {
+            $scope.supportUrl = SUPPORT_URL;
+            $scope.swaggerLink = SWAGGER_LINK;
             $scope.logout = UserService.logout;
 
             $scope.change_language = function (langKey) {
@@ -253,11 +252,11 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             };
 
             $scope.display_hesperides_documentation = function () {
-                $window.open(globalConfig.documentationLink);
+                $window.open(DOCUMENTATION_LINK);
             };
 
             $scope.display_swagger = function () {
-                $window.open(globalConfig.swaggerLink);
+                $window.open($scope.swaggerLink);
             };
 
             $scope.display_hesperides_informations = function () {
@@ -349,5 +348,4 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     scope: $scope,
                 });
             };
-        },
-    ]);
+        });

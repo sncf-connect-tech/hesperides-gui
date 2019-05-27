@@ -144,16 +144,12 @@
         var Properties;
 
         // inject the controller
-        beforeEach(inject(function ($httpBackend, $rootScope, $controller, _Properties_){
+        beforeEach(inject(function ($rootScope, $controller, _Properties_){
             // new scope and test data
             scope = $rootScope.$new();
 
             scope.iterables = properties.iterable_properties;
             scope.iterablesModel = model.iterable_properties;
-
-            // Mock the http service for the config
-            http = $httpBackend;
-            http.when('GET', './config.json').respond(200, "");
 
             // the controller
             $controller('IterablePropertiesContainerController', {$scope: scope});
