@@ -40,14 +40,14 @@
                                placeholder="{{ 'properties.platform.filter.placeholder' | translate }}"/>
                     </md-input-container>
                 </div>
-                <div layout="row" flex>
+                <!--<div layout="row" flex>
                     <md-input-container>
                         <label>{{ 'properties.platform.restore.label' | translate }}</label>
                         <input type="text" ng-trim="true" ng-model="platformToRestore"
                                placeholder="{{ 'platform.modal.platformName' | translate }}"/>
                     </md-input-container>
                     <md-button ng-click="restore_platform(platformToRestore)" class="md-mini md-raised">{{ 'properties.platform.restore.try' | translate }}</md-button>
-                </div>
+                </div>-->
             </div>
             <div ng-show="isPlatformOpen" class="file-content ng-hide" layout="column" flex="100">
                 <list-of-items items="platforms"

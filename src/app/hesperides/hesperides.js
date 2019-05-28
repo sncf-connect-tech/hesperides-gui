@@ -46,7 +46,6 @@ angular.module('hesperides', [
     weekdays: [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
     calendar: 'Calendrier',
 })
-
     .config([
         '$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider', '$locationProvider',
         function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider, $locationProvider) {
@@ -116,7 +115,7 @@ angular.module('hesperides', [
         },
     ])
 
-    .run(function (editableOptions, editableThemes, $rootScope, $http, $location, $route, $document, UserService) {
+    .run(function (editableOptions, editableThemes, $rootScope, $http, $location, $route, $document, UserService, notify) {
         editableOptions.theme = 'default';
 
         // overwrite submit button template
@@ -166,6 +165,9 @@ angular.module('hesperides', [
 
         // On tente de se connecter systématiquement :
         UserService.authenticate();
+
+        // eslint-disable-next-line angular/module-getter
+        notify.config({ position: 'right' });
     })
 
 

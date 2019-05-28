@@ -3,38 +3,38 @@ var path = require('path');
 
 // input : element
 // action : click on element
-exports.clickOnElement = function(elm){
+exports.clickOnElement = function (elm) {
     elm.click();
     browser.waitForAngular();
 };
 
-exports.waitForNotificationToDisappear = function() {
-    browser.wait( ExpectedConditions.stalenessOf( element(by.css('.cg-notify-message')) ), 12000 ); // angular-notify: "Default message duration is now 10 seconds" + CSS transition
+exports.waitForNotificationToDisappear = function () {
+    browser.wait(ExpectedConditions.stalenessOf(element(by.css('.cg-notify-message'))), 12000); // angular-notify: "Default message duration is now 10 seconds" + CSS transition
 };
 
 // input : element and text to check
 // action : check text if present in element
-exports.checkIfElementContainsText = function(elm,text){
+exports.checkIfElementContainsText = function (elm, text) {
     expect(elm.getText()).toContain(text);
 };
 
-exports.checkIfElementIsPresent = function(id){
-    element.all(by.id(id)).then(function(items) {
+exports.checkIfElementIsPresent = function (id) {
+    element.all(by.id(id)).then(function (items) {
         expect(items.length).toBe(1);
     });
 };
 
-exports.checkIfElementIsPresentWithClass = function(className){
-    element.all(by.css(className)).then(function(items) {
+exports.checkIfElementIsPresentWithClass = function (className) {
+    element.all(by.css(className)).then(function (items) {
         expect(items.length).toBeGreaterThan(0);
     });
 };
 
-exports.checkIfElementIsMissing = function (selector){
+exports.checkIfElementIsMissing = function (selector) {
     expect(element(by.css(selector)).isPresent()).toBeFalsy();
 };
 
-exports.checkIfElementIsDisabled = function(id,state){
+exports.checkIfElementIsDisabled = function (id, state) {
     expect(element(by.id(id)).getAttribute('disabled')).toBe(state);
 };
 
@@ -43,10 +43,10 @@ exports.checkIfElementIsDisabled = function(id,state){
 // action : check if url returns specified http code
 exports.checkResponseStatusCode = function (url, code) {
     rest.get(url).then((result) => expect(result.response.statusCode).toBe(code),
-                       (error) => console.log(error.message));
+        (error) => console.log(error.message));
 };
 
-exports.putHttpRequest = function(url, payloadBody) {
+exports.putHttpRequest = function (url, payloadBody) {
     if (payloadBody.version_id) {
         return rest.putJson(url, payloadBody).catch((error) => console.error(error.message, error.statusCode, error.data));
     }
@@ -57,18 +57,18 @@ exports.putHttpRequest = function(url, payloadBody) {
     });
 };
 
-exports.deleteHttpRequest = function(url){
+exports.deleteHttpRequest = function (url) {
     rest.del(url).then((result) => expect(result.response.statusCode).toBe(200),
-                       (error) => console.error(error.message+" (maybe resource does not exist so you cannot delete it)"));
+        (error) => console.error(error.message + " (maybe resource does not exist so you cannot delete it)"));
 };
 
-exports.displayBrowserLogs = function(){
-	browser.manage().logs().get('browser').then(function(browserLog) {
-	  console.log('log: ' + require('util').inspect(browserLog));
-	});
+exports.displayBrowserLogs = function () {
+    browser.manage().logs().get('browser').then(function (browserLog) {
+        console.log('log: ' + require('util').inspect(browserLog));
+    });
 };
 
-exports.selectFirstElemOfAutocomplete = function(elem, arrowDown, keyTab, sleepTime){
+exports.selectFirstElemOfAutocomplete = function (elem, arrowDown, keyTab, sleepTime) {
     browser.sleep(sleepTime);
     browser.driver.actions().mouseMove(elem);
     if (arrowDown) {
@@ -79,13 +79,13 @@ exports.selectFirstElemOfAutocomplete = function(elem, arrowDown, keyTab, sleepT
     }
 };
 
-exports.moveMouseOnElement = function(targetId, waitForElemWithId) {
+exports.moveMouseOnElement = function (targetId, waitForElemWithId) {
     browser.actions().mouseMove(element(by.id(targetId))).perform();
-    browser.wait( ExpectedConditions.visibilityOf( element(by.id(waitForElemWithId)) ), 4000 );
+    browser.wait(ExpectedConditions.visibilityOf(element(by.id(waitForElemWithId))), 4000);
 };
 
 // generate string for data tests
-exports.getRandomString = function(length) {
+exports.getRandomString = function (length) {
     var string = '';
     var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' //Include numbers if you want
     for (i = 0; i < length; i++) {
@@ -95,19 +95,19 @@ exports.getRandomString = function(length) {
 };
 
 // clear input before sendKeys
-exports.clearAndSendkeys = function(elm,newString) {
-    elm.clear().then(function() {
+exports.clearAndSendkeys = function (elm, newString) {
+    elm.clear().then(function () {
         elm.sendKeys(newString);
     })
 }
 
-exports.getDownloadsPath = function() {
-    return path.format ({
+exports.getDownloadsPath = function () {
+    return path.format({
         dir: __dirname
     });
 };
 
-exports.getCapabilities  = function() {
+exports.getCapabilities = function () {
     return {
         'browserName': 'chrome',
         'platform': 'ANY',
@@ -132,3 +132,20 @@ exports.hasClass = function (element, cls) {
         return classes.split(' ').indexOf(cls) !== -1;
     });
 };
+
+exports.switchBrowserToNewTab = function () {
+    return browser.getAllWindowHandles().then(function (handles) {
+        const newTabHandle = handles[1];
+        console.info('New tab handle = ' + newTabHandle);
+        return browser.switchTo().window(newTabHandle);
+    });
+}
+
+exports.switchBrowserBackToFirstTab = function () {
+    return browser.getAllWindowHandles().then(function (handles) {
+        browser.driver.close();
+        const mainTabHandle = handles[0];
+        console.info('Main tab handle = ' + mainTabHandle);
+        return browser.switchTo().window(mainTabHandle);
+    });
+}

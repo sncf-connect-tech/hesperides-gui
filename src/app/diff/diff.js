@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-function buildDiffDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toPropertiesPath, lookPast, date) {
+function buildDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toPropertiesPath, lookPast, timestamp) {
     const urlParams = {
         application: fromPlatform.application_name,
         platform: fromPlatform.platform,
@@ -26,9 +26,17 @@ function buildDiffDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toPr
         compare_path: toPropertiesPath,
     };
     if (lookPast) {
-        urlParams.timestamp = date;
+        urlParams.timestamp = timestamp;
     }
     return `/#/diff?${ Object.keys(urlParams).map((key) => `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`).join('&') }`;
+}
+
+function dateToTimestamp(lookPast, date) {
+    var timestamp = null;
+    if (lookPast) {
+        timestamp = date ? Number(moment(date, 'YYYY-MM-DD HH:mm:ss Z')) : new Date().getTime();
+    }
+    return timestamp;
 }
 
 angular.module('hesperides.diff', [])
@@ -247,49 +255,49 @@ angular.module('hesperides.diff', [])
              if status == 3 : same behavior as status == 2
              */
             $scope.diff_containers.filter((diff_container) => diff_container.selected)
-                                  .forEach((diff_container) => {
-                switch (diff_container.status) {
-                case 0:
-                    break;
-                case 1:
+                .forEach((diff_container) => {
+                    switch (diff_container.status) {
+                    case 0:
+                        break;
+                    case 1:
                     // Revert modifs
-                    diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
-                    delete diff_container.property_to_modify.old_value;
+                        diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
+                        delete diff_container.property_to_modify.old_value;
 
-                    // Change status and reset markers. Keep selected for user experience
-                    // Status depends on old_value, if it was empty status is 3 otherwise it is 2
-                    diff_container.status = diff_container.property_to_modify.value === '' ? 3 : 2;
-                    diff_container.modified = false;
-                    break;
-                case 2:
+                        // Change status and reset markers. Keep selected for user experience
+                        // Status depends on old_value, if it was empty status is 3 otherwise it is 2
+                        diff_container.status = diff_container.property_to_modify.value === '' ? 3 : 2;
+                        diff_container.modified = false;
+                        break;
+                    case 2:
                     // Store old value and apply modifs
-                    diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                    diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
+                        diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
+                        diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
-                    // Change status and reset markers. Keep selected for user experience
-                    diff_container.modified = true;
-                    diff_container.status = 1;
-                    break;
-                case 3:
+                        // Change status and reset markers. Keep selected for user experience
+                        diff_container.modified = true;
+                        diff_container.status = 1;
+                        break;
+                    case 3:
                     // Same as 2, copy paste (bad :p )
                     // Store old value and apply modifs
-                    diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                    diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
+                        diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
+                        diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
-                    // Change status and reset markers. Keep selected for user experience
-                    diff_container.modified = true;
-                    diff_container.status = 1;
-                    break;
-                default:
-                    throw new Error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
-                }
-            });
+                        // Change status and reset markers. Keep selected for user experience
+                        diff_container.modified = true;
+                        diff_container.status = 1;
+                        break;
+                    default:
+                        throw new Error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
+                    }
+                });
         };
 
         $scope.save_diff = function () {
             // Get all the properties modified
             var key_value_properties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
-                                                             .map((diff_container) => diff_container.property_to_modify);
+                .map((diff_container) => diff_container.property_to_modify);
 
             // Is some diff item selected ?
             var hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
@@ -347,7 +355,7 @@ angular.module('hesperides.diff', [])
         $scope.checkToPlatformExist = function () {
             if ($scope.diffForm) {
                 $scope.diffForm.$setValidity('matchingModule', true); // reset to default value
-                let appHasPlatform = _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform });
+                const appHasPlatform = _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform });
                 $scope.diffForm.$setValidity('toPlatformExist', appHasPlatform);
             }
         };
@@ -362,12 +370,8 @@ angular.module('hesperides.diff', [])
 
         $scope.getModuleToCompare = function () {
             $scope.loadingComparePlatform = true;
-            if ($scope.lookPast) {
-                $scope.date = $scope.date ? Number(moment($scope.date, 'YYYY-MM-DD HH:mm:ss Z')) : new Date().getTime();
-            } else {
-                $scope.date = null;
-            }
-            ApplicationService.get_platform($scope.toPlatform.application_name, $scope.toPlatform.platform, $scope.date).then((platformFetched) => {
+            const timestamp = dateToTimestamp($scope.lookPast, $scope.date);
+            ApplicationService.get_platform($scope.toPlatform.application_name, $scope.toPlatform.platform, timestamp).then((platformFetched) => {
                 $scope.loadingComparePlatform = false;
                 $scope.toPlatform.modules = platformFetched.modules;
                 $scope.toModule = _.find($scope.toPlatform.modules, { name: $scope.fromModule.name });
@@ -396,7 +400,8 @@ angular.module('hesperides.diff', [])
 
         $scope.openDiffPage = function () {
             $mdDialog.hide();
-            $window.open(buildDiffDiffPageUrl($scope.fromPlatform, $scope.toPlatform, $scope.fromModule.properties_path, $scope.toModule.properties_path, $scope.lookPast, $scope.date), '_blank');
+            const timestamp = dateToTimestamp($scope.lookPast, $scope.date);
+            $window.open(buildDiffPageUrl($scope.fromPlatform, $scope.toPlatform, $scope.fromModule.properties_path, $scope.toModule.properties_path, $scope.lookPast, timestamp), '_blank');
         };
 
         // Construtor initialization:
@@ -432,7 +437,7 @@ angular.module('hesperides.diff', [])
 
         $scope.checkToPlatformExist = function () {
             if ($scope.diffForm) {
-                let appHasPlatform = _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform });
+                const appHasPlatform = _.some($scope.targetPlatforms, { name: $scope.toPlatform.platform });
                 $scope.diffForm.$setValidity('toPlatformExist', appHasPlatform);
             }
         };
@@ -451,7 +456,8 @@ angular.module('hesperides.diff', [])
 
         $scope.openDiffPage = function () {
             $mdDialog.hide();
-            $window.open(buildDiffDiffPageUrl($scope.fromPlatform, $scope.toPlatform, '#', '#', $scope.lookPast, $scope.date), '_blank');
+            const timestamp = dateToTimestamp($scope.lookPast, $scope.date);
+            $window.open(buildDiffPageUrl($scope.fromPlatform, $scope.toPlatform, '#', '#', $scope.lookPast, timestamp), '_blank');
         };
 
         // Construtor initialization:
@@ -471,7 +477,7 @@ angular.module('hesperides.diff', [])
                         if ($scope.ngModel) {
                             angular.element($document[0].querySelector($scope.target)).focus();
                         }
-                    });
+                    }, 100); // Nécessaire pour faire fonctionner le focus au premier essai
                 });
             },
         };
