@@ -20,25 +20,19 @@ var moment = require('moment');
 var utils = require('../utils.js');
 var until = protractor.ExpectedConditions;
 
-describe('Manage diff', () => {
+describe('Manage platform diff', () => {
 
     beforeAll(() => {
         browser.get(hesperides_url + '/#/properties/' + data.new_application + '?platform=' + data.new_platform);
     });
 
-    it('should display two platform for TEST_AUTO application', () => {
-        // set bloc mode (in case the default mode change)
-        utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
-
-        utils.clickOnElement(element(by.id('e2e-deployed-module-controls-diff-properties-button-' + data.new_module_name)));
-
-        expect(element.all(by.css('.cg-notify-message')).count()).toEqual(0);
-        browser.sleep(1000);
-        expect(element.all(by.css('.diff-platform-tag')).count()).toEqual(2);
-    });
-
     it('should display datepicker on compare two platform at a specific date switch', () => {
-        utils.clickOnElement(element(by.id('e2e-properties-diff-wizard-switch')));
+        // Mode 'arbre'
+        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
+        // Affiche le modal de diff
+        utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-diff-button')));
+        // Active le calendrier
+        utils.clickOnElement(element(by.id('e2e-global-properties-diff-select-date-switch')));
 
         var calendar = element.all(by.css('.angularjs-datetime-picker')).get(0);
         browser.wait(until.presenceOf(calendar), 1000, 'Calendar is taking too long to appear in the DOM');
@@ -52,28 +46,12 @@ describe('Manage diff', () => {
         expect(element.all(by.css('.angularjs-datetime-picker')).count()).toEqual(0);
     });
 
-    it('should not allow diff when platform did not exist at time', () => {
-        utils.clickOnElement(element(by.id('e2e-properties-diff-next-button')));
-        // La date est invalide car le la module n'existe pas un mois plus tôt
-        utils.checkIfElementIsDisabled('e2e-properties-diff-runcomparison-button', 'true');
-    });
-
-    it('should display module diff page with proper timestamp when a valid date is selected', () => {
-        // Clique sur bouton Previous
-        utils.clickOnElement(element(by.id('e2e-properties-diff-previous-button')));
-
-        // Sélectionne la jour courant
-        utils.clickOnElement(element(by.id('look-past-date-time')));
-        var calendar = element.all(by.css('.angularjs-datetime-picker')).get(0);
-        browser.wait(until.presenceOf(calendar), 1000, 'Calendar is taking too long to appear in the DOM');
-        utils.clickOnElement(element.all(by.css('div.adp-day.selectable.ng-binding.ng-scope.selected.today')).get(0));
-
+    it('should display platform diff page with proper timestamp when a date is selected', () => {
         // Récupère la date sélectionnée
         element(by.id('look-past-date-time')).getAttribute('value').then(function (date) {
             const timestamp = Number(moment(date, 'YYYY-MM-DD HH:mm:ss Z'));
             // Clique sur Run comparison
-            utils.clickOnElement(element(by.id('e2e-properties-diff-next-button')));
-            utils.clickOnElement(element(by.id('e2e-properties-diff-runcomparison-button')));
+            utils.clickOnElement(element(by.id('e2e-global-properties-diff-runcomparison-button')));
             // Vérifie l'url appelée contient le bon timestamp dans la nouvelle fenêtre
             utils.switchBrowserToNewTab().then(function () {
                 const newTabUrl = browser.getCurrentUrl();

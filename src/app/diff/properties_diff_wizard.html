@@ -70,7 +70,7 @@
                         </md-content>
                     </div>
                     <md-dialog-actions>
-                        <md-button wz-next ng-click="getModuleToCompare()" class="md-raised md-primary" ng-disabled="!isDateValid() || diffForm.$invalid">
+                        <md-button id="e2e-properties-diff-next-button" wz-next ng-click="getModuleToCompare()" class="md-raised md-primary" ng-disabled="!isDateValid() || diffForm.$invalid">
                             {{ 'button.modal.next' | translate }}
                         </md-button>
                         <md-button ng-click="closePropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
@@ -105,7 +105,7 @@
                                     </ul>
                                 </div>
                                 <div flex class="text-align-end">
-                                    <md-button type="submit" class="md-raised md-primary" aria-label="{{ 'button.modal.runComparison' | translate }}"
+                                    <md-button id="e2e-properties-diff-runcomparison-button" type="submit" class="md-raised md-primary" aria-label="{{ 'button.modal.runComparison' | translate }}"
                                                ng-disabled="!toModule">{{ 'button.modal.runComparison' | translate }}</md-button>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                         </md-content>
                     </div>
                     <md-dialog-actions>
-                        <md-button class="md-raised md-primary" wz-previous>{{ 'button.modal.prev' | translate }}</md-button>
+                        <md-button id="e2e-properties-diff-previous-button" class="md-raised md-primary" wz-previous>{{ 'button.modal.prev' | translate }}</md-button>
                         <md-button ng-click="closePropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
                     </md-dialog-actions>
                 </wz-step>

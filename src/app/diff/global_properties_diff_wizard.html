@@ -56,7 +56,7 @@
                         {{ 'properties.compare.modal.error.toPlatformDoesNotExists' | translate }}
                     </div>
 
-                    <md-switch move-focus-when-enabled target="#look-past-date-time"
+                    <md-switch id="e2e-global-properties-diff-select-date-switch" move-focus-when-enabled target="#look-past-date-time"
                                class="md-primary md-block" aria-label="Comparer à une date" ng-model="formScope.lookPast" ng-show="toPlatform.application_name && toPlatform.platform">
                         <strong>{{ 'properties.compare.modal.compareDate.switch' | translate : {application: toPlatform.application_name, platform: toPlatform.platform} }}</strong>
                     </md-switch>
@@ -67,7 +67,7 @@
                 </md-content>
             </div>
             <md-dialog-actions>
-                <md-button type="submit" class="md-raised md-primary" ng-disabled="!isDateValid() || diffForm.$invalid">{{ 'button.modal.runComparison' | translate }}</md-button>
+                <md-button id="e2e-global-properties-diff-runcomparison-button" type="submit" class="md-raised md-primary" ng-disabled="!isDateValid() || diffForm.$invalid">{{ 'button.modal.runComparison' | translate }}</md-button>
                 <md-button ng-click="closeGlobalPropertiesDiffWizard()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
             </md-dialog-actions>
         </form>
