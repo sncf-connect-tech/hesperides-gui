@@ -57,6 +57,7 @@
     "karma-firefox-launcher": "latest",
     "karma-jasmine": "latest",
     "karma-verbose-reporter": "latest",
+    "moment": "^2.24.0",
     "protractor": "latest",
     "protractor-jasmine2-html-reporter": "latest",
     "restling": "latest",

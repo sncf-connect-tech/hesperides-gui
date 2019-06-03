@@ -136,9 +136,6 @@
                         {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                     </button>
                     <md-menu-content class="menu-item">
-                        <md-menu-item ng-if="swaggerLink">
-                            <md-button ng-click="display_swagger()">Swagger</md-button>
-                        </md-menu-item>
                         <md-menu-item>
                             <md-button ng-click="display_hesperides_documentation()">
                                 {{ 'menu.help.documentation' | translate}}
@@ -156,6 +153,9 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
+                <button class="menu-header"ng-if="swaggerLink" ng-click="display_swagger()">
+                    Swagger
+                </button>
                 <button class="menu-header" ng-click="logout()">
                     {{ 'menu.help.logout' | translate}}
                 </button>

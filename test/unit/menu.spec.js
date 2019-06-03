@@ -21,46 +21,47 @@
 const SUPPORT_URL = '';
 const SWAGGER_LINK = '';
 
-describe('Testing hesperides menu', function() {
+describe('Testing hesperides menu', function () {
 
-      
-      // load the module to be tested
-      beforeEach (module('hesperides.menu'));
 
-      // This is for testing the menu help controller
-      describe('Testing MenuHelpController', function() {
+    // load the module to be tested
+    beforeEach(module('hesperides.menu'));
+
+    // This is for testing the menu help controller
+    describe('Testing MenuHelpController', function () {
 
         var $scope, $mdDialog, $translate, $parse;
 
         var menuHelpCtrl, $httpBackend, $routeParams;
 
-        beforeEach(inject(function($controller, $rootScope, _$httpBackend_, $injector, PlatformColorService, ApplicationService) {
+        beforeEach(inject(function ($controller, $rootScope, _$httpBackend_, $injector, PlatformColorService, ApplicationService) {
             $scope = $rootScope.$new();
             $httpBackend = _$httpBackend_;
             $mdDialog = $injector.get('$mdDialog');
             $translate = $injector.get('$translate');
             $parse = $injector.get('$parse');
             menuHelpCtrl = $controller('MenuHelpController', {
-                 $scope: $scope,
-                 $mdDialog: $mdDialog,
-                 $translate: $translate,
-                 PlatformColorService: PlatformColorService,
-                 $parse: $parse,
-                 ApplicationService: ApplicationService });
+                $scope: $scope,
+                $mdDialog: $mdDialog,
+                $translate: $translate,
+                PlatformColorService: PlatformColorService,
+                $parse: $parse,
+                ApplicationService: ApplicationService
+            });
         }));
 
-      it('should be defined', function() {
-        expect(menuHelpCtrl).toBeDefined();
-      });
+        it('should be defined', function () {
+            expect(menuHelpCtrl).toBeDefined();
+        });
 
     });
 
     // This is for testing the menu module controller
-    describe('Testing MenuModuleController', function (){
+    describe('Testing MenuModuleController', function () {
 
         var scope;
 
-        beforeEach(inject(function($injector, $rootScope, $controller, ModuleService, Module){
+        beforeEach(inject(function ($injector, $rootScope, $controller, ModuleService, Module) {
             scope = $rootScope.$new();
 
             $controller('MenuModuleController', {
@@ -73,9 +74,9 @@ describe('Testing hesperides menu', function() {
             })
         }));
 
-        it ('should get modules by name', function (){
-           var modules = scope.find_modules_by_name('modules');
-           expect(modules).toBeDefined();
+        it('should get modules by name', function () {
+            var modules = scope.find_modules_by_name('modules');
+            expect(modules).toBeDefined();
         });
 
     });

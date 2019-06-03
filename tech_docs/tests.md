@@ -17,18 +17,22 @@ et sont lancés par la commande `npm test`, qui instrumente le navigateur Firefo
 
 
 ## Tests end-to-end
-Ces tests nécessitent que le composant _backend_ soit lancé.
+
+Ces tests nécessitent que les composants _backend_ et _frontend_ ainsi que
+le webdriver (`npm run webdriver-start`) soient lancés.
 
 Ils sont implémentés dans le dossier [test/e2e/](https://github.com/voyages-sncf-technologies/hesperides-gui/tree/master/test/e2e)
 et sont lancés par la commande `npm run e2e-tests`, qui instrumente le navigateur Chrome.
 
 ### Bonnes pratiques
+
 - pour sélectionner des élements de la page, introduisez des IDs HTML dédiés préfixés avec `e2e-`.
 Ces IDs doivent uniquement être utilisé pour les tests _end-to-end_, et jamais dans le code applicatif.
 
 - privilégier l'utilisation de `browser.wait( ExpectedConditions... )` à l'utilisation de `browser.sleep`
 
 ### En cas d'erreur
+
 Un rapport HTMl avec capture d'écran est généré dans `test-reports-e2e/htmlReport.html`.
 
 Sur Travis CI, il devrait être également possible d'avoir accès à ce rapport d'après [cette réponse sur StackOverflow](https://stackoverflow.com/a/55243704/636849) (non encore testé).
@@ -42,5 +46,7 @@ Sur Travis CI, il devrait être également possible d'avoir accès à ce rapport
 Pour exécuter un unique test, une alternative à `--grep` est de simplement remplacer temporairement
 un appel à `it($should, function...` par `fit(...`, le "f" signifiant "focus".
 De même il est possible d'utiliser `fdescribe`.
+
+Il est nécessaire d'avoir lancé tous les tests une première fois avant de lancer un test unitairement afin de créer le jeu de données de base.
 
 Enfin, pour débuguer, vous pouvez insérer un appel à `browser.sleep(60000)` pour interrompre un test sur une ligne et garder le navigateur ouvert.
