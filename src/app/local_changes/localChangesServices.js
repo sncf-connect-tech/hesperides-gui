@@ -116,88 +116,88 @@ angular.module('hesperides.localChanges')
     ])
 
     .factory('LocalChangesDAO', function (LocalChange, LocalChangesUtils) {
-            var local_storage_key = 'local_changes';
-            var local_changes = {};
+        var local_storage_key = 'local_changes';
+        var local_changes = {};
 
-            function getCurrentVersionID() {
-                return store.get('current_platform_versionID');
-            }
+        function getCurrentVersionID() {
+            return store.get('current_platform_versionID');
+        }
 
-            function save() {
-                store.set(local_storage_key, local_changes || null);
-            }
+        function save() {
+            store.set(local_storage_key, local_changes || null);
+        }
 
-            function localChangesCleanup() {
-                local_changes = store.get(local_storage_key) || {};
-                Object.keys(local_changes).forEach((key) => {
-                    _.remove(local_changes[key], (elem) => getCurrentVersionID() - elem.version_id > LOCALCHANGES_TTL);
-                });
-                save();
-            }
+        function localChangesCleanup() {
+            local_changes = store.get(local_storage_key) || {};
+            Object.keys(local_changes).forEach((key) => {
+                _.remove(local_changes[key], (elem) => getCurrentVersionID() - elem.version_id > LOCALCHANGES_TTL);
+            });
+            save();
+        }
 
-            function LocalChangesDAO() {
+        function LocalChangesDAO() {
+            localChangesCleanup();
+        }
+
+        LocalChangesDAO.prototype = {
+            getLocalChanges(full_path) {
                 localChangesCleanup();
-            }
-
-            LocalChangesDAO.prototype = {
-                getLocalChanges(full_path) {
+                if (local_changes[full_path] && local_changes[full_path].length) {
+                    return local_changes[full_path].map(function (elem) {
+                        return new LocalChange(elem);
+                    });
+                }
+                return [];
+            },
+            localChangeExist(full_path, properties_name) {
+                return _.filter(this.getLocalChanges(full_path), function (localChange) {
+                    return localChange.properties_name === properties_name;
+                }).length > 0;
+            },
+            addLocalChange(application_name, platform, properties_path, properties_name, properties_value) {
+                var full_path = LocalChangesUtils.buildFullPath(application_name, platform, properties_path);
+                var local_changes_buffer = this.getLocalChanges(full_path);
+                if (this.localChangeExist(full_path, properties_name)) {
+                    _.map(local_changes_buffer, function (elem) {
+                        if (elem.properties_name === properties_name && elem.properties_value !== properties_value) {
+                            elem.properties_value = properties_value;
+                            elem.version_id = getCurrentVersionID();
+                        }
+                    });
+                } else {
+                    local_changes_buffer.push(new LocalChange({
+                        properties_name,
+                        properties_value,
+                        'version_id': getCurrentVersionID(),
+                    }));
+                }
+                local_changes[full_path] = local_changes_buffer;
+                save();
+            },
+            hasLocalChanges(application_name, platform, properties_path) {
+                return this.getLocalChanges(LocalChangesUtils.buildFullPath(application_name, platform, properties_path)).length > 0;
+            },
+            clearLocalChanges(opts) {
+                if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
+                    local_changes[LocalChangesUtils.buildFullPath(opts.application_name, opts.platform, opts.properties_path)] = [];
+                } else {
+                    local_changes = {};
+                }
+                save();
+            },
+            smartClearLocalChanges(opts, properties) {
+                if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
                     localChangesCleanup();
-                    if (local_changes[full_path] && local_changes[full_path].length) {
-                        return local_changes[full_path].map(function (elem) {
-                            return new LocalChange(elem);
-                        });
-                    }
-                    return [];
-                },
-                localChangeExist(full_path, properties_name) {
-                    return _.filter(this.getLocalChanges(full_path), function (localChange) {
-                        return localChange.properties_name === properties_name;
-                    }).length > 0;
-                },
-                addLocalChange(application_name, platform, properties_path, properties_name, properties_value) {
-                    var full_path = LocalChangesUtils.buildFullPath(application_name, platform, properties_path);
-                    var local_changes_buffer = this.getLocalChanges(full_path);
-                    if (this.localChangeExist(full_path, properties_name)) {
-                        _.map(local_changes_buffer, function (elem) {
-                            if (elem.properties_name === properties_name && elem.properties_value !== properties_value) {
-                                elem.properties_value = properties_value;
-                                elem.version_id = getCurrentVersionID();
-                            }
-                        });
-                    } else {
-                        local_changes_buffer.push(new LocalChange({
-                            properties_name,
-                            properties_value,
-                            'version_id': getCurrentVersionID(),
-                        }));
-                    }
-                    local_changes[full_path] = local_changes_buffer;
+                    var full_path = LocalChangesUtils.buildFullPath(opts.application_name, opts.platform, opts.properties_path);
+                    var length = local_changes[full_path].length;
+                    local_changes[full_path] = _.filter(local_changes[full_path], function (elem) {
+                        return !_.some(properties, { 'name': elem.properties_name, 'filtrable_value': elem.properties_value });
+                    });
                     save();
-                },
-                hasLocalChanges(application_name, platform, properties_path) {
-                    return this.getLocalChanges(LocalChangesUtils.buildFullPath(application_name, platform, properties_path)).length > 0;
-                },
-                clearLocalChanges(opts) {
-                    if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
-                        local_changes[LocalChangesUtils.buildFullPath(opts.application_name, opts.platform, opts.properties_path)] = [];
-                    } else {
-                        local_changes = {};
-                    }
-                    save();
-                },
-                smartClearLocalChanges(opts, properties) {
-                    if ('application_name' in opts && 'platform' in opts && 'properties_path' in opts) {
-                        localChangesCleanup();
-                        var full_path = LocalChangesUtils.buildFullPath(opts.application_name, opts.platform, opts.properties_path);
-                        var length = local_changes[full_path].length;
-                        local_changes[full_path] = _.filter(local_changes[full_path], function (elem) {
-                            return !_.some(properties, { 'name': elem.properties_name, 'filtrable_value': elem.properties_value });
-                        });
-                        save();
-                        return length !== local_changes[full_path].length;
-                    }
-                    return false;
-                },
-            };
-            return LocalChangesDAO;
-        });
+                    return length !== local_changes[full_path].length;
+                }
+                return false;
+            },
+        };
+        return LocalChangesDAO;
+    });

@@ -44,12 +44,12 @@
         const BUILD_TIME = '';
 
         // Substitué par docker_entrypoint.sh :
-        let substOrDefault = (e, v) => (e[0] !== '$' ? e : v);
-        const DOCUMENTATION_LINK    =  substOrDefault("$DOCUMENTATION_LINK",    'https://voyages-sncf-technologies.github.io/hesperides-gui/');
-        const EVENT_PAGINATION_SIZE = +substOrDefault("$EVENT_PAGINATION_SIZE", '25');
-        const LOCALCHANGES_TTL      = +substOrDefault("$LOCALCHANGES_TTL",      '50');
-        const SUPPORT_URL           =  substOrDefault("$SUPPORT_URL",           '');
-        const SWAGGER_LINK          =  substOrDefault("$SWAGGER_LINK",          '/rest/swagger-ui.html');
+        let substOrDefault = (e, v) => (e && e[0] !== '$' ? e : v);
+        const DOCUMENTATION_LINK    =  substOrDefault('$DOCUMENTATION_LINK',    'https://voyages-sncf-technologies.github.io/hesperides-gui/');
+        const EVENT_PAGINATION_SIZE = +substOrDefault('$EVENT_PAGINATION_SIZE', '25');
+        const LOCALCHANGES_TTL      = +substOrDefault('$LOCALCHANGES_TTL',      '50');
+        const SUPPORT_URL           =  substOrDefault('$SUPPORT_URL',           '');
+        const SWAGGER_LINK          =  substOrDefault('$SWAGGER_LINK',          '/rest/swagger-ui.html');
         delete substOrDefault;
     </script>
 

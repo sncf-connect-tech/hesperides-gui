@@ -37,13 +37,13 @@ angular.module('hesperides.properties')
                     if (item.id === id) {
                         parent = iterable;
                     }
-                    if (!_.isUndefined(parent)) {
+                    if (parent) {
                         return false;
                     }
                     // recur here : on values of iterable
                     _.each(item.values, function (value) {
                         parent = findInIterable(value, id);
-                        return _.isUndefined(parent);
+                        return !parent;
                     });
                     return true;
                 });
@@ -59,7 +59,7 @@ angular.module('hesperides.properties')
                 var parent = null;
                 _.each(iterables, function (iterable) {
                     parent = findInIterable(iterable, id);
-                    return _.isUndefined(parent);
+                    return !parent;
                 });
                 return parent;
             };
@@ -122,11 +122,11 @@ angular.module('hesperides.properties')
                 var parent = findParent($scope.iterables, item.id);
 
                 // 2 - delete the item
-                if (_.isUndefined(parent)) {
+                if (parent) {
+                    _.remove(parent.iterable_valorisation_items, { id: item.id });
+                } else {
                     console.error(`Item of id :${ item.id } was not found :(. This is an error !`);
                 }
-
-                _.remove(parent.iterable_valorisation_items, { id: item.id });
             };
         },
     ])

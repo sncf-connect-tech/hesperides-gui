@@ -33,8 +33,8 @@
                         <strong flex>{{ 'save-properties.modal.message.label' | translate }}</strong>
                         <br/>
                         <md-autocomplete flex
-                                         id="save-properties-modal_comment-autocomplete"
-                                         md-input-id="save-properties-modal_input-comment-autocomplete"
+                                         id="e2e-save-properties-modal_comment-autocomplete"
+                                         md-input-id="e2e-save-properties-modal_input-comment-autocomplete"
                                          md-selected-item="comment"
                                          md-search-text="raw_comment"
                                          md-items="item in comments.getCommentsLike(application_name, raw_comment)"
@@ -54,7 +54,7 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button id="save-properties-modal_save-comment-button" ng-disabled="!comments.isCommentValid(raw_comment)"
+            <md-button id="e2e-save-properties-modal_save-comment-button" ng-disabled="!comments.isCommentValid(raw_comment)"
                        ng-click="saveAction()" class="md-raised md-primary">
                 {{ 'button.modal.validate' | translate }}
             </md-button>
