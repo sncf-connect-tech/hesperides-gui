@@ -84,6 +84,7 @@ md-toolbar .md-menu {
     min-width: 25px;
     max-width: 25px;
     background-repeat: no-repeat;
+    padding: 0 30px 0 13px;
 }
 
 .md-menu-toolbar{

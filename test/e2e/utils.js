@@ -149,3 +149,8 @@ exports.switchBrowserBackToFirstTab = function () {
         return browser.switchTo().window(mainTabHandle);
     });
 }
+
+exports.checkSuccessNotification = function (text) {
+    this.checkIfElementIsPresentWithClass('.cg-notify-message.success');
+    this.checkIfElementContainsText(element.all(by.css('.cg-notify-message.success')).get(0), text);
+}

@@ -1,11 +1,15 @@
+<script type="text/ng-template" id="iterable-properties-container">
 
-<script type="text/ng-template" id="iterable">
-
-    <div class="iterable-block">
+    <div class="iterable-bloc" id="{{item.id}}">
 
         <div layout="row" class="iterable-bloc-title">
-            <md-button flex = "5" aria-label="{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}" class = "md-btn md-xs md-button" ng-click="deleteOne(item)">
-                <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}</md-tooltip>
+            <md-button id="e2e-iterable-property-{{property.name}}-bloc-{{item.id}}-remove-bloc-button"
+                       aria-label="{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}"
+                       class="md-btn md-xs md-button"
+                       ng-click="deleteOne(item)"
+                       flex="5">
+                <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.deleteBlock' | translate }}
+                </md-tooltip>
                 <md-icon class="fa fa-minus fa-lg"></md-icon>
             </md-button>
 
@@ -13,13 +17,13 @@
             <input flex="40"
                    ng-model="item.title"
                    placeholder="{{ 'properties.module.editProperties.iterableProperties.blocTitle' | translate }}"
-                   class="iterable-title-value" >
+                   class="iterable-title-value">
         </div>
 
-        <div ng-repeat="value in item.values">
+        <div ng-repeat="value in item.values | orderBy:'name'" ng-init="sectionIndex = $index">
 
             <!-- If the item hasn't iterable_valorisation_items, then it is simple property -->
-            <div layout = "row" ng-if="!value.iterable_valorisation_items">
+            <div layout="row" ng-if="!value.iterable_valorisation_items">
 
                 <div layout="column" flex="30">
                     <div class="truncate-ellipsis">
@@ -43,7 +47,7 @@
                               ng-pattern="value.pattern"
                               ng-required="value.required"
                               class="property-value"
-                              id="iterable-properties-list_value-property-isnotglobale-input-bloc-{{index}}-property-{{value.name}}"
+                              id="e2e-iterable-property-{{property.name}}-bloc-{{item.id}}-value-{{value.name}}"
                     ></textarea>
                     <md-tooltip ng-if="value.tooltip" md-direction="top">{{value.tooltip}}</md-tooltip>
                 </div>
@@ -53,24 +57,31 @@
             <!-- If the item has iterable_valorisation_items, then it is an inner iterable property -->
             <div ng-if="value.iterable_valorisation_items">
 
-                <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click="addOne(value)">
-                    <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>
-                    <md-icon class="fa fa-plus fa-lg"></md-icon>{{value.name}}
+                <md-button id="e2e-iterable-property-{{property.name}}-add-bloc-button"
+                           aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}"
+                           class="md-btn md-xs md-button" ng-click="addOne(value)">
+                    <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}
+                    </md-tooltip>
+                    <md-icon class="fa fa-plus fa-lg"></md-icon>
+                    {{value.name}}
                 </md-button>
 
-                <div ng-repeat="item in value.iterable_valorisation_items" ng-include="'iterable'"></div>
+                <div ng-repeat="item in value.iterable_valorisation_items" ng-include="'iterable-properties-container'"></div>
 
             </div>
         </div>
     </div>
 </script>
 
-<div ng-repeat="property in iterables" class="iterable-main-block" ng-if="property.inModel">
+<div ng-repeat="property in iterables | orderBy:'name'" class="iterable-main-block" ng-if="property.inModel">
 
-    <md-button id="properties-list_display-iterable-properties-add-bloc-button" aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click="addOne(property)">
+    <md-button id="e2e-iterable-property-{{property.name}}-add-bloc-button"
+               aria-label="{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}"
+               class="md-btn md-xs md-button" ng-click="addOne(property)">
         <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.addBlock' | translate }}</md-tooltip>
-        <md-icon class="fa fa-plus fa-lg"></md-icon>{{property.name}}
+        <md-icon class="fa fa-plus fa-lg"></md-icon>
+        {{property.name}}
     </md-button>
 
-    <div ng-repeat="item in property.iterable_valorisation_items" ng-include="'iterable'"></div>
+    <div ng-repeat="item in property.iterable_valorisation_items" ng-include="'iterable-properties-container'"></div>
 </div>

@@ -36,7 +36,8 @@
                     </md-button>
                     <md-input-container ng-show="isPlatformOpen" class="md-block filter-platform width-50-pc">
                         <label>{{ 'properties.platform.search' | translate }}</label>
-                        <input id="properties_platform-filter-input" type="text" ng-trim="true" ng-model="searchInPlatforms"
+                        <input id="properties_platform-filter-input" type="text" ng-trim="true"
+                               ng-model="searchInPlatforms"
                                placeholder="{{ 'properties.platform.filter.placeholder' | translate }}"/>
                     </md-input-container>
                 </div>
@@ -70,22 +71,26 @@
 <div layout="column" ng-show="platform" class="bg-light">
     <div layout="row">
         <div flex="50">
-            <h3>{{ 'properties.platform.title' | translate }} <strong>{{platform.name}} (version
-                <a href="" ng-click="change_platform_version(platform)"
-                   class="ng-binding"
-                   onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
-                <md-tooltip>{{ 'properties.platform.version.tooltip' | translate }}</md-tooltip>
-                )</strong>
+            <h3>
+                {{ 'properties.platform.title' | translate }}
+                <strong>{{platform.name}} (version
+                    <a href="" ng-click="change_platform_version(platform)"
+                       class="ng-binding"
+                       onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
+                    <md-tooltip>{{ 'properties.platform.version.tooltip' | translate }}</md-tooltip>)
+                </strong>
 
                 <!-- Show events for platform -->
-                <md-button id="properties_show-platform-event-button" aria-label="{{ 'properties.platform.version.history' | translate }}"
+                <md-button id="properties_show-platform-event-button"
+                           aria-label="{{ 'properties.platform.version.history' | translate }}"
                            ng-click="show_events(application, platform, 'platform')" class="md-xs">
                     <span class="fa fa-history fa-2x"></span>
                     <md-tooltip>{{ 'properties.platform.version.history' | translate }}</md-tooltip>
                 </md-button>
 
                 <!-- Show pending changes -->
-                <md-button id="properties_show-local-change-button" aria-label="{{ 'properties.platform.localChange.pending' | translate }}"
+                <md-button id="properties_show-local-change-button"
+                           aria-label="{{ 'properties.platform.localChange.pending' | translate }}"
                            ng-click="show_united_nations_modal()" class="md-xs" ng-if="platformLocalChangesCount() > 0">
                     <span class="fa fa-medkit fa-2x"></span>
                     <span class="title">{{ 'properties.platform.localChange.pending' | translate }} ( {{platformLocalChangesCount()}} ) </span>
@@ -94,8 +99,10 @@
         </div>
         <div flex="25" layout-align="center top">
             <h3>
-                <md-switch id="properties_isProduction-switch" class="md-primary properties-production" aria-label="Production"
-                           ng-model="platform.production" ng-disabled="!user.isProdUser" ng-change="save_platform_from_box(mainBox)" id="isProduction">
+                <md-switch id="properties_isProduction-switch" class="md-primary properties-production"
+                           aria-label="Production"
+                           ng-model="platform.production" ng-disabled="!user.isProdUser"
+                           ng-change="save_platform_from_box(mainBox)" id="isProduction">
                     {{ 'properties.platform.production.switch' | translate }}
                     <md-tooltip>{{ 'properties.platform.production.switch.tooltip' | translate }}</md-tooltip>
                 </md-switch>
@@ -112,24 +119,27 @@
         </div-->
     </div>
     <div layout="row" ng-show="empty_module_status()">
-        <h4 class="contain_empty_module"><i class="fa fa-exclamation-triangle"></i>{{ 'properties.platform.emptyModule' | translate }}</h4>
+        <h4 class="contain_empty_module"><i class="fa fa-exclamation-triangle"></i>{{ 'properties.platform.emptyModule'
+            | translate }}</h4>
     </div>
     <div layout="row">
         <div flex="none">
-            <md-button id="properties_show-tree-mode-button" ng-click="treeModeShow()" ng-class="{'md-raised':tree}" aria-label="{{ 'properties.platform.treeMode.tooltip' | translate }}">
+            <md-button id="properties_show-tree-mode-button" ng-click="treeModeShow()" ng-class="{'md-raised':tree}"
+                       aria-label="{{ 'properties.platform.treeMode.tooltip' | translate }}">
                 <md-tooltip>{{ 'properties.platform.treeMode.tooltip' | translate }}</md-tooltip>
                 <i class="fa fa-tree"></i>
             </md-button>
         </div>
         <div flex>
-            <md-button id="e2e-properties-show-box-mode-button" ng-click="boxModeShow()" ng-class="{'md-raised':box}" aria-label="{{ 'properties.platform.boxMode.tooltip' | translate }}">
+            <md-button id="e2e-properties-show-box-mode-button" ng-click="boxModeShow()" ng-class="{'md-raised':box}"
+                       aria-label="{{ 'properties.platform.boxMode.tooltip' | translate }}">
                 <md-tooltip>{{ 'properties.platform.boxMode.tooltip' | translate }}</md-tooltip>
                 <i class="fa fa-clone"></i>
             </md-button>
         </div>
     </div>
 
-    <div id="box" class="slide-animate" ng-if="box" >
+    <div id="box" class="slide-animate" ng-if="box">
         <box-properties isInstanceOpen="isInstanceOpen"></box-properties>
     </div>
     <div id="tree" class="slide-animate" ng-if="tree">

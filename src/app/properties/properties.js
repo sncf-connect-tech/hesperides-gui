@@ -1763,7 +1763,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 filtered.push(item);
             });
             filtered.sort(function (item1, item2) {
-                return item2[field].localeCompare(item1[field]);
+                return item1[field].localeCompare(item2[field]);
             });
             return filtered;
         };

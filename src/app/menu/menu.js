@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties'])
+angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties' ])
 
     .controller('MenuTechnoController', function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
         $scope.find_technos_by_name = function (name) {
@@ -51,9 +51,9 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
 
         $scope.open_techno_page = function (name, version, is_working_copy) {
             if (is_working_copy) {
-                $location.path(`/techno/${name}/${version}`).search({type: 'workingcopy'});
+                $location.path(`/techno/${ name }/${ version }`).search({ type: 'workingcopy' });
             } else {
-                $location.path(`/techno/${name}/${version}`).search({});
+                $location.path(`/techno/${ name }/${ version }`).search({});
             }
             $scope.technoSearched = '';
             $mdMenu.cancel(); // dans le cas où on est appelé par l'autocomplete de menu.html
@@ -71,7 +71,7 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
         };
 
         $scope.create_module = function (name, version) {
-            var module = new Module({name, version});
+            var module = new Module({ name, version });
             ModuleService.save(module).then(function (mod) {
                 $scope.closeModuleDialog();
                 $scope.open_module_page(mod.name, mod.version, mod.is_working_copy);
@@ -86,9 +86,9 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
         };
 
         $scope.open_module_page = function (name, version, is_working_copy) {
-            $location.path(`/module/${name}/${version}`).search({});
+            $location.path(`/module/${ name }/${ version }`).search({});
             if (is_working_copy) {
-                $location.search({type: 'workingcopy'});
+                $location.search({ type: 'workingcopy' });
             }
             $scope.moduleSearched = '';
             $mdMenu.cancel();
@@ -130,9 +130,9 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
         };
 
         $scope.open_properties_page = function (application_name, platform_name) {
-            $location.path(`/properties/${application_name}`);
+            $location.path(`/properties/${ application_name }`);
             if (platform_name) {
-                $location.search({platform: platform_name});
+                $location.search({ platform: platform_name });
             } else {
                 $location.search({});
             }
@@ -145,7 +145,7 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
                 name: platform_name,
                 application_name,
                 application_version,
-                production: production || false
+                production: production || false,
             });
             ApplicationService.save_platform(platform).then((ptf) => {
                 $mdDialog.cancel();
@@ -157,7 +157,7 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
             if ($scope.new_platform_already_exist && $scope.new_platform.override_existing) {
                 ApplicationService.delete_platform(application_name, platform_name);
             }
-            var platform = new Platform({name: platform_name, application_name, application_version, production});
+            var platform = new Platform({ name: platform_name, application_name, application_version, production });
             ApplicationService.create_platform_from(platform, from_application, from_platform, copyInstancesAndProperties || false)
                 .then((ptf) => {
                     $mdDialog.cancel();
@@ -165,8 +165,8 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
                 })
                 .catch(function (error) {
                     notify({
-                        classes: ['error'],
-                        message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesController.create_platform_from'
+                        classes: [ 'error' ],
+                        message: (error.data && error.data.message) || error.data || 'Unknown API error in MenuPropertiesController.create_platform_from',
                     });
                     throw error;
                 });
@@ -210,7 +210,7 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
         $scope.check_new_platform_already_exist = function () {
             return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
                 $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
-                if (_.some(response, {'name': $scope.new_platform.platform_name})) {
+                if (_.some(response, { 'name': $scope.new_platform.platform_name })) {
                     ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, null, true).then(function () {
                         $scope.new_platform_already_exist = true;
                     }, function () {
@@ -276,7 +276,7 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
                 $scope.api_build_time = response.data.build_time || 'unknown';
             }, function (errorResp) {
                 var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';
-                notify({classes: ['error'], message: errorMsg});
+                notify({ classes: [ 'error' ], message: errorMsg });
                 throw new Error(errorMsg);
             });
 
@@ -309,7 +309,7 @@ angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application'
             $scope.settings_color = store.get('color_active');
             $scope.settings_display = store.get('display_mode');
             $scope.settings_language = store.get('language');
-            $scope.items = [{name: 'USN1'}, {name: 'INT1'}, {name: 'REC1'}];
+            $scope.items = [ { name: 'USN1' }, { name: 'INT1' }, { name: 'REC1' } ];
             $scope.applications = [];
             if (store.get('applications')) {
                 $scope.applications = store.get('applications');
