@@ -206,6 +206,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 return return_value;
             };
 
+            $scope.is_prod_flag_missing = function () {
+                return (_.startsWith($scope.platform.name, 'PRD') || _.startsWith($scope.platform.name, 'PROD')) && !$scope.platform.production;
+            };
+
             $scope.contain_empty_module = function (box) {
                 var return_value = '';
 

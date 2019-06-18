@@ -17,9 +17,10 @@ jobs:
     stage: test
     addons:
       firefox: "50.0"
+    services:
+      - xvfb
     before_script:
       - export DISPLAY=:99.0
-      - sh -e /etc/init.d/xvfb start
     script:
       - npm test
       - cat test/unit/reports/coverage.txt
@@ -30,9 +31,9 @@ jobs:
       chrome: stable
     services:
       - docker
+      - xvfb
     before_script:
       - export DISPLAY=:99.0
-      - sh -e /etc/init.d/xvfb start
       - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides &
       # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
       - sudo env "PATH=$PATH" npm start &

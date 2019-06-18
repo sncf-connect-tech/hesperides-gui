@@ -50,8 +50,7 @@
     <li class="jumbotron" ng-repeat="box in (box.children | orderObjectBy:'name')"
         ng-include="'properties/box_renderer.html'"></li>
 
-    <li ng-if="box.modules.length > 0" class="jumbotron instance deployed-module" ng-repeat="module in box.modules | orderObjectBy:'name'"
-        data-e2e-properties-path="{{module.properties_path}}">
+    <li ng-if="box.modules.length > 0" class="jumbotron instance deployed-module" ng-repeat="module in box.modules | orderObjectBy:'name'">
         <div layout="row">
             <div class="property-box-module-name layout-align-start-center layout-row flex-none" layout="row" layout-align="start center" flex="none">
                 <a id="e2e-box-renderer-edit-module-button-{{module.title.split(',')[0]}}" href="" class="module-link has_model_{{is_module_has_model(module)}}"

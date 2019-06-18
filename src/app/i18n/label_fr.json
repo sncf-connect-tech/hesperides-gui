@@ -128,6 +128,7 @@
   "properties.platform.hide.all": "Cacher les plateformes",
   "properties.platform.title": "Représentation logique de ",
   "properties.platform.emptyModule": "Au moins un module non-existant a été detecté sur la plateforme",
+  "properties.platform.prodFlagMissing": "Le nom de votre plateforme débute par PRD : il est recommandé de l'identifier comme une plateforme de production",
   "properties.platform.quickDisplay": "Extension rapide (niveau - module)",
   "properties.platform.version.tooltip": "Modifier le label 'version de l'application'",
   "properties.platform.version.history": "Afficher l'historique",

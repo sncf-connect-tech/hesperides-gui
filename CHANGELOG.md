@@ -25,6 +25,34 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Warning affiché pour les plateformes non identifiées comme de production mais dont le nom débute par PRD ou PROD - close #255. [Lucas Cimon]
+
+
+
+## 2019-06-05
+### Fixed
+
+- #248 Suppression d'un bloc après la première propriété itérable. [Thomas L'Hostis]
+
+
+
+## 2019-06-03
+### Fixed
+
+- #244 Correction du diff de propriétés globales avec timestamp. [Thomas L'Hostis]
+
+
+
+## 2019-05-28
+### Fixed
+
+- #244 Correction du diff de propriétés globales avec timestamp. [Thomas L'Hostis]
+
+
+
 ## 2019-05-24
 ### Fixed
 
