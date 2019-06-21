@@ -29,10 +29,10 @@
                     <p><strong>{{ 'settings.display' | translate }} :</strong> </p>
 
                     <md-radio-group ng-model="settings_display" layout="row">
-                        <md-radio-button value="arbre">
+                        <md-radio-button id="e2e-modal-settings-switch-display-mode-tree" value="arbre">
                             {{ 'settings.tree' | translate }}
                         </md-radio-button>
-                        <md-radio-button value="bloc">
+                        <md-radio-button id="e2e-modal-settings-switch-display-mode-bloc" value="bloc">
                             {{ 'settings.bloc' | translate }}
                         </md-radio-button>
                     </md-radio-group>
@@ -40,21 +40,21 @@
                     <p><strong>{{ 'settings.language' | translate }} :</strong> </p>
 
                     <md-radio-group ng-model="settings_language" layout="row">
-                        <md-radio-button id="radio-button_language-fr" value="fr">
+                        <md-radio-button id="e2e-modal-settings-switch-lang-fr" value="fr">
                             {{ 'settings.french' | translate }}
                         </md-radio-button>
-                        <md-radio-button id="radio-button_language-en" value="en">
+                        <md-radio-button id="e2e-modal-settings-switch-lang-en" value="en">
                             {{ 'settings.english' | translate }}
                         </md-radio-button>
                     </md-radio-group>
 
-                    <md-switch id="switch_hide-show-instance" class="md-primary" ng-model="settings_instance" class="md-block">
+                    <md-switch id="e2e-modal-settings-switch-unfold-instances-by-default" class="md-primary" ng-model="settings_unfoldInstancesByDefault" class="md-block">
                         <strong>{{ 'settings.instance' | translate }}</strong>
                     </md-switch>
-                    <md-switch id="switch_copy-instance" class="md-primary" ng-model="settings_copy" class="md-block">
+                    <md-switch id="e2e-modal-settings-switch-copy-valuated-properties-by-default" class="md-primary" ng-model="settings_copy" class="md-block">
                         <strong>{{ 'settings.copy' | translate }}</strong>
                     </md-switch>
-                   <md-switch id="switch_set-color" class="md-primary" ng-model="settings_color" class="md-block">
+                   <md-switch class="md-primary" ng-model="settings_color" class="md-block">
                         <strong>{{ 'settings.color' | translate }}</strong>
                     </md-switch>
 
@@ -126,8 +126,8 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button id="button_closeDialog" ng-click="closeSettingsDialog()" class="md-raised md-warn">{{ 'settings.close' | translate }}</md-button>
-            <md-button id="button_saveSettings" ng-click="saveSettings()" class="md-raised md-primary">{{ 'settings.save' | translate }}</md-button>
+            <md-button id="e2e-modal-settings-button-close" ng-click="closeSettingsDialog()" class="md-raised md-warn">{{ 'settings.close' | translate }}</md-button>
+            <md-button id="e2e-modal-settings-button-save" ng-click="saveSettings()" class="md-raised md-primary">{{ 'settings.save' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

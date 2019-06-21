@@ -20,26 +20,24 @@ var utils = require('../utils.js');
 
 describe('Checks around production role', () => {
     beforeEach(() =>
-        browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
     );
 
     it('should check on logical representation page that switch "Production platform" is disabled for a "non production" user', () =>
-        utils.checkIfElementIsDisabled("properties_isProduction-switch","true")
+        utils.checkIfElementIsDisabled('properties_isProduction-switch', 'true')
     );
 
     it('should check that a "non production" user cannot create a production platform', () => {
-        utils.clickOnElement(element(by.id("e2e-navbar-app")));
-        utils.clickOnElement(element(by.id("e2e-navbar-app-create")));
-        
-        utils.checkIfElementIsDisabled("e2e-modal-platform-create-is-prod-switch","true");
+        utils.clickOnElement(element(by.id('e2e-navbar-app')));
+        utils.clickOnElement(element(by.id('e2e-navbar-app-create')));
+
+        utils.checkIfElementIsDisabled('e2e-modal-platform-create-is-prod-switch', 'true');
     });
 
     it('should check that a "non production" user cannot create a production platform from another one', () => {
-        utils.clickOnElement(element(by.id("e2e-navbar-app")));
-        utils.clickOnElement(element(by.id("e2e-navbar-app-create-from")));
-        
-        utils.checkIfElementIsDisabled("e2e-modal-platform-create-from-is-prod-switch","true");
-    });
+        utils.clickOnElement(element(by.id('e2e-navbar-app')));
+        utils.clickOnElement(element(by.id('e2e-navbar-app-create-from')));
 
-    afterAll((done) => process.nextTick(done) );
+        utils.checkIfElementIsDisabled('e2e-modal-platform-create-from-is-prod-switch', 'true');
+    });
 });

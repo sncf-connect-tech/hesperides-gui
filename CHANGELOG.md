@@ -25,10 +25,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-06-18
 ### Added
 
-- Warning affiché pour les plateformes non identifiées comme de production mais dont le nom débute par PRD ou PROD - close #255. [Lucas Cimon]
+- Warning affiché pour les plateformes non identifiées comme de production mais dont le nom débute par PRD ou PROD - close #255 (#257) [Lucas Cimon]
 
 
 

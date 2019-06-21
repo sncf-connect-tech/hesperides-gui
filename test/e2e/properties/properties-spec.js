@@ -19,13 +19,12 @@
 var utils = require('../utils.js');
 
 describe('Manage properties (global, module, instance) and annotations (default, comment, required etc ...)', () => {
-
     beforeAll(() =>
-        browser.get(hesperides_url + '/#/properties/' + data.new_application + '?platform=' + data.new_platform)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
     );
 
     beforeEach(function () {
-        browser.get(hesperides_url + '/#/properties/' + data.new_application + '?platform=' + data.new_platform);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
 
         // set tree mode
         utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
@@ -33,7 +32,7 @@ describe('Manage properties (global, module, instance) and annotations (default,
         // on déroule l'arbre
         utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
 
-        utils.clickOnElement(element(by.id('e2e-tree-renderer-edit-properties-module-button-' + data.new_module_name)));
+        utils.clickOnElement(element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)));
     });
 
     it('should fill in properties with right values (TREE MODE) and check if save event is correctly stored', () => {
@@ -50,7 +49,7 @@ describe('Manage properties (global, module, instance) and annotations (default,
         utils.clickOnElement(element(by.id('e2e-tree-properties-save-module-properties-button')));
 
         // add comment for saving modifications
-        element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(data.comment_for_saving_properties + '_' + random_string);
+        element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(`${ data.comment_for_saving_properties }_${ random_string }`);
         utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
         utils.checkSuccessNotification('The properties have been saved');
 
@@ -78,12 +77,12 @@ describe('Manage properties (global, module, instance) and annotations (default,
         // la validation devrait se faire dans un premier temps côté front
 
         // add comment for saving modifications
-        element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(data.comment_for_saving_properties + '_' + random_string);
+        element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(`${ data.comment_for_saving_properties }_${ random_string }`);
         utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
 
         // check events if modification is not saved because of pattern is not correct
         utils.clickOnElement(element(by.id('properties_show-platform-event-button')));
-        element.all(by.id('properties-saved_comment-span-' + data.comment_for_saving_properties + '_' + random_string)).then((items) =>
+        element.all(by.id(`properties-saved_comment-span-${ data.comment_for_saving_properties }_${ random_string }`)).then((items) =>
             expect(items.length).toBe(0)
         );
     });
@@ -107,8 +106,6 @@ describe('Manage properties (global, module, instance) and annotations (default,
         element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(data.comment_for_saving_global_properties);
         utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
 
-        utils.checkIfElementIsPresent('properties-globales_key-property-label-' + data.global_property_key);
+        utils.checkIfElementIsPresent(`properties-globales_key-property-label-${ data.global_property_key }`);
     });
-
-    afterAll((done) => process.nextTick(done));
 });

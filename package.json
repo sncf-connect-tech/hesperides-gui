@@ -66,7 +66,7 @@
   "scripts": {
     "postinstall": "node bundler.js",
     "start": "grunt server",
-    "lint": "eslint --fix src/app",
+    "lint": "eslint --fix src/app test",
     "test": "karma start test/unit/karma.conf.js",
     "webdriver-start": "webdriver-manager update && webdriver-manager start",
     "e2e-tests": "protractor test/e2e/protractor-conf.js"

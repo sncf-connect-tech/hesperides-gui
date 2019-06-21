@@ -128,7 +128,7 @@
   "properties.platform.hide.all": "Hide platforms",
   "properties.platform.title": "Logic representation of ",
   "properties.platform.emptyModule": "At least one empty module has been detected on the current platform.",
-  "properties.platform.prodFlagMissing": "The name of your platform starts with PRD : it is advised that you flag it as a production platform",
+  "properties.platform.prodFlagMissing": "The name of your platform starts with PRD: it is advised that you flag it as a production platform",
   "properties.platform.quickDisplay": "Quick extend (module level)",
   "properties.platform.version.tooltip": "Edit the label 'version of the application'",
   "properties.platform.version.history": "Display history",

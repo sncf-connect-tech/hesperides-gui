@@ -19,34 +19,31 @@
 var utils = require('../utils.js');
 
 describe('Preview files', () => {
-
     beforeAll(() =>
-        browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
     );
 
     it('should preview files (TREE MODE) and check if template has the right location', () => {
         // set tree mode
-        utils.clickOnElement(element(by.id("properties_show-tree-mode-button")));
+        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
 
         // open the tree
-        //utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
-        //utils.clickOnElement(element(by.id("e2e-tree-renderer-tree-sign-"+data.new_module_name)));
+        // utils.clickOnElement(element(by.id("e2e-tree-properties-quick-display-button")));
+        // utils.clickOnElement(element(by.id("e2e-tree-renderer-tree-sign-"+data.new_module_name)));
 
-        utils.moveMouseOnElement("e2e-tree-renderer-edit-properties-"+data.new_instance_name+"-button",
-                                 "e2e-tree-renderer-preview-properties-"+data.new_instance_name+"-button");
+        utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,
+            `e2e-tree-renderer-preview-properties-${ data.new_instance_name }-button`);
 
-        utils.clickOnElement(element(by.id("e2e-tree-renderer-preview-properties-"+data.new_instance_name+"-button")));
+        utils.clickOnElement(element(by.id(`e2e-tree-renderer-preview-properties-${ data.new_instance_name }-button`)));
 
         // Preview the new template file
-        utils.clickOnElement(element(by.id("e2e-file-modal-preview-"+data.new_template_filename+"-button")));
+        utils.clickOnElement(element(by.id(`e2e-file-modal-preview-${ data.new_template_filename }-button`)));
 
-        expect(element(by.id("e2e-file-modal-template-section-header-path-"+data.new_template_filename)).getText()).toBe(data.new_template_location+"/"+data.new_template_filename);
+        expect(element(by.id(`e2e-file-modal-template-section-header-path-${ data.new_template_filename }`)).getText()).toBe(`${ data.new_template_location }/${ data.new_template_filename }`);
 
         // Preview the Json template
-        utils.clickOnElement(element(by.id("e2e-file-modal-preview-"+data.json_new_template_filename+"-button")));
+        utils.clickOnElement(element(by.id(`e2e-file-modal-preview-${ data.json_new_template_filename }-button`)));
 
-        expect(element(by.id("e2e-file-modal-template-section-header-path-"+data.json_new_template_filename)).getText()).toBe(data.json_new_template_location+"/"+data.json_new_template_filename);
+        expect(element(by.id(`e2e-file-modal-template-section-header-path-${ data.json_new_template_filename }`)).getText()).toBe(`${ data.json_new_template_location }/${ data.json_new_template_filename }`);
     });
-
-    afterAll((done) => process.nextTick(done) );
 });

@@ -1,0 +1,11 @@
+{
+    "globals": {
+        "ExpectedConditions": "readonly",
+        "element": "readonly",
+        "browser": "readonly",
+        "by": "readonly",
+        "data": "readonly",
+        "hesperides_url": "readonly",
+        "protractor": "readonly"
+    }
+}

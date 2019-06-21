@@ -26,7 +26,7 @@
             <md-input-container class="md-block margin-inherit">
                 <label>{{ 'properties.treeMode.title' | translate }}</label>
                 <!-- Add ngModelOptions for big tree, to prevent key press hang -->
-                <input type="text" ng-trim="true" ng-model="searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" ng-change="resetOpenByClick()" />
+                <input type="text" id="e2e-tree-properties-filter" ng-trim="true" ng-model="parentScope.searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" ng-change="resetOpenByClick()" />
             </md-input-container>
         </div>
 
@@ -56,7 +56,7 @@
         <!-- Elements enfants -->
         <div>
             <div
-                 ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:searchInTree"
+                 ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:parentScope.searchInTree"
                  ng-include="'properties/tree_renderer.html'"/>
             </div>
         </div>

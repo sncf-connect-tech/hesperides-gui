@@ -21,9 +21,8 @@ var utils = require('../utils.js');
 var until = protractor.ExpectedConditions;
 
 describe('Manage platform diff', () => {
-
     beforeAll(() => {
-        browser.get(hesperides_url + '/#/properties/' + data.new_application + '?platform=' + data.new_platform);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
     });
 
     it('should display datepicker on compare two platform at a specific date switch', () => {
@@ -56,7 +55,7 @@ describe('Manage platform diff', () => {
             utils.switchBrowserToNewTab().then(function () {
                 const newTabUrl = browser.getCurrentUrl();
                 utils.switchBrowserBackToFirstTab();
-                expect(newTabUrl).toContain('&timestamp=' + timestamp);
+                expect(newTabUrl).toContain(`&timestamp=${ timestamp }`);
             });
         });
     });

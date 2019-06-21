@@ -122,14 +122,15 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll,
             ApplicationService, FileService, EventService, ModuleService, Module, Page, $translate,
             $window, $http, Properties, HesperidesModalFactory, LocalChanges, $rootScope, notify, UserService, $document) {
+            // En définissant cette propriété dans ce scope chapeau,
+            // on permet de conserver le même filtre .searchInTree entre plateformes - cf. #252
+            $scope.parentScope = $scope.$parent.$parent;
             $scope.platform = $routeParams.platform;
             $scope.platforms = [];
 
             $scope.fileEntries = [];
 
             $scope.isPlatformOpen = 1;
-
-            $scope.isInstanceOpen = 0;
 
             $scope.$closeDialog = function () {
                 $mdDialog.cancel();
@@ -158,6 +159,16 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
              * An ugly copy of global properties
              */
             $scope.oldGolbalProperties = null;
+
+            $scope.boxModeUnfoldInstancesByDefault = store.get('unfoldInstancesByDefault');
+
+            if (store.get('display_mode') === 'arbre') {
+                $scope.box = false;
+                $scope.tree = true;
+            } else {
+                $scope.box = true;
+                $scope.tree = false;
+            }
 
             var Box = function (data) {
                 return angular.extend(this, {
@@ -207,6 +218,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             };
 
             $scope.is_prod_flag_missing = function () {
+                if (!$scope.platform) { // cette fonction peut être appelée avec que cette propriété ne soit initialisée
+                    return false;
+                }
                 return (_.startsWith($scope.platform.name, 'PRD') || _.startsWith($scope.platform.name, 'PROD')) && !$scope.platform.production;
             };
 
@@ -286,13 +300,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     return currentBox;
                 };
 
-                var update_modules = function (module, oldModules) {
-                    var currentModule = _.filter(oldModules, { name: module.name });
-                    if (currentModule.length > 0) {
-                        module.openBySearchFilter = currentModule[0].openBySearchFilter;
-                    }
-                };
-
                 var add_to_box = function (box, folders, level, module) {
                     if (level > folders.length) {
                         throw new Error('Should have nether been here, wrong use of add_to_box recursive function');
@@ -307,7 +314,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         oldBox = search_old_box(oldMainBox, box);
 
                         if (oldBox && oldBox.modules && oldBox.modules.length > 0) {
-                            update_modules(module, oldBox.modules);
+                            var currentModule = _.filter(oldBox.modules, { name: module.name });
+                            if (currentModule.length > 0) {
+                                module.openBySearchFilter = currentModule[0].openBySearchFilter;
+                            }
                         }
                     } else {
                         var name = folders[level];
@@ -1101,24 +1111,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             Page.setTitle('Properties');
 
-            /**
-             * Instances display relative vars
-             * The hide mode is displayed by default
-             */
-            $scope.isInstanceOpen = store.get('instance_properties') ? 1 : 0;
-
-            /**
-             * Box and tree display relative vars
-             * The tree mode is displayed by default
-             */
-            if (store.get('display_mode') === 'arbre') {
-                $scope.box = false;
-                $scope.tree = true;
-            } else {
-                $scope.box = true;
-                $scope.tree = false;
-            }
-
             ApplicationService.get($routeParams.application).then(function (application) {
                 if (!$routeParams.platform) {
                     return { application, platform: null };
@@ -1701,16 +1693,16 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     })
 
     .filter('filterBox', function () {
-        return function (boxes_object, searchString) {
+        return function (boxes, searchString) {
             searchString = (searchString || '').toUpperCase();
 
             // A box is filtered by its name or its modules names or its children boxes
             var filterSingleBox = function (box) {
                 box.openBySearchFilter = !searchString || _.includes(box.name.toUpperCase(), searchString);
                 _.each(box.modules, (module) => {
-                    module.openBySearchFilter = !searchString ||
-                                                  _.includes(module.name.toUpperCase(), searchString) ||
-                                                  _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString));
+                    module.openBySearchFilter = searchString ? (_.includes(module.name.toUpperCase(), searchString) ||
+                                                               _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString))) :
+                        store.get('unfoldInstancesByDefault');
                     box.openBySearchFilter = box.openBySearchFilter || module.openBySearchFilter;
                 });
                 _.each(box.children, (boxChild) => {
@@ -1719,7 +1711,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 return box.openBySearchFilter;
             };
 
-            return _.filter(boxes_object, filterSingleBox);
+            boxes.forEach(filterSingleBox);
+            return boxes;
         };
     })
 
@@ -1756,7 +1749,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             }
         };
 
-        $scope.openByClick = $scope.isInstanceOpen === 1 ? true : null; /* null => user never clicked / true => user clicked to open it / false => user clicked to close it */
+        /* null => user never clicked / true => user clicked to open it / false => user clicked to close it */
+        $scope.openByClick = null;
     })
 
 

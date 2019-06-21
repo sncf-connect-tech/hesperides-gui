@@ -48,7 +48,7 @@
         "lodash/prefer-constant": 0,
         "lodash/prefer-noop": 0,
         "lodash/prefer-lodash-method": 0,
-        "max-len": ["error", {"code": 300}],
+        "max-len": ["error", {"code": 330}],
         "max-params": 0,
         "no-alert": 0,
         "no-console": 0,
