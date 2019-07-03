@@ -91,11 +91,10 @@ describe('Manage modules', () => {
     });
 
     it('should be able to download a module template as a file', () => {
-        var filename = utils.getDownloadsPath() + data.json_new_template_filename;
-
         utils.clickOnElement(element(by.id(`e2e-template-list-download-button-for-${ data.json_new_template_title }`)));
 
-        browser.driver.wait(() =>
+        const filename = utils.getDownloadsPath() + data.json_new_template_filename;
+        return browser.driver.wait(() =>
             // Wait until the file has been downloaded.
             // We need to wait thus as otherwise protractor has a nasty habit of
             // trying to do any following tests while the file is still being
@@ -105,12 +104,11 @@ describe('Manage modules', () => {
             // Do whatever checks you need here.  This is a simple comparison;
             // for a larger file you might want to do calculate the file's MD5
             // hash and see if it matches what you expect.
-            expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
+            console.log(`File ${ data.json_new_template_filename } downloaded`);
+            return expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
                 data.json_new_template_content
             );
-        });
-
-        utils.clickOnElement(element(by.id('e2e-template-list-download-all-button')));
+        }).then(() => utils.clickOnElement(element(by.id('e2e-template-list-download-all-button'))));
     });
 
     it('should add a template in a working copy module and delete it', () => {
@@ -177,5 +175,12 @@ describe('Manage modules', () => {
                 return utils.checkResponseStatusCode(`${ hesperides_url }/rest/modules/${ data.new_module_name }_from/${ data.new_module_version }/workingcopy`, 200);
             })
         );
+    });
+
+    afterEach(function cleanUp() {
+        try {
+            fs.unlinkSync(utils.getDownloadsPath() + data.json_new_template_content);
+        // eslint-disable-next-line no-empty
+        } catch (exception) {} // le fichier peut ne pas exister donc on ignore toute erreur
     });
 });

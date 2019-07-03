@@ -26,8 +26,9 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
                 this.location = data.location;
                 this.url = data.url;
                 this.rights = data.rights;
-                this.name = ''; // the filename, to be displayed on the donwload link
-                this.content = ''; // the content of the file
+                this.filename = _.last(this.location.split('/'));
+                this.title = _.first(_.last(this.url.split('/')).split('?'));
+                this.content = '';
                 this.on_error = false; // indicates if there where an error or not !
 
                 // The content loading message
@@ -78,11 +79,6 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
                 return newRights;
             };
 
-            // Gets file name
-            var get_file_name = function (location) {
-                return _.last(location.split('/'));
-            };
-
             return {
 
                 get_files_entries(application_name, platform_name, path, module_name, module_version, instance_name, is_working_copy, simulate) {
@@ -119,8 +115,6 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
                                     entry.content = output.message;
                                 }
                             });
-
-                            entry.name = get_file_name(data.location);
                             return entry;
                         });
                     }, function (error) {
@@ -128,20 +122,21 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
                         throw error;
                     });
                 },
-                download_files(entries, name) {
-                // The JSZip Object
+                download_files(entries, instanceName) {
+                    // The JSZip Object
                     var zip = new JSZip();
 
                     // Adding files to zip
                     entries.forEach(function (entry) {
                         if (!entry.on_error) {
-                            zip.file(entry.name, entry.content);
+                            zip.file(entry.filename, entry.content);
                         }
                     });
 
                     // Generate and save the zip file
-                    var content = zip.generate({ type: 'blob' });
-                    saveAs(content, `${ name }.zip`); // exported by JSZip
+                    zip.generateAsync({ type: 'blob' }).then((content) =>
+                        saveAs(content, `${ instanceName }.zip`) // exported by JSZip
+                    );
                 },
                 files_rights_to_string,
             };

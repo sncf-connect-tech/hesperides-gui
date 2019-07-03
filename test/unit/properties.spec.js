@@ -209,7 +209,7 @@ describe('Testing hesperides properties', function () {
             var merged = (new Properties(properties)).mergeWithModel(new Properties(model));
             scope.iterables = merged.iterable_properties;
 
-            var beforeCount = scope.iterables[0].iterable_valorisation_items.lenth;
+            var beforeCount = scope.iterables[0].iterable_valorisation_items.length;
             scope.deleteOne(scope.iterables[0].iterable_valorisation_items[0]);
             expect(scope.iterables[0].iterable_valorisation_items.length + 1).toBe(beforeCount);
         });

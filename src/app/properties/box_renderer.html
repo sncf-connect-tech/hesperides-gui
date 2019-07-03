@@ -62,17 +62,17 @@
 
             <span ng-switch="module.instances.length" data-ng-init="module.isInstanceOpen = boxModeUnfoldInstancesByDefault">
                 <span ng-switch-when="0">
-                    <md-button id="md-button_hide-all-instance-{{module.name}}" ng-click="preview_instance(box, application, platform, instance, module, true)" class="md-xs">
+                    <md-button id="e2e-deployed-module-fold-all-instances-for-{{module.name}}" ng-click="preview_instance(box, application, platform, instance, module, true)" class="md-xs">
                         <span class="fa fa-eye"></span>
                         <md-tooltip>{{ 'properties.module.instance.preview' | translate }}</md-tooltip>
                     </md-button>
                 </span>
                 <span ng-switch-default>
-                    <md-button id="md-button_hide-all-instance-{{module.name}}" ng-click="module.isInstanceOpen = false" ng-show="module.isInstanceOpen" class="md-xs">
+                    <md-button id="e2e-deployed-module-fold-all-instances-for-{{module.name}}" ng-click="module.isInstanceOpen = false" ng-show="module.isInstanceOpen" class="md-xs">
                         <span class="fa fa-compress"></span>
                         <md-tooltip>{{ 'properties.instance.hide.all' | translate }}</md-tooltip>
                     </md-button>
-                    <md-button id="md-button_show-all-instance-{{module.name}}" ng-click="module.isInstanceOpen = true" ng-show="!module.isInstanceOpen" class="md-xs">
+                    <md-button id="e2e-deployed-module-unfold-all-instances-for-{{module.name}}" ng-click="module.isInstanceOpen = true" ng-show="!module.isInstanceOpen" class="md-xs">
                         <span class="fa fa-expand"></span>
                         <md-tooltip>{{ 'properties.instance.show.all' | translate }}</md-tooltip>
                     </md-button>

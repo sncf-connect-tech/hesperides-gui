@@ -21,20 +21,11 @@ var utils = require('../utils.js');
 
 describe('Manage logical representation', () => {
     beforeEach(() => {
-        // Lucas 2019/07/02 : l'utilisation de .ignoreSynchronization provient d'ici : https://github.com/angular/protractor/issues/66#issuecomment-394754959
-        // Il s'agit de la seule solution que j'ai pu trouver pour éviter ce type d'erreur :
-        //  Failed: javascript error: [ng:btstrpd] App already bootstrapped with this element '&lt;html lang="fr" ng-app="hesperides" ng-controller="TitleController" class="ng-scope"&gt;'
-        //  ...
-        //  From: Task: Protractor.get(http://user:password@localhost:80/#/properties/TEST_AUTO?platform=TEST_AUTO) - resume bootstrap
-        //  ...
-        //  From: Task: Run beforeEach in control flow
-        browser.ignoreSynchronization = true;
-        utils.deleteHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }_copy`);
         // Clean up: deleting any existing "_copy" platform & deployed modules
-        utils.putHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms`,
-            { application_name: data.new_application, platform_name: data.new_platform, application_version: data.new_platform_version, modules: [], production: false });
-        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
-        browser.ignoreSynchronization = false;
+        utils.deleteHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }_copy`);
+        return utils.putHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms`,
+            { application_name: data.new_application, platform_name: data.new_platform, application_version: data.new_platform_version, modules: [], production: false })
+            .then(() => browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`));
     });
 
     it('should add a logic representation (BOX MODE)', () => {
@@ -54,7 +45,7 @@ describe('Manage logical representation', () => {
         utils.clickOnElement(element(by.id(`e2e-box-renderer-add-module-button-${ data.logic_group_2 }`)));
         var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
         elm_module_name_input.sendKeys(`${ data.new_module_name } ${ data.new_module_version }`);
-        utils.selectFirstElemOfAutocomplete(elm_module_name_input, true, true, 3500);
+        utils.selectFirstElemOfAutocomplete(elm_module_name_input);
         utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));
 
         // add instance
@@ -70,15 +61,15 @@ describe('Manage logical representation', () => {
 
         // display/hide instance
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
-        utils.clickOnElement(element(by.id(`md-button_show-all-instance-${ data.new_module_name }`)));
+        utils.clickOnElement(element(by.id(`e2e-deployed-module-unfold-all-instances-for-${ data.new_module_name }`)));
         utils.checkIfElementIsPresent(`e2e-instance-list-for-${ data.new_module_name }`);
         utils.checkIfElementIsPresent(`e2e-instance-${ data.new_module_name }-${ data.new_instance_name }`);
-        utils.clickOnElement(element(by.id(`md-button_hide-all-instance-${ data.new_module_name }`)));
+        utils.clickOnElement(element(by.id(`e2e-deployed-module-fold-all-instances-for-${ data.new_module_name }`)));
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
     });
 
     it('should add a logic representation (TREE MODE)', () => {
-        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         treeModeAddLogicGroupModuleAndInstance(data.logic_group_1, data.logic_group_2, data.new_module_name, data.new_module_version, data.new_instance_name);
     });
 
@@ -87,13 +78,10 @@ describe('Manage logical representation', () => {
 
         treeModeAddLogicGroupModuleAndInstance(data.logic_group_1, data.logic_group_2, data.new_module_name, data.new_module_version, data.new_instance_name);
         treeModeAddLogicGroupModuleAndInstance(`${ data.logic_group_1 }_copy`, `${ data.logic_group_2 }_copy`, `${ data.new_module_name }_from`, data.new_module_version, `${ data.new_instance_name }_copy`);
-
         // Check base module count:
         expect(element.all(by.css('.property-tree-module')).count()).toEqual(2);
-
         // Copy platform
         utils.copyPlatform(data.new_application, data.new_platform, `${ data.new_platform }_copy`, `${ data.new_platform_version }_copy`);
-
         // Check base module count:
         expect(element.all(by.css('.property-tree-module')).count()).toEqual(2);
 
@@ -101,10 +89,8 @@ describe('Manage logical representation', () => {
         element(by.id('e2e-tree-properties-filter')).sendKeys('copy');
         // Check it applies:
         expect(element.all(by.css('.property-tree-module')).count()).toEqual(1);
-
         // Go back to initial platform:
         browser.setLocation(`/properties/${ data.new_application }?platform=${ data.new_platform }`);
-
         // Check filter still applies:
         expect(element.all(by.css('.property-tree-module')).count()).toEqual(1);
     });
@@ -138,7 +124,7 @@ function treeModeAddLogicGroupModuleAndInstance(logicGroup1, logicGroup2, module
     utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-module-button-${ logicGroup2 }`)));
     var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
     elm_module_name_input.sendKeys(`${ moduleName } ${ moduleVersion }`);
-    utils.selectFirstElemOfAutocomplete(elm_module_name_input, true, true, 3500);
+    utils.selectFirstElemOfAutocomplete(elm_module_name_input);
     browser.waitForAngular(); // ajout pour que l'autocompletion soit prise en compte au moment du test
     utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));
 

@@ -63,11 +63,10 @@ describe('Manage technos', () => {
     });
 
     it('should download template file for a techno', () => {
-        var filename = utils.getDownloadsPath() + data.new_techno_conf_filename;
-
         utils.clickOnElement(element(by.id(`e2e-template-list-download-button-for-${ data.new_techno_conf_name }`)));
 
-        browser.driver.wait(() =>
+        const filename = utils.getDownloadsPath() + data.new_techno_conf_filename;
+        return browser.driver.wait(() =>
             // Wait until the file has been downloaded.
             // We need to wait thus as otherwise protractor has a nasty habit of
             // trying to do any following tests while the file is still being
@@ -77,12 +76,11 @@ describe('Manage technos', () => {
             // Do whatever checks you need here.  This is a simple comparison;
             // for a larger file you might want to do calculate the file's MD5
             // hash and see if it matches what you expect.
-            expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
+            console.log(`File ${ data.new_techno_conf_filename } downloaded`);
+            return expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
                 data.new_techno_conf_content
             );
-        });
-
-        utils.clickOnElement(element(by.id('e2e-template-list-download-all-button')));
+        }).then(() => utils.clickOnElement(element(by.id('e2e-template-list-download-all-button'))));
     });
 
     it('should find techno on autocomplete in menu "techno"', () => {
@@ -92,5 +90,12 @@ describe('Manage technos', () => {
         browser.waitForAngular();
 
         expect(element.all(by.cssContainingText('.highlight', data.new_techno_name)).get(0));
+    });
+
+    afterEach(function cleanUp() {
+        try {
+            fs.unlinkSync(utils.getDownloadsPath() + data.new_techno_conf_content);
+        // eslint-disable-next-line no-empty
+        } catch (exception) {} // le fichier peut ne pas exister donc on ignore toute erreur
     });
 });

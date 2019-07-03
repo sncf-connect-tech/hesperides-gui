@@ -218,7 +218,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             };
 
             $scope.is_prod_flag_missing = function () {
-                if (!$scope.platform) { // cette fonction peut être appelée avec que cette propriété ne soit initialisée
+                if (!$scope.platform) { // cette fonction peut être appelée avant que cette propriété ne soit initialisée
                     return false;
                 }
                 return (_.startsWith($scope.platform.name, 'PRD') || _.startsWith($scope.platform.name, 'PROD')) && !$scope.platform.production;
@@ -535,8 +535,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             };
 
             /**
-         * This is used to preview an instance data.
-         */
+             * This is used to preview an instance data.
+             */
             $scope.preview_instance = function (box, application, platform, instance, module, simulate) {
                 simulate = simulate || false;
 
@@ -1700,9 +1700,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             var filterSingleBox = function (box) {
                 box.openBySearchFilter = !searchString || _.includes(box.name.toUpperCase(), searchString);
                 _.each(box.modules, (module) => {
-                    module.openBySearchFilter = searchString ? (_.includes(module.name.toUpperCase(), searchString) ||
-                                                               _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString))) :
-                        store.get('unfoldInstancesByDefault');
+                    if (searchString) {
+                        module.openBySearchFilter = _.includes(module.name.toUpperCase(), searchString) ||
+                                                    _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString));
+                    } else {
+                        module.openBySearchFilter = store.get('unfoldInstancesByDefault');
+                    }
                     box.openBySearchFilter = box.openBySearchFilter || module.openBySearchFilter;
                 });
                 _.each(box.children, (boxChild) => {

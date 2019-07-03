@@ -76,8 +76,9 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                         }
                     });
                     // Generate and save the zip file
-                    var content = zip.generate({ type: 'blob' });
-                    saveAs(content, `${ $scope.techno.title }.zip`);
+                    zip.generateAsync({ type: 'blob' }).then((content) =>
+                        saveAs(content, `${ $scope.techno.title }.zip`)
+                    );
                 };
 
                 $scope.edit_template = function (name) {

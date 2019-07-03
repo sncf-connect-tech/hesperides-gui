@@ -52,16 +52,17 @@ exports.putHttpRequest = function (url, payloadBody) {
     if (payloadBody.version_id) {
         return rest.putJson(url, payloadBody).catch((error) => console.error(error.message, error.statusCode, error.data));
     }
-    // On récupère le version_id
     return rest.get(`${ url }/${ payloadBody.platform_name }`).then((resp) => {
         payloadBody.version_id = resp.data.version_id;
-        return rest.putJson(url, payloadBody).catch((error) => console.error(error.message, error.statusCode, error.data));
-    });
+        return rest.putJson(url, payloadBody);
+    })
+        .then((resp) => console.log(`\nSuccessful PUT ${ url } : ${ JSON.stringify(resp.data) }`))
+        .catch((error) => console.error(`\n${ error.message }`, error.statusCode, error.data));
 };
 
 exports.deleteHttpRequest = function (url) {
     return rest.del(url).then((result) => expect(result.response.statusCode).toBe(200),
-        (error) => console.error(`${ error.message } (maybe resource does not exist so you cannot delete it)`));
+        (error) => console.error(`\n${ error.message } (maybe resource does not exist so you cannot delete it)`));
 };
 
 exports.displayBrowserLogs = function () {
@@ -70,15 +71,10 @@ exports.displayBrowserLogs = function () {
     });
 };
 
-exports.selectFirstElemOfAutocomplete = function (elem, arrowDown, keyTab, sleepTime) {
-    browser.sleep(sleepTime);
+exports.selectFirstElemOfAutocomplete = function (elem) {
+    browser.sleep(3500);
     browser.driver.actions().mouseMove(elem);
-    if (arrowDown) {
-        elem.sendKeys(protractor.Key.ARROW_DOWN);
-    }
-    if (keyTab) {
-        elem.sendKeys(protractor.Key.TAB);
-    }
+    elem.sendKeys(protractor.Key.TAB);
 };
 
 exports.moveMouseOnElement = function (targetId, waitForElemWithId) {
@@ -190,12 +186,12 @@ exports.copyPlatform = function (applicationName, srcPlatformName, newPlatformNa
         element(by.css('#e2e-modal-platform-create-from input[name="platformApplicationVersion"]')).sendKeys(newPlatformVersion);
 
         element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-application-autocomplete')).sendKeys(applicationName);
-        exports.selectFirstElemOfAutocomplete(element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-application-autocomplete')), false, true, 3500);
+        exports.selectFirstElemOfAutocomplete(element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-application-autocomplete')));
         browser.waitForAngular(); // ajout pour que l'autocompletion soit prise en compte au moment du test
 
         var srcPlatformNameInput = element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-platform-autocomplete'));
         srcPlatformNameInput.sendKeys(srcPlatformName);
-        exports.selectFirstElemOfAutocomplete(srcPlatformNameInput, false, true, 3500);
+        exports.selectFirstElemOfAutocomplete(srcPlatformNameInput);
         browser.waitForAngular(); // ajout pour que l'autocompletion soit prise en compte au moment du test
 
         element(by.css('#e2e-modal-platform-create-from button[type="submit"]')).click().then(() => {

@@ -25,6 +25,15 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Les boutons "download" de ZIP (close #259) [Lucas Cimon]
+
+- Conservation du filtre de sélection des modules dans la vue arbre lors d'un changement de plateforme (close #252) \+ prise en compte du "setting" global de dépliage des instances (close #239) \+ ajout des tests manquants + activation d'eslint sur les tests. [Lucas Cimon]
+
+
+
 ## 2019-06-18
 ### Added
 

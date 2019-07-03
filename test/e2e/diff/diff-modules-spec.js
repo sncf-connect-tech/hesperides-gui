@@ -33,7 +33,7 @@ describe('Manage diff', () => {
 
         expect(element.all(by.css('.cg-notify-message')).count()).toEqual(0);
         browser.sleep(1000);
-        expect(element.all(by.css('.diff-platform-tag')).count()).toEqual(2);
+        expect(element.all(by.css('.diff-platform-tag')).count()).not.toBeLessThan(2);
     });
 
     it('should display datepicker on compare two platform at a specific date switch', () => {

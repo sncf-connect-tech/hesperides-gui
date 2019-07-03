@@ -27,7 +27,7 @@ describe('Manage platform diff', () => {
 
     it('should display datepicker on compare two platform at a specific date switch', () => {
         // Mode 'arbre'
-        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         // Affiche le modal de diff
         utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-diff-button')));
         // Active le calendrier

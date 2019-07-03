@@ -34,7 +34,7 @@ jobs:
       - xvfb
     before_script:
       - export DISPLAY=:99.0
-      - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides &
+      - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
       # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
       - sudo env "PATH=$PATH" npm start &
       - sudo env "PATH=$PATH" npm run webdriver-start &

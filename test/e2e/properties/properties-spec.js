@@ -27,7 +27,7 @@ describe('Manage properties (global, module, instance) and annotations (default,
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
 
         // set tree mode
-        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
 
         // on déroule l'arbre
         utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));

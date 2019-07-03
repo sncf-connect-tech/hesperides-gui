@@ -57,7 +57,7 @@ describe('Manage settings', () => {
 
     it('should not display instances of a platform by default (TREE MODE)', () => {
         // Display Tree mode
-        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
 
         expect(element.all(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).count()).toEqual(1);
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
@@ -127,7 +127,7 @@ describe('Manage settings', () => {
         utils.clickOnElement(element(by.id('e2e-modal-settings-button-save')));
 
         // Display Tree mode
-        utils.clickOnElement(element(by.id('properties_show-tree-mode-button')));
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
 
         expect(element.all(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).count()).toEqual(1);
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(1);
