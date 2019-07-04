@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- /user /user + chips in /properties/$app header to manage prod AD groups. [Lucas Cimon]
+
+
+
 ## 2019-07-25
 ### Fixed
 

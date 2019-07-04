@@ -1,0 +1,12 @@
+.Application__prodPerms__userStatus {
+    margin: 0 2rem;
+    /* Vertically align text: */
+    display: flex;
+    align-items: center;
+}
+
+.Application__prodPerms__adGroups {
+    /* Vertically align text: */
+    display: flex;
+    align-items: center;
+}

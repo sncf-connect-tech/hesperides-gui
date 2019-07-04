@@ -32,8 +32,10 @@ exports.generateAppBundles = function () {
         'src/app/diff/diff.css',
         'src/app/menu/menu.css',
         'src/app/properties/iterable-properties-container.css',
+        'src/app/properties/properties.css',
         'src/app/local_changes/localChanges.css',
         'src/app/sc-date-time/sc-date-time.css',
+        'src/app/user/user.css',
       ]).save('src/app/app.css');
 };
 

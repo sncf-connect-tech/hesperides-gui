@@ -148,7 +148,6 @@ angular.module('hesperides.application', [])
                         name: this.name,
                         version: this.version,
                         working_copy: this.is_working_copy,
-                        deployment_group: this.deployment_group,
                         path: this.path,
                         properties_path: this.properties_path,
                         instances: _.map(this.instances, function (instance) {
@@ -244,6 +243,14 @@ angular.module('hesperides.application', [])
                         if (!unsecured) {
                             notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get' });
                         }
+                        throw error;
+                    });
+                },
+                update_directory_groups(application) {
+                    return $http.put(`rest/applications/${ encodeURIComponent(application.name) }/directory_groups`, application).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.update_directory_groups' });
                         throw error;
                     });
                 },

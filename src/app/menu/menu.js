@@ -237,7 +237,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         };
     })
 
-    .controller('MenuHelpController', function ($scope, $mdDialog, $http, $translate, $parse, $window, ApplicationService, PlatformColorService, UserService, notify) {
+    .controller('MenuHelpController', function ($scope, $mdDialog, $http, $translate, $parse, $location, $window, ApplicationService, PlatformColorService, UserService, notify) {
         $scope.supportUrl = SUPPORT_URL;
         $scope.swaggerLink = SWAGGER_LINK;
         $scope.logout = UserService.logout;
@@ -259,15 +259,19 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             });
         };
 
-        $scope.display_hesperides_documentation = function () {
+        $scope.openDocumentation = function () {
             $window.open(DOCUMENTATION_LINK);
         };
 
-        $scope.display_swagger = function () {
+        $scope.openSwagger = function () {
             $window.open($scope.swaggerLink);
         };
 
-        $scope.display_hesperides_informations = function () {
+        $scope.navigateToUserPage = function () {
+            $location.url('/user');
+        };
+
+        $scope.openAboutModal = function () {
             $scope.frontInfo = { BUILD_TIME, GIT_BRANCH, GIT_COMMIT, GIT_TAG };
 
             // Get the backend versions

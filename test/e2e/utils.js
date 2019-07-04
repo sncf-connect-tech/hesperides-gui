@@ -79,7 +79,7 @@ exports.selectFirstElemOfAutocomplete = function (elem) {
 
 exports.moveMouseOnElement = function (targetId, waitForElemWithId) {
     browser.actions().mouseMove(element(by.id(targetId))).perform();
-    browser.wait(ExpectedConditions.visibilityOf(element(by.id(waitForElemWithId))), 6000);
+    browser.wait(ExpectedConditions.visibilityOf(element(by.id(waitForElemWithId))), 10000);
 };
 
 // generate string for data tests

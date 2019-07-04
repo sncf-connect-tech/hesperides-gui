@@ -137,12 +137,12 @@
                     </button>
                     <md-menu-content class="menu-item">
                         <md-menu-item>
-                            <md-button ng-click="display_hesperides_documentation()">
+                            <md-button ng-click="openDocumentation()">
                                 {{ 'menu.help.documentation' | translate}}
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button id="e2e-navbar-help-about" ng-click="display_hesperides_informations()" id="e2e-about-menu">
+                            <md-button id="e2e-navbar-help-about" ng-click="openAboutModal()" id="e2e-about-menu">
                                 {{ 'menu.help.about' | translate}}
                             </md-button>
                         </md-menu-item>
@@ -153,8 +153,11 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <button class="menu-header"ng-if="swaggerLink" ng-click="display_swagger()">
+                <button class="menu-header" ng-if="swaggerLink" ng-click="openSwagger()">
                     Swagger
+                </button>
+                <button class="menu-header" ng-click="navigateToUserPage()">
+                    {{ 'menu.link.userPage' | translate}}
                 </button>
                 <button class="menu-header" ng-click="logout()">
                     {{ 'menu.help.logout' | translate}}

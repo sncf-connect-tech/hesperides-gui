@@ -58,7 +58,7 @@ angular.module('hesperides', MODULE_DEPS)
         function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider, $locationProvider) {
             $mdIconProvider.fontSet('fa', 'fontawesome');
 
-            $translateProvider.useSanitizeValueStrategy('escaped');
+            $translateProvider.useSanitizeValueStrategy('escapeParameters'); // cf. https://angular-translate.github.io/docs/#/guide/19_security
 
             $locationProvider.html5Mode(false).hashPrefix('');
 
@@ -97,6 +97,10 @@ angular.module('hesperides', MODULE_DEPS)
                 .otherwise({
                     templateUrl: 'welcome_screen.html',
                     controller: 'WelcomeController',
+                })
+                .when('/user', {
+                    templateUrl: 'user/user.html',
+                    controller: 'UserController',
                 });
 
             // Material design theming
