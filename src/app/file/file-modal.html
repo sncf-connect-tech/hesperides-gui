@@ -24,11 +24,11 @@
         <div class="ng-binding">
             <h2>{{ 'file.modal.title' | translate }} {{instance.name}}</h2>
             <md-content layout-padding class="autoScroll max-width-none">
-                <form novalidate ng-repeat="(index, item) in fileEntries track by $index" heading="{{item.name}}">
+                <form novalidate ng-repeat="(index, item) in fileEntries track by $index" heading="{{item.title}}">
                     <section class="file-header">
                         <div layout="row" flex="100">
                             <div flex="5">
-                                <a class="md-button md-xs btn-download-alert-file" href="{{item.url}}" ng-if ="item.on_error == false" download="{{item.name}}">
+                                <a id="e2e-file-modal-template-download-button-{{item.title}}" class="md-button md-xs btn-download-alert-file" href="{{item.url}}" ng-if ="item.on_error == false" download="{{item.filename}}">
                                     <md-icon class="fa fa-download"></md-icon>
                                 </a>
                                 <a class="md-button md-xs btn-download-alert-file" href="" ng-if="item.on_error == true" ng-click="open(index)">
@@ -36,7 +36,7 @@
                                 </a>
                             </div>
                             <div flex="95">
-                                <md-button id="e2e-file-modal-preview-{{item.name}}-button" ng-click="open(index)" class="file-title">{{item.name}} ( {{item.rights}} )</md-button>
+                                <md-button id="e2e-file-modal-preview-{{item.title}}-button" ng-click="open(index)" class="file-title">{{item.filename}} ( {{item.rights}} )</md-button>
                             </div>
                             <!-- Error tooltip text -->
                             <md-tooltip ng-if="item.on_error == true">{{ 'file.modal.error' | translate }}</md-tooltip>
@@ -47,7 +47,7 @@
 
                             <div flex="5" class="template-section-header">
                               
-                                <label id="e2e-file-modal-template-section-header-path-{{item.name}}" class="template-section-header-path">{{item.location}}</label>
+                                <label id="e2e-file-modal-template-section-header-path-{{item.title}}" class="template-section-header-path">{{item.location}}</label>
                                 <label class="template-section-header-content">{{ 'file.modal.content' | translate }}</label>
                                 <!--<kbd>F11</kbd> Activer /
                                 <kbd>Esc</kbd> Désactiver l'édition en plein écran
@@ -71,7 +71,7 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="download_all_instance_files()" class="md-raised md-primary" ng-disabled="moduleForm.$invalid">{{ 'button.modal.download' | translate }}</md-button>
+            <md-button id="e2e-file-modal-template-download-all-button" ng-click="download_all_instance_files()" class="md-raised md-primary" ng-disabled="moduleForm.$invalid">{{ 'button.modal.download' | translate }}</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>

@@ -2,3 +2,4 @@
 /src/app/datepicker/datepicker.js
 /src/app/app.js
 /src/app/vendor*.js
+/test/unit/reports

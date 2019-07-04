@@ -1,3 +1,5 @@
+/* eslint-disable global-require, no-global-assign */
+
 var HtmlReporter = require('protractor-jasmine2-html-reporter');
 var utils = require('./utils.js');
 
@@ -9,7 +11,7 @@ exports.config = {
         showColors: true,
         defaultTimeoutInterval: 400000,
         isVerbose: true,
-        includeStackTrace: true
+        includeStackTrace: true,
     },
     allScriptsTimeout: 400000,
     getPageTimeout: 400000,
@@ -30,21 +32,21 @@ exports.config = {
             'role_production/*spec.js',
             'properties/properties-spec.js',
             'properties/iterable-properties-spec.js',
-            /*'settings/*spec.js'*/
-        ]
+            'settings/*spec.js',
+        ],
     },
-    onPrepare: function () {
+    onPrepare() {
         jasmine.getEnv().addReporter(
             new HtmlReporter({
-                savePath: 'test-reports-e2e/'
+                savePath: 'test-reports-e2e/',
             })
         );
 
         // Variable globales utilisées dans les scénarios:
         data = require('./config.json');
-        //data.new_module_properties_path = '#' + data.logic_group_1 + '#' + data.logic_group_2 + '#' + data.new_module_name + '#' + data.new_module_version + '#WORKINGCOPY';
-        hesperides_url = data.endpoint_protocol + "://" + data.auth_username + ":" + data.auth_password + "@" + data.endpoint_host + ":" + data.endpoint_port
+        // data.new_module_properties_path = '#' + data.logic_group_1 + '#' + data.logic_group_2 + '#' + data.new_module_name + '#' + data.new_module_version + '#WORKINGCOPY';
+        hesperides_url = `${ data.endpoint_protocol }://${ data.auth_username }:${ data.auth_password }@${ data.endpoint_host }:${ data.endpoint_port }`;
 
         browser.get(hesperides_url);
-    }
+    },
 };

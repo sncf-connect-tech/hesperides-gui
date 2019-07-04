@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * This file is part of the Hesperides distribution.
  * (https://github.com/voyages-sncf-technologies/hesperides)
@@ -16,50 +17,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
+// Ces variables globales sont nécessaires au MenuHelpController
 const SUPPORT_URL = '';
 const SWAGGER_LINK = '';
 
 describe('Testing hesperides menu', function () {
-
-
     // load the module to be tested
     beforeEach(module('hesperides.menu'));
 
     // This is for testing the menu help controller
     describe('Testing MenuHelpController', function () {
-
-        var $scope, $mdDialog, $translate, $parse;
-
-        var menuHelpCtrl, $httpBackend, $routeParams;
+        let menuHelpCtrl = null;
 
         beforeEach(inject(function ($controller, $rootScope, _$httpBackend_, $injector, PlatformColorService, ApplicationService) {
-            $scope = $rootScope.$new();
-            $httpBackend = _$httpBackend_;
-            $mdDialog = $injector.get('$mdDialog');
-            $translate = $injector.get('$translate');
-            $parse = $injector.get('$parse');
+            const $scope = $rootScope.$new();
+            const $httpBackend = _$httpBackend_;
+            const $mdDialog = $injector.get('$mdDialog');
+            const $translate = $injector.get('$translate');
+            const $parse = $injector.get('$parse');
             menuHelpCtrl = $controller('MenuHelpController', {
-                $scope: $scope,
-                $mdDialog: $mdDialog,
-                $translate: $translate,
-                PlatformColorService: PlatformColorService,
-                $parse: $parse,
-                ApplicationService: ApplicationService
+                $scope,
+                $mdDialog,
+                $translate,
+                PlatformColorService,
+                $parse,
+                ApplicationService,
             });
         }));
 
         it('should be defined', function () {
-            expect(menuHelpCtrl).toBeDefined();
+            expect(menuHelpCtrl).toBeTruthy();
         });
-
     });
 
     // This is for testing the menu module controller
     describe('Testing MenuModuleController', function () {
-
-        var scope;
+        let scope = null;
 
         beforeEach(inject(function ($injector, $rootScope, $controller, ModuleService, Module) {
             scope = $rootScope.$new();
@@ -69,16 +62,14 @@ describe('Testing hesperides menu', function () {
                 $mdDialog: $injector.get('$mdDialog'),
                 $location: $injector.get('$location'),
                 $timeout: $injector.get('$timeout'),
-                ModuleService: ModuleService,
-                Module: Module
-            })
+                ModuleService,
+                Module,
+            });
         }));
 
         it('should get modules by name', function () {
             var modules = scope.find_modules_by_name('modules');
-            expect(modules).toBeDefined();
+            expect(modules).toBeTruthy();
         });
-
     });
-
 });

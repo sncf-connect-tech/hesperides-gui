@@ -21,30 +21,30 @@ var hesperidesKarmaUtils = {
      * This is for mocking angular-translate via pascalprecht.translate.
      * Should find a best way to do that, but keep it like this for now
      */
-    mockTranslator: function (){
-          var translationMock = {
+    mockTranslator() {
+        var translationMock = {
             'FOO': 'bar',
-            'BAR': 'foo'
-          };
+            'BAR': 'foo',
+        };
 
-          beforeEach(module('pascalprecht.translate', function ($translateProvider) {
+        beforeEach(module('pascalprecht.translate', function ($translateProvider) {
             $translateProvider
                 .translations('en', translationMock)
                 .translations('en', {
                     'FOO': 'bar',
-                    'BAR': 'foo'
+                    'BAR': 'foo',
                 })
                 .preferredLanguage('en');
-          }));
+        }));
     },
 
     /**
      * This is for injecting the 'hesperides' module in the browser.
      * As most of the hesperides modules depends on it for the 'hesperidesHttp' module.
      */
-    loadHesperides: function (){
+    loadHesperides() {
         beforeEach(module('hesperides'));
-    }
+    },
 };
 
 // We call these now !

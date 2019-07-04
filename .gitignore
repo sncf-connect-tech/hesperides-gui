@@ -6,6 +6,7 @@ tmp
 .idea
 **/*.iml
 *.iml
+*.zip
 target/
 /test-reports-e2e/
 /test/unit/reports

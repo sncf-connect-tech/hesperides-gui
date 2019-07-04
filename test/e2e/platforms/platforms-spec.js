@@ -19,18 +19,17 @@
 var utils = require('../utils.js');
 
 describe('Manage platforms', () => {
-
     beforeAll(() => {
         browser.get(hesperides_url);
         // delete platform on hesperides for cleaning
-        utils.deleteHttpRequest(hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform);
-        utils.deleteHttpRequest(hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform+'_from');
+        utils.deleteHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }`);
+        utils.deleteHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }_from`);
     });
 
     it('should create platform', () => {
-        utils.clickOnElement(element(by.id("e2e-navbar-app")));
-        utils.clickOnElement(element(by.id("e2e-navbar-app-create")));
-        
+        utils.clickOnElement(element(by.id('e2e-navbar-app')));
+        utils.clickOnElement(element(by.id('e2e-navbar-app-create')));
+
         // fill in fields
         element(by.css('#e2e-modal-platform-create input[name="platformApplication"]')).sendKeys(data.new_application);
         element(by.css('#e2e-modal-platform-create input[name="platformName"]')).sendKeys(data.new_platform);
@@ -39,64 +38,43 @@ describe('Manage platforms', () => {
         element(by.css('#e2e-modal-platform-create button[type="submit"]')).click().then(() => {
             element(by.id('properties_show-platform-event-button')).isPresent().then((isPresent) => {
                 expect(isPresent).toBe(true);
-                utils.checkResponseStatusCode(hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform,200);
-            })
+                utils.checkResponseStatusCode(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }`, 200);
+            });
         });
     });
 
     it('should find platform on autocomplete in menu "applications"', () => {
-        utils.clickOnElement(element(by.id("e2e-navbar-app")));
+        utils.clickOnElement(element(by.id('e2e-navbar-app')));
 
-        element(by.id("input-4")).sendKeys(data.new_application);
-        browser.waitForAngular();//ajout pour que l'autocompletion soit prise en compte au moment du test
+        element(by.id('input-4')).sendKeys(data.new_application);
+        browser.waitForAngular();// ajout pour que l'autocompletion soit prise en compte au moment du test
 
-        browser.driver.findElements(by.css('.md-autocomplete-suggestions li')).
-            then((elems) => expect(elems.length).toBeGreaterThan(0) );
+        browser.driver.findElements(by.css('.md-autocomplete-suggestions li'))
+            .then((elems) => expect(elems.length).toBeGreaterThan(0));
     });
 
     it('should create platform from an existing one', () => {
-        //utils.clickOnElement(element(by.id("e2e-navbar-app"))); // already open by previous test
-        utils.clickOnElement(element(by.id("e2e-navbar-app-create-from")));
-
-        element(by.css('#e2e-modal-platform-create-from input[name="platformApplication"]')).sendKeys(data.new_application);
-        element(by.css('#e2e-modal-platform-create-from input[name="platformName"]')).sendKeys(data.new_platform+"_from");
-        element(by.css('#e2e-modal-platform-create-from input[name="platformApplicationVersion"]')).sendKeys(data.new_platform_version+"_from");
-
-        element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-application-autocomplete')).sendKeys(data.new_application);
-        utils.selectFirstElemOfAutocomplete(element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-application-autocomplete')), false, true, 3500);
-        browser.waitForAngular();//ajout pour que l'autocompletion soit prise en compte au moment du test
-
-        var elm_platformNameFrom = element(by.css('md-autocomplete input#e2e-modal-platform-create-from-input-platform-autocomplete'));
-        elm_platformNameFrom.sendKeys(data.new_platform);
-        utils.selectFirstElemOfAutocomplete(elm_platformNameFrom, false, true, 3500);
-        browser.waitForAngular();//ajout pour que l'autocompletion soit prise en compte au moment du test
-
-        element(by.css('#e2e-modal-platform-create-from button[type="submit"]')).click().then(() => {
-            element(by.id('properties_show-platform-event-button')).isPresent().then((isPresent) => {
-                expect(isPresent).toBe(true);
-                utils.checkResponseStatusCode(hesperides_url+'/rest/applications/'+data.new_application+'/platforms/'+data.new_platform+'_from',200);
-            })
-        });
+        utils.copyPlatform(data.new_application, data.new_platform, `${ data.new_platform }_from`, `${ data.new_platform_version }_from`);
     });
 
     it('should filter platforms correctly', () => {
-        browser.get(hesperides_url+"/#/properties/"+data.new_application);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }`);
 
-        element(by.id("properties_platform-filter-input")).sendKeys(data.new_application);
+        element(by.id('properties_platform-filter-input')).sendKeys(data.new_application);
 
-        browser.driver.findElements(by.css('.shared-list-inline li')).
-            then((elems) => expect(elems.length).toBeGreaterThan(0) );
+        browser.driver.findElements(by.css('.shared-list-inline li'))
+            .then((elems) => expect(elems.length).toBeGreaterThan(0));
     });
 
     it('should change version of a platform correctly', () => {
-        browser.get(hesperides_url+"/#/properties/"+data.new_application+"?platform="+data.new_platform);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
 
         element(by.css('[ng-click="change_platform_version(platform)"]')).click();
 
-        var elm_new_version_platformName = element(by.css("md-input-container#new-version-input-container input"));
+        var elm_new_version_platformName = element(by.css('md-input-container#new-version-input-container input'));
         elm_new_version_platformName.sendKeys(protractor.Key.ENTER);
         elm_new_version_platformName.sendKeys(data.change_platform_version);
-        elm_new_version_platformName.sendKeys(protractor.Key.ENTER );
+        elm_new_version_platformName.sendKeys(protractor.Key.ENTER);
 
         utils.checkIfElementContainsText(element(by.css('[ng-click="change_platform_version(platform)"]')), data.change_platform_version);
     });

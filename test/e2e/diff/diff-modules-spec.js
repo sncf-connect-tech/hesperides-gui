@@ -21,20 +21,19 @@ var utils = require('../utils.js');
 var until = protractor.ExpectedConditions;
 
 describe('Manage diff', () => {
-
     beforeAll(() => {
-        browser.get(hesperides_url + '/#/properties/' + data.new_application + '?platform=' + data.new_platform);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
     });
 
     it('should display two platform for TEST_AUTO application', () => {
         // set bloc mode (in case the default mode change)
         utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
 
-        utils.clickOnElement(element(by.id('e2e-deployed-module-controls-diff-properties-button-' + data.new_module_name)));
+        utils.clickOnElement(element(by.id(`e2e-deployed-module-controls-diff-properties-button-${ data.new_module_name }`)));
 
         expect(element.all(by.css('.cg-notify-message')).count()).toEqual(0);
         browser.sleep(1000);
-        expect(element.all(by.css('.diff-platform-tag')).count()).toEqual(2);
+        expect(element.all(by.css('.diff-platform-tag')).count()).not.toBeLessThan(2);
     });
 
     it('should display datepicker on compare two platform at a specific date switch', () => {
@@ -78,7 +77,7 @@ describe('Manage diff', () => {
             utils.switchBrowserToNewTab().then(function () {
                 const newTabUrl = browser.getCurrentUrl();
                 utils.switchBrowserBackToFirstTab();
-                expect(newTabUrl).toContain('&timestamp=' + timestamp);
+                expect(newTabUrl).toContain(`&timestamp=${ timestamp }`);
             });
         });
     });

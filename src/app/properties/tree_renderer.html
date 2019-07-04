@@ -61,7 +61,7 @@
 
 <div ng-if="openByClick === null ? box.openBySearchFilter : openByClick" flex="100">
     <div class="property-tree-logic-bloc-subbloc" flex="100"
-         ng-repeat="box in (box.children | orderObjectBy:'name') | filterBox:searchInTree"
+         ng-repeat="box in (box.children | orderObjectBy:'name') | filterBox:parentScope.searchInTree"
          ng-include="'properties/tree_renderer.html'"></div>
 
     <!-- Debut des box affichant les modules -->
@@ -92,7 +92,8 @@
 
             <div flex="noshrink" layout="row" layout-align="none center">
                 <deployed-module-controls-popover></deployed-module-controls-popover>
-                <a href="" id="e2e-tree-renderer-edit-properties-module-button-{{module.title.split(',')[0]}}" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module)">
+                <a id="e2e-tree-renderer-edit-module-button-{{module.title.split(',')[0]}}" class="module-link has_model_{{is_module_has_model(module)}}"
+                   href="" ng-click="edit_properties(platform, module)">
                     {{module.title}}
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>
@@ -100,12 +101,12 @@
         </div>
 
         <!-- Debut des box affichant les instances -->
-        <div id="div_instance-tree-list-{{module.name}}" ng-if="openByClick === null ? module.openBySearchFilter : openByClick">
+        <div id="e2e-instance-list-for-{{module.name}}" ng-if="openByClick === null ? module.openBySearchFilter : openByClick">
             <ul>
                 <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
                     class="list-inline"
                     ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
-                    <md-button id="e2e-tree-renderer-edit-properties-{{instance.name}}-button" class="md-raised" ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"
+                    <md-button id="e2e-tree-renderer-edit-instance-button-{{instance.name}}" class="md-raised" ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"
                                aria-label="{{ 'properties.module.instance.editProperties.tooltip' | translate }}"
                                class="md-instance">
                         {{instance.name}}

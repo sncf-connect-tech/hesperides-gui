@@ -16,49 +16,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-'use strict';
-
 /**
  * This is for testing the module 'hesperides.module'
  */
-describe('Testing hesperides module', function (){
-
+describe('Testing hesperides module', function () {
     // load the module to be tested
-    beforeEach (module('hesperides.module'));
+    beforeEach(module('hesperides.module'));
 
-    // Services
-    var pageService;
+    describe('Testing the ModuleController', function () {
+        let pageService = null;
 
-    describe('Testing the ModuleController', function (){
-        var scope, routeParams, dialog, location, translator, ctrl;
-
-        beforeEach(inject(function($injector, $rootScope, $controller, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page, FileService, Platform){
-            // set the services
+        beforeEach(inject(function ($injector, $rootScope, $controller, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page, FileService, Platform) {
             pageService = Page;
 
-            // get controller
-            ctrl = $controller('ModuleController', {
+            $controller('ModuleController', {
                 $scope: $rootScope.$new(),
                 $routeParams: $injector.get('$routeParams'),
                 $location: $injector.get('$location'),
                 $mdDialog: $injector.get('$mdDialog'),
-                TechnoService: TechnoService,
-                ModuleService:ModuleService,
-                HesperidesTemplateModal: HesperidesTemplateModal,
-                Template: Template,
-                Page: Page,
-                FileService: FileService,
-                Platform: Platform,
+                TechnoService,
+                ModuleService,
+                HesperidesTemplateModal,
+                Template,
+                Page,
+                FileService,
+                Platform,
                 $translate: $injector.get('$translate'),
                 $window: $injector.get('$window'),
             });
-
         }));
 
-        it ('should check the page title is set to "Module"', function (){
-           var title = pageService.title();
-           expect(title).toBe('Hesperides > Module');
+        it('should check the page title is set to "Module"', function () {
+            var title = pageService.title();
+            expect(title).toBe('Hesperides > Module');
         });
     });
 });

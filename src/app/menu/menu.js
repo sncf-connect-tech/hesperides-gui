@@ -304,7 +304,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
          * Added by Sahar CHAILLOU
          */
         $scope.display_settings = function () {
-            $scope.settings_instance = store.get('instance_properties');
+            $scope.settings_unfoldInstancesByDefault = store.get('unfoldInstancesByDefault');
             $scope.settings_copy = store.get('copy_properties');
             $scope.settings_color = store.get('color_active');
             $scope.settings_display = store.get('display_mode');
@@ -338,7 +338,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             $scope.saveSettings = function () {
                 store.set('display_mode', $scope.settings_display || null);
                 store.set('language', $scope.settings_language || null);
-                store.set('instance_properties', $scope.settings_instance || null);
+                store.set('unfoldInstancesByDefault', $scope.settings_unfoldInstancesByDefault || null);
                 store.set('copy_properties', $scope.settings_copy || null);
                 store.set('color_active', $scope.settings_color || null);
                 store.set('color_red', $scope.color.red || null);
