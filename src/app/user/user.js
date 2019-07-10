@@ -44,6 +44,11 @@ angular.module('hesperides.user', [])
                     }
                     return $http.get('/rest/users/auth').then(function (response) {
                         userCache = new User(response.data);
+                        if (SENTRY_DSN) {
+                            Sentry.configureScope((scope) =>
+                                scope.setUser({ username: userCache.username })
+                            );
+                        }
                         return userCache;
                     }, function (errorResp) {
                         var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';

@@ -26,6 +26,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 <!-- gitchangelog START -->
 ## _(unreleased)_
+### Added
+
+- Support pour Sentry + plus d'info dans le menu 'à propos' [Lucas Cimon]
+
+
+
+## 2019-07-04
 ### Fixed
 
 - Les boutons "download" de ZIP (close #259) [Lucas Cimon]

@@ -5,7 +5,11 @@
         "BUILD_TIME": "readonly",
         "DOCUMENTATION_LINK": "readonly",
         "EVENT_PAGINATION_SIZE": "readonly",
+        "GIT_BRANCH": "readonly",
+        "GIT_COMMIT": "readonly",
+        "GIT_TAG": "readonly",
         "LOCALCHANGES_TTL": "readonly",
+        "SENTRY_DSN": "readonly",
         "SUPPORT_URL": "readonly",
         "SWAGGER_LINK": "readonly",
         "globalConfig": "readonly",
@@ -21,7 +25,8 @@
         "store": "readonly",
         "window": "readonly",
         "CodeMirror": "readonly",
-        "JSZip": "readonly"
+        "JSZip": "readonly",
+        "Sentry": "readonly"
     },
     "rules": {
         "angular/controller-as": 0,

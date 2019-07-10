@@ -268,12 +268,11 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         };
 
         $scope.display_hesperides_informations = function () {
-            $scope.front_build_time = BUILD_TIME || 'unknown';
+            $scope.frontInfo = { BUILD_TIME, GIT_BRANCH, GIT_COMMIT, GIT_TAG };
 
             // Get the backend versions
             $http.get('rest/versions').then(function (response) {
-                $scope.api_version = response.data.version || response.data.api_version || 'unknown';
-                $scope.api_build_time = response.data.build_time || 'unknown';
+                $scope.apiInfo = response.data;
             }, function (errorResp) {
                 var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';
                 notify({ classes: [ 'error' ], message: errorMsg });

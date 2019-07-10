@@ -255,6 +255,7 @@
   "event.modal.diff": "Show the diff",
   "about.title": "About the release",
   "about.version.api_build_time": "API build time:",
+  "about.version.api_start_time": "API start time:",
   "about.version.api": "API version:",
   "about.version.front_build_time": "Front build time:",
   "settings.title": "User settings",

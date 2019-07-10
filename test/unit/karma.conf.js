@@ -20,6 +20,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'globals.js',
             // libs : l'ordre importe ! + on exclut app.js / vendor.min.js
             '../../src/app/vendor.js',
             '../../src/app/utils.js',

@@ -16,12 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('hesperides', [
+const MODULE_DEPS = [
     'angularjs-datetime-picker',
     'mgo-angular-wizard',
-    'ngRoute',
-    'ngMaterial',
     'ngAnimate',
+    'ngMaterial',
+    'ngRoute',
     'pascalprecht.translate',
     'scDateTime',
     'ui.codemirror',
@@ -37,15 +37,22 @@ angular.module('hesperides', [
     'hesperides.template',
     'hesperides.user',
 // cf. https://github.com/sc-date-time/sc-date-time#options pour les 2 configs ci-dessous :
-]).value('scDateTimeConfig', {
-    defaultTheme: 'sc-date-time/hesperides.tpl',
-    autosave: true,
-    displayTwentyfour: true,
-    compact: true,
-}).value('scDateTimeI18n', {
-    weekdays: [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
-    calendar: 'Calendrier',
-})
+];
+if (SENTRY_DSN) {
+    MODULE_DEPS.push('ngSentry');
+}
+angular.module('hesperides', MODULE_DEPS)
+// cf. https://github.com/sc-date-time/sc-date-time#options pour les 2 configs ci-dessous :
+    .value('scDateTimeConfig', {
+        defaultTheme: 'sc-date-time/hesperides.tpl',
+        autosave: true,
+        displayTwentyfour: true,
+        compact: true,
+    })
+    .value('scDateTimeI18n', {
+        weekdays: [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
+        calendar: 'Calendrier',
+    })
     .config([
         '$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider', '$locationProvider',
         function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider, $locationProvider) {
