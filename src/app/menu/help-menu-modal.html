@@ -26,11 +26,31 @@
 
             <md-content layout-padding class="autoScroll">
                 <div class="modal-body">
-                    <p><strong>{{ 'about.version.api_build_time' | translate }}</strong> {{api_build_time}}</p>
+                    <p><strong>{{ 'about.version.front_build_time' | translate }}</strong> {{ frontInfo.BUILD_TIME || 'unknown' }}</p>
 
-                    <p><strong>{{ 'about.version.api' | translate }}</strong> {{api_version}}</p>
+                    <p><strong>Frontend git branch :</strong> {{ frontInfo.GIT_BRANCH }}</p>
 
-                    <p><strong>{{ 'about.version.front_build_time' | translate }}</strong> {{front_build_time}}</p>
+                    <p><strong>Frontend git tag :</strong> {{ frontInfo.GIT_TAG }}</p>
+
+                    <p><strong>Frontend GitHub commit URL :</strong> <a href="https://github.com/voyages-sncf-technologies/hesperides-gui/commit/{{ frontInfo.GIT_COMMIT }}" target="_blank">{{ frontInfo.GIT_COMMIT }}</a></p>
+
+                    <p><strong>Frontend CHANGELOG :</strong> <a href="https://github.com/voyages-sncf-technologies/hesperides-gui/blob/master/CHANGELOG.md#{{ frontInfo.GIT_TAG }}" target="_blank">CHANGELOG.md</a></p>
+
+                    <hr>
+
+                    <p><strong>{{ 'about.version.api' | translate }}</strong> {{ apiInfo.version || 'unknown' }}</p>
+
+                    <p><strong>{{ 'about.version.api_build_time' | translate }}</strong> {{ apiInfo.BUILD_TIME || 'unknown' }}</p>
+
+                    <p><strong>{{ 'about.version.api_start_time' | translate }}</strong> {{ apiInfo.APPLICATION_BOOT_TIME || 'unknown' }}</p>
+
+                    <p><strong>API git branch :</strong> {{ apiInfo.GIT_BRANCH }}</p>
+
+                    <p><strong>API git tag :</strong> {{ apiInfo.GIT_TAG }}</p>
+
+                    <p><strong>API GitHub commit URL :</strong> <a href="{{ apiInfo.url_to_github_commit }}" target="_blank">{{ apiInfo.GIT_COMMIT }}</a></p>
+
+                    <p><strong>API CHANGELOG :</strong> <a href="{{ apiInfo.url_to_github_changelog }}" target="_blank">CHANGELOG.md</a></p>
                 </div>
             </md-content>
         </div>

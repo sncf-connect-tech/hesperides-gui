@@ -35,13 +35,13 @@
     <base href="/">
     <title ng-bind="Page.title()"></title>
 
+    <script src="vendor.js"></script> <!-- vendor.min.js est également dispo, mais cela rend le debug + difficile -->
+    <link rel="stylesheet" href="vendor.css">
+
     <script>
         // CONFIGURATION :
         // cette section doit constituer du JS valide "tel quel" avec des valeurs par défaut cohérentes,
         // et permettre l'injection de variables d'environnement
-
-        // Substitué par Dockerfile :
-        const BUILD_TIME = '';
 
         // Substitué par docker_entrypoint.sh :
         let substOrDefault = (e, v) => (e && e[0] !== '$' ? e : v);
@@ -50,11 +50,31 @@
         const LOCALCHANGES_TTL      = +substOrDefault('$LOCALCHANGES_TTL',      '50');
         const SUPPORT_URL           =  substOrDefault('$SUPPORT_URL',           '');
         const SWAGGER_LINK          =  substOrDefault('$SWAGGER_LINK',          '/rest/swagger-ui.html');
+        const BUILD_TIME            =  substOrDefault('$BUILD_TIME',            '');
+        const GIT_BRANCH            =  substOrDefault('$GIT_BRANCH',            '');
+        const GIT_COMMIT            =  substOrDefault('$GIT_COMMIT',            '');
+        const GIT_TAG               =  substOrDefault('$GIT_TAG',               '');
+        const SENTRY_DSN            =  substOrDefault('$SENTRY_DSN',            '');
+        const SENTRY_ENVIRONMENT    =  substOrDefault('$SENTRY_ENVIRONMENT',    '');
+        const SENTRY_TAGS           =  substOrDefault('$SENTRY_TAGS',           '');
         delete substOrDefault;
-    </script>
 
-    <script src="vendor.js"></script> <!-- vendor.min.js est également dispo, mais cela rend le debug + difficile -->
-    <link rel="stylesheet" href="vendor.css">
+        if (SENTRY_DSN) {
+            Sentry.init({
+                dsn: SENTRY_DSN,
+                debug: true,
+                environment: SENTRY_ENVIRONMENT,
+                integrations: [
+                    new Sentry.Integrations.Angular(),
+                ]
+            });
+            Sentry.configureScope(
+                (scope) => SENTRY_TAGS.split(',').forEach(
+                    (tagPair) => scope.setTag.apply(scope, tagPair.split('='))
+                )
+            );
+        }
+    </script>
 
     <script src="utils.js"></script>
     <script src="hesperides/hesperides.js"></script>
