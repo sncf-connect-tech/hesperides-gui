@@ -373,6 +373,18 @@ angular.module('hesperides.application', [])
                         throw error;
                     });
                 },
+                get_diff(application_name, platform_name, path, to_application, to_platform, to_path, timestamp) {
+                    var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties/diff?path=${ encodeURIComponent(path) }&to_application=${ encodeURIComponent(to_application) }&to_platform=${ encodeURIComponent(to_platform) }&to_path=${ encodeURIComponent(to_path) }`;
+                    if (timestamp) {
+                        url += `&timestamp=${ timestamp }`;
+                    }
+                    return $http.get(url).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_diff' });
+                        throw error;
+                    });
+                },
                 get_properties(application_name, platform_name, path, timestamp) {
                     var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties?path=${ encodeURIComponent(path) }`;
                     if (timestamp) {

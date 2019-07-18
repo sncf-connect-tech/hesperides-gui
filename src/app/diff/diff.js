@@ -55,8 +55,6 @@ angular.module('hesperides.diff', [])
             this.selected = false;
         };
 
-        $scope.loadingDiff = true;
-
         $scope.application_name = $routeParams.application;
         $scope.platform_name = $routeParams.platform;
 
@@ -88,6 +86,28 @@ angular.module('hesperides.diff', [])
             'version': compareSplitedPath[compareSplitedPath.length - 2],
             'is_working_copy': compareSplitedPath[compareSplitedPath.length - 1] === 'WORKINGCOPY',
         };
+
+        $scope.loadingDiff = true;
+
+        // Lucas 2019/07/18 : tmp while refactoring
+        return ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp).then(diff => {
+            console.log('diff:', diff);
+            let diffContainers = [];
+            diff.common.forEach(commonProperty => {
+                diffContainers.push(new DiffContainer(1, commonProperty.name, {value: commonProperty.value}, {value: commonProperty.value}));
+            });
+            diff.only_left.forEach(onlyLeftProperty => {
+                diffContainers.push(new DiffContainer(0, onlyLeftProperty.name, {value: onlyLeftProperty.value}, {}));
+            });
+            diff.only_right.forEach(onlyRightProperty => {
+                diffContainers.push(new DiffContainer(3, onlyRightProperty.name, {}, {value: onlyRightProperty.value}));
+            });
+            diff.differing.forEach(differingProperty => {
+                diffContainers.push(new DiffContainer(2, differingProperty.name, {value: differingProperty.left}, {value: differingProperty.right}));
+            });
+            $scope.diff_containers = diffContainers;
+            $scope.loadingDiff = false;
+        });/**/
 
         // Get the platform to get the version id
         ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
@@ -134,6 +154,7 @@ angular.module('hesperides.diff', [])
          * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
          */
         $scope.generate_diff_containers = function (filterInModel) {
+            
             $scope.diff_containers = [];
             // Group properties, this is a O(n^2) algo but is enough for the use case
             // Only focus on key/value properties
@@ -192,7 +213,7 @@ angular.module('hesperides.diff', [])
             $scope.properties_compare_values_empty = translation;
         });
 
-        $scope.formatProperty = function (property) {
+        $scope.formatProperty = function (property) { // Lucas 2019/07/18 : inutile, à supprimer
             if (property.globalValue) {
                 var compiled = property.value;
 
@@ -270,16 +291,7 @@ angular.module('hesperides.diff', [])
                         diff_container.modified = false;
                         break;
                     case 2:
-                    // Store old value and apply modifs
-                        diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                        diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
-
-                        // Change status and reset markers. Keep selected for user experience
-                        diff_container.modified = true;
-                        diff_container.status = 1;
-                        break;
                     case 3:
-                    // Same as 2, copy paste (bad :p )
                     // Store old value and apply modifs
                         diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
                         diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;

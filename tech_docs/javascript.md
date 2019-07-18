@@ -20,3 +20,22 @@ et les comparaisons avec `false` / `null` ou `''` quand il suffit de savoir la v
 Pour détecter ces cas : `grep 'ng-model="[^.]\+"' -R $(git ls-files src)`
 
 - comme on ne minifie pas le code, on évite le tableau listant le nom des dépendances lors de leur injection
+
+### Debug
+
+Voici quelques morceaux de code utiles pour déboguer l'application,
+depuis la console JS de votre navigateur :
+
+    var $rootScope = angular.element(document.body).scope()
+
+    angular.element($('<a CSS selector>')).scope() // ou .controller()
+
+    // Une fois un élement `$0` sélectionné avec l'inspecteur :
+    var scope = angular.element($0).scope()
+
+    var injector = angular.element(document.body).injector()
+    injector.get('<serviceName>')
+
+Vous pouvez également afficher la valeur d'attributs de votre scope dans le HTML ainsi :
+
+    <pre><code>{{ attribut | json }}</code></pre>

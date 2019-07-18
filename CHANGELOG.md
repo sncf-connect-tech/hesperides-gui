@@ -25,12 +25,12 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-08-12
 ### Added
 
-- Section sur les ACLS dans le manuel utilisateur + introduction de HTML tidy dans CI. [Lucas Cimon]
+- Section sur les ACLS dans le manuel utilisateur + introduction de HTML tidy dans CI (#277) [Lucas Cimon]
 
-- Banner from HTTP configurable through $BANNER_URL - close #251. [Lucas Cimon]
+- Banner from HTTP configurable through $BANNER_URL - close #251 (#276) [Lucas Cimon]
 
 
 
