@@ -397,7 +397,7 @@ angular.module('hesperides.application', [])
                 save_properties(application_name, platform, properties, path, comment) {
                     properties = properties.to_rest_entity();
 
-                    return $http.post(`rest/applications/${ encodeURIComponent(application_name)
+                    return $http.put(`rest/applications/${ encodeURIComponent(application_name)
                     }/platforms/${ encodeURIComponent(platform.name)
                     }/properties?path=${ encodeURIComponent(path)
                     }&platform_vid=${ encodeURIComponent(platform.version_id)
