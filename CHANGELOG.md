@@ -25,7 +25,7 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-07-10
 ### Added
 
 - Support pour Sentry + plus d'info dans le menu 'à propos' [Lucas Cimon]

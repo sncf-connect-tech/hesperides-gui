@@ -1034,30 +1034,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             };
 
             $scope.refreshGlobalPropertiesData = function () {
-                var platform = $scope.platform;
-                var getPropertiesUrl = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms/${ encodeURIComponent(platform.name) }/properties?path=${ encodeURIComponent('#') }`;
-
-                $http.get(getPropertiesUrl).then(function (response) {
-                    return new Properties(response.data);
-                }, function (error) {
-                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesController.refreshGlobalPropertiesData.get_properties' });
-                    throw error;
-                }).then(function (response) {
-                    platform.global_properties = response;
-
+                ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                    $scope.platform.global_properties = response;
                     // making a copy, for changes detection
                     $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
                 });
-
-                var getGlobalPropertyUsagesUrl = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms/${ encodeURIComponent(platform.name) }/global_properties_usage`;
-
-                $http.get(getGlobalPropertyUsagesUrl).then(function (response) {
-                    return response.data;
-                }, function (error) {
-                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesController.refreshGlobalPropertiesData.get_global_properties_usage' });
-                    throw error;
-                }).then(function (response) {
-                    platform.global_properties_usage = response;
+                ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                    $scope.platform.global_properties_usage = response;
                 });
             };
 

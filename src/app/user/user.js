@@ -51,7 +51,7 @@ angular.module('hesperides.user', [])
                         }
                         return userCache;
                     }, function (errorResp) {
-                        var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';
+                        var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || JSON.stringify(errorResp) || 'Unknown API error in UserService.authenticate';
                         notify({ classes: [ 'error' ], message: errorMsg });
                         throw new Error(errorMsg);
                     });
