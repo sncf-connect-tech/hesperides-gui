@@ -316,12 +316,23 @@ angular.module('hesperides', MODULE_DEPS)
         return {
 
             /**
-         * Getting a color according to input.
-         * @param {String} name : the input string
-         */
+            * Getting a color according to input.
+            * @param {String} name : the input string
+            */
             calculateColor(name, color) {
                 var rgbPastel = { red: 255, green: 255, blue: 255 };
-                if (color || store.get('color_active')) {
+                let isColorPaletteActive = false;
+                try {
+                    isColorPaletteActive = store.get('color_active');
+                } catch(error) {
+                    if (error instanceof SyntaxError) {
+                        // Observé en production: dans le cas d'une valeur syntaxiquement invalide, on nettoie
+                        store.set('color_active', null);
+                    } else {
+                        throw error;
+                    }
+                }
+                if (color || isColorPaletteActive) {
                     var baseRed = store.get('color_red') || 220;
                     var baseGreen = store.get('color_green') || 220;
                     var baseBlue = store.get('color_blue') || 220;

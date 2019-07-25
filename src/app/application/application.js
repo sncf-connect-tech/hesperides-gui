@@ -251,6 +251,7 @@ angular.module('hesperides.application', [])
                     return $http.get('rest/applications').then(function (response) {
                         return response.data;
                     }, function (error) {
+                        if (error.data && error.data.status === 401) return // évite de polluer les logs Sentry
                         notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.list_applications' });
                         throw error;
                     });
@@ -287,6 +288,7 @@ angular.module('hesperides.application', [])
                         });
                         return platform;
                     }, function (error) {
+                        if (error.data && error.data.status === 401) return // évite de polluer les logs Sentry
                         if (!unsecured) {
                             notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_platform' });
                         }
