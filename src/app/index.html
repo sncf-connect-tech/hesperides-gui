@@ -70,7 +70,7 @@
             });
             Sentry.configureScope(
                 (scope) => SENTRY_TAGS.split(',').forEach(
-                    (tagPair) => scope.setTag.apply(scope, tagPair.split('='))
+                    (tagPair) => scope.setTag.apply(scope, tagPair.split(':'))
                 )
             );
         }
