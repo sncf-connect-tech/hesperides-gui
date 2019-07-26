@@ -351,15 +351,14 @@ angular.module('hesperides.template', [])
                 });
 
                 var setValue = function (item, value) {
-                    if (_.isUndefined($scope.model)) {
+                    if (!$scope.model) {
                         $scope.model = {};
                     }
-
                     $scope.model[item.attr] = value;
                 };
 
                 var getValue = function (item) {
-                    return !_.isUndefined($scope.model) && !_.isUndefined($scope.model[item.attr]) ? $scope.model[item.attr] : null;
+                    return $scope.model && !_.isUndefined($scope.model[item.attr]) ? $scope.model[item.attr] : null;
                 };
 
                 $scope.fileRightsOption = [
