@@ -20,28 +20,32 @@
   -->
 
 <div layout="column" class="User">
-    <h1 class="User__name">{{ user.username }}</h1>
+    <center ng-if="loading" class="center-block"><i class="fa fa-spinner fa-spin fa-lg"></i></center>
+    <div ng-if="!loading">
 
-    <section>
-        <p ng-if="user.isProdUser" translate="user.profile.userHasGlobalProdRole" translate-compile></p>
-        <p ng-if="!user.isProdUser" translate="user.profile.userHasntGlobalProdRole" translate-compile></p>
-    </section>
+        <h1 class="User__name">{{ user.username }}</h1>
 
-    <section>
-        <h2>{{ 'user.profile.sectionTitle.perAppRoles' | translate }}</h2>
-        <! -- Note: "translate-compile" permet l'interprétation du HTML dans les 2 lignes suivantes -->
-        <p ng-if="!user.appsWithProdRole.length"translate="user.profile.desc.noAppRoles" translate-compile></p>
-        <p ng-if="user.appsWithProdRole.length"translate="user.profile.desc.perAppRoles" translate-compile></p>
-        <ul class="User__appList">
-            <li ng-repeat="app in user.appsWithProdRole | orderBy"><md-button class="md-raised md-accent" href="/#/properties/{{ app }}">{{ app }}</md-button></li>
-        </ul>
-    </section>
+        <section>
+            <p ng-if="user.isProdUser" translate="user.profile.userHasGlobalProdRole" translate-compile></p>
+            <p ng-if="!user.isProdUser" translate="user.profile.userHasntGlobalProdRole" translate-compile></p>
+        </section>
 
-    <section>
-        <h2>{{ 'user.profile.sectionTitle.adGroups' | translate }}</h2>
-        <p>{{ 'user.profile.desc.adGroups' | translate }}</p>
-        <ul>
-            <li ng-repeat="groupCN in user.authorities.directory_groups | orderBy">{{ groupCN }}</li>
-        </ul>
-    </section>
+        <section>
+            <h2>{{ 'user.profile.sectionTitle.perAppRoles' | translate }}</h2>
+            <! -- Note: "translate-compile" permet l'interprétation du HTML dans les 2 lignes suivantes -->
+            <p ng-if="!user.appsWithProdRole.length"translate="user.profile.desc.noAppRoles" translate-compile></p>
+            <p ng-if="user.appsWithProdRole.length"translate="user.profile.desc.perAppRoles" translate-compile></p>
+            <ul class="User__appList">
+                <li ng-repeat="app in user.appsWithProdRole | orderBy"><md-button class="md-raised md-accent" href="/#/properties/{{ app }}">{{ app }}</md-button></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>{{ 'user.profile.sectionTitle.adGroups' | translate }}</h2>
+            <p>{{ 'user.profile.desc.adGroups' | translate }}</p>
+            <ul>
+                <li ng-repeat="groupCN in user.authorities.directory_groups | orderBy">{{ groupCN }}</li>
+            </ul>
+        </section>
+    </div>
 </div>

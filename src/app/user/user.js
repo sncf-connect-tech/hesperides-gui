@@ -18,8 +18,10 @@
 angular.module('hesperides.user', [])
 
     .controller('UserController', function ($scope, UserService) {
+        $scope.loading = true;
         UserService.authenticate().then((user) => {
             $scope.user = user;
+            $scope.loading = false;
         });
     })
 
@@ -39,8 +41,8 @@ angular.module('hesperides.user', [])
             }
             // Retrocompatibility: we handle the case of non-existing .authorities
             this.appsWithProdRole = this.authorities ? this.authorities.roles
-                    .filter((roleName) => roleName.endsWith('_PROD_USER'))
-                    .map((roleName) => roleName.substr(0, roleName.length - '_PROD_USER'.length)) : [];
+                .filter((roleName) => roleName.endsWith('_PROD_USER'))
+                .map((roleName) => roleName.substr(0, roleName.length - '_PROD_USER'.length)) : [];
 
             this.hasProdRoleForApp = function (app) {
                 return this.isProdUser || _.includes(this.appsWithProdRole, app);
