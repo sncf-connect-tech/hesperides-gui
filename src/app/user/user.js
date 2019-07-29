@@ -18,8 +18,10 @@
 angular.module('hesperides.user', [])
 
     .controller('UserController', function ($scope, UserService) {
+        $scope.loading = true;
         UserService.authenticate().then((user) => {
             $scope.user = user;
+            $scope.loading = false;
         });
     })
 
