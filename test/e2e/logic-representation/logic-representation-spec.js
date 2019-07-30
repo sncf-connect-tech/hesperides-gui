@@ -123,7 +123,7 @@ function treeModeAddLogicGroupModuleAndInstance(logicGroup1, logicGroup2, module
     // add module
     utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-module-button-${ logicGroup2 }`)));
     var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
-    elm_module_name_input.sendKeys(`${ moduleName } ${ moduleVersion }`);
+    utils.clearAndSendkeys(elm_module_name_input, `${ moduleName } ${ moduleVersion }`);
     utils.selectFirstElemOfAutocomplete(elm_module_name_input);
     browser.waitForAngular(); // ajout pour que l'autocompletion soit prise en compte au moment du test
     utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));

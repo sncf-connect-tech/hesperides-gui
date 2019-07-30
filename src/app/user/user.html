@@ -1,0 +1,51 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<div layout="column" class="User">
+    <center ng-if="loading" class="center-block"><i class="fa fa-spinner fa-spin fa-lg"></i></center>
+    <div ng-if="!loading">
+
+        <h1 class="User__name">{{ user.username }}</h1>
+
+        <section>
+            <p ng-if="user.isProdUser" translate="user.profile.userHasGlobalProdRole" translate-compile></p>
+            <p ng-if="!user.isProdUser" translate="user.profile.userHasntGlobalProdRole" translate-compile></p>
+        </section>
+
+        <section>
+            <h2>{{ 'user.profile.sectionTitle.perAppRoles' | translate }}</h2>
+            <! -- Note: "translate-compile" permet l'interprétation du HTML dans les 2 lignes suivantes -->
+            <p ng-if="!user.appsWithProdRole.length"translate="user.profile.desc.noAppRoles" translate-compile></p>
+            <p ng-if="user.appsWithProdRole.length"translate="user.profile.desc.perAppRoles" translate-compile></p>
+            <ul class="User__appList">
+                <li ng-repeat="app in user.appsWithProdRole | orderBy"><md-button class="md-raised md-accent" href="/#/properties/{{ app }}">{{ app }}</md-button></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>{{ 'user.profile.sectionTitle.adGroups' | translate }}</h2>
+            <p>{{ 'user.profile.desc.adGroups' | translate }}</p>
+            <ul>
+                <li ng-repeat="groupCN in user.authorities.directory_groups | orderBy">{{ groupCN }}</li>
+            </ul>
+        </section>
+    </div>
+</div>

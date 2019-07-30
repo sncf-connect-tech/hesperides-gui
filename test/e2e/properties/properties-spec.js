@@ -61,10 +61,6 @@ describe('Manage properties (global, module, instance) and annotations (default,
         // utils.checkIfElementIsPresentWithClass('.property-saved');
     });
 
-    it('should find star for a required property (TREE MODE)', () =>
-        expect(browser.getPageSource()).toContain('prop_required <span ng-show="key_value_property.required" class="property-required">*')
-    );
-
     it('should not save properties for a wrong pattern (TREE MODE)', () => {
         // we use random_string for at least 1 property to avoid saving plateform without changes for property values
         var random_string = utils.getRandomString(20);

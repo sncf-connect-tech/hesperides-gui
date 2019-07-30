@@ -64,6 +64,19 @@
                                size="small">
                 </list-of-items>
             </div>
+            <div layout="row" layout-align="start">
+                <div class="Application__prodPerms__userStatus">
+                    <span ng-if="userHasProdRoleForApp" translate="properties.application.prodPerms.userHasProdRole" translate-compile></span>
+                    <span ng-if="!userHasProdRoleForApp" translate="properties.application.prodPerms.userHasntProdRole" translate-compile></span>
+                    &nbsp;<strong>{{application.name}}</strong>
+                </div>
+                <div layout="row" layout-align="start">
+                    <div class="Application__prodPerms__adGroups" translate="properties.application.prodPerms.adGroups.label" translate-compile></div>
+                    <md-chips ng-model="ctrl.appGroupCNs" ng-change="onGroupCNsChange()" readonly="!userHasProdRoleForApp" placeholder="{{ 'properties.application.prodPerms.adGroups.placeholder' | translate }}"></md-chips>
+                    <md-tooltip md-direction="right">{{ 'properties.application.prodPerms.adGroups.tooltip' | translate }}</md-tooltip>
+                    <md-icon class="fa fa-question-circle fa-2x"></md-icon>
+                </div>
+            </div>
         </div>
     </div>
 </div>

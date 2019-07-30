@@ -22,6 +22,6 @@ describe('Navbar', () => {
     it('should open help menu and check content of the "about" modal', () => {
         utils.clickOnElement(element(by.id('e2e-navbar-help')));
         utils.clickOnElement(element(by.id('e2e-navbar-help-about')));
-        utils.checkIfElementContainsText(element(by.css('md-dialog-content')), 'API build time:');
+        utils.checkIfElementContainsText(element(by.css('md-dialog-content')), 'API git branch :');
     });
 });
