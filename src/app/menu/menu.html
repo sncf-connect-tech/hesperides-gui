@@ -116,7 +116,7 @@
                                     md-search-text="ctrl.searchText"
                                     md-items="item in find_applications_by_name(ctrl.searchText)"
                                     md-item-text="item.name"
-                                    md-selected-item-change="(item) ? open_properties_page(item.name) : false"
+                                    md-selected-item-change="item && open_properties_page(item.name)"
                                     md-min-length="0"
                                     md-autoselect="true"
                                     placeholder="{{ 'placeholder.search' | translate}}">

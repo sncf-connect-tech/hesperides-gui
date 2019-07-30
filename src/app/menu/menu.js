@@ -56,7 +56,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 $location.path(`/techno/${ name }/${ version }`).search({});
             }
             $scope.technoSearched = '';
-            $mdMenu.cancel(); // dans le cas où on est appelé par l'autocomplete de menu.html
+            $mdMenu.destroy(); // dans le cas où on est appelé par l'autocomplete de menu.html
             $scope.closeTechnoDialog(); // dans le cas où on est appelé par techno-menu-modal*.html
         };
 
@@ -91,7 +91,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 $location.search({ type: 'workingcopy' });
             }
             $scope.moduleSearched = '';
-            $mdMenu.cancel();
+            $mdMenu.destroy();
         };
 
         $scope.open_create_module_dialog = function () {
@@ -130,14 +130,13 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         };
 
         $scope.open_properties_page = function (application_name, platform_name) {
-            $location.path(`/properties/${ application_name }`);
-            if (platform_name) {
-                $location.search({ platform: platform_name });
-            } else {
-                $location.search({});
-            }
             $scope.applicationSearched = '';
-            $mdMenu.cancel();
+            let search = {};
+            if (platform_name) {
+                search.platform = platform_name;
+            }
+            $location.path(`/properties/${ application_name }`).search(search);
+            $mdMenu.destroy();
         };
 
         $scope.create_platform = function (application_name, platform_name, production, application_version) {
@@ -249,12 +248,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
         // Refactoring TO DO
         $scope.find_applications_by_name = function (name) {
-            return ApplicationService.with_name_like(name).then(function (apps) {
+            return ApplicationService.with_name_like(name).then(function (matchingApplications) {
                 // Already loved apps shouldn't be displayed
-                return _.filter(apps, function (item) {
-                    return !_.some($scope.applications, function (love) {
-                        return love === item.name;
-                    });
+                return _.filter(matchingApplications, function (matchingApplication) {
+                    return !_.some($scope.applications, (application) => application === matchingApplication.name);
                 });
             });
         };

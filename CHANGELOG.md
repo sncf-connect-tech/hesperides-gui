@@ -25,10 +25,14 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-07-30
 ### Added
 
-- /user /user + chips in /properties/$app header to manage prod AD groups. [Lucas Cimon]
+- /user /user + chips in /properties/$app header to manage prod AD groups (#260) [Lucas Cimon]
+
+  * Add: /user /user + chips in /properties/$app header to manage prod AD groups
+
+  * Close #268 : spinner au chargement du profil utilisateur
 
 
 
