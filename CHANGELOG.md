@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Comparison mode button to properties diff wizard. [Girondel Etienne]
+
+
+
 ## 2019-08-12
 ### Added
 

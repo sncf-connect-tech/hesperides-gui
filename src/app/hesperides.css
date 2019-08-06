@@ -15,16 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/******************************************************************************
+ * GLOBAL ELEMENT STYLES
+ */
+
 @font-face {
-	    font-family: 'AvenirBook';
-	    src: url('../fonts/avenirltstd-roman-webfont.eot');
-	    src: url('../fonts/avenirltstd-roman-webfont.eot?#iefix') format('embedded-opentype'),
-	         url('../fonts/avenirltstd-roman-webfont.woff') format('woff'),
-	         url('../fonts/avenirltstd-roman-webfont.ttf') format('truetype'),
-	         url('../fonts/avenirltstd-roman-webfont.svg') format('svg');
-	    font-weight: normal;
-	    font-style: normal;
-	}
+    font-family: 'AvenirBook';
+    src: url('../fonts/avenirltstd-roman-webfont.eot');
+    src: url('../fonts/avenirltstd-roman-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/avenirltstd-roman-webfont.woff') format('woff'),
+         url('../fonts/avenirltstd-roman-webfont.ttf') format('truetype'),
+         url('../fonts/avenirltstd-roman-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
     font-size: 0.813em;
@@ -41,8 +46,61 @@ textarea,
      font-size: inherit;
 }
 
-/**
- * Global Styles (Externalisation)
+
+
+/******************************************************************************
+ * GLOBAL Material Design overrides / custom styles
+ */
+.md-input-has-placeholder label {
+    -webkit-transform: translate3d(0, 6px, 0) scale(1) !important;
+    transform: translate3d(0, 6px, 0) scale(1) !important;
+}
+
+md-input-container.md-default-theme label, md-input-container label, md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder {
+    color: rgba(0,0,0,0.6) !important;
+    font-size: 14px !important;
+}
+
+button.md-primary.md-button.ng-scope.md-confirm-hesperides-dialog-theme.md-ink-ripple {
+    color: rgb(255,255,255) !important;
+    background-color: rgb(255,87,34) !important;
+}
+
+button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
+    color: rgb(255,255,255) !important;
+    background-color: rgb(0,150,136) !important;
+}
+
+.md-tooltip {
+    max-width: 50%;
+    height: auto;
+    overflow: visible;
+    white-space: normal;
+    line-height: 1rem;
+    padding: .5rem;
+    margin-left: 25%;
+}
+
+
+
+/******************************************************************************
+ * CodeMirror styling
+ */
+.CodeMirror {
+  border: 1px solid #ddd;
+}
+
+.CodeMirror pre.CodeMirror-cursor {
+  z-index: 200000;
+}
+
+.cm-hesperides {color: #cc051e;}
+.cm-hesperides-token {color: #a100cc;}
+
+
+
+/******************************************************************************
+ * GLOBAL CLASSES
  */
 .width-50-pc {
     width:50% !important;
@@ -152,81 +210,23 @@ textarea,
     text-align: end !important;
 }
 
-.tooltip {
-    display: block;
-    position: absolute;
-    background-color: white;
-    border-style: solid;
-    border-width: 1px
-}
-
-#propertiesButtonsContainer {
-    z-index: 1000 !important;
-}
-
-#new-version-label-autocomplete {
-    padding-bottom: 8px;
-}
-
-/**
- * Welcome
- */
-#welcome {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    width: 485px;
-    height: 200px;
-    background-image: url('/img/evolution-ordinateur.png');
-}
-
-/**
- * CodeMirror
- */
-.CodeMirror {
-  border: 1px solid #ddd;
-}
-
-.CodeMirror pre.CodeMirror-cursor {
-  z-index: 200000;
-}
-
 .property-using-global {
     color: #009587;
 }
 .text-stroke {
-	text-decoration: line-through !important;
+    text-decoration: line-through !important;
 }
 
 .bg-light {
-	background-color: #F8F8F8;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-left: 30px;
-	padding-right: 10px;
-	margin-bottom: 10px;
+    background-color: #F8F8F8;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 10px;
+    margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.7);
-}
-
-.animate {
-    animation-name: rotateThis;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    -moz-animation: rotateThis 1s infinite linear;    
-    -webkit-animation: rotateThis 1s infinite linear;    
-}
-
-@keyframes rotateThis {
-    from { transform: scale( 1 ) rotate( 0deg );   }
-    to   { transform: scale( 1 ) rotate( 359deg ); }
-}
-
-@-webkit-keyframes rotateThis {
-    from {-webkit-transform: rotate(0deg);}
-    to   {-webkit-transform: rotate(359deg);}
 }
 
 .box li {
@@ -275,9 +275,6 @@ button.preview {
     line-height: 40px;
 }
 
-/* CodeMirror Mode */
-.cm-hesperides {color: #cc051e;}
-.cm-hesperides-token {color: #a100cc;}
 
 .vertical-align {
     display: flex;
@@ -292,6 +289,56 @@ button.preview {
                               horizontally inside the column */
 }
 
+
+
+/******************************************************************************
+ * ANIMATIONS
+ */
+.animate {
+    animation-name: rotateThis;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    -moz-animation: rotateThis 1s infinite linear;
+    -webkit-animation: rotateThis 1s infinite linear;
+}
+
+@keyframes rotateThis {
+    from { transform: scale( 1 ) rotate( 0deg );   }
+    to   { transform: scale( 1 ) rotate( 359deg ); }
+}
+
+@-webkit-keyframes rotateThis {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+
+
+
+/**
+ * Welcome
+ */
+#welcome {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 485px;
+    height: 200px;
+    background-image: url('/img/evolution-ordinateur.png');
+}
+
+#propertiesButtonsContainer {
+    z-index: 1000 !important;
+}
+
+#new-version-label-autocomplete {
+    padding-bottom: 8px;
+}
+
+
+/**
+ * Breadcrumb
+ */
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 20px;
@@ -310,6 +357,7 @@ button.preview {
 .breadcrumb > .active {
     color: #999;
 }
+
 
 /******************************************************************************
  * Modal form
@@ -397,43 +445,6 @@ kbd {
     box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);
 }
 
-/******************************************************************************
- * Model
- */
-.model-property-simple {
-    width: 100%;
-    text-align: left;
-    margin-bottom:0;
-    margin-top:0;
-}
-
-.model-property-iterable {
-    margin-bottom:0;
-    margin-top:0;
-}
-
-/******************************************************************************
- * Shared
- */
-.shared-list-inline {
-    padding-left: 20px;
-}
-.shared-list-inline li {
-    list-style-type: none;
-    display: inline;
-}
-
-/******************************************************************************
- * Custom
- */
-.custom-list {
-    padding-left: 20px;
-}
-.custom-list li {
-    list-style-type: none;
-    Line-Height: 15px;
-}
-
 
 /******************************************************************************
  * Material Design Button color
@@ -488,31 +499,43 @@ a.module-link, a.module-link:hover {
     text-decoration: none !important;
 }
 
-/******************************************************************************
- * Material Design input label
- */
-.md-input-has-placeholder label {
-    -webkit-transform: translate3d(0, 6px, 0) scale(1) !important;
-    transform: translate3d(0, 6px, 0) scale(1) !important;
-}
-
-md-input-container.md-default-theme label, md-input-container label, md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder {
-    color: rgba(0,0,0,0.6) !important;
-    font-size: 14px !important;
-}
 
 
 /******************************************************************************
- * Confirm button
+ * Model
  */
-button.md-primary.md-button.ng-scope.md-confirm-hesperides-dialog-theme.md-ink-ripple {
-    color: rgb(255,255,255) !important;
-    background-color: rgb(255,87,34) !important;
+.model-property-simple {
+    width: 100%;
+    text-align: left;
+    margin-bottom:0;
+    margin-top:0;
 }
 
-button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
-    color: rgb(255,255,255) !important;
-    background-color: rgb(0,150,136) !important;
+.model-property-iterable {
+    margin-bottom:0;
+    margin-top:0;
+}
+
+/******************************************************************************
+ * Shared
+ */
+.shared-list-inline {
+    padding-left: 20px;
+}
+.shared-list-inline li {
+    list-style-type: none;
+    display: inline;
+}
+
+/******************************************************************************
+ * Custom
+ */
+.custom-list {
+    padding-left: 20px;
+}
+.custom-list li {
+    list-style-type: none;
+    Line-Height: 15px;
 }
 
 /******************************************************************************
