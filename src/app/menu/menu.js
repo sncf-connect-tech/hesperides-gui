@@ -126,6 +126,9 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         };
 
         $scope.find_platforms_of_application = function (application_name, filter_env) {
+            if (!application_name) {
+                return [];
+            }
             return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
         };
 
@@ -207,6 +210,9 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         $scope.new_platform_already_exist = false;
 
         $scope.check_new_platform_already_exist = function () {
+            if (!application_name) {
+                return;
+            }
             return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
                 $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
                 if (_.some(response, { 'name': $scope.new_platform.platform_name })) {

@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Suppression des "return" pour éviter de polluer les logs Sentry, qui provoquent des bugs. [Lucas Cimon]
+
+
+
 ## 2019-07-30
 ### Added
 
