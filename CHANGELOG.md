@@ -28,7 +28,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
-- Suppression des "return" pour éviter de polluer les logs Sentry, qui provoquent des bugs. [Lucas Cimon]
+- Avoid "Cannot set property 'properties_path' of undefined" when saving instance properties. [Lucas Cimon]
+
+- Suppression des "return" pour éviter de polluer les logs Sentry, qui provoquent des bugs (#273) [Lucas Cimon]
+
+  * Fix: suppression des "return" pour éviter de polluer les logs Sentry, qui provoquent des bugs
+
+  * Fix: avoid API error "Query parameter applicationName is missing"
 
 
 

@@ -751,15 +751,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         return mod.properties_path === $scope.instance.properties_path;
                     })[0];
 
-                    var tmpInstance = _.filter(matchingModule.instances, function (instance) {
+                    var matchingInstance = _.filter(matchingModule.instances, function (instance) {
                         return instance.name === ($scope.new_instance_name ? $scope.new_instance_name : $scope.instance.name);
                     })[0];
 
-                    tmpInstance.properties_path = $scope.instance.properties_path;
+                    if (matchingInstance) {
+                        matchingInstance.properties_path = $scope.instance.properties_path;
 
-                    ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
-                        $scope.instance = tmpInstance.mergeWithModel(model);
-                    });
+                        ApplicationService.get_instance_model($routeParams.application, $scope.platform, $scope.instance.properties_path).then(function (model) {
+                            $scope.instance = matchingInstance.mergeWithModel(model);
+                        });
+                    }
 
                     $scope.new_instance_name = null;
                 }
@@ -1155,9 +1157,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             }
             var platform = _.find(application.platforms, { name: $routeParams.platform });
             if (!platform) {
-                var error = new Error();
-                error.data = 'Selected platform not found !';
-                throw error;
+                throw new Error('Selected platform not found !');
             }
             return ApplicationService.get_platform(platform.application_name, platform.name).then((ptf) => ({ application, platform: ptf }));
         }).then(function (match) {

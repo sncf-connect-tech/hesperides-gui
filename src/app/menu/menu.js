@@ -210,10 +210,10 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         $scope.new_platform_already_exist = false;
 
         $scope.check_new_platform_already_exist = function () {
-            if (!application_name) {
+            if (!$scope.new_platform.application_name) {
                 return;
             }
-            return ApplicationService.get_platform_name_of_application($scope.new_platform.application_name ? $scope.new_platform.application_name.toLowerCase() : '',
+            ApplicationService.get_platform_name_of_application($scope.new_platform.application_name.toLowerCase(),
                 $scope.new_platform.platform_name ? $scope.new_platform.platform_name.toLowerCase() : '', false).then(function (response) {
                 if (_.some(response, { 'name': $scope.new_platform.platform_name })) {
                     ApplicationService.get_platform($scope.new_platform.application_name, $scope.new_platform.platform_name, null, true).then(function () {
@@ -331,7 +331,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             };
 
             $scope.addApplication = function (application) {
-                if (!_.includes($scope.applications, application.name)) {
+                if (application && !_.includes($scope.applications, application.name)) {
                     $scope.applications.push(application.name);
                 }
             };
