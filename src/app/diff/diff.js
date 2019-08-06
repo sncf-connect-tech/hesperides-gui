@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-function buildDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toPropertiesPath, lookPast, timestamp) {
+function buildDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toPropertiesPath, compareMode, lookPast, timestamp) {
     const urlParams = {
         application: fromPlatform.application_name,
         platform: fromPlatform.platform,
@@ -24,6 +24,7 @@ function buildDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toProper
         compare_application: toPlatform.application_name,
         compare_platform: toPlatform.platform,
         compare_path: toPropertiesPath,
+        compare_stored_values: compareMode === "stored"
     };
     if (lookPast) {
         urlParams.timestamp = timestamp;
@@ -90,7 +91,7 @@ angular.module('hesperides.diff', [])
         $scope.loadingDiff = true;
 
         // Lucas 2019/07/18 : tmp while refactoring
-        return ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp).then(diff => {
+        return ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.compare_stored_values, $routeParams.timestamp).then(diff => {
             console.log('diff:', diff);
             let diffContainers = [];
             diff.common.forEach(commonProperty => {
@@ -154,7 +155,7 @@ angular.module('hesperides.diff', [])
          * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
          */
         $scope.generate_diff_containers = function (filterInModel) {
-            
+
             $scope.diff_containers = [];
             // Group properties, this is a O(n^2) algo but is enough for the use case
             // Only focus on key/value properties
@@ -341,6 +342,7 @@ angular.module('hesperides.diff', [])
         }
 
         $scope.formScope = $scope;
+        $scope.compareMode = "final";
         $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.toModule = null;
         $scope.lookPast = false;
@@ -413,7 +415,7 @@ angular.module('hesperides.diff', [])
         $scope.openDiffPage = function () {
             $mdDialog.hide();
             const timestamp = dateToTimestamp($scope.lookPast, $scope.date);
-            $window.open(buildDiffPageUrl($scope.fromPlatform, $scope.toPlatform, $scope.fromModule.properties_path, $scope.toModule.properties_path, $scope.lookPast, timestamp), '_blank');
+            $window.open(buildDiffPageUrl($scope.fromPlatform, $scope.toPlatform, $scope.fromModule.properties_path, $scope.toModule.properties_path, $scope.compareMode, $scope.lookPast, timestamp), '_blank');
         };
 
         // Construtor initialization:
@@ -426,6 +428,7 @@ angular.module('hesperides.diff', [])
         }
 
         $scope.formScope = $scope;
+        $scope.compareMode = "final";
         $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.lookPast = false;
         $scope.date = null;
@@ -469,7 +472,7 @@ angular.module('hesperides.diff', [])
         $scope.openDiffPage = function () {
             $mdDialog.hide();
             const timestamp = dateToTimestamp($scope.lookPast, $scope.date);
-            $window.open(buildDiffPageUrl($scope.fromPlatform, $scope.toPlatform, '#', '#', $scope.lookPast, timestamp), '_blank');
+            $window.open(buildDiffPageUrl($scope.fromPlatform, $scope.toPlatform, '#', '#', $scope.compareMode, $scope.lookPast, timestamp), '_blank');
         };
 
         // Construtor initialization:

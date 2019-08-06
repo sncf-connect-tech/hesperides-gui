@@ -67,6 +67,20 @@
                             <div ng-show="formScope.lookPast">
                                 <compare-date-time ng-model="formScope.date" is-valid="formScope.dateValid"></compare-date-time>
                             </div>
+
+                            <label>
+                                <strong>{{ 'properties.compare.modal.compareMode' | translate }}</strong>
+                                <md-tooltip md-direction="right">{{ 'properties.compare.modal.compareMode.tooltip' | translate }}</md-tooltip>
+                                <md-icon class="fa fa-question-circle fa-2x"></md-icon>
+                            </label>
+                            <md-radio-group ng-model="formScope.compareMode" layout="row">
+                                <md-radio-button value="stored">
+                                    {{ 'properties.compare.modal.stored' | translate }}
+                                </md-radio-button>
+                                <md-radio-button value="final">
+                                    {{ 'properties.compare.modal.final' | translate }}
+                                </md-radio-button>
+                            </md-radio-group>
                         </md-content>
                     </div>
                     <md-dialog-actions>

@@ -373,8 +373,8 @@ angular.module('hesperides.application', [])
                         throw error;
                     });
                 },
-                get_diff(application_name, platform_name, path, to_application, to_platform, to_path, timestamp) {
-                    var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties/diff?path=${ encodeURIComponent(path) }&to_application=${ encodeURIComponent(to_application) }&to_platform=${ encodeURIComponent(to_platform) }&to_path=${ encodeURIComponent(to_path) }`;
+                get_diff(application_name, platform_name, path, to_application, to_platform, to_path, compare_stored_values, timestamp) {
+                    var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties/diff?path=${ encodeURIComponent(path) }&to_application=${ encodeURIComponent(to_application) }&to_platform=${ encodeURIComponent(to_platform) }&to_path=${ encodeURIComponent(to_path) }&compare_stored_values=${ encodeURIComponent(compare_stored_values) }`;
                     if (timestamp) {
                         url += `&timestamp=${ timestamp }`;
                     }
