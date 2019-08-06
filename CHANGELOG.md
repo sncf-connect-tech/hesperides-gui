@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Suppression des "return" pour éviter de polluer les logs Sentry, qui provoquent des bugs. [Lucas Cimon]
+
+
+
 ## 2019-07-30
 ### Added
 
@@ -33,6 +40,11 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
   * Add: /user /user + chips in /properties/$app header to manage prod AD groups
 
   * Close #268 : spinner au chargement du profil utilisateur
+
+
+### Fixed
+
+- Avoiding JS errors due to calling $mdMenu.cancel() instead of $mdMenu.destroy() + ignoring Unauthorized auth errors for Sentry #271 (#271) [Lucas Cimon]
 
 
 
