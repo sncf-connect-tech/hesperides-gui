@@ -35,6 +35,11 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
   * Close #268 : spinner au chargement du profil utilisateur
 
 
+### Fixed
+
+- Avoiding JS errors due to calling $mdMenu.cancel() instead of $mdMenu.destroy() + ignoring Unauthorized auth errors for Sentry #271 (#271) [Lucas Cimon]
+
+
 
 ## 2019-07-25
 ### Fixed

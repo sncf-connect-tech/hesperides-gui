@@ -70,8 +70,7 @@ angular.module('hesperides.user', [])
                     }
                     return userCache;
                 }, function (errorResp) {
-                    var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || 'Unknown API error in UserService.authenticate';
-                    if ((errorResp.data && errorResp.data.status === 401) || errorMsg === 'Unauthorized') return // évite de polluer les issues Sentry
+                    var errorMsg = (errorResp.data && errorResp.data.message) || errorResp.data || `Unknown API error in UserService.authenticate: JSON.stringify(errorResp)`;
                     notify({ classes: [ 'error' ], message: errorMsg });
                     throw new Error(errorMsg);
                 });
