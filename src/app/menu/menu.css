@@ -1,6 +1,15 @@
 /* WIP: Ce composant est en cours de refacto pour suivre la nomenclature BEM,
    cf. https://github.com/voyages-sncf-technologies/hesperides-gui/blob/master/tech_docs/css.md */
 
+.Banner {
+    background-color: #E8715F;
+    color: rgba(255, 255, 255, 0.84);
+    padding: .5rem;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
 .Navbar input:focus{
 	outline-width: 0;
 }
