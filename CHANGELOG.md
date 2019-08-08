@@ -26,9 +26,16 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 <!-- gitchangelog START -->
 ## _(unreleased)_
+### Added
+
+- Section sur les ACLS dans le manuel utilisateur + introduction de HTML tidy dans CI. [Lucas Cimon]
+
+
+
+## 2019-08-07
 ### Fixed
 
-- Avoid "Cannot set property 'properties_path' of undefined" when saving instance properties. [Lucas Cimon]
+- Avoid "Cannot set property 'properties_path' of undefined" when saving instance properties (#274) [Lucas Cimon]
 
 - Suppression des "return" pour éviter de polluer les logs Sentry, qui provoquent des bugs (#273) [Lucas Cimon]
 
