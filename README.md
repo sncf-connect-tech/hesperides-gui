@@ -52,5 +52,7 @@ $ npm test
 
 End-to-end tests :
 ```shell
+$ npm start
+$ npm run webdriver-start
 $ npm run e2e-tests
 ```

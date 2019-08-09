@@ -50,6 +50,7 @@
         const LOCALCHANGES_TTL      = +substOrDefault('$LOCALCHANGES_TTL',      '50');
         const SUPPORT_URL           =  substOrDefault('$SUPPORT_URL',           '');
         const SWAGGER_LINK          =  substOrDefault('$SWAGGER_LINK',          '/rest/swagger-ui.html');
+        const BANNER_URL            =  substOrDefault('$BANNER_URL',            '');
         const BUILD_TIME            =  substOrDefault('$BUILD_TIME',            '');
         const GIT_BRANCH            =  substOrDefault('$GIT_BRANCH',            '');
         const GIT_COMMIT            =  substOrDefault('$GIT_COMMIT',            '');
@@ -112,6 +113,7 @@
 </head>
 <body>
 
+<div class="Banner" ng-if="Page.isBannerPresent()" ng-bind-html="Page.bannerMsg()"></div>
 <ng-include src="'menu/menu.html'"></ng-include>
 <div ng-view class="padding-left-20px padding-right-20px"></div>
 
