@@ -1393,6 +1393,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     .factory('Properties', function () {
         var Properties = function (data) {
             angular.extend(this, {
+                properties_version_id: 0,
                 key_value_properties: [],
                 iterable_properties: [],
                 versionID: -1,
@@ -1657,6 +1658,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             this.to_rest_entity = function () {
                 return {
                     versionID: this.versionID,
+                    properties_version_id: this.properties_version_id,
                     key_value_properties: _.map(this.key_value_properties, (kvp) => ({
                         name: kvp.name,
                         comment: kvp.comment,
