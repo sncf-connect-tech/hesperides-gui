@@ -182,10 +182,24 @@ angular.module('hesperides', MODULE_DEPS)
     })
 
 
-    .factory('Page', function () {
-        var base = 'Hesperides';
-        var title = base;
+    .factory('Page', function ($http, $sce) {
+        let bannerMsg = '';
+        if (BANNER_URL) {
+            $http.get(BANNER_URL).then(response => {
+                bannerMsg = response.data;
+            }, (error) => {
+                console.warn(`[Hesperides] Banner file could not be retrieved from ${BANNER_URL}:`, error);
+            });
+        }
+        let base = 'Hesperides';
+        let title = base;
         return {
+            isBannerPresent() {
+                return !!bannerMsg;
+            },
+            bannerMsg() {
+                return $sce.trustAsHtml(bannerMsg);
+            },
             title() {
                 return title;
             },

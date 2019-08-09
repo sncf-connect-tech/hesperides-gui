@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Banner from HTTP configurable through $BANNER_URL - close #251. [Lucas Cimon]
+
+
+
 ## 2019-08-07
 ### Fixed
 
