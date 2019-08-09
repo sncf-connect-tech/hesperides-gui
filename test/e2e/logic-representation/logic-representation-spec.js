@@ -69,7 +69,7 @@ describe('Manage logical representation', () => {
     });
 
     it('should add a logic representation (TREE MODE)', () => {
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        utils.setDefaultDisplayModeSetting('tree');
         treeModeAddLogicGroupModuleAndInstance(data.logic_group_1, data.logic_group_2, data.new_module_name, data.new_module_version, data.new_instance_name);
     });
 
