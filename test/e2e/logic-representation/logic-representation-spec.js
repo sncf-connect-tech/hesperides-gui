@@ -102,48 +102,48 @@ describe('Manage logical representation', () => {
     afterEach(() => utils.setDefaultDisplayModeSetting('bloc'));
 });
 
-function treeModeAddLogicGroupModuleAndInstance(logicGroup1, logicGroup2, moduleName, moduleVersion, newInstanceName) {
-    // add first level
-    utils.clickOnElement(element(by.id('e2e-tree-properties-add-first-box-dialog-button')));
-    element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(logicGroup1);
-    utils.clickOnElement(element(by.id('e2e-add-box-create-logic-group-button')));
-
-    // to display buttons, mouse has to be on element
-    utils.moveMouseOnElement(`e2e-tree-renderer-edit-logic-group-${ logicGroup1 }`,
-        `e2e-tree-renderer-add-logic-group-button-${ logicGroup1 }`);
-
-    // add second level
-    utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-logic-group-button-${ logicGroup1 }`)));
-    element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(logicGroup2);
-    utils.clickOnElement(element(by.id('e2e-add-box-create-logic-group-button')));
-
-    // click on tree sign to show arbo
-    utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ logicGroup2 }`)));
-
-    // to display buttons, mouse has to be on element
-    utils.moveMouseOnElement(`e2e-tree-renderer-edit-logic-group-${ logicGroup2 }`,
-        `e2e-tree-renderer-add-module-button-${ logicGroup2 }`);
-
-    // add module
-    utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-module-button-${ logicGroup2 }`)));
-    var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
-    utils.clearAndSendkeys(elm_module_name_input, `${ moduleName } ${ moduleVersion }`);
-    utils.selectFirstElemOfAutocomplete(elm_module_name_input);
-    browser.waitForAngular(); // ajout pour que l'autocompletion soit prise en compte au moment du test
-    utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));
-
-    // to display buttons, mouse has to be on element
-    utils.moveMouseOnElement(`e2e-tree-renderer-edit-module-button-${ moduleName }`,
-        `e2e-deployed-module-controls-add-instance-button-${ moduleName }`);
-
-    // add instance
-    utils.clickOnElement(element(by.id(`e2e-deployed-module-controls-add-instance-button-${ moduleName }`)));
-    element(by.id('e2e-add-instance-instance-name-input')).sendKeys(newInstanceName);
-
-    return element(by.id('e2e-add-instance-create-instance-button')).click().then(() =>
-        element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).isPresent().then((isPresent) => {
-            expect(isPresent).toBe(true);
-            return utils.checkResponseStatusCode(`${ hesperides_url }/rest/files/applications/${ data.new_application }/platforms/${ data.new_platform }/%23${ data.logic_group_1 }%23${ data.logic_group_2 }/${ data.new_module_name }/${ data.new_module_version }/instances/${ data.new_instance_name }?isWorkingCopy=true`, 200);
-        })
-    );
-}
+// function treeModeAddLogicGroupModuleAndInstance(logicGroup1, logicGroup2, moduleName, moduleVersion, newInstanceName) {
+//     // add first level
+//     utils.clickOnElement(element(by.id('e2e-tree-properties-add-first-box-dialog-button')));
+//     element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(logicGroup1);
+//     utils.clickOnElement(element(by.id('e2e-add-box-create-logic-group-button')));
+//
+//     // to display buttons, mouse has to be on element
+//     utils.moveMouseOnElement(`e2e-tree-renderer-edit-logic-group-${ logicGroup1 }`,
+//         `e2e-tree-renderer-add-logic-group-button-${ logicGroup1 }`);
+//
+//     // add second level
+//     utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-logic-group-button-${ logicGroup1 }`)));
+//     element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(logicGroup2);
+//     utils.clickOnElement(element(by.id('e2e-add-box-create-logic-group-button')));
+//
+//     // click on tree sign to show arbo
+//     utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ logicGroup2 }`)));
+//
+//     // to display buttons, mouse has to be on element
+//     utils.moveMouseOnElement(`e2e-tree-renderer-edit-logic-group-${ logicGroup2 }`,
+//         `e2e-tree-renderer-add-module-button-${ logicGroup2 }`);
+//
+//     // add module
+//     utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-module-button-${ logicGroup2 }`)));
+//     var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
+//     utils.clearAndSendkeys(elm_module_name_input, `${ moduleName } ${ moduleVersion }`);
+//     utils.selectFirstElemOfAutocomplete(elm_module_name_input);
+//     browser.waitForAngular(); // ajout pour que l'autocompletion soit prise en compte au moment du test
+//     utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));
+//
+//     // to display buttons, mouse has to be on element
+//     utils.moveMouseOnElement(`e2e-tree-renderer-edit-module-button-${ moduleName }`,
+//         `e2e-deployed-module-controls-add-instance-button-${ moduleName }`);
+//
+//     // add instance
+//     utils.clickOnElement(element(by.id(`e2e-deployed-module-controls-add-instance-button-${ moduleName }`)));
+//     element(by.id('e2e-add-instance-instance-name-input')).sendKeys(newInstanceName);
+//
+//     return element(by.id('e2e-add-instance-create-instance-button')).click().then(() =>
+//         element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).isPresent().then((isPresent) => {
+//             expect(isPresent).toBe(true);
+//             return utils.checkResponseStatusCode(`${ hesperides_url }/rest/files/applications/${ data.new_application }/platforms/${ data.new_platform }/%23${ data.logic_group_1 }%23${ data.logic_group_2 }/${ data.new_module_name }/${ data.new_module_version }/instances/${ data.new_instance_name }?isWorkingCopy=true`, 200);
+//         })
+//     );
+// }
