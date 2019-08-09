@@ -1,49 +1,41 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
 <head>
-    <title>Hesperides Docs - Templates</title>
-    <!-- Meta -->
+    <meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.6.0">
     <meta charset="utf-8">
+    <title>Hesperides Docs - Templates</title><!-- Meta -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">    
-    <link rel="shortcut icon" href="favicon.ico">  
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">   
-    <!-- Plugins CSS -->    
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'><!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css"><!-- Plugins CSS -->
     <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="assets/plugins/prism/prism.css">
-    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
-    
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css"><!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css"><!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-</head> 
-
+</head>
 <body class="body-pink">
     <div class="page-wrapper">
         <!-- ******Header****** -->
         <header id="header" class="header">
             <div class="container">
                 <div class="branding">
-                    <h1 class="logo">
-                        <a href="index.html">
-                            <span aria-hidden="true" class="icon_documents_alt icon"></span>
-                            <span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span>
-                        </a>
-                    </h1>
+                    <h1 class="logo"><a href="index.html"><span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span></a></h1>
                 </div><!--//branding-->
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
                     <li class="active">Templates</li>
                 </ol>
             </div><!--//container-->
@@ -51,8 +43,10 @@
         <div class="doc-wrapper">
             <div class="container">
                 <div id="doc-header" class="doc-header text-center">
-                    <h1 class="doc-title"><i class="icon icon_puzzle_alt"></i> Templates</h1>
-                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: oct.13, 2016 - 12:04:35</div>
+                    <h1 class="doc-title">Templates</h1>
+                    <div class="meta">
+                        Last updated: oct.13, 2016 - 12:04:35
+                    </div>
                 </div><!--//doc-header-->
                 <div class="doc-body">
                     <div class="doc-content">
@@ -61,10 +55,11 @@
                                 <h2 class="section-title">Overview</h2>
                                 <div class="section-block">
                                     <p>This chapter covers how to create and handle Templates.</p>
-                                    <p>Templates are datas that may contain : </p>
+                                    <p>Templates are datas that may contain :</p>
                                     <ul>
                                         <li>hard coded data (ex: "value1=my value")</li>
-                                        <li>keys using <a class="link" href="http://mustache.github.io/">mustache</a> template (keys will be valuated in a specific context, namely the <a class="link" href="applications.html">applications</a>)</li>
+                                        <li>keys using <a class="link" href="http://mustache.github.io/">mustache</a> template (keys will be valuated in a specific context, namely the <a class="link" href="applications.html">applications</a>)
+                                        </li>
                                     </ul>
                                     <p>Templates can be created at two levels :</p>
                                     <ul>
@@ -76,50 +71,38 @@
                             <section id="wc-and-release" class="doc-section">
                                 <h2 class="section-title">Working copy and release</h2>
                                 <div class="section-block">
-                                    <p>Modules and technos (described below) contain templates and are associated with a version. Hesperides use another concept for modules and technos : <a href="glossary.html#-type">the type</a>.
-                                    A type can be either "working copy" or "release". It can be compared with "snapshot" and "release" from Maven.</p>
+                                    <p>Modules and technos (described below) contain templates and are associated with a version. Hesperides use another concept for modules and technos : <a href="glossary.html#-type">the type</a>. A type can be either "working copy" or "release". It can be compared with "snapshot" and "release" from Maven.</p>
                                 </div><!--//section-block-->
                                 <div id="working-copy" class="section-block">
                                     <h3 class="block-title">Working copy</h3>
                                     <p>This type allows you to continue editing the module/techno.</p>
-                                    <p> You can verify that you are currently editing a working copy with this element : </p>
-                                    <p><img class="img-responsive" src="assets/images/screenshots/module_header1_focus_workingcopy.png"/></p>
+                                    <p>You can verify that you are currently editing a working copy with this element :</p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/module_header1_focus_workingcopy.png"></p>
                                     <p>When you are satisfied with datas inside templates, you can <a href="#release">release</a> the version of your module/techno.</p>
                                 </div><!--//section-block-->
                                 <div id="release" class="section-block">
                                     <h3 class="block-title">Release</h3>
                                     <p>Type "release" identifies a module/techno that can not be changed.</p>
-                                    <p> You can create the release by : </p>
+                                    <p>You can create the release by :</p>
                                     <ol>
-                                        <li>clicking on "Create release" button</li>
-                                        <img class="img-responsive" src="assets/images/screenshots/module_header1_focus_release_button.png"/>
-                                        <li>fulfill version (<b class="red-color">1</b>) you want to release and clicking on "Create" button (<b class="red-color">2</b>) </li>
-                                        <img class="img-responsive" src="assets/images/screenshots/module_create_release_modal.png"/>
+                                        <li>clicking on "Create release" button<img class="img-responsive" alt="" src="assets/images/screenshots/module_header1_focus_release_button.png"></li>
+                                        <li>fulfill version (<b class="red-color">1</b>) you want to release and clicking on "Create" button (<b class="red-color">2</b>)<img class="img-responsive" alt="" src="assets/images/screenshots/module_create_release_modal.png"></li>
                                     </ol>
                                 </div><!--//section-block-->
-                            </section><!--//doc-section-->         
+                            </section><!--//doc-section-->
                             <section id="module" class="doc-section">
                                 <h2 class="section-title">Modules</h2>
                                 <div class="section-block">
-                                    <p>Module is the first and mandatory level to handle with templates. 
-                                    </p>
-                                    <p>In this section, you will learn how to manage modules, and how to manage templates inside modules. 
-                                    </p>
+                                    <p>Module is the first and mandatory level to handle with templates.</p>
+                                    <p>In this section, you will learn how to manage modules, and how to manage templates inside modules.</p>
                                 </div><!--//section-block-->
                                 <div id="create-module" class="section-block">
                                     <h3 class="block-title">Create a module</h3>
-                                    <p>Before managing templates, you have to create a module. To do that, get in "By module" menu and clic on "Create a working copy" :
-                                    </p>
-                                    <p>
-                                    <img class="img-responsive" src="assets/images/screenshots/menu_create_module.png"/>
-                                    </p>
-                                    <p> You can now just fulfill the module name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and click on "create" button (<b class="red-color">3</b>) :
-                                    <img class="img-responsive" src="assets/images/screenshots/module_create_module.png"/>
-                                    </p>
+                                    <p>Before managing templates, you have to create a module. To do that, get in "By module" menu and clic on "Create a working copy" :</p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/menu_create_module.png"></p>
+                                    <p>You can now just fulfill the module name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and click on "create" button (<b class="red-color">3</b>) : <img class="img-responsive" alt="" src="assets/images/screenshots/module_create_module.png"></p>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Congratulations !</h4>
                                             <p>You created your first working copy module ! You can now start to learn how to handle with <a href="#template">templates</a></p>
@@ -128,28 +111,19 @@
                                 </div><!--//section-block-->
                                 <div id="create-module-from" class="section-block">
                                     <h3 class="block-title">Create a module from</h3>
-                                    <p>Instead of creating a module from scratch, you can create a module from an existing one. To do that, get in "By module" menu and clic on "Create a working copy from..." :
-                                    </p>
-                                    <p>
-                                    <img class="img-responsive" src="assets/images/screenshots/menu_create_module_from.png"/>
-                                    </p>
-                                    <p> You can now just fulfill the module name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and use the autocomplete field to find which module you want to copy (<b class="red-color">3</b>) - then hit the "create" button (<b class="red-color">4</b>):
-                                    <img class="img-responsive" src="assets/images/screenshots/module_create_module_from.png"/>
-                                    </p>
+                                    <p>Instead of creating a module from scratch, you can create a module from an existing one. To do that, get in "By module" menu and clic on "Create a working copy from..." :</p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/menu_create_module_from.png"></p>
+                                    <p>You can now just fulfill the module name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and use the autocomplete field to find which module you want to copy (<b class="red-color">3</b>) - then hit the "create" button (<b class="red-color">4</b>): <img class="img-responsive" alt="" src="assets/images/screenshots/module_create_module_from.png"></p>
                                 </div><!--//section-block-->
                                 <div id="search-module" class="section-block">
                                     <h3 class="block-title">Search module</h3>
                                     <p>After creating modules, you can edit them using the autocomplete input "Search" :</p>
-                                    <p>
-                                    <img class="img-responsive" src="assets/images/screenshots/module_search_module.png"/>
-                                    </p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/module_search_module.png"></p>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Useful tip !</h4>
-                                            <p> Use the power of <a href="best_practices.html#tip-autocomplete">autocomplete</a></p>
+                                            <p>Use the power of <a href="best_practices.html#tip-autocomplete">autocomplete</a></p>
                                         </div><!--//content-->
                                     </div><!--//section-block-->
                                 </div><!--//section-block-->
@@ -157,22 +131,15 @@
                             <section id="techno" class="doc-section">
                                 <h2 class="section-title">Techno</h2>
                                 <div class="section-block">
-                                <p>Techno is a kind of module that contains templates, but that can be inherited in a module.</p>
+                                    <p>Techno is a kind of module that contains templates, but that can be inherited in a module.</p>
                                 </div><!--//section-block-->
                                 <div id="create-techno" class="section-block">
                                     <h3 class="block-title">Create a techno</h3>
-                                    <p>To create a techno, get in "By techno" menu and clic on "Create a working copy" :
-                                    </p>
-                                    <p>
-                                    <img class="img-responsive" src="assets/images/screenshots/menu_create_techno.png"/>
-                                    </p>
-                                    <p> You can now just fulfill the techno name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and click on "create" button (<b class="red-color">3</b>) :
-                                    <img class="img-responsive" src="assets/images/screenshots/techno_create_techno.png"/>
-                                    </p>
+                                    <p>To create a techno, get in "By techno" menu and clic on "Create a working copy" :</p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/menu_create_techno.png"></p>
+                                    <p>You can now just fulfill the techno name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and click on "create" button (<b class="red-color">3</b>) : <img class="img-responsive" alt="" src="assets/images/screenshots/techno_create_techno.png"></p>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Congratulations !</h4>
                                             <p>You created your first working copy techno ! You can now start to learn how to handle with <a href="#template">templates</a></p>
@@ -181,113 +148,107 @@
                                 </div><!--//section-block-->
                                 <div id="create-techno-from" class="section-block">
                                     <h3 class="block-title">Create a Techno from</h3>
-                                    <p>Instead of creating a techno from scratch, you can create a techno from an existing one. To do that, get in "By techno" menu and clic on "Create a working copy from..." :
-                                    </p>
-                                    <p>
-                                    <img class="img-responsive" src="assets/images/screenshots/menu_create_techno_from.png"/>
-                                    </p>
-                                    <p> You can now just fulfill the techno name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and use autocomplete field to find which techno you want to copy (<b class="red-color">3</b>) - then hit the "create" button (<b class="red-color">4</b>):
-                                    <img class="img-responsive" src="assets/images/screenshots/techno_create_techno_from.png"/>
-                                    </p>
+                                    <p>Instead of creating a techno from scratch, you can create a techno from an existing one. To do that, get in "By techno" menu and clic on "Create a working copy from..." :</p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/menu_create_techno_from.png"></p>
+                                    <p>You can now just fulfill the techno name (<b class="red-color">1</b>), the version (<b class="red-color">2</b>) and use autocomplete field to find which techno you want to copy (<b class="red-color">3</b>) - then hit the "create" button (<b class="red-color">4</b>): <img class="img-responsive" alt="" src="assets/images/screenshots/techno_create_techno_from.png"></p>
                                 </div><!--//section-block-->
                                 <div id="search-techno" class="section-block">
                                     <h3 class="block-title">Search techno</h3>
                                     <p>After creating technos, you can edit them using the autocomplete input "Search" :</p>
-                                    <p>
-                                    <img class="img-responsive" src="assets/images/screenshots/techno_search_techno.png"/>
-                                    </p>
+                                    <p><img class="img-responsive" alt="" src="assets/images/screenshots/techno_search_techno.png"></p>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Useful tip !</h4>
-                                            <p> Use the power of <a href="best_practices.html#tip-autocomplete">autocomplete</a></p>
+                                            <p>Use the power of <a href="best_practices.html#tip-autocomplete">autocomplete</a></p>
                                         </div><!--//content-->
                                     </div><!--//section-block-->
                                 </div><!--//section-block-->
-                            </section><!--//doc-section-->   
+                            </section><!--//doc-section-->
                             <section id="template" class="doc-section">
                                 <h2 class="section-title">Template</h2>
                                 <div class="section-block">
-                                <p>As explained quickly earlier, templates are some kind of files created inside a module or a techno, that contain plain text or templated values using <a class="link" href="http://mustache.github.io/">mustache</a>.</p>
-                                <div class="callout-block callout-info">
-                                  <div class="icon-holder">
-                                      <i class="fa fa-info-circle"></i>
-                                  </div><!--//icon-holder-->
-                                  <div class="content">
-                                      <h4 class="callout-title">Important Notice</h4>
-                                      <p>Each time a templated value can be used, you have acces to a set of <a href="valuations.html#predefined-properties">predefined valuation</a><a href="glossary.html#-predefined-valuation"><i class="fa fa-external-link"></i></a>. Pay attention to them to prevent duplicate.</p>
-                                  </div><!--//content-->
-                                </div>
+                                    <p>As explained quickly earlier, templates are some kind of files created inside a module or a techno, that contain plain text or templated values using <a class="link" href="http://mustache.github.io/">mustache</a>.</p>
+                                    <div class="callout-block callout-info">
+                                        <div class="icon-holder"></div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Important Notice</h4>
+                                            <p>Each time a templated value can be used, you have acces to a set of <a href="valuations.html#predefined-properties">predefined valuation</a><a href="glossary.html#-predefined-valuation"></a>. Pay attention to them to prevent duplicate.</p>
+                                        </div><!--//content-->
+                                    </div>
                                 </div><!--//section-block-->
-                                <div id="add-template"  class="section-block">
+                                <div id="add-template" class="section-block">
                                     <h3 class="block-title">Add template</h3>
-                                    <p>In either modules or technos, you can add template by clicking the "Add a template" button: 
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <img class="img-responsive" src="assets/images/screenshots/techno_add_template.png"/>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <img class="img-responsive" src="assets/images/screenshots/module_add_template.png"/>
-                                            </div>
-                                        </div><!--//row-->
-                                    </p>
+                                    <p>In either modules or technos, you can add template by clicking the "Add a template" button:</p>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-12"><img class="img-responsive" alt="" src="assets/images/screenshots/techno_add_template.png"></div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12"><img class="img-responsive" alt="" src="assets/images/screenshots/module_add_template.png"></div>
+                                    </div><!--//row-->
                                 </div><!--//section-block-->
-                                <div id="template-attributes"  class="section-block">
+                                <div id="template-attributes" class="section-block">
                                     <h3 class="block-title">Template attributes</h3>
-                                    <p>When you click on "Add template" button, you have to fill in several informations : </p>
+                                    <p>When you click on "Add template" button, you have to fill in several informations :</p>
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <p><img class="img-responsive" src="assets/images/screenshots/template_attributes.png"/></p>
+                                            <p><img class="img-responsive" alt="" src="assets/images/screenshots/template_attributes.png"></p>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <ul class="list">
-                                                <li><h6>Title</h6>unique key used by Hesperides to identified the template inside a module or techno</li>
-                                                <li><h6>Name of file</h6>string formed with templated values or hard coded datas (ex: foo{{user}}.properties)</li>
-                                                <li><h6>Destination folder</h6>string formed with templated values or hard coded datas (ex: /HOME/{{user}})</li>
-                                                <li><h6>User and Group</h6>handle with if you want to assign specific rights for the generated file</li>
+                                                <li>
+                                                    <h6>Title</h6>unique key used by Hesperides to identified the template inside a module or techno
+                                                </li>
+                                                <li>
+                                                    <h6>Name of file</h6>string formed with templated values or hard coded datas (ex: foo{{user}}.properties)
+                                                </li>
+                                                <li>
+                                                    <h6>Destination folder</h6>string formed with templated values or hard coded datas (ex: /HOME/{{user}})
+                                                </li>
+                                                <li>
+                                                    <h6>User and Group</h6>handle with if you want to assign specific rights for the generated file
+                                                </li>
                                             </ul>
                                         </div>
                                     </div><!--//row-->
                                 </div><!--//section-block-->
-                                <div id="template-content"  class="section-block">
+                                <div id="template-content" class="section-block">
                                     <h3 class="block-title">Template content</h3>
-                                    <p>All you have to do is to define the content of your template and it can be anything you want : key-value, json, plain text, xml etc ....
-                                    </p>
-                                    <p>Inside the content, you can put some hard coded datas, or use mustache framework.
-                                    </p>
-                                    <p><h6>Example 1 :</h6></p>
+                                    <p>All you have to do is to define the content of your template and it can be anything you want : key-value, json, plain text, xml etc ....</p>
+                                    <p>Inside the content, you can put some hard coded datas, or use mustache framework.</p>
+                                    <h6>Example 1 :</h6>
                                     <pre><code class="language-javascript">key1=hard_coded_value
 key2={{templated_value}}</code></pre>
-                                    <p><h6>Example 2 :</h6></p>
+                                    <h6>Example 2 :</h6>
                                     <pre><code class="language-markup">&lt;logger name="com.mkyong.web" level="{{level}}"
         additivity="{{additivity}"&gt;
         &lt;appender-ref ref="STDOUT" /&gt;
-&lt;/logger&gt; </code> </pre>
+&lt;/logger&gt; </code> </pre><br>
+                                    <strong>Note :</strong> Properties' name can contain whitespaces at the start and the end.
+                                    <h6>Example :</h6><code>key = {{ key1 }}</code> is the equal to <code>key = {{key1}}</code><br>
                                     <br>
-                                    <strong>Note : </strong> Properties' name can contain whitespaces at the start and the end.
-                                    <p><h6>Example :</h6></p>
-                                    <code>key = {{ key1 }}</code> is the equal to <code>key = {{key1}}</code>
-
-                                    <br><br>
-                                    <p>
-                                        They can also be dotted like this <br>
-                                        <code>username = {{ mysql.user.name }}</code>
-                                    </p>
+                                    <p>They can also be dotted like this<br>
+                                    <code>username = {{ mysql.user.name }}</code></p>
                                 </div><!--//section-block-->
-                                <div id="hesperides-annotation"  class="section-block">
+                                <div id="hesperides-annotation" class="section-block">
                                     <h3 class="block-title">Annotations</h3>
-                                    <p>We add some specifics annotations <a href="glossary.html#-annotation"><i class="fa fa-external-link"></i></a>   
-                                    </p>
+                                    <p>We add some specifics annotations <a href="glossary.html#-annotation"></a></p>
                                     <ul class="list">
-                                        <li><h6>@required</h6>during valuation, the value of the property must not be empty</li>
-                                        <li><h6>@comment "comment"</h6>during valuation, "comment" will be display in tooltip when hovering the key with mouse</li>
-                                        <li><h6>@default "value"</h6>without valuation, "value" will be considered</li>
-                                        <li><h6>@password</h6>in production mode, an non authorized user will not see the value of property</li>
-                                        <li><h6>@pattern</h6>the property have to fulfill the pattern</li>
+                                        <li>
+                                            <h6>@required</h6>during valuation, the value of the property must not be empty
+                                        </li>
+                                        <li>
+                                            <h6>@comment "comment"</h6>during valuation, "comment" will be display in tooltip when hovering the key with mouse
+                                        </li>
+                                        <li>
+                                            <h6>@default "value"</h6>without valuation, "value" will be considered
+                                        </li>
+                                        <li>
+                                            <h6>@password</h6>in production mode, an non authorized user will not see the value of property
+                                        </li>
+                                        <li>
+                                            <h6>@pattern</h6>the property have to fulfill the pattern
+                                        </li>
                                     </ul>
-                                    <p><h6>Examples :</h6></p>
+                                    <h6>Examples :</h6>
                                     <pre><code class="language-javascript">key1=hard_coded_value
 required_key={{value1|@required}}
 key_with_comment={{value2|@comment "some comment to explain the key"}}
@@ -296,16 +257,16 @@ key_password={{value4|@password}}
 key_with_pattern={{value5|@pattern "[a-z]*"}}
 </code></pre>
                                 </div><!--//section-block-->
-                                <div id="iterables-properties"  class="section-block">
-                                    <h3 class="block-title">Iterables Properties <a href="glossary.html#-iterable-property"><i class="fa fa-external-link"></i></a></h3>
+                                <div id="iterables-properties" class="section-block">
+                                    <h3 class="block-title">Iterables Properties <a href="glossary.html#-iterable-property"></a></h3>
                                     <p>Now that you're comfortable with "simple properties", you can handle with iterables properties. With this new concept, you can iterate on blocks to avoid repeating templated values.</p>
-                                    <p>Let's approve that with an example : we want to generate an html list of shoes with the brand and bar code </p>
-                                    <p>To define iterable block, use {{#FOO}} to start block and {{/FOO}} to end it : </p>
-<pre><code class="language-markup">&lt;html&gt;
+                                    <p>Let's approve that with an example : we want to generate an html list of shoes with the brand and bar code</p>
+                                    <p>To define iterable block, use {{#FOO}} to start block and {{/FOO}} to end it :</p>
+                                    <pre><code class="language-markup">&lt;html&gt;
 &lt;body&gt;
     &lt;ul&gt;
         {{#ITERATE_ON_SHOES}}
-        &lt;li>{{brand}} has bar code : {{barcode}} &lt;/li&gt;
+        &lt;li&gt;{{brand}} has bar code : {{barcode}} &lt;/li&gt;
         {{/ITERATE_ON_SHOES}}
     &lt;/ul&gt;
 &lt;/body&gt;
@@ -313,85 +274,105 @@ key_with_pattern={{value5|@pattern "[a-z]*"}}
 </code></pre>
                                     <p>Go to <a href="valuations.html#valuation-module-iterable-properties">valuation section</a> to see how to fulfill values for iterable properties.</p>
                                     <div class="callout-block callout-info">
-                                      <div class="icon-holder">
-                                          <i class="fa fa-info-circle"></i>
-                                      </div><!--//icon-holder-->
-                                      <div class="content">
-                                          <h4 class="callout-title">Mustache info</h4>
-                                          <p>Iterable block concept is directly defined by mustache framework</p>
-                                      </div><!--//content-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Mustache info</h4>
+                                            <p>Iterable block concept is directly defined by mustache framework</p>
+                                        </div><!--//content-->
                                     </div>
                                 </div><!--//section-block-->
-                                <div id="full-example"  class="section-block">
-                                    <h3 class="block-title">Full example</h3>
-                                    <img class="img-responsive" src="assets/images/screenshots/module_add_template_full_example.png"/>
-                                </div><!--//section-block-->
-                            </section><!--//doc-section-->  
+                                <div id="full-example" class="section-block">
+                                <h3 class="block-title">Full example</h3><img class="img-responsive" alt="" src="assets/images/screenshots/module_add_template_full_example.png"></div><!--//section-block-->
+                            </section><!--//doc-section-->
                         </div><!--//content-inner-->
                     </div><!--//doc-content-->
                     <div class="doc-sidebar hidden-xs">
                         <nav id="doc-nav">
                             <ul id="doc-menu" class="nav doc-menu" data-spy="affix">
-                                <li><a class="scrollto" href="#overview">Overview</a></li>
+                                <li>
+                                    <a class="scrollto" href="#overview">Overview</a>
+                                </li>
                                 <li>
                                     <a class="scrollto" href="#wc-and-release">Working copy and release</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#working-copy">Working copy</a></li>
-                                        <li><a class="scrollto" href="#release">Release</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#working-copy">Working copy</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#release">Release</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
                                     <a class="scrollto" href="#module">Modules</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#create-module">Create a module</a></li>
-                                        <li><a class="scrollto" href="#create-module-from">Create a module from</a></li>
-                                        <li><a class="scrollto" href="#search-module">Search module</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#create-module">Create a module</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#create-module-from">Create a module from</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#search-module">Search module</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
                                     <a class="scrollto" href="#techno">Technos</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#create-techno">Create a techno</a></li>
-                                        <li><a class="scrollto" href="#create-techno-from">Create a techno from</a></li>
-                                        <li><a class="scrollto" href="#search-techno">Search techno</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#create-techno">Create a techno</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#create-techno-from">Create a techno from</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#search-techno">Search techno</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
                                     <a class="scrollto" href="#template">Templates</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#add-template">Add template</a></li>
-                                        <li><a class="scrollto" href="#template-attributes">Template attributes</a></li>
-                                        <li><a class="scrollto" href="#template-content">Template content</a></li>
-                                        <li><a class="scrollto" href="#hesperides-annotation">Annotations</a></li>
-                                        <li><a class="scrollto" href="#iterables-properties">Iterable properties</a></li>
-                                        <li><a class="scrollto" href="#full-example">Full example</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#add-template">Add template</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#template-attributes">Template attributes</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#template-content">Template content</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#hesperides-annotation">Annotations</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#iterables-properties">Iterable properties</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#full-example">Full example</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                             </ul><!--//doc-menu-->
                         </nav>
                     </div><!--//doc-sidebar-->
-                </div><!--//doc-body-->              
+                </div><!--//doc-body-->
             </div><!--//container-->
         </div><!--//doc-wrapper-->
     </div><!--//page-wrapper-->
-    
     <footer class="footer text-center">
         <div class="container">
             <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
-            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
-            
+            <small class="copyright">Designed with by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
         </div><!--//container-->
     </footer><!--//footer-->
-    
-     
-    <!-- Main Javascript -->          
-    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>    
-    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>                                                                
-    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script>
+    <!-- Main Javascript -->
+    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script> 
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script> 
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script> 
+    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script> 
     <script type="text/javascript" src="assets/js/main.js"></script>
-    
 </body>
-</html> 
-
+</html>

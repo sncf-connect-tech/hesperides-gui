@@ -9,7 +9,16 @@ env:
 
 jobs:
   include:
-  - name: Linter
+  - name: HTML Linter
+    stage: test
+    addons:
+      apt:
+        update: true
+    before_install:
+      - sudo apt install -y tidy
+    script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
+
+  - name: JS Linter
     stage: test
     script: npm run lint
 

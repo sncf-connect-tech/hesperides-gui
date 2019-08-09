@@ -1,49 +1,41 @@
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
 <head>
-    <title>Hesperides Docs - Contribute</title>
-    <!-- Meta -->
+    <meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.6.0">
     <meta charset="utf-8">
+    <title>Hesperides Docs - Contribute</title><!-- Meta -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="favicon.ico">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-    <!-- Plugins CSS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'><!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css"><!-- Plugins CSS -->
     <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="assets/plugins/prism/prism.css">
-    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
-
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css"><!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css"><!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
-
 <body class="body-purple">
     <div class="page-wrapper">
         <!-- ******Header****** -->
         <header id="header" class="header">
             <div class="container">
                 <div class="branding">
-                    <h1 class="logo">
-                        <a href="index.html">
-                            <span aria-hidden="true" class="icon_documents_alt icon"></span>
-                            <span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span>
-                        </a>
-                    </h1>
+                    <h1 class="logo"><a href="index.html"><span class="text-highlight">Hesperides</span><span class="text-bold">Docs</span></a></h1>
                 </div><!--//branding-->
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
                     <li class="active">Contribute</li>
                 </ol>
             </div><!--//container-->
@@ -51,8 +43,10 @@
         <div class="doc-wrapper">
             <div class="container">
                 <div id="doc-header" class="doc-header text-center">
-                    <h1 class="doc-title"><i class="icon fa fa-code-fork"></i> Contribute</h1>
-                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: jan.2, 2017 - 17:15:00</div>
+                    <h1 class="doc-title">Contribute</h1>
+                    <div class="meta">
+                        Last updated: jan.2, 2017 - 17:15:00
+                    </div>
                 </div><!--//doc-header-->
                 <div class="doc-body">
                     <div class="doc-content">
@@ -60,36 +54,28 @@
                             <section id="overview-section" class="doc-section">
                                 <h2 class="section-title">Overview</h2>
                                 <div class="section-block">
-                                    <p>Hesperides consists of two parts :
-                                        <ul>
-                                            <li>a backend module developed in Java 8 (repo git <a href="https://github.com/voyages-sncf-technologies/hesperides">hesperides</a>")</li>
-                                            <li>a frontend module developed in Angular JS (repo git <a href="https://github.com/voyages-sncf-technologies/hesperides-gui">hesperides-gui</a>)</li>
-                                        </ul>
-                                        Hesperides uses Redis to store values in list form. Each modification (of a module, a techno, platform (value properties)), it stores in JSON format.
-                                        Here's a quick idea of architecture :
-                                        <p align="center">
-                                            <img class="img-responsive" src="assets/images/technical_architecture_hesperides.png" style="width: 50%; height: 50%"/>
-                                        </p>
-                                    </p>
+                                    <p>Hesperides consists of two parts :</p>
+                                    <ul>
+                                        <li>a backend module developed in Java 8 (repo git <a href="https://github.com/voyages-sncf-technologies/hesperides">hesperides</a>")
+                                        </li>
+                                        <li>a frontend module developed in Angular JS (repo git <a href="https://github.com/voyages-sncf-technologies/hesperides-gui">hesperides-gui</a>)
+                                        </li>
+                                    </ul>Hesperides uses Redis to store values in list form. Each modification (of a module, a techno, platform (value properties)), it stores in JSON format. Here's a quick idea of architecture :
+                                    <p style="text-align: center"><img class="img-responsive" alt="" src="assets/images/technical_architecture_hesperides.png" style="width: 50%; height: 50%"></p>
                                 </div>
                             </section><!--//doc-section-->
                             <section id="standards-dev-section" class="doc-section">
                                 <h2 class="section-title">Development standards</h2>
-                                <div id="dev-standards"  class="section-block">
+                                <div id="dev-standards" class="section-block">
                                     <h3 class="block-title">Guidelines</h3>
-                                    <p>If you have a patch or pull request for us, thank you!
-                                    The more of these guidelines you can follow, the easier (and faster) it is for us to evaluate your code and incorporate it into the development branch.
-                                    (Borrowing from <a href="https://github.com/ThinkUpLLC/ThinkUp/wiki/Developer-Guide:-Pull-Request-Checklist">ThinkUp's Pull Request Checklist</a>):
+                                    <p>If you have a patch or pull request for us, thank you! The more of these guidelines you can follow, the easier (and faster) it is for us to evaluate your code and incorporate it into the development branch. (Borrowing from <a href="https://github.com/ThinkUpLLC/ThinkUp/wiki/Developer-Guide:-Pull-Request-Checklist">ThinkUp's Pull Request Checklist</a>):</p>
                                     <ol>
                                         <li>Make sure you can perform a full build and that the tests all pass. (See Building and Testing)</li>
                                         <li>Please try to add unit tests to demonstrate that your submission fixes an existing bug, or performs as intended.</li>
                                         <li>Rebase your branch on the current state of the master branch. Use git rebase master. This means you might have to deal with conflicts.</li>
                                         <li>Consolidate commits so that all related file changes are within a single commit. You can squash commits into a single commit by doing git rebase -i.</li>
                                         <li>Be descriptive in your commit messages: explain the purpose of all changes. You can modify commit messages by doing <strong>git commit --amend</strong> (for the previous change), or <strong>git rebase -i</strong> for earlier changes.</li>
-                                    </ol>
-                                    Once your branch is cleaned up, please submit the Pull request against the master branch.
-                                    Thanks for your help!
-                                    A typical workflow:
+                                    </ol>Once your branch is cleaned up, please submit the Pull request against the master branch. Thanks for your help! A typical workflow:
                                     <pre><code class="language-git"># get up to date with origin/master and create a branch
 git checkout master
 git pull
@@ -98,31 +84,26 @@ git checkout -b issue/#(issueNumber)
 $EDITOR somefile
 git commit -am "[issue#(issueNumber)] - A good description of what you did"
 # If you are now out of date with master, update your master:
-git checkout master && git pull
+git checkout master &amp;& git pull
 # now go back to your branch and rebase on top of master
 git checkout - # "-" will checkout previous branch
 git rebase master
 # resolve any conflicts, and possibly do `git rebase --continue` to finish rebasing
 # now push your branch to your fork, and submit a pull request
 git push myfork newbranch</code></pre>
-                                    </p>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Documentation</h4>
                                             <p>Remember to update the documentation to help cronies who come after you !</p>
                                         </div><!--//content-->
                                     </div><!--//section-block-->
                                 </div><!--//section-block-->
-                                <div id="backend-dev-standards"  class="section-block">
+                                <div id="backend-dev-standards" class="section-block">
                                     <h3 class="block-title">Backend</h3>
-                                    <p>Follow the traditional development standards. </p>
+                                    <p>Follow the traditional development standards.</p>
                                     <div class="callout-block callout-warning">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Tests are mandatory</h4>
                                             <p>Tests for backend are mandatory. Otherwise your application will be refused.</p>
@@ -131,15 +112,14 @@ git push myfork newbranch</code></pre>
                                     <p>To execute all the JUnit tests:</p>
                                     <pre><code>mvn test</code></pre>
                                     <p>To execute a single one:</p>
-                                    <pre><code>mvn -Dtest=HesperidesPropertiesModelTest#shouldCreateModelFromCode test</code></pre>
+                                    <pre>
+<code>mvn -Dtest=HesperidesPropertiesModelTest#shouldCreateModelFromCode test</code></pre>
                                 </div><!--//section-block-->
-                                <div id="frontend-dev-standards"  class="section-block">
+                                <div id="frontend-dev-standards" class="section-block">
                                     <h3 class="block-title">Frontend</h3>
-                                    <p> Follow the traditional development standards.</p>
+                                    <p>Follow the traditional development standards.</p>
                                     <div class="callout-block callout-warning">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Styles</h4>
                                             <p>For frontend, do not use <code>style = "..."</code> in HTML files : styles are set in css files.</p>
@@ -152,28 +132,25 @@ git push myfork newbranch</code></pre>
                                 <div class="section-block">
                                     <p>As you already know, Hesperides backend exposes webservices that are requestes by frontend or directly by other external tools. And you know also that services are based on dropwizard. Let's see now how to add a new webservice in Hesperides !</p>
                                 </div>
-                                <div id="processing-webservice"  class="section-block">
+                                <div id="processing-webservice" class="section-block">
                                     <h3 class="block-title">Processing unit</h3>
-                                    <p>You have to start with the implementation of your webservice. To do that you have to create :
+                                    <p>You have to start with the implementation of your webservice. To do that you have to create :</p>
                                     <ul>
                                         <li>a subpackage in <code>com.vsct.dt.hesperides</code></li>
                                         <li>a java interface containing the signature of your methods</li>
                                         <li>an implementation of your interface : that will be your "Aggregator"</li>
                                     </ul>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Tests</h4>
                                             <p>Consider your tests now ! (a contribution without tests will not be merged)</p>
                                         </div><!--//content-->
                                     </div><!--//section-block-->
-                                    </p>
                                 </div>
-                                <div id="your-webservice"  class="section-block">
+                                <div id="your-webservice" class="section-block">
                                     <h3 class="block-title">Your webservice</h3>
-                                    <p>Once your processing unit is ok (with unit tests), you can now expose it in REST API Hesperides. To do that you have to :
+                                    <p>Once your processing unit is ok (with unit tests), you can now expose it in REST API Hesperides. To do that you have to :</p>
                                     <ul>
                                         <li>Create the resource class of your service in the following package : <code>com.vsct.dt.hesperides.resources</code>. This class must have the following form :
                                             <ul>
@@ -183,25 +160,24 @@ git push myfork newbranch</code></pre>
                                         </li>
                                         <li>Write your webservice</li>
                                     </ul>
-                                    </p>
                                 </div>
-                                <div id="availability-webservice"  class="section-block">
+                                <div id="availability-webservice" class="section-block">
                                     <h3 class="block-title">Make it available</h3>
                                     <p>Even if your webservice exists, it's still not available for hesperides. To make it available, you have to add an entrypoint in dropwizard : the run method of MainApplication</p>
-                                     <ol>
+                                    <ol>
                                         <li>Inform dropwizard to handle with your aggregator. To do that, you have to create an instance of your aggregator and make it manageable. Example :
-                                        <pre><code class="language-java">/* Events aggregate */
+                                            <pre><code class="language-java">/* Events aggregate */
 EventsAggregate eventsAggregate = new EventsAggregate(eventBus, eventStore);
-environment.lifecycle().manage(eventsAggregate);</code></pre> </li>
+environment.lifecycle().manage(eventsAggregate);</code></pre>
+                                        </li>
                                         <li>Inform dropwizard of the existence of your web resource. Example :
-                                        <pre><code class="language-java">// Events resource
+                                            <pre><code class="language-java">// Events resource
 HesperidesEventResource eventResource = new HesperidesEventResource(eventsAggregate);
-environment.jersey().register(eventResource);</code></pre> </li>
+environment.jersey().register(eventResource);</code></pre>
+                                        </li>
                                     </ol>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Finished ?</h4>
                                             <p>Not really ! you just have to restart your bakend !</p>
@@ -212,54 +188,48 @@ environment.jersey().register(eventResource);</code></pre> </li>
                             <section id="services-architecture-section" class="doc-section">
                                 <h2 class="section-title">Services architecture</h2>
                                 <div class="section-block">
-                                    <p>Hesperides backend is made of follwing services :
+                                    <p>Hesperides backend is made of follwing services :</p>
                                     <ul>
                                         <li>application</li>
                                         <li>file</li>
                                         <li>module</li>
                                         <li>template</li>
                                         <li>version</li>
-                                    </ul>
-                                    A class <code>Hesperides&lt;service&gt;Resource</code> matches each service (for example <code>HesperidesApplicationResource</code>).</p>
-                                    <p>An aggregate is also linked to <code>Hesperides&lt;service&gt;Resource</code> (example : <code>ApplicationAggregate</code>). This aggregate :
+                                    </ul>A class <code>Hesperides&lt;service&gt;Resource</code> matches each service (for example <code>HesperidesApplicationResource</code>).
+                                    <p>An aggregate is also linked to <code>Hesperides&lt;service&gt;Resource</code> (example : <code>ApplicationAggregate</code>). This aggregate :</p>
                                     <ul>
                                         <li>handles with the business rules and cache of the service</li>
                                         <li>is also used by other aggregates to receive events</li>
                                     </ul>
-                                    </p>
-                                    <p align="center">
-                                        <img class="img-responsive" src="assets/images/service_architecture_aggregate.png" style="width: 70%; height: 70%"/>
-                                    </p>
+                                    <p style="text-align: center"><img class="img-responsive" alt="" src="assets/images/service_architecture_aggregate.png" style="width: 70%; height: 70%"></p>
                                     <p>Aggregates have a parent class <code>SingleThreadAggregate</code>. This class allows only one thread at same time : this mecanism avoids concurrent modifications (for example the modification of the same application).</p>
                                     <div class="callout-block callout-warning">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Identified change</h4>
                                             <p>This limit has been identified. There may be a future development on this subject.</p>
                                         </div><!--//content-->
                                     </div><!--//callout-block-->
-                                    <p>Some classes are registered in event bus to allow indexation of modules, templates and applications in ElasticSearch :
+                                    <p>Some classes are registered in event bus to allow indexation of modules, templates and applications in ElasticSearch :</p>
                                     <ul>
                                         <li>ModuleEventsIndexation</li>
                                         <li>PlatformEventsIndexation</li>
                                         <li>TemplateEventsIndexation</li>
-                                    </ul></p>
+                                    </ul>
                                     <p>This allows to isolate indexation and aggregates. In fact, as you can see in the diagram above, when an aggregate is executed, it transmits message on event bus, that will be pick up by the other aggregates and the event indexation.</p>
                                 </div>
                             </section><!--//doc-section-->
                             <section id="events-section" class="doc-section">
                                 <h2 class="section-title">Events</h2>
-                                    <p>Hesperides doesn't store structured object, but instead store every steps (event) that allowed to build this objet.</p>
+                                <p>Hesperides doesn't store structured object, but instead store every steps (event) that allowed to build this objet.</p>
                                 <div id="event-example" class="section-block">
                                     <h3 class="block-title">Example</h3>
-                                    <p><pre><code class="language-git">127.0.0.1:6379> keys module-demo*
+                                    <pre><code class="language-git">127.0.0.1:6379&gt; keys module-demo*
 1) "module-demoKatana-war-1.0.0.0-wc"
 2) "module-demoKatana-war-1.0.0.1-wc"
-127.0.0.1:6379> llen module-demoKatana-war-1.0.0.1-wc
+127.0.0.1:6379&gt; llen module-demoKatana-war-1.0.0.1-wc
 (integer) 4
-127.0.0.1:6379> lrange module-demoKatana-war-1.0.0.1-wc 0 999
+127.0.0.1:6379&gt; lrange module-demoKatana-war-1.0.0.1-wc 0 999
 1) "{\"eventType\":\"com.vsct.dt.hesperides.templating.modules.ModuleCreatedEven
 t\",\"data\":\"{\\\"moduleCreated\\\":{\\\"name\\\":\\\"demoKatana-war\\\",\\\"v
 ersion\\\":\\\"1.0.0.1\\\",\\\"working_copy\\\":true,\\\"technos\\\":[],\\\"vers
@@ -278,16 +248,13 @@ lename\\\":\\\"application.properties\\\",\\\"location\\\":\\\"/appl/{{username}
 }/properties\\\",\\\"content\\\":\\\"spring.datasource.jndi-name=jdbc/demoKatana
 \\\\ninfo.propriete_en_dur={{propriete_a_surcharger|@required}}\\\\n{{#test}}\\\
 \n\\\\t{{prop2|commentaire}}\\\\n{{/test}}\\\\n{{trucu}}\\\",\\\"version_id\\\":
-2}}\",\"timestamp\":1449049683051,\"user\":\"my_user\"}"</code></pre>
-                                    If we have a look at this example:
+2}}\",\"timestamp\":1449049683051,\"user\":\"my_user\"}"</code></pre>If we have a look at this example:
                                     <ul>
-                                    <li>the first record is a <code>com.vsct.dt.hesperides.templating.modules.ModuleCreatedEvent</code> event : this means that at this time, "my_user" created a module "demoKatana-war" with a template "application.properties" etc ...</li>
-                                    <li>the second record means that the user "my_user" updated template "application.properties"</li>
-                                    </ul></p>
+                                        <li>the first record is a <code>com.vsct.dt.hesperides.templating.modules.ModuleCreatedEvent</code> event : this means that at this time, "my_user" created a module "demoKatana-war" with a template "application.properties" etc ...</li>
+                                        <li>the second record means that the user "my_user" updated template "application.properties"</li>
+                                    </ul>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Conclusion :</h4>
                                             <p>To reconstitute the entire module, you must play all records.</p>
@@ -297,44 +264,39 @@ lename\\\":\\\"application.properties\\\",\\\"location\\\":\\\"/appl/{{username}
                                 <div id="event-versionid" class="section-block">
                                     <h3 class="block-title">Version id</h3>
                                     <p>A field is really important : version_id.</p>
-                                    <p>This field increments each time an update is made in an object (that can be a template/module/techno/platform). This attribute ensures data consistency.
-                                    Use case :
+                                    <p>This field increments each time an update is made in an object (that can be a template/module/techno/platform). This attribute ensures data consistency. Use case :</p>
                                     <ul>
                                         <li>When hesperides-gui gets a template, it gets version_id</li>
                                         <li>If you updates this template and saves it, hesperides-gui returns version_id</li>
                                         <li>Hesperides backend check version_id matches the last version : if not, the change is rejected</li>
                                     </ul>
-                                    </p>
                                 </div><!--//section-block-->
                                 <div id="event-types" class="section-block">
                                     <h3 class="block-title">Types of events</h3>
-                                    <p>For platforms/applications :
-                                        <ul>
-                                            <li><b>PlatformCreatedEvent</b> : creating a platform</li>
-                                            <li><b>PlatformCreatedFromExistingEvent </b> : creating a platform from an existing one</li>
-                                            <li><b>PlatformUpdatedEvent</b> : updating a platform (for example : update of the version)</li>
-                                            <li><b>PlatformDeletedEvent</b> : deleting a platform (deleting ElasticSearch index by the database Redis)</li>
-                                            <li><b>PropertiesSavedEvent</b> : updating valuation of your platform</li>
-                                        </ul>
-                                    </p>
-                                    <p>For modules :
-                                        <ul>
-                                            <li><b>ModuleCreatedEvent</b> : creating a module</li>
-                                            <li><b>ModuleUpdatedEvent</b> : updating a module</li>
-                                            <li><b>ModuleWorkingCopyUpdatedEvent</b> : creating a workingcopy module from another one</li>
-                                            <li><b>ModuleTemplateCreatedEvent</b> : creating a template (file) in a module</li>
-                                            <li><b>ModuleTemplateUpdatedEvent</b> : updating a template (file) in a module</li>
-                                            <li><b>ModuleTemplateDeletedEvent</b> : deleting a template (file) in a module</li>
-                                        </ul>
-                                    </p>
-                                    <p>For technos :
-                                        <ul>
-                                            <li><b>TemplateCreatedEvent</b> : creating a template (file) in a techno</li>
-                                            <li><b>TemplateUpdatedEvent</b> : updating a template (file) in a techno</li>
-                                            <li><b>TemplateDeletedEvent</b> : deleting a template (file) in a techno</li>
-                                            <li><b>TemplatePackageDeletedEvent</b> : deleting a techno</li>
-                                        </ul>
-                                    </p>
+                                    <p>For platforms/applications :</p>
+                                    <ul>
+                                        <li><b>PlatformCreatedEvent</b> : creating a platform</li>
+                                        <li><b>PlatformCreatedFromExistingEvent</b> : creating a platform from an existing one</li>
+                                        <li><b>PlatformUpdatedEvent</b> : updating a platform (for example : update of the version)</li>
+                                        <li><b>PlatformDeletedEvent</b> : deleting a platform (deleting ElasticSearch index by the database Redis)</li>
+                                        <li><b>PropertiesSavedEvent</b> : updating valuation of your platform</li>
+                                    </ul>
+                                    <p>For modules :</p>
+                                    <ul>
+                                        <li><b>ModuleCreatedEvent</b> : creating a module</li>
+                                        <li><b>ModuleUpdatedEvent</b> : updating a module</li>
+                                        <li><b>ModuleWorkingCopyUpdatedEvent</b> : creating a workingcopy module from another one</li>
+                                        <li><b>ModuleTemplateCreatedEvent</b> : creating a template (file) in a module</li>
+                                        <li><b>ModuleTemplateUpdatedEvent</b> : updating a template (file) in a module</li>
+                                        <li><b>ModuleTemplateDeletedEvent</b> : deleting a template (file) in a module</li>
+                                    </ul>
+                                    <p>For technos :</p>
+                                    <ul>
+                                        <li><b>TemplateCreatedEvent</b> : creating a template (file) in a techno</li>
+                                        <li><b>TemplateUpdatedEvent</b> : updating a template (file) in a techno</li>
+                                        <li><b>TemplateDeletedEvent</b> : deleting a template (file) in a techno</li>
+                                        <li><b>TemplatePackageDeletedEvent</b> : deleting a techno</li>
+                                    </ul>
                                 </div><!--//section-block-->
                             </section><!--//doc-section-->
                             <section id="object-diff-section" class="doc-section">
@@ -351,26 +313,24 @@ lename\\\":\\\"application.properties\\\",\\\"location\\\":\\\"/appl/{{username}
                                 <h2 class="section-title">Model and Valuation</h2>
                                 <div id="model-valuation-overview" class="section-block">
                                     <h3 class="block-title">Overview</h3>
-                                    <p>Hesperides works with a principle of Model and Valuation. On the one hand we have a model (property name, annotation <a href="glossary.html#-annotation"><i class="fa fa-external-link"></i></a>) and on the other side valuation (property name/value). Model and valuation are not store together in database.</p>
-                                    <p>Actually :
-                                        <ul>
-                                            <li>model is not store, it is deducted from template/module. In fact, with the module (and its associated templates), we can extract the model : <b>that's what Hesperides does</b>.</li>
-                                            <li>platform (application) stores properties keys and values.</li>
-                                        </ul>
-                                    </p>
-                                    <p align="center">
-                                        <img class="img-responsive" src="assets/images/hesperides-model-valeur.png" />
-                                    </p>
+                                    <p>Hesperides works with a principle of Model and Valuation. On the one hand we have a model (property name, annotation <a href="glossary.html#-annotation"></a>) and on the other side valuation (property name/value). Model and valuation are not store together in database.</p>
+                                    <p>Actually :</p>
+                                    <ul>
+                                        <li>model is not store, it is deducted from template/module. In fact, with the module (and its associated templates), we can extract the model : <b>that's what Hesperides does</b>.</li>
+                                        <li>platform (application) stores properties keys and values.</li>
+                                    </ul>
+                                    <p style="text-align: center"><img class="img-responsive" alt="" src="assets/images/hesperides-model-valeur.png"></p>
                                 </div>
                                 <div id="model-valuation-example" class="section-block">
                                     <h3 class="block-title">Example</h3>
-                                    <p>If we consider the module module-test, version 1.0 and template appliaction.properties with the following content :<pre><code class="language-git">spring.datasource.jndi-name=jdbc/demoKatana
+                                    <p>If we consider the module module-test, version 1.0 and template appliaction.properties with the following content :</p>
+                                    <pre><code class="language-git">spring.datasource.jndi-name=jdbc/demoKatana
 overload_property={{overload_property|@comment "some other comments" @required}}
 password={{password|@comment "some comments" @password}}
 default={{default|@default foo}}
 regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
-                                    </p>
-                                    <p>Calling REST service /modules/module-test/1.0/workingcopy/model, we get this :<pre><code class="language-javascript">{
+                                    <p>Calling REST service /modules/module-test/1.0/workingcopy/model, we get this :</p>
+                                    <pre><code class="language-javascript">{
   "key_value_properties": [
     {
       "name": "regular_expression",
@@ -407,9 +367,9 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
   ],
   "iterable_properties": []
 }</code></pre>
-                                    </p>
                                     <p>When REST service is called, the class HesperidesModuleResource receive it. Then we get the module (with class ModuleAggregate) and for each file we ask to mustache to give properties (class TemplateSlurper).</p>
-                                    <p>Now to get properties values, as they are stored in the platform, we can call REST service /applications/MYAPPLICATION/platforms/MY-PLATFORM/properties?path=#FIRSTLEVEL#SECONDLEVEL#module-test#1.0#WORKINGCOPY :<pre><code class="language-javascript">{
+                                    <p>Now to get properties values, as they are stored in the platform, we can call REST service /applications/MYAPPLICATION/platforms/MY-PLATFORM/properties?path=#FIRSTLEVEL#SECONDLEVEL#module-test#1.0#WORKINGCOPY :</p>
+                                    <pre><code class="language-javascript">{
   "key_value_properties": [
     {
       "name": "overload_property",
@@ -429,36 +389,30 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
     }
   ],
   "iterable_properties": []
-}</code></pre></p>
+}</code></pre>
                                     <div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">With model and platform, we can make the connection :</h4>
-                                            <p><ul>
+                                            <ul>
                                                 <li>the "default" property is not valuated because it is in the model but not in the platform</li>
                                                 <li>the "missing" property has been deleted in the template because the property is in the platform but not in the model</li>
-                                            </ul></p>
+                                            </ul>
                                         </div><!--//content-->
                                     </div><!--//section-block-->
                                 </div>
                             </section><!--//doc-section-->
-							
-							
-							<section id="cache-and-snapshot-section" class="doc-section">
+                            <section id="cache-and-snapshot-section" class="doc-section">
                                 <h2 class="section-title">Cache and snapshot system</h2>
                                 <div id="cache-and-snapshot-implementation" class="section-block">
                                     <h3 class="block-title">Implementation</h3>
                                     <p>Hesperides use <a href="https://github.com/google/guava">Guava cache</a>.</p>
-									<p>Caches are implemented in their class :
-                                       <ul>
-									     <li>ModuleRegistry,</li>
-                                         <li>PlatformRegistry,</li>
-                                         <li>TemplatePackageRegistry.</li>
-									  </ul>
-									</p>
-
+                                    <p>Caches are implemented in their class :</p>
+                                    <ul>
+                                        <li>ModuleRegistry,</li>
+                                        <li>PlatformRegistry,</li>
+                                        <li>TemplatePackageRegistry.</li>
+                                    </ul>
                                     <p>Cache creation are done by <code>HesperidesCacheBuilder</code> class. <code>HesperidesCacheBuilder</code> class allow to get a standard configuration in YAML Hesperides file.</p>
                                     <p>For each cache, you can specify a size and a TTL</p>
                                     <pre><code class="language-yaml">cacheConfiguration:
@@ -482,89 +436,65 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
     maxSize: 100
     itemExpireAfter: 10m
     #weight: not valid</code></pre>
-								  <div class="callout-block callout-warning">
-								    <div class="icon-holder">
-									  <i class="fa fa-exclamation-triangle"></i>
-								    </div><!--//icon-holder-->
-								    <div class="content">
-									  <h4 class="callout-title">Not supported</h4>
-									  <p>Platform cache and Module cache do not support weight parameter because they are a simple objet and not a list.</p>
-								    </div><!--//content-->
-								  </div>
-								  
-								  <p>To their cache, a loader is associate :
-								    <ul>
-									  <li><code>TemplatePackageCacheLoader</code>,</li>
-									  <li><code>PropertiesTimelineCacheLoader</code>,</li>
-									  <li><code>PropertiesCacheLoader</code>,</li>
-                                      <li><code>ModuleCacheLoader</code>.</li>
-									</ul>
-									</p><p>
-									Their loader class load item. To do that, their use a event reconstructor :
-									<ul>
-									  <li><code>VirtualApplicationsAggregate</code> (+ <code>VirtualPlatformRegistry</code>),</li>
-									  <li><code>VirtualModulesAggregate</code> (+ <code>VirtualModuleRegistry</code> and <code>VirtualTemplateRegistry</code>),</li>
-                                      <li><code>VirtualTemplatePackagesAggregate</code> (+ <code>VirtualTemplateRegistry</code>).</li>
-									</ul>
-								  </p>
-								  <p><code>Virtual*</code> class simulate non virtual class (same name class without virtual) to replay all events.</p>
-								  <p><code>Virtual*</code> class don't write in database !</p>
-
-                                  <p>This is the class diagram :
-									<img class="img-responsive" src="assets/images/cache_hesperides.png"/>
-								  </p>
-								  
-								  <p><code>*Registry</code> class have guava cache and use <code>*CacheLoader</code> to load missing item in cache.</p>
-                                  <p><code>*CacheLoader</code> read events from database and replay it.</p>
-                                  <p>Their events are cached by <code>Virtual*</code> class to rebuild item. When done, item store in Guava cache.</p>
+                                    <div class="callout-block callout-warning">
+                                        <div class="icon-holder"></div><!--//icon-holder-->
+                                        <div class="content">
+                                            <h4 class="callout-title">Not supported</h4>
+                                            <p>Platform cache and Module cache do not support weight parameter because they are a simple objet and not a list.</p>
+                                        </div><!--//content-->
+                                    </div>
+                                    <p>To their cache, a loader is associate :</p>
+                                    <ul>
+                                        <li><code>TemplatePackageCacheLoader</code>,</li>
+                                        <li><code>PropertiesTimelineCacheLoader</code>,</li>
+                                        <li><code>PropertiesCacheLoader</code>,</li>
+                                        <li><code>ModuleCacheLoader</code>.</li>
+                                    </ul>
+                                    <p>Their loader class load item. To do that, their use a event reconstructor :</p>
+                                    <ul>
+                                        <li><code>VirtualApplicationsAggregate</code> (+ <code>VirtualPlatformRegistry</code>),</li>
+                                        <li><code>VirtualModulesAggregate</code> (+ <code>VirtualModuleRegistry</code> and <code>VirtualTemplateRegistry</code>),</li>
+                                        <li><code>VirtualTemplatePackagesAggregate</code> (+ <code>VirtualTemplateRegistry</code>).</li>
+                                    </ul>
+                                    <p><code>Virtual*</code> class simulate non virtual class (same name class without virtual) to replay all events.</p>
+                                    <p><code>Virtual*</code> class don't write in database !</p>
+                                    <p>This is the class diagram : <img class="img-responsive" alt="" src="assets/images/cache_hesperides.png"></p>
+                                    <p><code>*Registry</code> class have guava cache and use <code>*CacheLoader</code> to load missing item in cache.</p>
+                                    <p><code>*CacheLoader</code> read events from database and replay it.</p>
+                                    <p>Their events are cached by <code>Virtual*</code> class to rebuild item. When done, item store in Guava cache.</p>
                                 </div>
-								
-								<div id="snaphost-system" class="section-block">
-									<h2 class="section-title">Snapshot system</h2>
-									
-									<p>Because, to get final state of item (Hesperides must be replay all events) a snapshot is take regularly to increase boot start time.</p>
-									
-									<p>When we create a platform, we create a associate snapshot (with 1 event).</p>
-	 
-									<p>Then, when we update platform, a new snapshot is create if more than X event (<code>nbEventBeforePersiste</code> in configuration file) are store since last snaphost.</p>
-
-									<p>Whe a platform already exists, Hesperides check if platform is in memory cache (Guava). If not, Hesperides load last snapshot and replay just last event that stored after snapshot.</p>
-
-									<p>If no snasphot found in database (when new system is actived), Hesperides replay all events from scratch.
-
-									<p>Release version of template package and module have no snapshot cause, their contain only one event.</p>
-									
-									<div class="callout-block callout-success">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </div><!--//icon-holder-->
+                                <div id="snaphost-system" class="section-block">
+                                    <h2 class="section-title">Snapshot system</h2>
+                                    <p>Because, to get final state of item (Hesperides must be replay all events) a snapshot is take regularly to increase boot start time.</p>
+                                    <p>When we create a platform, we create a associate snapshot (with 1 event).</p>
+                                    <p>Then, when we update platform, a new snapshot is create if more than X event (<code>nbEventBeforePersiste</code> in configuration file) are store since last snaphost.</p>
+                                    <p>Whe a platform already exists, Hesperides check if platform is in memory cache (Guava). If not, Hesperides load last snapshot and replay just last event that stored after snapshot.</p>
+                                    <p>If no snasphot found in database (when new system is actived), Hesperides replay all events from scratch.</p>
+                                    <p>Release version of template package and module have no snapshot cause, their contain only one event.</p>
+                                    <div class="callout-block callout-success">
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Auto regeneration system :</h4>
                                             <p>If number of event in database is less than the last snapshot. Hesperides drop snapshot and regenerate all.</p>
                                         </div><!--//content-->
                                     </div><!--//section-block-->
-
-								</div>
+                                </div>
                             </section><!--//doc-section-->
-							
-							
                             <section id="index-section" class="doc-section">
                                 <h2 class="section-title">Indexation</h2>
                                 <div class="section-block">
-                                    <p>You can run a REST service to reindex ELS :
+                                    <p>You can run a REST service to reindex ELS :</p>
                                     <ul>
                                         <li><b>URL</b> : http://IP:PORT/rest/indexation/perform_reindex</li>
                                         <li><b>METHOD</b> : POST</li>
-                                    </ul></p>
+                                    </ul>
                                     <div class="callout-block callout-info">
-                                        <div class="icon-holder">
-                                            <i class="fa fa-info-circle"></i>
-                                        </div><!--//icon-holder-->
+                                        <div class="icon-holder"></div><!--//icon-holder-->
                                         <div class="content">
                                             <h4 class="callout-title">Important Notice</h4>
                                             <p>Regardless the kind of request, they should all be done against the back-end of hesperides. The back-end will query against Elasticsearch himself</p>
                                         </div><!--//content-->
-                                      </div>
+                                    </div>
                                 </div>
                             </section><!--//doc-section-->
                         </div><!--//content-inner-->
@@ -572,20 +502,32 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
                     <div class="doc-sidebar hidden-xs">
                         <nav id="doc-nav">
                             <ul id="doc-menu" class="nav doc-menu" data-spy="affix">
-                                <li><a class="scrollto" href="#overview-section">Overview</a></li>
+                                <li>
+                                    <a class="scrollto" href="#overview-section">Overview</a>
+                                </li>
                                 <li>
                                     <a class="scrollto" href="#standards-dev-section">Development standards</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#backend-dev-standards">Backend</a></li>
-                                        <li><a class="scrollto" href="#frontend-dev-standards">Frontend</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#backend-dev-standards">Backend</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#frontend-dev-standards">Frontend</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
                                     <a class="scrollto" href="#webservices-section">Webservices on Hesperides</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#processing-webservice">Processing</a></li>
-                                        <li><a class="scrollto" href="#your-webservice">Your webservice</a></li>
-                                        <li><a class="scrollto" href="#availability-webservice">Make it available</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#processing-webservice">Processing</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#your-webservice">Your webservice</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#availability-webservice">Make it available</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
@@ -594,9 +536,15 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
                                 <li>
                                     <a class="scrollto" href="#events-section">Events</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#event-example">Example</a></li>
-                                        <li><a class="scrollto" href="#event-versionid">Version id</a></li>
-                                        <li><a class="scrollto" href="#event-types">Types of events</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#event-example">Example</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#event-versionid">Version id</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#event-types">Types of events</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
@@ -605,15 +553,23 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
                                 <li>
                                     <a class="scrollto" href="#model-valuation-section">Model and Valuation</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#model-valuation-overview">Overview</a></li>
-                                        <li><a class="scrollto" href="#model-valuation-example">Example</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#model-valuation-overview">Overview</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#model-valuation-example">Example</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
-								<li>
+                                <li>
                                     <a class="scrollto" href="#cache-and-snapshot-section">Cache and snapshot system</a>
                                     <ul class="nav doc-sub-menu">
-                                        <li><a class="scrollto" href="#cache-and-snapshot-implementation">Implementation</a></li>
-                                        <li><a class="scrollto" href="#snaphost-system">Snapshot system</a></li>
+                                        <li>
+                                            <a class="scrollto" href="#cache-and-snapshot-implementation">Implementation</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#snaphost-system">Snapshot system</a>
+                                        </li>
                                     </ul><!--//nav-->
                                 </li>
                                 <li>
@@ -626,23 +582,18 @@ regular_expression={{regular_expression|@pattern t.*t}}</code></pre>
             </div><!--//container-->
         </div><!--//doc-wrapper-->
     </div><!--//page-wrapper-->
-
     <footer class="footer text-center">
         <div class="container">
             <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
-            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
-
+            <small class="copyright">Designed with by <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers - <a href="license.html">PrettyDocs License</a></small>
         </div><!--//container-->
     </footer><!--//footer-->
-
-
     <!-- Main Javascript -->
-    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script> 
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script> 
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script> 
+    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script> 
     <script type="text/javascript" src="assets/js/main.js"></script>
-
 </body>
 </html>
