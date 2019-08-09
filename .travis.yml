@@ -27,19 +27,26 @@ jobs:
 
   - name: End-2-end tests
     stage: test
-    addons:
-      chrome: stable
     services:
       - docker
       - xvfb
+    addons:
+      chrome: stable
     before_script:
+      - google-chrome-stable --version
+      - npm install chromedriver@76.0.0 --chromedriver-force-download
+      - npm install
       - export DISPLAY=:99.0
-      - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
       # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
+      - sudo env "PATH=$PATH" npm run webdriver-start --verbose &
+      - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
       - sudo env "PATH=$PATH" npm start &
-      - sudo env "PATH=$PATH" npm run webdriver-start &
       - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
-    script: npm run e2e-tests -- --suite all
+    script:
+      - ls -l node_modules/protractor/node_modules/webdriver-manager/selenium/
+      - cat node_modules/protractor/node_modules/webdriver-manager/selenium/update-config.json || true
+      - cat node_modules/protractor/node_modules/webdriver-manager/config.json
+      - npm run e2e-tests -- --suite all
 
   - name: Deploy to Docker hub
     stage: deploy
