@@ -24,7 +24,7 @@ function buildDiffPageUrl(fromPlatform, toPlatform, fromPropertiesPath, toProper
         compare_application: toPlatform.application_name,
         compare_platform: toPlatform.platform,
         compare_path: toPropertiesPath,
-        compare_stored_values: compareMode === "stored"
+        compare_stored_values: compareMode === 'stored',
     };
     if (lookPast) {
         urlParams.timestamp = timestamp;
@@ -162,8 +162,8 @@ angular.module('hesperides.diff', [])
                 });
         };
 
-        $scope.saveChanges = function () {// Is some diff item selected ?
-            let hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
+        $scope.saveChanges = function () { // Is some diff item selected ?
+            const hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
             if (!hasSomeDiffSelected) {
                 $translate('properties-not-changed.message').then(function (label) {
                     notify({ classes: [ 'error' ], message: label });
@@ -172,15 +172,15 @@ angular.module('hesperides.diff', [])
             }
 
             // Get all the properties modified
-            let keyValueProperties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
-                .map((diff_container) => ({name: diff_container.property_name, value: diff_container.property_to_modify.value.storedValue}));
+            const keyValueProperties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
+                .map((diff_container) => ({ name: diff_container.property_name, value: diff_container.property_to_modify.value.storedValue }));
 
             // Save the properties
             HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, (comment) =>
                 // Retrieve the platform .version_id:
                 ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
                     console.log('SAVING properties: platform.name=', platform.name, 'platform.version_id=', platform.version_id, 'keyValueProperties=', keyValueProperties);
-                    ApplicationService.save_properties($routeParams.application, platform, new Properties({key_value_properties: keyValueProperties}), $routeParams.properties_path, comment).then(() => {
+                    ApplicationService.save_properties($routeParams.application, platform, new Properties({ key_value_properties: keyValueProperties }), $routeParams.properties_path, comment).then(() => {
                         $route.reload();
                     });
                 })
@@ -188,20 +188,20 @@ angular.module('hesperides.diff', [])
         };
 
         $scope.loadingDiff = true;
-        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.compare_stored_values, $routeParams.timestamp).then(diff => {
+        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.compare_stored_values, $routeParams.timestamp).then((diff) => {
             console.log('/diff response:', diff);
-            let diffContainers = [];
-            diff.common.forEach(commonProperty => {
-                diffContainers.push(new DiffContainer(1, commonProperty.name, {value: commonProperty.left}, {value: commonProperty.right}));
+            const diffContainers = [];
+            diff.common.forEach((commonProperty) => {
+                diffContainers.push(new DiffContainer(1, commonProperty.name, { value: commonProperty.left }, { value: commonProperty.right }));
             });
-            diff.only_left.forEach(onlyLeftProperty => {
-                diffContainers.push(new DiffContainer(0, onlyLeftProperty.name, {value: onlyLeftProperty.value}, {}));
+            diff.only_left.forEach((onlyLeftProperty) => {
+                diffContainers.push(new DiffContainer(0, onlyLeftProperty.name, { value: onlyLeftProperty.value }, {}));
             });
-            diff.only_right.forEach(onlyRightProperty => {
-                diffContainers.push(new DiffContainer(3, onlyRightProperty.name, {}, {value: onlyRightProperty.value}));
+            diff.only_right.forEach((onlyRightProperty) => {
+                diffContainers.push(new DiffContainer(3, onlyRightProperty.name, {}, { value: onlyRightProperty.value }));
             });
-            diff.differing.forEach(differingProperty => {
-                diffContainers.push(new DiffContainer(2, differingProperty.name, {value: differingProperty.left}, {value: differingProperty.right}));
+            diff.differing.forEach((differingProperty) => {
+                diffContainers.push(new DiffContainer(2, differingProperty.name, { value: differingProperty.left }, { value: differingProperty.right }));
             });
             $scope.diff_containers = diffContainers;
             $scope.loadingDiff = false;
@@ -217,7 +217,7 @@ angular.module('hesperides.diff', [])
         }
 
         $scope.formScope = $scope;
-        $scope.compareMode = "final";
+        $scope.compareMode = 'final';
         $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.toModule = null;
         $scope.lookPast = false;
@@ -303,7 +303,7 @@ angular.module('hesperides.diff', [])
         }
 
         $scope.formScope = $scope;
-        $scope.compareMode = "final";
+        $scope.compareMode = 'final';
         $scope.toPlatform = { application_name: $scope.fromPlatform.application_name, platform: $scope.fromPlatform.platform };
         $scope.lookPast = false;
         $scope.date = null;

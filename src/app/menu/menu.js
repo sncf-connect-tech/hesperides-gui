@@ -134,7 +134,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
         $scope.open_properties_page = function (application_name, platform_name) {
             $scope.applicationSearched = '';
-            let search = {};
+            const search = {};
             if (platform_name) {
                 search.platform = platform_name;
             }

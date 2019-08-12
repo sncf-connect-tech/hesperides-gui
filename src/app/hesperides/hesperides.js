@@ -185,17 +185,17 @@ angular.module('hesperides', MODULE_DEPS)
     .factory('Page', function ($http, $sce) {
         let bannerMsg = '';
         if (BANNER_URL) {
-            $http.get(BANNER_URL).then(response => {
+            $http.get(BANNER_URL).then((response) => {
                 bannerMsg = response.data;
             }, (error) => {
-                console.warn(`[Hesperides] Banner file could not be retrieved from ${BANNER_URL}:`, error);
+                console.warn(`[Hesperides] Banner file could not be retrieved from ${ BANNER_URL }:`, error);
             });
         }
-        let base = 'Hesperides';
+        const base = 'Hesperides';
         let title = base;
         return {
             isBannerPresent() {
-                return !!bannerMsg;
+                return Boolean(bannerMsg);
             },
             bannerMsg() {
                 return $sce.trustAsHtml(bannerMsg);
@@ -342,7 +342,7 @@ angular.module('hesperides', MODULE_DEPS)
                 let isColorPaletteActive = false;
                 try {
                     isColorPaletteActive = store.get('color_active');
-                } catch(error) {
+                } catch (error) {
                     if (error instanceof SyntaxError) {
                         // Observé en production: dans le cas d'une valeur syntaxiquement invalide, on nettoie
                         store.set('color_active', null);

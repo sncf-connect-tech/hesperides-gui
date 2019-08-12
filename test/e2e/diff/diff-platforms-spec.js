@@ -24,17 +24,17 @@ var addGlobalProperty = function (name, value) {
     element(by.id('new_kv_name')).sendKeys(name);
     element(by.id('new_kv_value')).sendKeys(value);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
-}
+};
 
 var saveGlobalProperties = function (comment) {
     utils.clickOnElement(element(by.id('e2e-tree-properties-save-global-properties-button')));
     element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(comment);
     utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
-}
+};
 
 describe('Manage platform diff', () => {
     beforeAll(() => {
-        browser.get(`${hesperides_url}/#/properties/${data.new_application}?platform=${data.new_platform}`);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
     });
 
     it('should display datepicker on compare two platform at a specific date switch', () => {
@@ -67,15 +67,14 @@ describe('Manage platform diff', () => {
             utils.switchBrowserToNewTab().then(function () {
                 const newTabUrl = browser.getCurrentUrl();
                 utils.switchBrowserBackToFirstTab();
-                expect(newTabUrl).toContain(`&timestamp=${timestamp}`);
+                expect(newTabUrl).toContain(`&timestamp=${ timestamp }`);
             });
         });
     });
 
     it('should display platform diff page with proper global properties diff', () => {
-
         // Affiche la seconde plateforme
-        browser.get(`${hesperides_url}/#/properties/${data.new_application}?platform=${data.new_platform}_from`);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }_from`);
         // Passe en mode arbre
         utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         // Affiche la liste des propriétés globales
@@ -86,7 +85,7 @@ describe('Manage platform diff', () => {
         saveGlobalProperties('save global properties for second platform');
 
         // Affiche la première plateforme
-        browser.get(`${hesperides_url}/#/properties/${data.new_application}?platform=${data.new_platform}`);
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
         // Passe en mode arbre
         utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         // Affiche la liste des propriétés globales
@@ -97,7 +96,7 @@ describe('Manage platform diff', () => {
         saveGlobalProperties('save global properties for first platform');
 
         // Récupère la fenêtre de diff entre les 2 plateformes sans timestamp
-        browser.get(`${hesperides_url}/#/diff?application=${data.new_application}&platform=${data.new_platform}&properties_path=%23&compare_application=${data.new_application}&compare_platform=${data.new_platform}_from&compare_path=%23&compare_stored_values=false`);
+        browser.get(`${ hesperides_url }/#/diff?application=${ data.new_application }&platform=${ data.new_platform }&properties_path=%23&compare_application=${ data.new_application }&compare_platform=${ data.new_platform }_from&compare_path=%23&compare_stored_values=false`);
 
         // Pour chaque section, ouvre et vérifier que les tableaux contiennent les propriétés finales
 

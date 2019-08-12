@@ -1109,7 +1109,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.onGroupCNsChange = function () { // Gère les changements sur $scope.appGroupCNs :
             console.log('onGroupCNsChange - $scope.appGroupCNs:', $scope.appGroupCNs);
             ensureDirectoryGroupsNotEmpty();
-            ApplicationService.update_directory_groups({name: $scope.application.name, directoryGroups: $scope.application.directoryGroups }).then((directoryGroups) => {
+            ApplicationService.update_directory_groups({ name: $scope.application.name, directoryGroups: $scope.application.directoryGroups }).then((directoryGroups) => {
                 // En cas de groupCN invalide, une notification sera affichée
                 // On récupère les nouveaux droits :
                 console.log('NEW directoryGroups:', directoryGroups);
@@ -1120,7 +1120,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 );
             }).catch(() => {
                 // Retrocompatibility: we handle the case of non-existing .directoryGroups
-                if (!$scope.originalAppGroupCNs) return;
+                if (!$scope.originalAppGroupCNs) {
+                    return;
+                }
                 // On restaure les droits initiaux :
                 $scope.application.directoryGroups[`${ $scope.application.name }_PROD_USER`] = $scope.originalAppGroupCNs;
                 setValidatedAppGroupCNs();
