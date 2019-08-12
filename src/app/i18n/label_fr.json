@@ -240,6 +240,7 @@
   "properties.compare.saveChanges.part1": "Sauvegarder",
   "properties.compare.saveChanges.part2": "les changements (il faut avoir prévisualisé avant)",
   "properties.compare.togglePropertyDetails": "Affichage détaillé",
+  "properties.compare.togglePropertyDetails.tooltip": "Affiche les colonnes « Valeur stockée » & « Valeur par défaut » ci-dessous",
   "properties.compare.values.columnHeaders.propertyName": "Nom de propriété",
   "properties.compare.values.columnHeaders.finalValue": "Valeur finale",
   "properties.compare.values.columnHeaders.finalValue.tooltip": "Valeur utilisée dans les fichiers finaux générés et prennant en compte de potentielles valeurs par défaut, propriétés globales et d'instance",

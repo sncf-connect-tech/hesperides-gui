@@ -240,6 +240,7 @@
   "properties.compare.saveChanges.part1": "Saving",
   "properties.compare.saveChanges.part2": "changes (you have to preview them before saving them)",
   "properties.compare.togglePropertyDetails": "Detailed display",
+  "properties.compare.togglePropertyDetails.tooltip": "Display « Stored value » & « Default value » columns below",
   "properties.compare.values.columnHeaders.propertyName": "Property name",
   "properties.compare.values.columnHeaders.finalValue": "Final value",
   "properties.compare.values.columnHeaders.finalValue.tooltip": "Value used in the generated files and taking into account potential default values and global or instance properties",

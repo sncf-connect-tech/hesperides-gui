@@ -74,7 +74,7 @@ angular.module('hesperides.application', [])
                     version_id: -1,
                 }, data);
 
-                if (!_.isUndefined(this.platform_name)) { // When it comes from rest entity
+                if (this.platform_name) { // When it comes from rest entity
                     this.name = this.platform_name;
                 }
 

@@ -42,7 +42,7 @@ function dateToTimestamp(lookPast, date) {
 
 angular.module('hesperides.diff', [])
 
-    .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, notify) {
+    .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, Properties, notify) {
         var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
             // 0 -> only on to_modify
             // 1 -> on both and identical values
@@ -61,6 +61,7 @@ angular.module('hesperides.diff', [])
 
         $scope.compare_application = $routeParams.compare_application;
         $scope.compare_platform = $routeParams.compare_platform;
+        $scope.compareStoredValues = $routeParams.compare_stored_values && $routeParams.compare_stored_values !== 'false';
 
         $scope.timestamp = $routeParams.timestamp;
 
@@ -89,153 +90,6 @@ angular.module('hesperides.diff', [])
         };
 
         $scope.togglePropertyDetails = false;
-        $scope.loadingDiff = true;
-
-        // Lucas 2019/07/18 : tmp while refactoring
-        return ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.compare_stored_values, $routeParams.timestamp).then(diff => {
-            console.log('diff:', diff);
-            let diffContainers = [];
-            diff.common.forEach(commonProperty => {
-                diffContainers.push(new DiffContainer(1, commonProperty.name, {value: commonProperty.left}, {value: commonProperty.right}));
-            });
-            diff.only_left.forEach(onlyLeftProperty => {
-                diffContainers.push(new DiffContainer(0, onlyLeftProperty.name, {value: onlyLeftProperty.value}, {}));
-            });
-            diff.only_right.forEach(onlyRightProperty => {
-                diffContainers.push(new DiffContainer(3, onlyRightProperty.name, {}, {value: onlyRightProperty.value}));
-            });
-            diff.differing.forEach(differingProperty => {
-                diffContainers.push(new DiffContainer(2, differingProperty.name, {value: differingProperty.left}, {value: differingProperty.right}));
-            });
-            $scope.diff_containers = diffContainers;
-            $scope.loadingDiff = false;
-        });/**/
-
-        // Get the platform to get the version id
-        ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
-            $scope.platform = platform;
-        });
-
-        // Then get the properties, version id could have changed but it is really marginal
-        ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path).then(function (properties) {
-            $scope.properties_to_modify = properties;
-            if ($scope.module.name && $scope.module.version) {
-                return ModuleService.get_model($scope.module).then(function (model) {
-                    $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
-                });
-            }
-            return Promise.resolve();
-        })
-            .then(() => ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#'))
-            .then(function (globalProperties) {
-                $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(globalProperties);
-                return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
-            })
-            .then(function (properties) {
-                $scope.properties_to_compare_to = properties;
-                if ($scope.compare_module.name && $scope.compare_module.version) {
-                    return ModuleService.get_model($scope.compare_module).then(function (model) {
-                        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
-                    });
-                }
-                return Promise.resolve();
-            })
-            .then(() => ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, '#'))
-            .then(function (model) {
-                $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
-                $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
-                $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
-                $scope.generate_diff_containers($routeParams.properties_path !== '#');
-                $scope.loadingDiff = false;
-            });
-
-        // Everything needs to be in scope for this function to work
-        /**
-         * Generate diff container.
-         *
-         * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
-         */
-        $scope.generate_diff_containers = function (filterInModel) {
-
-            $scope.diff_containers = [];
-            // Group properties, this is a O(n^2) algo but is enough for the use case
-            // Only focus on key/value properties
-            // We set create a container for each property with a diff status, a property_to_modify, a property_to_compare_to
-            // First we look in the properties to modify, for each try:
-            //  - to check if value is empty -> status 3
-            //  - to find a property to compare to
-            //        - with identical value -> status 1
-            //        - with different value -> status 2
-            //  - if no matching property -> status 0
-            if (filterInModel) {
-                // There's not need to keep removed properties because readability is better without them
-                $scope.properties_to_modify.key_value_properties = _.filter($scope.properties_to_modify.key_value_properties, { inModel: true });
-                $scope.properties_to_compare_to.key_value_properties = _.filter($scope.properties_to_compare_to.key_value_properties, { inModel: true });
-            }
-
-            _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
-                // Search if property found on other platform
-                var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
-
-                if (countItem === 0) {
-                    $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
-                    return;
-                }
-
-                // else try to find a matching prop_to_compare_to
-                var prop_to_compare_to = _.find($scope.properties_to_compare_to.key_value_properties, { name: prop_to_modify.name });
-
-                if (_.isUndefined(prop_to_compare_to)) {
-                    $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
-                } else if (prop_to_modify.value === prop_to_compare_to.value) {
-                    $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                } else {
-                    $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                }
-            });
-
-            // Check properties remaining in compare_to (not existing or value equals to ''). The one we missed when iterating through properties_to_modify
-            _.each($scope.properties_to_compare_to.key_value_properties, function (prop_to_compare_to) {
-                var some = _.some($scope.properties_to_modify.key_value_properties, function (prop) {
-                    return prop_to_compare_to.name === prop.name;
-                });
-
-                if (!some) {
-                    // Avoid null pointer create prop to modify with an empty value
-                    var prop_to_modify = angular.copy(prop_to_compare_to);
-                    prop_to_modify.value = '';
-                    $scope.diff_containers.push(new DiffContainer(3, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                }
-            });
-        };
-
-        $scope.properties_compare_values_empty = '';
-
-        $translate('properties.compare.values.empty').then(function (translation) {
-            $scope.properties_compare_values_empty = translation;
-        });
-
-        $scope.formatProperty = function (property) { // Lucas 2019/07/18 : inutile, à supprimer
-            if (property.globalValue) {
-                var compiled = property.value;
-
-                Object.keys(property.globalValue).forEach(function (key) {
-                    compiled = compiled.split(`{{${ key }}}`).join(property.globalValue[key]);
-                });
-
-                return compiled;
-            }
-            if (!property.value) {
-                return $scope.properties_compare_values_empty;
-            }
-
-            return property.value;
-        };
-
-        // Helper for diff conainers ids
-        $scope.dot_to_underscore = function (text) {
-            return text.replace(/\./g, '_');
-        };
 
         /*
          * Select the containers that corresponds to the filters (ex: status = 2).
@@ -268,33 +122,33 @@ angular.module('hesperides.diff', [])
             });
         };
 
-        $scope.apply_diff = function () {
+        $scope.previewChanges = function () {
             /* Filter the diff container that have been selected
              depending on the status apply different behaviors
-             if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
-             if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
-             because the other ones have the same values. We can just apply the 'revert modification' mecanism
-             if status == 2 : this is when we want to apply modification from source platform to destination platform
-             if status == 3 : same behavior as status == 2
+                 if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
+                 if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
+                    because the other ones have the same values. We can just apply the 'revert modification' mecanism
+                 if status == 2 : this is when we want to apply modification from source platform to destination platform
+                 if status == 3 : same behavior as status == 2
              */
             $scope.diff_containers.filter((diff_container) => diff_container.selected)
                 .forEach((diff_container) => {
                     switch (diff_container.status) {
-                    case 0:
+                    case 0: // only left
                         break;
-                    case 1:
-                    // Revert modifs
+                    case 1: // common
+                        // Revert modifs
                         diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
                         delete diff_container.property_to_modify.old_value;
 
                         // Change status and reset markers. Keep selected for user experience
                         // Status depends on old_value, if it was empty status is 3 otherwise it is 2
-                        diff_container.status = diff_container.property_to_modify.value === '' ? 3 : 2;
+                        diff_container.status = diff_container.property_to_modify.value ? 2 : 3;
                         diff_container.modified = false;
                         break;
-                    case 2:
-                    case 3:
-                    // Store old value and apply modifs
+                    case 2: // differing
+                    case 3: // only right
+                        // Store old value and apply modifs
                         diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
                         diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
@@ -308,14 +162,8 @@ angular.module('hesperides.diff', [])
                 });
         };
 
-        $scope.save_diff = function () {
-            // Get all the properties modified
-            var key_value_properties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
-                .map((diff_container) => diff_container.property_to_modify);
-
-            // Is some diff item selected ?
-            var hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
-
+        $scope.saveChanges = function () {// Is some diff item selected ?
+            let hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
             if (!hasSomeDiffSelected) {
                 $translate('properties-not-changed.message').then(function (label) {
                     notify({ classes: [ 'error' ], message: label });
@@ -323,15 +171,41 @@ angular.module('hesperides.diff', [])
                 return;
             }
 
-            $scope.properties_to_modify.key_value_properties = key_value_properties;
+            // Get all the properties modified
+            let keyValueProperties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
+                .map((diff_container) => ({name: diff_container.property_name, value: diff_container.property_to_modify.value.storedValue}));
 
             // Save the properties
-            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, function (comment) {
-                ApplicationService.save_properties($routeParams.application, $scope.platform, $scope.properties_to_modify, $routeParams.properties_path, comment).then(function () {
-                    $route.reload();
-                });
-            });
+            HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, (comment) =>
+                // Retrieve the platform .version_id:
+                ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
+                    console.log('SAVING properties: platform.name=', platform.name, 'platform.version_id=', platform.version_id, 'keyValueProperties=', keyValueProperties);
+                    ApplicationService.save_properties($routeParams.application, platform, new Properties({key_value_properties: keyValueProperties}), $routeParams.properties_path, comment).then(() => {
+                        $route.reload();
+                    });
+                })
+            );
         };
+
+        $scope.loadingDiff = true;
+        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.compare_stored_values, $routeParams.timestamp).then(diff => {
+            console.log('/diff response:', diff);
+            let diffContainers = [];
+            diff.common.forEach(commonProperty => {
+                diffContainers.push(new DiffContainer(1, commonProperty.name, {value: commonProperty.left}, {value: commonProperty.right}));
+            });
+            diff.only_left.forEach(onlyLeftProperty => {
+                diffContainers.push(new DiffContainer(0, onlyLeftProperty.name, {value: onlyLeftProperty.value}, {}));
+            });
+            diff.only_right.forEach(onlyRightProperty => {
+                diffContainers.push(new DiffContainer(3, onlyRightProperty.name, {}, {value: onlyRightProperty.value}));
+            });
+            diff.differing.forEach(differingProperty => {
+                diffContainers.push(new DiffContainer(2, differingProperty.name, {value: differingProperty.left}, {value: differingProperty.right}));
+            });
+            $scope.diff_containers = diffContainers;
+            $scope.loadingDiff = false;
+        });
     })
 
     .controller('PropertiesDiffWizardController', function ($scope, $window, $mdDialog, ApplicationService, PlatformColorService) {
