@@ -20,9 +20,21 @@ var moment = require('moment');
 var utils = require('../utils.js');
 var until = protractor.ExpectedConditions;
 
+var addGlobalProperty = function (name, value) {
+    element(by.id('new_kv_name')).sendKeys(name);
+    element(by.id('new_kv_value')).sendKeys(value);
+    browser.actions().sendKeys(protractor.Key.ENTER).perform();
+}
+
+var saveGlobalProperties = function (comment) {
+    utils.clickOnElement(element(by.id('e2e-tree-properties-save-global-properties-button')));
+    element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(comment);
+    utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
+}
+
 describe('Manage platform diff', () => {
     beforeAll(() => {
-        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
+        browser.get(`${hesperides_url}/#/properties/${data.new_application}?platform=${data.new_platform}`);
     });
 
     it('should display datepicker on compare two platform at a specific date switch', () => {
@@ -55,8 +67,66 @@ describe('Manage platform diff', () => {
             utils.switchBrowserToNewTab().then(function () {
                 const newTabUrl = browser.getCurrentUrl();
                 utils.switchBrowserBackToFirstTab();
-                expect(newTabUrl).toContain(`&timestamp=${ timestamp }`);
+                expect(newTabUrl).toContain(`&timestamp=${timestamp}`);
             });
         });
+    });
+
+    it('should display platform diff page with proper global properties diff', () => {
+
+        // Affiche la seconde plateforme
+        browser.get(`${hesperides_url}/#/properties/${data.new_application}?platform=${data.new_platform}_from`);
+        // Passe en mode arbre
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // Affiche la liste des propriétés globales
+        utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-button')));
+        addGlobalProperty('global_common', 'common_value');
+        addGlobalProperty('global_diff', 'right_value');
+        addGlobalProperty('global_right', 'value');
+        saveGlobalProperties('save global properties for second platform');
+
+        // Affiche la première plateforme
+        browser.get(`${hesperides_url}/#/properties/${data.new_application}?platform=${data.new_platform}`);
+        // Passe en mode arbre
+        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // Affiche la liste des propriétés globales
+        utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-button')));
+        addGlobalProperty('global_common', 'common_value');
+        addGlobalProperty('global_diff', 'left_value');
+        addGlobalProperty('global_left', 'value');
+        saveGlobalProperties('save global properties for first platform');
+
+        // Récupère la fenêtre de diff entre les 2 plateformes sans timestamp
+        browser.get(`${hesperides_url}/#/diff?application=${data.new_application}&platform=${data.new_platform}&properties_path=%23&compare_application=${data.new_application}&compare_platform=${data.new_platform}_from&compare_path=%23&compare_stored_values=false`);
+
+        // Pour chaque section, ouvre et vérifier que les tableaux contiennent les propriétés finales
+
+        utils.clickOnElement(element(by.id('e2e-diff-onlyleft-toggle-button')));
+        var leftPropertyName = element(by.id('e2e-diff-onlyleft-properties')).element(by.css('.diff-property-name'));
+        expect(leftPropertyName.getText()).toEqual('global_left');
+        var leftPropertyFinalValue = element(by.id('e2e-diff-onlyleft-properties')).element(by.css('.diff-property-final-value'));
+        expect(leftPropertyFinalValue.getText()).toEqual('value');
+
+        utils.clickOnElement(element(by.id('e2e-diff-common-toggle-button')));
+        var commonPropertyName = element(by.id('e2e-diff-common-properties')).element(by.css('.diff-property-name'));
+        expect(commonPropertyName.getText()).toEqual('global_common');
+        var commonPropertyFinalValueLeft = element(by.id('e2e-diff-common-properties')).element(by.css('.diff-property-final-value-left'));
+        expect(commonPropertyFinalValueLeft.getText()).toEqual('common_value');
+        var commonPropertyFinalValueRight = element(by.id('e2e-diff-common-properties')).element(by.css('.diff-property-final-value-right'));
+        expect(commonPropertyFinalValueRight.getText()).toEqual('common_value');
+
+        utils.clickOnElement(element(by.id('e2e-diff-differing-toggle-button')));
+        var differingPropertyName = element(by.id('e2e-diff-differing-properties')).element(by.css('.diff-property-name'));
+        expect(differingPropertyName.getText()).toEqual('global_diff');
+        var differingPropertyFinalValueLeft = element(by.id('e2e-diff-differing-properties')).element(by.css('.diff-property-final-value-left'));
+        expect(differingPropertyFinalValueLeft.getText()).toEqual('left_value');
+        var differingPropertyFinalValueRight = element(by.id('e2e-diff-differing-properties')).element(by.css('.diff-property-final-value-right'));
+        expect(differingPropertyFinalValueRight.getText()).toEqual('righ_value');
+
+        utils.clickOnElement(element(by.id('e2e-diff-onlyright-toggle-button')));
+        var rightPropertyName = element(by.id('e2e-diff-onlyright-properties')).element(by.css('.diff-property-name'));
+        expect(rightPropertyName.getText()).toEqual('global_right');
+        var rightPropertyFinalValue = element(by.id('e2e-diff-onlyright-properties')).element(by.css('.diff-property-final-value'));
+        expect(rightPropertyFinalValue.getText()).toEqual('value');
     });
 });
