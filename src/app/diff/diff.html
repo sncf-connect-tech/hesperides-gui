@@ -19,7 +19,7 @@
   ~
   -->
 
-<div layout = "row" class="center">
+<div layout="row" class="center">
     <h3 flex="49">{{ 'properties.compare.title.part1' | translate }}
         <span class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{displayable_properties_path}} </span></h3>
     <span flex="2"><h3>{{ 'common.word.and' | translate }}</h3></span>
@@ -34,6 +34,9 @@
     <md-button class="md-raised md-primary"  ng-click="save_diff()" >
         2/ <span class="diff-warning-text-button">{{ 'properties.compare.saveChanges.part1' | translate }} </span>{{ 'properties.compare.saveChanges.part2' | translate }}
     </md-button>
+    <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
+        {{ 'properties.compare.togglePropertyDetails' | translate }}
+    </md-switch>
 </div>
 
 <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
@@ -64,25 +67,35 @@
             </md-input-container>
         </div>
     </div>
+    <div layout="row" ng-show="toggle0" class="diff-property-headers">
+        <div flex="20" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
+        <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30">
+                {{ 'properties.compare.values.columnHeaders.finalValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.storedValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+        </div>
+    </div>
     <md-divider ng-show="toggle0" class="diff-divider"></md-divider>
     <div layout="row" ng-show="toggle0" ng-repeat="diff_container in (diff_containers | filter:{'status':0, 'property_name': propertiesKeyFilter0} | orderBy:'property_name')">
         <div flex="20" layout-align="end start" layout="row">
             <div class="diff-property-name">{{diff_container.property_name}}</div>
         </div>
-        <div flex="5">
-        </div>
-        <div flex="35" layout-align="start start" layout="row">
-            <div class="diff-text-modifiable diff-value diff-line">
-                <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ diff_container.property_to_modify.value }}
-            </div>
-        </div>
-        <div flex="5" layout="row" layout-align="center start">
-            <div>
-
-            </div>
-        </div>
-        <div flex="35">
+        <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30">{{ diff_container.property_to_modify.value.finalValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_modify.value.storedValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_modify.value.defaultValue }}</div>
         </div>
     </div>
 </div>
@@ -107,7 +120,7 @@
     </div>
     <div layout="row" layout-wrap ng-show="toggle1">
         <div flex="20">
-            <md-switch class="md-primary" ng-model="show_only_modified" aria-label="{{ 'properties.compare.values.showLastEdited' | translate }}" class="md-block">
+            <md-switch class="md-primary" ng-model="show_only_modified" aria-label="{{ 'properties.compare.values.showLastEdited' | translate }}">
                 {{ 'properties.compare.values.showLastEdited' | translate }}
             </md-switch>
         </div>
@@ -147,37 +160,71 @@
             {{ 'common.word.all' | translate }}
         </div>
     </div>
+    <div layout="row" ng-show="toggle1" class="diff-property-headers">
+        <div flex="15" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.storedValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30">
+                {{ 'properties.compare.values.columnHeaders.finalValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+        </div>
+        <div flex="5"></div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30">
+                {{ 'properties.compare.values.columnHeaders.finalValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.storedValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+        </div>
+    </div>
     <md-divider ng-show="toggle1" class="diff-divider"></md-divider>
     <div layout="row" ng-show="toggle1"
          ng-repeat="diff_container in (diff_containers | filter: show_only_modified ? {'status':1, 'modified': true, 'property_name': propertiesKeyFilter1} : {'status':1, 'property_name': propertiesKeyFilter1}  | orderBy:'property_name')">
-        <div flex="20" layout-align="end start" layout="row">
+        <div flex="15" layout="row" layout-align="end start">
             <div class="diff-property-name">{{diff_container.property_name}}</div>
         </div>
-        <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable diff-value">
-                {{ diff_container.property_to_modify.value }}
-                <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-            </div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_modify.value.defaultValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_modify.value.storedValue }}</div>
+            <div flex="30">{{ diff_container.property_to_modify.value.finalValue }}</div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
-            <div>
-                <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
-                <span class="fa fa-check" ng-hide="diff_container.modified"></span>
-                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff"
-                             ng-show="diff_container.modified">
-                </md-checkbox>
-            </div>
+            <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
+            <span class="fa fa-check" ng-hide="diff_container.modified"></span>
+            <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"
+                         ng-show="diff_container.modified">
+            </md-checkbox>
         </div>
-        <div flex="40">
-            <span class="diff-text-unmodifiable diff-value">
-                <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ diff_container.property_to_compare_to.value }}
-            </span>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-unmodifiable diff-value diff-line">
+            <div flex="30">{{ diff_container.property_to_compare_to.value.finalValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.storedValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.defaultValue }}</div>
         </div>
     </div>
 </div>
 
-<!-- Diff -->
+<!-- Différentes -->
 <div layout="column" class="bg-light">
      <div layout="row">
         <div flex="10">
@@ -235,28 +282,62 @@
             {{ 'common.word.all' | translate }}
         </div>
     </div>
+    <div layout="row" ng-show="toggle2" class="diff-property-headers">
+        <div flex="15" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.storedValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30">
+                {{ 'properties.compare.values.columnHeaders.finalValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+        </div>
+        <div flex="5"></div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30">
+                {{ 'properties.compare.values.columnHeaders.finalValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.storedValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+        </div>
+    </div>
     <md-divider ng-show="toggle2" class="diff-divider"></md-divider>
     <div layout="row" ng-show="toggle2" ng-repeat="diff_container in (diff_containers | filter:{'status':2, 'property_name': propertiesKeyFilter2}  | orderBy:'property_name')">
-        <div flex="20" layout-align="end start" layout="row">
+        <div flex="15" layout="row" layout-align="end start">
             <div class="diff-property-name">{{diff_container.property_name}}</div>
         </div>
-        <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable diff-value">
-                {{ diff_container.property_to_modify.value }}
-                <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-            </div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_modify.value.defaultValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_modify.value.storedValue }}</div>
+            <div flex="30">{{ diff_container.property_to_modify.value.finalValue }}</div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
-            <div>
-                <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
-                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox" class="diff"></md-checkbox>
-            </div>
+            <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
+            <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox" class="diff-checkbox"></md-checkbox>
         </div>
-        <div flex="40">
-            <span class="diff-text-unmodifiable diff-value">
-                <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ diff_container.property_to_compare_to.value }}
-            </span>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-unmodifiable diff-value diff-line">
+            <div flex="30">{{ diff_container.property_to_compare_to.value.finalValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.storedValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.defaultValue }}</div>
         </div>
     </div>
 </div>
@@ -307,7 +388,7 @@
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Sélectionner toutes les valeurs" ng-model="toggle_right" class="diff"
+                <md-checkbox aria-label="Sélectionner toutes les valeurs" ng-model="toggle_right" class="diff-checkbox"
                              ng-click="toggle_selected_to_containers_with_filter({'status': 3}, !toggle_right, propertiesKeyFilter3)">
                 </md-checkbox>
             </div>
@@ -316,27 +397,44 @@
             {{ 'common.word.all' | translate }}
         </div>
     </div>
+    <div layout="row" ng-show="toggle3" class="diff-property-headers">
+        <div flex="20" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
+        <div flex="20"></div>
+        <div flex="10">{{ 'properties.compare.values.columnHeaders.absentValue' | translate }}</div>
+        <div flex="10"></div>
+        <div flex="5"></div>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+            <div flex="30">
+                {{ 'properties.compare.values.columnHeaders.finalValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.storedValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
+                {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
+                <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
+                <md-icon class="fa fa-question-circle"></md-icon>
+            </div>
+        </div>
+    </div>
     <md-divider ng-show="toggle3" class="diff-divider"></md-divider>
     <div layout="row" ng-show="toggle3" ng-repeat="diff_container in (diff_containers | filter:{'status':3, 'property_name': propertiesKeyFilter3}  | orderBy:'property_name')">
-        <div flex="20" layout-align="end start" layout="row">
+        <div flex="15" layout="row" layout-align="end start">
             <div class="diff-property-name text-stroke">{{diff_container.property_name}}</div>
         </div>
-        <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable diff-value">
-                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : 'properties.compare.missing.property' | translate}}
-            </div>
-        </div>
+        <div flex="40"></div>
         <div flex="5" layout="row" layout-align="center start">
-            <div>
-                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff">
-                </md-checkbox>
-            </div>
+            <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox">
+            </md-checkbox>
         </div>
-        <div flex="40">
-            <span class="diff-text-unmodifiable diff-value">
-                <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
-                {{ diff_container.property_to_compare_to.value }}
-            </span>
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-unmodifiable diff-value diff-line">
+            <div flex="30">{{ diff_container.property_to_compare_to.value.finalValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.storedValue }}</div>
+            <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.defaultValue }}</div>
         </div>
     </div>
 </div>

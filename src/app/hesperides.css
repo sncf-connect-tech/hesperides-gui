@@ -275,6 +275,9 @@ button.preview {
     line-height: 40px;
 }
 
+.visuallyhidden {
+  visibility: hidden;
+}
 
 .vertical-align {
     display: flex;
@@ -666,10 +669,6 @@ md-content.properties-container {
     display:inline-block;
 }
 
-.instance-delete-button-hide {
-    visibility: hidden;
-}
-
 .property-tree-logic-bloc {
     height: 40px;
     min-height: 40px;
@@ -778,80 +777,6 @@ h4.contain_empty_module {
     visibility: visible;
 }
 
-@-webkit-keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-@-moz-keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-@-ms-keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-@-webkit-keyframes move-up {
-    from {
-        bottom: 30px;
-    }
-    to {
-        bottom: 42px;
-    }
-}
-@-moz-keyframes move-up {
-    from {
-        bottom: 30px;
-    }
-    to {
-        bottom: 42px;
-    }
-}
-@-ms-keyframes move-up {
-    from {
-        bottom: 30px;
-    }
-    to {
-        bottom: 42px;
-    }
-}
-
-
-@-webkit-keyframes fade-in {
-    from   { opacity: 0; }
-    to { opacity: 1; }
-}
-@-moz-keyframes fade-in {
-    from   { opacity: 0; }
-    to { opacity: 1; }
-}
-@-ms-keyframes fade-in {
-    from   { opacity: 0; }
-    to { opacity: 1; }
-}
-@-webkit-keyframes move-up {
-    from   { bottom: 30px; }
-    to { bottom: 42px; }
-}
-@-moz-keyframes move-up {
-    from   { bottom: 30px; }
-    to { bottom: 42px; }
-}
-@-ms-keyframes move-up {
-    from   { bottom: 30px; }
-    to { bottom: 42px; }
-}
 
 /******************************************************************************
  * File.

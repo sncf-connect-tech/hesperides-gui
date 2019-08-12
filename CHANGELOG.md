@@ -31,8 +31,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 - Comparison mode button to properties diff wizard. [Girondel Etienne]
 
 
+### Fixed
 
-## 2019-08-12
+- Package-lock.json + tooltip styling to allow 2 lines to be displayed and reduce its width + cleanup in hesperides.css. [Lucas Cimon]
+
+
+
+## 2019-08-09
 ### Added
 
 - Section sur les ACLS dans le manuel utilisateur + introduction de HTML tidy dans CI (#277) [Lucas Cimon]

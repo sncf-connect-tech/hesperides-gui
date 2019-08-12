@@ -88,6 +88,7 @@ angular.module('hesperides.diff', [])
             'is_working_copy': compareSplitedPath[compareSplitedPath.length - 1] === 'WORKINGCOPY',
         };
 
+        $scope.togglePropertyDetails = false;
         $scope.loadingDiff = true;
 
         // Lucas 2019/07/18 : tmp while refactoring
@@ -95,7 +96,7 @@ angular.module('hesperides.diff', [])
             console.log('diff:', diff);
             let diffContainers = [];
             diff.common.forEach(commonProperty => {
-                diffContainers.push(new DiffContainer(1, commonProperty.name, {value: commonProperty.value}, {value: commonProperty.value}));
+                diffContainers.push(new DiffContainer(1, commonProperty.name, {value: commonProperty.left}, {value: commonProperty.right}));
             });
             diff.only_left.forEach(onlyLeftProperty => {
                 diffContainers.push(new DiffContainer(0, onlyLeftProperty.name, {value: onlyLeftProperty.value}, {}));

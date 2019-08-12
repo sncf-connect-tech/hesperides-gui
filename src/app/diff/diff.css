@@ -1,38 +1,26 @@
-/* Area to display all diff properties with scroll */
-.diff-area {
-    max-height: 400px;
-    white-space: normal;
-    overflow: auto;
+.diff-property-headers div {
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
 }
 
-/* Column repeat for each property */
-.diff-row-property {
-    width: 95%;
+.diff-togglePropertyDetails {
+    padding-left: 20%;
 }
 
-/* I don't really know if necessary */
-.diff-property {
-    margin-bottom: 0;
-    margin-top: 0;
-    width: 100%;
-}
-
-/* Property name */
 .diff-property-name {
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: right; /* Important for header "Property name" */
 }
 
-/* Property name, value, checkbox... */
 .diff-value {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Class for checkbox */
 .diff-checkbox {
-    margin-top:0px;
+    margin: 0 0 4px 0 !important;
 }
 
 .diff-text-modifiable {
@@ -45,49 +33,9 @@
     margin: 0 1rem;
 }
 
-.diff-text-old {
-    color: #9C27B0;
-}
-
-/* Warning text in button */
 .diff-warning-text-button {
     font-weight: bold;
     text-decoration: underline
-}
-
-/* Header of row property */
-.diff-header-row-property {
-    margin-bottom: 0;
-    margin-top: 0
-}
-
-/* Align text next to toogle switch */
-.diff-toggle-text {
-    vertical-align: text-bottom;
-}
-
-/* Old text for identical property */
-.diff-identical-old {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 20px;
-    text-decoration: line-through;
-    text-align: right;
-}
-
-/* Modify text for identical property */
-.diff-identical-modify {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: right;
-}
-
-.diff-title {
-    padding-left: 10px;
-}
-
-md-checkbox.diff {
-    margin: 0 0 4px 0 !important;
 }
 
 .diff-line {
