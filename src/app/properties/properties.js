@@ -1653,52 +1653,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     })),
                 };
             };
-
-            this.mergeWithDefaultValue = function () {
-                var me = this;
-
-                _.each(me.key_value_properties, function (key_value) {
-                    if (key_value.inModel) {
-                    // Default value are not avaible for deleted properties
-                        if (_.isString(key_value.value) && _.isEmpty(key_value.value) &&
-                        _.isString(key_value.defaultValue) && !_.isEmpty(key_value.defaultValue)) {
-                            key_value.inDefault = true;
-                            key_value.value = key_value.defaultValue;
-                        } else {
-                            key_value.inDefault = false;
-                        }
-                    }
-                });
-
-                // Merge default values for iterable properties
-                // Updated by tidiane_sidibe on 29/02/2016
-                var mergeWithDefaultValueOfIterable = function (iterable_props) {
-                    _.each(iterable_props, function (iterable) {
-                        if (iterable.inModel) {
-                            _.each(iterable.iterable_valorisation_items, function (item) {
-                                if (item.iterable_valorisation_items) {
-                                // Recur again on the item
-                                    mergeWithDefaultValueOfIterable(item);
-                                } else {
-                                    _.each(item.values, function (field) {
-                                        if (_.isString(field.value) && _.isEmpty(field.value) && _.isString(field.defaultValue) && !_.isEmpty(field.defaultValue)) {
-                                            field.inDefault = true;
-                                            field.value = item.defaultValue;
-                                        } else {
-                                            field.inDefault = false;
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                };
-
-                // Start the merge with default for iterable
-                mergeWithDefaultValueOfIterable(me.iterable_properties);
-
-                return this;
-            };
         };
 
         return Properties;

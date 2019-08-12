@@ -210,7 +210,6 @@
             <div flex="30">{{ compareStoredValues ? diff_container.property_to_modify.value.storedValue : diff_container.property_to_modify.value.finalValue }}</div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
-            <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
             <span class="fa fa-check" ng-hide="diff_container.modified"></span>
             <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"
                          ng-show="diff_container.modified">
@@ -330,8 +329,7 @@
             <div flex="30">{{ compareStoredValues ? diff_container.property_to_modify.value.storedValue : diff_container.property_to_modify.value.finalValue }}</div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
-            <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
-            <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox" class="diff-checkbox"></md-checkbox>
+            <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
         </div>
         <div flex="40" layout="row" layout-align="space-around center" class="diff-text-unmodifiable diff-value diff-line">
             <div flex="30">{{ compareStoredValues ? diff_container.property_to_modify.value.storedValue : diff_container.property_to_modify.value.finalValue }}</div>
