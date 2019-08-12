@@ -28,9 +28,21 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Added
 
-- Section sur les ACLS dans le manuel utilisateur + introduction de HTML tidy dans CI. [Lucas Cimon]
+- Comparison mode button to properties diff wizard. [Girondel Etienne]
 
-- Banner from HTTP configurable through $BANNER_URL - close #251. [Lucas Cimon]
+
+### Fixed
+
+- Package-lock.json + tooltip styling to allow 2 lines to be displayed and reduce its width + cleanup in hesperides.css. [Lucas Cimon]
+
+
+
+## 2019-08-09
+### Added
+
+- Section sur les ACLS dans le manuel utilisateur + introduction de HTML tidy dans CI (#277) [Lucas Cimon]
+
+- Banner from HTTP configurable through $BANNER_URL - close #251 (#276) [Lucas Cimon]
 
 
 

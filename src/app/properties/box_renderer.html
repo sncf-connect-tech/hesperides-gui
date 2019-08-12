@@ -103,7 +103,7 @@
                            aria-label="{{ 'properties.module.instance.delete' | translate }}"
                            ng-really-click="delete_instance(instance, module)"
                            class="md-warn md-xs"
-                           ng-class="{'instance-delete-button-hide': !instance.hover}">
+                           ng-class="{'visuallyhidden': !instance.hover}">
                     <md-tooltip>{{ 'properties.module.instance.delete' | translate }}</md-tooltip>
                     <i class="fa fa-trash"></i>
                 </md-button>

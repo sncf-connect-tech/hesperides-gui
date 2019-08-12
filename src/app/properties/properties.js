@@ -1031,30 +1031,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         };
 
         $scope.refreshGlobalPropertiesData = function () {
-            var platform = $scope.platform;
-            var getPropertiesUrl = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms/${ encodeURIComponent(platform.name) }/properties?path=${ encodeURIComponent('#') }`;
-
-            $http.get(getPropertiesUrl).then(function (response) {
-                return new Properties(response.data);
-            }, function (error) {
-                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesController.refreshGlobalPropertiesData.get_properties' });
-                throw error;
-            }).then(function (response) {
-                platform.global_properties = response;
-
+            ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                $scope.platform.global_properties = response;
                 // making a copy, for changes detection
                 $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
             });
-
-            var getGlobalPropertyUsagesUrl = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms/${ encodeURIComponent(platform.name) }/global_properties_usage`;
-
-            $http.get(getGlobalPropertyUsagesUrl).then(function (response) {
-                return response.data;
-            }, function (error) {
-                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesController.refreshGlobalPropertiesData.get_global_properties_usage' });
-                throw error;
-            }).then(function (response) {
-                platform.global_properties_usage = response;
+            ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                $scope.platform.global_properties_usage = response;
             });
         };
 
@@ -1126,7 +1109,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.onGroupCNsChange = function () { // Gère les changements sur $scope.appGroupCNs :
             console.log('onGroupCNsChange - $scope.appGroupCNs:', $scope.appGroupCNs);
             ensureDirectoryGroupsNotEmpty();
-            ApplicationService.update_directory_groups({name: $scope.application.name, directoryGroups: $scope.application.directoryGroups }).then((directoryGroups) => {
+            ApplicationService.update_directory_groups({ name: $scope.application.name, directoryGroups: $scope.application.directoryGroups }).then((directoryGroups) => {
                 // En cas de groupCN invalide, une notification sera affichée
                 // On récupère les nouveaux droits :
                 console.log('NEW directoryGroups:', directoryGroups);
@@ -1137,7 +1120,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 );
             }).catch(() => {
                 // Retrocompatibility: we handle the case of non-existing .directoryGroups
-                if (!$scope.originalAppGroupCNs) return;
+                if (!$scope.originalAppGroupCNs) {
+                    return;
+                }
                 // On restaure les droits initiaux :
                 $scope.application.directoryGroups[`${ $scope.application.name }_PROD_USER`] = $scope.originalAppGroupCNs;
                 setValidatedAppGroupCNs();
@@ -1669,52 +1654,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         iterable_valorisation_items: _.cloneDeep(iterable.iterable_valorisation_items),
                     })),
                 };
-            };
-
-            this.mergeWithDefaultValue = function () {
-                var me = this;
-
-                _.each(me.key_value_properties, function (key_value) {
-                    if (key_value.inModel) {
-                    // Default value are not avaible for deleted properties
-                        if (_.isString(key_value.value) && _.isEmpty(key_value.value) &&
-                        _.isString(key_value.defaultValue) && !_.isEmpty(key_value.defaultValue)) {
-                            key_value.inDefault = true;
-                            key_value.value = key_value.defaultValue;
-                        } else {
-                            key_value.inDefault = false;
-                        }
-                    }
-                });
-
-                // Merge default values for iterable properties
-                // Updated by tidiane_sidibe on 29/02/2016
-                var mergeWithDefaultValueOfIterable = function (iterable_props) {
-                    _.each(iterable_props, function (iterable) {
-                        if (iterable.inModel) {
-                            _.each(iterable.iterable_valorisation_items, function (item) {
-                                if (item.iterable_valorisation_items) {
-                                // Recur again on the item
-                                    mergeWithDefaultValueOfIterable(item);
-                                } else {
-                                    _.each(item.values, function (field) {
-                                        if (_.isString(field.value) && _.isEmpty(field.value) && _.isString(field.defaultValue) && !_.isEmpty(field.defaultValue)) {
-                                            field.inDefault = true;
-                                            field.value = item.defaultValue;
-                                        } else {
-                                            field.inDefault = false;
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                };
-
-                // Start the merge with default for iterable
-                mergeWithDefaultValueOfIterable(me.iterable_properties);
-
-                return this;
             };
         };
 

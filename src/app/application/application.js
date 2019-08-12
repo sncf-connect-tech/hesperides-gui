@@ -74,7 +74,7 @@ angular.module('hesperides.application', [])
                     version_id: -1,
                 }, data);
 
-                if (!_.isUndefined(this.platform_name)) { // When it comes from rest entity
+                if (this.platform_name) { // When it comes from rest entity
                     this.name = this.platform_name;
                 }
 
@@ -370,6 +370,19 @@ angular.module('hesperides.application', [])
                 restore_platform(application_name, platform_name) {
                     return $http.post(`rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/restore`).catch((error) => {
                         notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.restore_platform' });
+                        throw error;
+                    });
+                },
+                get_diff(application_name, platform_name, path, to_application, to_platform, to_path, compare_stored_values, timestamp) {
+                    var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties/diff?path=${ encodeURIComponent(path) }`;
+                    url += `&to_application=${ encodeURIComponent(to_application) }&to_platform=${ encodeURIComponent(to_platform) }&to_path=${ encodeURIComponent(to_path) }&compare_stored_values=${ encodeURIComponent(compare_stored_values) }`;
+                    if (timestamp) {
+                        url += `&timestamp=${ timestamp }`;
+                    }
+                    return $http.get(url).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.get_diff' });
                         throw error;
                     });
                 },
