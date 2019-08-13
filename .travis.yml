@@ -9,9 +9,10 @@ env:
 
 jobs:
   include:
-  - name: HTML Linter
+  - name: HTML Linter for user manual
     stage: test
     before_install:
+      # Installing a more recent version than the one in the distro:
       - wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb
       - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
     script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done

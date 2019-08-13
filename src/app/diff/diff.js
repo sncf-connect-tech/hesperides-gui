@@ -89,6 +89,7 @@ angular.module('hesperides.diff', [])
             'is_working_copy': compareSplitedPath[compareSplitedPath.length - 1] === 'WORKINGCOPY',
         };
 
+        $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
 
         /*

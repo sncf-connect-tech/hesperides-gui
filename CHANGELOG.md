@@ -25,10 +25,12 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-08-13
 ### Fixed
 
-- Ensuring that the "compare_stored_values" query param passed to /diff is always a boolean. [Lucas Cimon]
+- #281 Bug d'affichage du diff + Sauvegarde des propriétés itérables lors du report de propriétés. [Thomas L'Hostis]
+
+- Ensuring that the "compare_stored_values" query param passed to /diff is always a boolean (#282) [Lucas Cimon]
 
 
 
