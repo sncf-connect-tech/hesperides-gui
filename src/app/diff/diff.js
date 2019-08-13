@@ -42,7 +42,7 @@ function dateToTimestamp(lookPast, date) {
 
 angular.module('hesperides.diff', [])
 
-    .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, Properties, notify) {
+    .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, $q, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, Properties, notify) {
         var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
             // 0 -> only on to_modify
             // 1 -> on both and identical values
@@ -172,15 +172,19 @@ angular.module('hesperides.diff', [])
             }
 
             // Get all the properties modified
-            const keyValueProperties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify)
+            const keyValueProperties = $scope.diff_containers.filter((diff_container) => diff_container.property_to_modify.value)
                 .map((diff_container) => ({ name: diff_container.property_name, value: diff_container.property_to_modify.value.storedValue }));
 
             // Save the properties
             HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, (comment) =>
-                // Retrieve the platform .version_id:
-                ApplicationService.get_platform($routeParams.application, $routeParams.platform).then((platform) => {
-                    console.log('SAVING properties: platform.name=', platform.name, 'platform.version_id=', platform.version_id, 'keyValueProperties=', keyValueProperties);
-                    ApplicationService.save_properties($routeParams.application, platform, new Properties({ key_value_properties: keyValueProperties }), $routeParams.properties_path, comment).then(() => {
+                // Retrieve the platform .version_id + the iterable properties:
+                $q.all([
+                    ApplicationService.get_platform($routeParams.application, $routeParams.platform),
+                    ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path),
+                ]).then(([ platform, properties ]) => {
+                    properties.key_value_properties = keyValueProperties;
+                    console.log('SAVING properties: platform.name=', platform.name, 'platform.version_id=', platform.version_id, 'properties=', properties);
+                    ApplicationService.save_properties($routeParams.application, platform, properties, $routeParams.properties_path, comment).then(() => {
                         $route.reload();
                     });
                 })
