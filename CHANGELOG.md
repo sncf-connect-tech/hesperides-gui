@@ -26,14 +26,9 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 <!-- gitchangelog START -->
 ## _(unreleased)_
-### Added
-
-- Comparison mode button to properties diff wizard. [Girondel Etienne]
-
-
 ### Fixed
 
-- Package-lock.json + tooltip styling to allow 2 lines to be displayed and reduce its width + cleanup in hesperides.css. [Lucas Cimon]
+- Ensuring that the "compare_stored_values" query param passed to /diff is always a boolean. [Lucas Cimon]
 
 
 

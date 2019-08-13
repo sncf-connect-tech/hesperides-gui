@@ -61,7 +61,7 @@ angular.module('hesperides.diff', [])
 
         $scope.compare_application = $routeParams.compare_application;
         $scope.compare_platform = $routeParams.compare_platform;
-        $scope.compareStoredValues = $routeParams.compare_stored_values && $routeParams.compare_stored_values !== 'false';
+        $scope.compareStoredValues = Boolean($routeParams.compare_stored_values && $routeParams.compare_stored_values !== 'false');
 
         $scope.timestamp = $routeParams.timestamp;
 
@@ -188,7 +188,7 @@ angular.module('hesperides.diff', [])
         };
 
         $scope.loadingDiff = true;
-        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.compare_stored_values, $routeParams.timestamp).then((diff) => {
+        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $scope.compareStoredValues, $routeParams.timestamp).then((diff) => {
             console.log('/diff response:', diff);
             const diffContainers = [];
             diff.common.forEach((commonProperty) => {
