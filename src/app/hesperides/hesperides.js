@@ -186,7 +186,7 @@ angular.module('hesperides', MODULE_DEPS)
         let bannerMsg = '';
         if (BANNER_URL) {
             $http.get(BANNER_URL).then((response) => {
-                bannerMsg = response.data;
+                bannerMsg = response.data.trim();
             }, (error) => {
                 console.warn(`[Hesperides] Banner file could not be retrieved from ${ BANNER_URL }:`, error);
             });
