@@ -23,7 +23,7 @@ var until = protractor.ExpectedConditions;
 var addGlobalProperty = function (name, value) {
     element(by.id('new_kv_name')).sendKeys(name);
     element(by.id('new_kv_value')).sendKeys(value);
-    browser.actions().sendKeys(protractor.Key.ENTER).perform();
+    element(by.id('new_kv_value')).sendKeys(protractor.Key.ENTER);
 };
 
 var saveGlobalProperties = function (comment) {
@@ -120,7 +120,7 @@ describe('Manage platform diff', () => {
         var differingPropertyFinalValueLeft = element(by.id('e2e-diff-differing-properties')).element(by.css('.diff-property-final-value-left'));
         expect(differingPropertyFinalValueLeft.getText()).toEqual('left_value');
         var differingPropertyFinalValueRight = element(by.id('e2e-diff-differing-properties')).element(by.css('.diff-property-final-value-right'));
-        expect(differingPropertyFinalValueRight.getText()).toEqual('righ_value');
+        expect(differingPropertyFinalValueRight.getText()).toEqual('right_value');
 
         utils.clickOnElement(element(by.id('e2e-diff-onlyright-toggle-button')));
         var rightPropertyName = element(by.id('e2e-diff-onlyright-properties')).element(by.css('.diff-property-name'));

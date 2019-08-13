@@ -43,6 +43,10 @@
     padding-bottom: 4px;
 }
 
+.diff-column-break-word {
+    word-wrap: break-word;
+}
+
 .diff-platform-tag {
     height: 5px !important;
     margin-top: 0px !important;
@@ -62,4 +66,8 @@
 
 .diff-date-error-message {
     color: rgb(255,87,34) !important;;
+}
+
+.diff-left-value > div {
+    direction: rtl;
 }

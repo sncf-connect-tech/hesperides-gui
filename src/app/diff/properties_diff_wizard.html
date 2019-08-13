@@ -109,8 +109,8 @@
                                         <i class="fa fa-arrows-v"></i>
                                     </div>
                                     <ul class="breadcrumb margin-bottom-2px">
-                                        <li>{{fromPlatform.application_name}}</li>
-                                        <li>{{fromPlatform.platform}}</li>
+                                        <li>{{toPlatform.application_name}}</li>
+                                        <li>{{toPlatform.platform}}</li>
                                         <li ng-repeat="token in toModule.path.substr(1).split('#')">
                                             {{token}}
                                         </li>
@@ -132,8 +132,8 @@
                             <div layout="row" layout-margin>
                                 <a href="" ng-click="toggleModules=!toggleModules">
                                     {{ 'properties.compare.modal.otherChoice' | translate }}
-                                    {{fromPlatform.application_name}} -
-                                    {{fromPlatform.platform}}</a>
+                                    {{toPlatform.application_name}} -
+                                    {{toPlatform.platform}}</a>
                             </div>
                             <div layout="row" layout-sm="column" layout-align="space-around">
                                 <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
