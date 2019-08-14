@@ -223,7 +223,7 @@
   "properties.compare.modal.calendar": "Date & heure de la comparaison",
   "properties.compare.modal.calendar.message": "La date doit être inférieure ou égale à aujourd'hui !",
   "properties.compare.modal.calendar.empty": "Veuillez selectionner une date",
-  "properties.compare.modal.moduleChoice": "Choisir le module de {{comparePlatformApplication}} - {{comparePlatformName}} à comparer à {{compareModule}} sur {{platformApplication}} - {{platform}}",
+  "properties.compare.modal.moduleChoice": "Choisir le module de {{toApplication}} - {{toPlatform}} à comparer à {{fromModule}} sur {{fromApplication}} - {{fromPlatform}}",
   "properties.compare.modal.otherChoice": "Choisir un autre module de ",
   "properties.compare.modal.step1": "Choisir la plateform à comparer",
   "properties.compare.modal.step2": "Choisir le module à comparer",
