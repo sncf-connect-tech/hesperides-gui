@@ -3,64 +3,68 @@ node_js: 8
 
 env:
   global:
-  - COMMIT=${TRAVIS_COMMIT::8}
-  - secure: YQpgwAZBTQNcqEPz1jqDyFHi5SIn3OEx/Rmob8/g0FWQFxMs/hW4di4AVmKfYVgVxOSQS5NjmvvXZfBSO9NrL9FHlVlwDo7HBs2qPxakJHQhhejnEeUHAQUAcmymOkGpH10UVI3xYBBjfS2DywN6TQtaQGOke59II/APsM2l3fanC4SQOqq3z44xJ5B74NOPEH3r/bu0+BBCNLR/00aAdzJjshNeXvTsx0zszPQ3cOt2guBqsTNHGkZiVg4135pqSfTn5W60109EbzgfxgG0Wbxnll81M79CXLc/OZcGa0TJbQo3QqklscY+MJ9BKdXX/mgS4kNjZcYXgXd7sLwxdRWZRqsLIa2mEOotJAKKUThfD4Df0HMrpRdrRqaCig+PvdpFXeeTT9ITNiaBwN9hQD35tYju9JFUJ6qLgdjj5/PLMge6NmfoVSp1Q8dzSfZJsbPt4suR8X39rrwSMdw5lbhk4jsSkWD90eZjhzKc+dcLulxxjMFZGrMueR34tGYG17a9U/s9qNSxQ/K0bDRr8z2Jxt/dAsL/1kOKEvyM1ewXhMV9YZ3k1VsgUOsiDRRhJZ7RoUCJNLAkrI0BgrYzblmCofVOigAM8GB5rrSAPHVaPy7FyrV8M0yfHQ1Vw7URFKDHDEb24VZLsOipqUgCQqO2doTVF5wL+c75euQzz68= # DOCKER_USER
-  - secure: eN1Z1h98ux+F+RubsI3w4NeIFpNw8QI6fzBD7U/01KRHGdD3PzQldfK3fxRRENu8tSDEpmbqMqJO17OKdUxOJPSbn8sAJXMXB88vkqBmKRT5n0pYvQKRCAEy9DO/OiFhvi5IFUX1fvyMb3wQyK/N8YTYoVA6Phg/+R6fVophkBfVeyf3YdxB8yUHB7etaepPOjbcG8XCFp6UVuhLA0eExCY0P6KjYnWV4Mhah218uXpfboFV9ONNo2Ysy//q0liYMYIHnlSKNMynMzuXQiT2QWx6N23A7XQTrn8QwRbsD0JGVXvuuQSU4imH2Oc6EOqrr4OqfVy+8nuKoKbMsscABsnrJC0RqfX0rHJA3JWtM1PZ5KgAzqr4ADHe+qk/SpXno2EyIWohjr6twHWbxycxhAFy4HH9INVRWmrtg0/bD4vKah25msqj6en37UV0nUVsrnf3Rnfjc0LJlTlkR1G0j9uiI3HjHE+U1ABtXg8V31/Py4BqDenztdRHbqS6k0v2EX8tTLSPen6GT6ikG5lgq5yTFGhDtIGewDPFw0otsbATC6A6dPe2b2qn8lhlExchOjtT15zouqMgPY2pqSf5JlL2+DAkNjMSreaURZDTrr2LbraN3Y6UWDMQJYaTH1DZgaDsJXaPKez3G7/Q8mQ786JJYbwbwcLbxmW1W4Lx+YM= # DOCKER_PASS
+    - COMMIT=${TRAVIS_COMMIT::8}
+    - secure: YQpgwAZBTQNcqEPz1jqDyFHi5SIn3OEx/Rmob8/g0FWQFxMs/hW4di4AVmKfYVgVxOSQS5NjmvvXZfBSO9NrL9FHlVlwDo7HBs2qPxakJHQhhejnEeUHAQUAcmymOkGpH10UVI3xYBBjfS2DywN6TQtaQGOke59II/APsM2l3fanC4SQOqq3z44xJ5B74NOPEH3r/bu0+BBCNLR/00aAdzJjshNeXvTsx0zszPQ3cOt2guBqsTNHGkZiVg4135pqSfTn5W60109EbzgfxgG0Wbxnll81M79CXLc/OZcGa0TJbQo3QqklscY+MJ9BKdXX/mgS4kNjZcYXgXd7sLwxdRWZRqsLIa2mEOotJAKKUThfD4Df0HMrpRdrRqaCig+PvdpFXeeTT9ITNiaBwN9hQD35tYju9JFUJ6qLgdjj5/PLMge6NmfoVSp1Q8dzSfZJsbPt4suR8X39rrwSMdw5lbhk4jsSkWD90eZjhzKc+dcLulxxjMFZGrMueR34tGYG17a9U/s9qNSxQ/K0bDRr8z2Jxt/dAsL/1kOKEvyM1ewXhMV9YZ3k1VsgUOsiDRRhJZ7RoUCJNLAkrI0BgrYzblmCofVOigAM8GB5rrSAPHVaPy7FyrV8M0yfHQ1Vw7URFKDHDEb24VZLsOipqUgCQqO2doTVF5wL+c75euQzz68= # DOCKER_USER
+    - secure: eN1Z1h98ux+F+RubsI3w4NeIFpNw8QI6fzBD7U/01KRHGdD3PzQldfK3fxRRENu8tSDEpmbqMqJO17OKdUxOJPSbn8sAJXMXB88vkqBmKRT5n0pYvQKRCAEy9DO/OiFhvi5IFUX1fvyMb3wQyK/N8YTYoVA6Phg/+R6fVophkBfVeyf3YdxB8yUHB7etaepPOjbcG8XCFp6UVuhLA0eExCY0P6KjYnWV4Mhah218uXpfboFV9ONNo2Ysy//q0liYMYIHnlSKNMynMzuXQiT2QWx6N23A7XQTrn8QwRbsD0JGVXvuuQSU4imH2Oc6EOqrr4OqfVy+8nuKoKbMsscABsnrJC0RqfX0rHJA3JWtM1PZ5KgAzqr4ADHe+qk/SpXno2EyIWohjr6twHWbxycxhAFy4HH9INVRWmrtg0/bD4vKah25msqj6en37UV0nUVsrnf3Rnfjc0LJlTlkR1G0j9uiI3HjHE+U1ABtXg8V31/Py4BqDenztdRHbqS6k0v2EX8tTLSPen6GT6ikG5lgq5yTFGhDtIGewDPFw0otsbATC6A6dPe2b2qn8lhlExchOjtT15zouqMgPY2pqSf5JlL2+DAkNjMSreaURZDTrr2LbraN3Y6UWDMQJYaTH1DZgaDsJXaPKez3G7/Q8mQ786JJYbwbwcLbxmW1W4Lx+YM= # DOCKER_PASS
 
 jobs:
   include:
-  - name: HTML Linter for user manual
-    stage: test
-    before_install:
-      # Installing a more recent version than the one in the distro:
-      - wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb
-      - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
-    script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
+    - name: HTML Linter for user manual
+      stage: test
+      before_install:
+        # Installing a more recent version than the one in the distro:
+        - wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb
+        - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
+      script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
 
-  - name: JS Linter
-    stage: test
-    script: npm run lint
+    - name: JS Linter
+      stage: test
+      script: npm run lint
 
-  - name: Unit tests
-    stage: test
-    addons:
-      firefox: "50.0"
-    services:
-      - xvfb
-    before_script:
-      - export DISPLAY=:99.0
-    script:
-      - npm test
-      - cat test/unit/reports/coverage.txt
+    - name: Unit tests
+      stage: test
+      addons:
+        firefox: "50.0"
+      services:
+        - xvfb
+      before_script:
+        - export DISPLAY=:99.0
+      script:
+        - npm test
+        - cat test/unit/reports/coverage.txt
 
-  - name: End-2-end tests
-    stage: test
-    services:
-      - docker
-      - xvfb
-    addons:
-      chrome: stable
-    before_script:
-      - google-chrome-stable --version
-      - npm install chromedriver@76.0.0 --chromedriver-force-download
-      - npm install
-      - export DISPLAY=:99.0
-      # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
-      - sudo env "PATH=$PATH" npm run webdriver-start --verbose &
-      - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
-      - sudo env "PATH=$PATH" npm start &
-      - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
-    script:
-      - ls -l node_modules/protractor/node_modules/webdriver-manager/selenium/
-      - cat node_modules/protractor/node_modules/webdriver-manager/selenium/update-config.json || true
-      - cat node_modules/protractor/node_modules/webdriver-manager/config.json
-      - npm run e2e-tests -- --suite all
+    - name: End-2-end tests
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      before_script:
+        - google-chrome-stable --version
+        - npm install chromedriver@76.0.0 --chromedriver-force-download
+        - npm install
+        - export DISPLAY=:99.0
+        # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
+        - sudo env "PATH=$PATH" npm run webdriver-start --verbose &
+        - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
+        - sudo env "PATH=$PATH" npm start &
+        - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
+      script:
+        - ls -l node_modules/protractor/node_modules/webdriver-manager/selenium/
+        - cat node_modules/protractor/node_modules/webdriver-manager/selenium/update-config.json || true
+        - cat node_modules/protractor/node_modules/webdriver-manager/config.json
+        - npm run e2e-tests -- --suite all
 
-  - name: Deploy to Docker hub
-    stage: deploy
-    if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
-    script: .travis/docker_build_push.sh
+    - name: Deploy to Docker hub
+      stage: deploy
+      if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
+      script: .travis/docker_build_push.sh
 
 notifications:
-  webhooks: https://outlook.office.com/webhook/b95afcd0-96b7-4034-9bcd-785973709f0a@85eca096-674d-4fd9-9a9e-ae1178e2ee56/TravisCI/e609ea50bd7d485fbc01b47299a0d35b/671e3320-57d1-49bb-a67a-950d08b12517
+  webhooks:
+    urls:
+      - https://outlook.office.com/webhook/838cfd20-344e-4053-97eb-5fa1f7fb25f9@85eca096-674d-4fd9-9a9e-ae1178e2ee56/TravisCI/287a35ae03c74b2d9e01c33c286f174c/9adc9018-8898-45c6-8f07-e92b8eaeb8a2
+    on_success: change
+    on_failure: change
   email: false
