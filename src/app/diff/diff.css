@@ -69,5 +69,5 @@
 }
 
 .diff-left-value > div {
-    direction: rtl;
+    text-align:right;
 }
