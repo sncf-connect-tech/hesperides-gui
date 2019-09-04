@@ -25,8 +25,35 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Sticky default input value in change_module_version modal - close #747. [Lucas Cimon]
+
+
+
+## 2019-09-04
+### Fixed
+
+- Do not use RTL to display left diff values, closes #289 (#290) [Etienne Girondel]
+
+
+
+## 2019-08-14
+### Fixed
+
+- Correction du titre du résumé du diff de propriétés de modules. [Thomas L'Hostis]
+
+
+
 ## 2019-08-13
 ### Fixed
+
+- Hiding banner when message contains just a newline. [Lucas Cimon]
+
+- .transforms -> .transformations. [Lucas Cimon]
+
+- Restauration du warning sur le /diff pour les propriétés globales - close #285 (#286) [Lucas Cimon]
 
 - #281 Bug d'affichage du diff + Sauvegarde des propriétés itérables lors du report de propriétés. [Thomas L'Hostis]
 
