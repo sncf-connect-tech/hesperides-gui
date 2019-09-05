@@ -28,12 +28,16 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
-- Sticky default input value in change_module_version modal - close #747. [Lucas Cimon]
+- Production switch "disabled" logic. [Lucas Cimon]
 
 
 
 ## 2019-09-04
 ### Fixed
+
+- Sticky default input value in change_module_version modal (#291) [Lucas Cimon]
+
+  Will close https://github.com/voyages-sncf-technologies/hesperides/issues/747
 
 - Do not use RTL to display left diff values, closes #289 (#290) [Etienne Girondel]
 
