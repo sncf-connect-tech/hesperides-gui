@@ -32,6 +32,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 
 
+## 2019-09-05
+### Fixed
+
+- Production switch "disabled" logic (#292) [Lucas Cimon]
+
+
+
 ## 2019-09-04
 ### Fixed
 
