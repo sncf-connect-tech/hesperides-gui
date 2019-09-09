@@ -70,9 +70,9 @@
                             <select ng-init="selectedMode = codemirrorModes[0]" ng-options="mode.name for mode in codemirrorModes" ng-model="selectedMode" ng-change="changeCodeMirrorMode(selectedMode.mimetype)"></select>
                         </div>
                     </div>
-                    <div>
-                        <ui-codemirror ui-codemirror-opts="codeMirrorOptions"
-                                       ng-model="template.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"></ui-codemirror>
+                    <div id="template-modal-codemirror-parent">
+                        <ui-codemirror id="template-modal-codemirror" ui-codemirror-opts="codeMirrorOptions"
+                                       ng-model="template.content"></ui-codemirror>
                     </div>
 
                     <div class="template-right">

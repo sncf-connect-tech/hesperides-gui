@@ -86,11 +86,16 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
  * CodeMirror styling
  */
 .CodeMirror {
-  border: 1px solid #ddd;
+    border: 1px solid #ddd;
 }
 
 .CodeMirror pre.CodeMirror-cursor {
-  z-index: 200000;
+    z-index: 200000;
+}
+
+.CodeMirror-fullscreen {
+    position: fixed !important; /* écrasé par le position: relative; défini sur .CodeMirror par la lib :( */
+    z-index: 100000;            /* permet d'afficher la fenêtre de l'éditeur par dessus l'IHM Hesperides, une fois déplacée en descendant de body dans template.js :( */
 }
 
 .cm-hesperides {color: #cc051e;}

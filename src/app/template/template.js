@@ -17,141 +17,161 @@
  */
 angular.module('hesperides.template', [])
 
-    .factory('HesperidesTemplateModal', [
-        'TemplateService', '$mdDialog', '$timeout', '$mdConstant', '$rootScope', function (TemplateService, $mdDialog, $timeout, $mdConstant, $rootScope) {
-            var hesperidesOverlay = {
-                startState() {
-                    return {
-                        inMustache: false,
-                    };
-                },
-                token(stream, state) {
-                    if (stream.match('{{')) { // We found an hesperides token
-                        state.inMustache = true; // Remember what we do
-                        state.inMustacheInner = true;
-                        return 'hesperides';
-                    }
-                    if (state.inMustache) {
-                        var ch = null;
-                        // eslint-disable-next-line no-cond-assign
-                        while (ch = stream.next()) { // Read characters through the token
-                            if (ch === '}' && stream.next() === '}') { // End of hesperides token
-                                if (state.inMustacheInner) {
-                                    stream.backUp(2);
-                                    state.inMustacheInner = false;
-                                    return 'hesperides-token'; // Color for the inner token
-                                }
-                                stream.eat('}');
-                                state.inMustache = false; // Remember to update state
+    .factory('HesperidesTemplateModal', function (TemplateService, $document, $mdDialog, $timeout, $mdConstant, $rootScope) {
+        var hesperidesOverlay = {
+            startState() {
+                return {
+                    inMustache: false,
+                };
+            },
+            token(stream, state) {
+                if (stream.match('{{')) { // We found an hesperides token
+                    state.inMustache = true; // Remember what we do
+                    state.inMustacheInner = true;
+                    return 'hesperides';
+                }
+                if (state.inMustache) {
+                    var ch = null;
+                    // eslint-disable-next-line no-cond-assign
+                    while (ch = stream.next()) { // Read characters through the token
+                        if (ch === '}' && stream.next() === '}') { // End of hesperides token
+                            if (state.inMustacheInner) {
+                                stream.backUp(2);
                                 state.inMustacheInner = false;
-                                return 'hesperides'; // Color for the }}
+                                return 'hesperides-token'; // Color for the inner token
                             }
-                            if (ch === '|') { // Found an inner item limit
-                                if (state.inMustacheInner) {
-                                    stream.backUp(1);
-                                    state.inMustacheInner = false;
-                                    return 'hesperides-token'; // Color for the inner token
-                                }
-                                state.inMustacheInner = true;
-                                return 'hesperides'; // Color for the | character
-                            }
+                            stream.eat('}');
+                            state.inMustache = false; // Remember to update state
+                            state.inMustacheInner = false;
+                            return 'hesperides'; // Color for the }}
                         }
-                        return 'hesperides-token'; // return the style for syntax highlight even if we reached end of line
+                        if (ch === '|') { // Found an inner item limit
+                            if (state.inMustacheInner) {
+                                stream.backUp(1);
+                                state.inMustacheInner = false;
+                                return 'hesperides-token'; // Color for the inner token
+                            }
+                            state.inMustacheInner = true;
+                            return 'hesperides'; // Color for the | character
+                        }
                     }
-                    // eslint-disable-next-line no-empty
-                    while (stream.next() && !stream.match('{{', false)) {} // Skip everything unless we find an hesperides token or reach the end of line
-                    return null;
-                },
-            };
+                    return 'hesperides-token'; // return the style for syntax highlight even if we reached end of line
+                }
+                // eslint-disable-next-line no-empty
+                while (stream.next() && !stream.match('{{', false)) {} // Skip everything unless we find an hesperides token or reach the end of line
+                return null;
+            },
+        };
 
-            /* Thisis for the initialization, to make sure we have at least the simple Mustache mode selected */
-            CodeMirror.defineMode('hesperides', function (config, parserConfig) {
-                return CodeMirror.overlayMode(
-                    CodeMirror.getMode(config, parserConfig.backdrop || ''),
-                    hesperidesOverlay
-                );
-            });
+        /* Thisis for the initialization, to make sure we have at least the simple Mustache mode selected */
+        CodeMirror.defineMode('hesperides', function (config, parserConfig) {
+            return CodeMirror.overlayMode(
+                CodeMirror.getMode(config, parserConfig.backdrop || ''),
+                hesperidesOverlay
+            );
+        });
 
-            var defaultScope = {
-                codemirrorFullscreenStatus: false,
-                codemirrorModes: [
-                    { name: 'Simple Hesperides', mimetype: '' },
-                    { name: 'Properties File', mimetype: 'text/x-properties' },
-                ],
-                codeMirrorOptions: {
-                    mode: 'hesperides',
-                    lineNumbers: true,
-                    lineWrapping: true,
-                    onLoad(_editor) {
-                        defaultScope.editor = _editor;
-                        // This is some trick to avoid a bug. If not refresh, then we have to click on code mirror to see its content
-                        $timeout(function () {
-                            defaultScope.editor.refresh();
-                        }, 500);
+        var defaultScope = {
+            codemirrorModes: [
+                { name: 'Simple Hesperides', mimetype: '' },
+                { name: 'Properties File', mimetype: 'text/x-properties' },
+            ],
+            codeMirrorOptions: {
+                mode: 'hesperides',
+                lineNumbers: true,
+                lineWrapping: true,
+                extraKeys: {
+                    // Notes sur le mode plein écran:
+                    //   * Le plugin CodeMirror dédié est documenté ici: https://codemirror.net/doc/manual.html#addon_fullscreen
+                    //     et le code source est là: https://github.com/codemirror/CodeMirror/tree/master/addon/display
+                    //   * Il contient ce CSS: .CodeMirror-fullscreen { position: fixed; ... }
+                    //   * En citant la doc web MDN: "position: fixed" = L'élément est positionné relativement au bloc englobant initial formé par la zone d'affichage (viewport), sauf si un des ancêtres a une propriété transform, perspective ou filter qui est différente de none
+                    //   * Or l'élément parent <md-dialog> a une propriété "transform"
+                    //   * On doit donc changer l'élement .CodeMirror de parent, afin de l'afficher en plein écran,
+                    //     d'où cette modification du DOM au sein d'un contrôleur
+                    'F11'(cm) {
+                        if (cm.getOption('fullScreen')) {
+                            // Rapatriement à l'emplacement du DOM initial
+                            $document.getElementById('template-modal-codemirror-parent').appendChild($document.getElementById('template-modal-codemirror'));
+                        } else {
+                            // Rattachement au body, cf. commentaire explicatif ci-dessus
+                            $document.getElementsByTagName('body')[0].appendChild($document.getElementById('template-modal-codemirror'));
+                        }
+                        cm.setOption('fullScreen', !cm.getOption('fullScreen'));
+                        cm.focus();
+                    },
+                    'Esc'(cm) {
+                        if (cm.getOption('fullScreen')) {
+                            // Rapatriement à l'emplacement du DOM initial
+                            $document.getElementById('template-modal-codemirror-parent').appendChild($document.getElementById('template-modal-codemirror'));
+                            cm.setOption('fullScreen', false);
+                            cm.focus();
+                        }
                     },
                 },
-                changeCodeMirrorMode(new_mode) {
-                    var mode_name = `hesperides+${ new_mode }`;
-                    CodeMirror.defineMode(mode_name, function (config, parserConfig) {
-                        return CodeMirror.overlayMode(
-                            CodeMirror.getMode(config, parserConfig.backdrop || new_mode),
-                            hesperidesOverlay
-                        );
-                    });
-                    defaultScope.editor.setOption('mode', mode_name);
+                onLoad(_editor) {
+                    defaultScope.editor = _editor;
+                    // This is some trick to avoid a bug. If not refresh, then we have to click on code mirror to see its content
+                    $timeout(function () {
+                        defaultScope.editor.refresh();
+                    }, 500);
                 },
-            };
+            },
+            changeCodeMirrorMode(new_mode) {
+                var mode_name = `hesperides+${ new_mode }`;
+                CodeMirror.defineMode(mode_name, function (config, parserConfig) {
+                    return CodeMirror.overlayMode(
+                        CodeMirror.getMode(config, parserConfig.backdrop || new_mode),
+                        hesperidesOverlay
+                    );
+                });
+                defaultScope.editor.setOption('mode', mode_name);
+            },
+        };
 
-            return {
-                edit_template(options) {
-                    var modalScope = $rootScope.$new(true);
+        return {
+            edit_template(options) {
+                var modalScope = $rootScope.$new(true);
 
-                    modalScope.template = options.template;
+                modalScope.template = options.template;
 
-                    modalScope.add = options.add;
+                modalScope.add = options.add;
 
-                    modalScope.save = options.onSave;
+                modalScope.save = options.onSave;
 
-                    modalScope.isReadOnly = options.isReadOnly;
+                modalScope.isReadOnly = options.isReadOnly;
 
-                    modalScope.closeTemplateEditor = function () {
+                modalScope.closeTemplateEditor = function () {
+                    $mdDialog.cancel();
+                };
+
+                defaultScope.codeMirrorOptions.readOnly = Boolean(options.isReadOnly);
+
+                angular.extend(modalScope, defaultScope);
+
+                $mdDialog.show({
+                    templateUrl: 'template/template-modal.html',
+                    clickOutsideToClose: true,
+                    preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+                    scope: modalScope,
+                });
+
+                modalScope.saveTemplateAndClose = function (template) {
+                    modalScope.save(template).then(function (savedTemplate) {
+                        modalScope.template = savedTemplate;
                         $mdDialog.cancel();
-                    };
-
-                    modalScope.$checkIfCodeMirrorInFullScreen = function ($event) {
-                        if ($event.keyCode === $mdConstant.KEY_CODE.ESCAPE && defaultScope.codemirrorFullscreenStatus) {
-                            $event.stopPropagation();
-                            defaultScope.codemirrorFullscreenStatus = false;
-                        }
-                    };
-
-                    defaultScope.codeMirrorOptions.readOnly = Boolean(options.isReadOnly);
-
-                    angular.extend(modalScope, defaultScope);
-
-                    $mdDialog.show({
-                        templateUrl: 'template/template-modal.html',
-                        clickOutsideToClose: true,
-                        preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
-                        scope: modalScope,
                     });
+                };
 
-                    modalScope.saveTemplateAndClose = function (template) {
-                        modalScope.save(template).then(function (savedTemplate) {
-                            modalScope.template = savedTemplate;
-                            $mdDialog.cancel();
-                        });
-                    };
-
-                    modalScope.saveTemplate = function (template) {
-                        modalScope.save(template).then(function (savedTemplate) {
-                            modalScope.template = savedTemplate;
-                        });
-                    };
-                },
-            };
-        },
-    ])
+                modalScope.saveTemplate = function (template) {
+                    modalScope.save(template).then(function (savedTemplate) {
+                        modalScope.template = savedTemplate;
+                    });
+                };
+            },
+        };
+    }
+    )
 
     .directive('hesperidesTemplateList', function () {
         return {
