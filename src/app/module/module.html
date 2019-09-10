@@ -51,45 +51,63 @@
     </div>
 </div>
 <div layout="row">
-    <div flex>
-        <div class="bg-light" flex>
-            <h4>{{ 'module.technoList' | translate }}</h4>
-            <list-of-items items="module.technos"
-                           createfunction="add_techno($name)"
-                           download-all="download_all_template"
-                           download="download_template"
-                           onedit="open_techno_page($item.name, $item.version, $item.is_working_copy)"
-                           ondelete="delete_techno($item)"
-                           size="small"
-                           css="md-info"
-                           label="$item.title"
-                           selected-item="techno"
-                           selectable="true"
-                           editable="is_workingcopy"
-                           placeholder="{{ 'module.search.techno' | translate }}"
-                           typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
-                    ></list-of-items>
+    <div class="bg-light" flex>
+        <h4>{{ 'module.technoList' | translate }}</h4>
+        <list-of-items items="module.technos"
+                       createfunction="add_techno($name)"
+                       download-all="download_all_template"
+                       download="download_template"
+                       onedit="open_techno_page($item.name, $item.version, $item.is_working_copy)"
+                       ondelete="delete_techno($item)"
+                       size="small"
+                       css="md-info"
+                       label="$item.title"
+                       selected-item="techno"
+                       selectable="true"
+                       editable="is_workingcopy"
+                       placeholder="{{ 'module.search.techno' | translate }}"
+                       typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
+                ></list-of-items>
+    </div>
+</div>
+<div layout="row">
+    <div class="bg-light module-row-for-properties">
+        <h4>{{ 'module.propertiesList' | translate }}</h4>
+        <div class="module-properties">
+            <div layout="row" class="module-properties-headers">
+                <div flex="30" class="module-property-name">{{ 'module.propertiesList.headers.name' | translate }}</div>
+                <div class="module-property-annotation module-property-annotation-name">{{ 'module.propertiesList.headers.annotations' | translate }}</div>
+            </div>
+            <div layout="row" class="module-properties-row"
+                 ng-repeat="property in model.key_value_properties | orderBy:'name'">
+                <div flex="30" class="module-property-name">{{ property.name }}</div>
+                <div flex layout="row" class="module-property-annotation">
+                    <div flex="20" ng-if="property.required"><span class="module-property-annotation-name">@required</span></div>
+                    <div flex="20" ng-if="property.password"><span class="module-property-annotation-name">@password</span></div>
+                    <div flex="20" ng-if="property.defaultValue"><span class="module-property-annotation-name">@default</span>&nbsp;{{ property.defaultValue }}</div>
+                    <div flex="20" ng-if="property.pattern"><span class="module-property-annotation-name">@pattern</span>&nbsp;{{ property.pattern }}</div>
+                    <div flex="20" ng-if="property.comment"><span class="module-property-annotation-name">@comment</span>&nbsp;{{ property.comment }}</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <div layout="row">
-    <div flex>
-        <div class="bg-light" flex>
-            <h4>{{ 'module.platformList' | translate }}</h4>
+    <div class="bg-light" flex>
+        <h4>{{ 'module.platformList' | translate }}</h4>
 
-        <list-of-links items="platforms"
-                       label="$item.application_name + ' [' + $item.name + ']'"
-                       filter="searchInPlatforms"
-                       sorton="$item.application_name"
-                       selected-item="platform"
-                       selectable="true"
-                       editable="false"
-                       css="md-warn"
-                       href="'/properties/' + $item.application_name + '?platform=' + $item.name"
-                       new_tab="true"
-                       tooltip="{{ 'properties.platform.selection.tooltip' | translate }}"
-                       size="small">
-        </list-of-links>
-        </div>
+    <list-of-links items="platforms"
+                   label="$item.application_name + ' [' + $item.name + ']'"
+                   filter="searchInPlatforms"
+                   sorton="$item.application_name"
+                   selected-item="platform"
+                   selectable="true"
+                   editable="false"
+                   css="md-warn"
+                   href="'/properties/' + $item.application_name + '?platform=' + $item.name"
+                   new_tab="true"
+                   tooltip="{{ 'properties.platform.selection.tooltip' | translate }}"
+                   size="small">
+    </list-of-links>
     </div>
 </div>

@@ -1,0 +1,36 @@
+.module-file {
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.module-file blockquote {
+    font-size: 14px;
+}
+
+.module-row-for-properties {
+    width: 100%;
+}
+
+.module-properties-headers, .module-properties-row {
+    min-height: 2rem;
+    line-height: 2rem;
+}
+
+.module-properties-headers {
+    border-bottom: 1px solid black;
+}
+
+.module-property-name {
+    font-weight: bold;
+    text-align: right;
+    padding-right: 1rem;
+    border-right: 1px solid black;
+}
+
+.module-property-annotation {
+    padding-left: 1rem;
+}
+
+.module-property-annotation-name {
+    font-weight: bold;
+}

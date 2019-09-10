@@ -31,6 +31,7 @@ exports.generateAppBundles = function () {
         'src/app/datepicker/datepicker.css',
         'src/app/diff/diff.css',
         'src/app/menu/menu.css',
+        'src/app/module/module.css',
         'src/app/properties/iterable-properties-container.css',
         'src/app/properties/properties.css',
         'src/app/local_changes/localChanges.css',
