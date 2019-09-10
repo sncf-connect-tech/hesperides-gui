@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- /profile page spinner never disapears - close #304 (#307) [Lucas Cimon]
+
+
+
 ## 2019-09-19
 ### Fixed
 

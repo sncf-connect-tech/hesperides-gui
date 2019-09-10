@@ -1,3 +1,142 @@
+.properties-production {
+    margin-top: 0px;
+}
+
+.properties-add-logical-group {
+    color: black !important;
+    background-color: white !important;
+}
+
+.property-required {
+    color: red;
+}
+
+.property-global {
+    font-style: italic;
+    border: none !important;
+    padding-bottom: 2px!important;
+}
+
+md-list.global-property-usage {
+    padding: 0;
+}
+
+md-list.global-property-usage .md-subheader {
+    line-height: 30px;
+}
+
+md-list.global-property-usage div.md-subheader-inner {
+    padding: 0 0 0 16px;
+    font-weight: bold;
+}
+
+md-list.global-property-usage md-list-item {
+    min-height: 16px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: rgba(0,0,0,0.54);
+}
+
+.property-label {
+    text-align: right;
+    font-weight: bold;
+    border: 0px !important;
+    width: 100%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.property-value {
+    margin-left: 3%;
+    border-left-style: none;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-width: thin;
+    border-bottom-color: rgb(0,150,136);
+    background-color: transparent;
+    width: 90%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.property-value:focus {
+    background-color: rgb(0,150,136);
+    color: white;
+    font-weight: bold;
+}
+
+.property-value.ng-invalid.ng-invalid-pattern {
+    outline: 1px solid red;
+}
+
+.iterable-title-value {
+    margin-left: 3%;
+    font-weight: bold;
+    border-left-style: none;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-width: thin;
+    border-bottom-color: rgb(0,150,136);
+    background-color: transparent;
+    width: 90%;
+}
+
+.properties-container {
+    margin-top: -3%;
+    min-height: 150px;
+}
+
+md-content.properties-container {
+    background-color: #F8F8F8;
+}
+
+.property-instance {
+    display: inline;
+    display:inline-block;
+}
+
+.property-tree-logic-bloc {
+    height: 40px;
+    min-height: 40px;
+}
+
+.property-tree-logic-bloc-subbloc {
+    padding-left: 20px;
+}
+
+.property-tree-module {
+    height: 40px;
+    min-height: 40px;
+    padding-left: 20px;
+}
+
+.property-tree-sign {
+    margin-right:15px;
+    cursor:pointer;
+    font-size: 25px;
+}
+.property-sign {
+    margin-left:15px;
+    cursor:pointer;
+    font-size: 30px;
+}
+.property-tree-techno {
+    padding-left: 20px;
+    display: inline-block;
+    height: 40px;
+    min-height: 40px;
+}
+
+.property-box-module-name {
+    white-space: nowrap;
+}
+
+.filter-platform {
+    height: 5px !important;
+    font-size: 12px !important;
+    margin-left:2% !important;
+}
+
 .Application__prodPerms__userStatus {
     margin: 0 2rem;
     /* Vertically align text: */
@@ -9,4 +148,8 @@
     /* Vertically align text: */
     display: flex;
     align-items: center;
+}
+
+#propertiesButtonsContainer {
+    z-index: 1000 !important;
 }

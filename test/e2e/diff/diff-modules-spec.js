@@ -54,7 +54,7 @@ describe('Manage diff', () => {
     it('should not allow diff when platform did not exist at time', () => {
         utils.clickOnElement(element(by.id('e2e-properties-diff-next-button')));
         // La date est invalide car le la module n'existe pas un mois plus tôt
-        utils.checkIfElementIsDisabled('e2e-properties-diff-runcomparison-button', 'true');
+        utils.checkElementIsDisabled('e2e-properties-diff-runcomparison-button');
     });
 
     it('should display module diff page with proper timestamp when a valid date is selected', () => {

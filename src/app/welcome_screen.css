@@ -1,0 +1,70 @@
+#welcome {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 485px;
+    height: 200px;
+    background-image: url('/img/evolution-ordinateur.png');
+}
+
+@media (max-width: 599px) {
+    .whiteframeBasicClassUsage md-whiteframe {
+        margin: 7px;
+        height: 50px;
+        background-color: #FDFDB9;
+    }
+    .whiteframeBasicClassUsage md-whiteframe > button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        outline:none;
+        font-size: 0.4em;
+    }
+}
+@media (min-width: 600px) and (max-width: 959px) {
+    .whiteframeBasicClassUsage md-whiteframe {
+        margin: 20px;
+        height: 75px;
+        background-color: #b9f6ca;
+    }
+    .whiteframeBasicClassUsage md-whiteframe > button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        outline:none;
+        font-size: 0.6em;
+    }
+}
+@media (min-width: 960px) and (max-width: 1279px) {
+    .whiteframeBasicClassUsage md-whiteframe {
+        margin: 20px;
+        height: 90px;
+        background-color: #b9f6ca;
+    }
+    .whiteframeBasicClassUsage md-whiteframe > button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        outline:none;
+        font-size: 0.9em;
+    }
+}
+@media (min-width: 1280px) {
+    .whiteframeBasicClassUsage md-whiteframe {
+        margin: 25px;
+        height: 100px;
+        background-color: #b9f6ca;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    md-whiteframe:hover {
+        box-shadow: 5px 5px 3px #888888;
+    }
+
+    #apps-container {
+        margin-top: 20%;
+    }
+}

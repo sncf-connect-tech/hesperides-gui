@@ -28,6 +28,7 @@ exports.generateAppBundles = function () {
       ]).save('src/app/app.js');
     buildify().concat([
         'src/app/hesperides.css',
+        'src/app/welcome_screen.css',
         'src/app/datepicker/datepicker.css',
         'src/app/diff/diff.css',
         'src/app/menu/menu.css',

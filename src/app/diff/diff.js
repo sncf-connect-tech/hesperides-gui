@@ -174,7 +174,7 @@ angular.module('hesperides.diff', [])
 
             // Get all the properties modified
             const keyValueProperties = $scope.diff_containers
-                .filter(diff_container => diff_container.property_to_modify.value && !_.isNull(diff_container.property_to_modify.value.storedValue))
+                .filter((diff_container) => diff_container.property_to_modify.value && !_.isNull(diff_container.property_to_modify.value.storedValue))
                 .map((diff_container) => ({ name: diff_container.property_name, value: diff_container.property_to_modify.value.storedValue }));
 
             // Save the properties

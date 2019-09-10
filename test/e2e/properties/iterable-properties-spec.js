@@ -16,11 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var utils = require('../utils.js');
+const utils = require('../utils.js');
+const until = protractor.ExpectedConditions;
 
-var openIterableProperties = function () {
+function openIterableProperties () {
     utils.clickOnElement(element(by.id('e2e-properties-list_display-iterable-properties-button')));
-};
+}
 
 describe('Manage iterable properties and annotations (default, comment, required etc ...)', () => {
     beforeAll(() =>
@@ -37,72 +38,55 @@ describe('Manage iterable properties and annotations (default, comment, required
     });
 
     it('should fill in iterable properties with right values (BLOC MODE) and check if save event is correctly stored', () => {
-        // 1- Open iterable properties
+        // we use random_string for at least 1 property to avoid saving plateform without changes for property values
+        var randomString = utils.getRandomString(20);
+
+        // Ensure required property has a value
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_required')), data.simple_value);
+
+        // Open iterable properties
         openIterableProperties();
 
-        // 2- Add a bloc
+        // Add a bloc
         utils.clickOnElement(element(by.id('e2e-iterable-property-iterable-add-bloc-button')));
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
         bloc.getAttribute('id').then(function (itemId) {
-            // we use random_string for at least 1 property to avoid saving plateform without changes for property values
-            var random_string = utils.getRandomString(20);
 
             // always clear before sendKeys
-            utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_comment`)), random_string);
+            utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_comment`)), randomString);
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_password`)), data.simple_value);
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_pattern`)), data.value_prop_wrong_pattern);
 
             utils.clickOnElement(element(by.id('e2e-box-properties-save-module-properties-button')));
             // add comment for saving modifications
-            element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(`${ data.comment_for_saving_iterable_properties }_${ random_string }`);
+            const commentInput = element(by.id('e2e-save-properties-modal_input-comment-autocomplete'))
+            browser.wait(until.presenceOf(commentInput), 1000, 'comment input is taking too long to appear in the DOM');
+            commentInput.sendKeys(`${ data.comment_for_saving_iterable_properties }_${ randomString }`);
             utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
             utils.checkSuccessNotification('The properties have been saved');
-
-            // check events if modification is really saved
-            // utils.clickOnElement(element(by.id('properties_show-platform-event-button')));
-            // utils.checkIfElementContainsText(element(by.id('properties-saved_comment-span-' + data.comment_for_saving_iterable_properties + '_' + random_string)), data.comment_for_saving_iterable_properties + '_' + random_string);
-            // search events by comment
-            // utils.clearAndSendkeys(element(by.id('event-model-filter-input')), data.comment_for_saving_iterable_properties);
-            // Expect only one property saved with this command
-            // utils.checkIfElementIsPresentWithClass('.property-saved');
         });
     });
 
     it('should check that unmatching @pattern value', () => {
-        // 0- Open
         openIterableProperties();
 
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
         bloc.getAttribute('id').then(function (itemId) {
-            // we use random_string for at least 1 property to avoid saving plateform without changes for property values
-            var random_string = utils.getRandomString(20);
+            // we use randomString for at least 1 property to avoid saving plateform without changes for property values
+            var randomString = utils.getRandomString(20);
 
             // always clear before sendKeys and try to save
-            utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_pattern`)), data.value_prop_good_pattern);
+            utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_pattern`)), randomString);
 
-            utils.clickOnElement(element(by.id('e2e-box-properties-save-module-properties-button')));
-
-            // add comment for saving modifications
-            element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(`${ data.comment_for_saving_iterable_properties }_${ random_string }`);
-
-            utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
-
-            // Click on save
-            utils.clickOnElement(element(by.id('properties_show-platform-event-button')));
-
-            // Expect the save has failed (no save with this comment)
-            utils.checkIfElementIsMissing(`#properties-saved_comment-span-${ random_string }`);
+            utils.checkElementIsDisabled('e2e-box-properties-save-module-properties-button');
         });
     });
 
     it('should check that a bloc can be removed', () => {
-        // 0- Open
         openIterableProperties();
 
-        // 1- Add a bloc
         utils.clickOnElement(element(by.id('e2e-iterable-property-iterable-add-bloc-button')));
 
-        // 2- Remove a bloc
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
         bloc.getAttribute('id').then(function (itemId) {
             utils.clickOnElement(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-remove-bloc-button`)));
@@ -113,13 +97,10 @@ describe('Manage iterable properties and annotations (default, comment, required
     });
 
     it('should check that a bloc of second iterable property can be removed', () => {
-        // 0- Open
         openIterableProperties();
 
-        // 1- Add a bloc
         utils.clickOnElement(element(by.id('e2e-iterable-property-last_iterable-add-bloc-button')));
 
-        // 2- Remove a bloc
         const secondBloc = element.all(by.css('.iterable-bloc')).get(1);
         secondBloc.getAttribute('id').then(function (itemId) {
             utils.clickOnElement(element(by.id(`e2e-iterable-property-last_iterable-bloc-${ itemId }-remove-bloc-button`)));
