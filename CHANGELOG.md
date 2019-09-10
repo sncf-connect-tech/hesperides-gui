@@ -28,7 +28,7 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Fixed
 
-- Production switch "disabled" logic. [Lucas Cimon]
+- Restauration du mode plein écran. [Lucas Cimon]
 
 
 

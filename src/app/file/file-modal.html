@@ -49,9 +49,6 @@
                               
                                 <label id="e2e-file-modal-template-section-header-path-{{item.title}}" class="template-section-header-path">{{item.location}}</label>
                                 <label class="template-section-header-content">{{ 'file.modal.content' | translate }}</label>
-                                <!--<kbd>F11</kbd> Activer /
-                                <kbd>Esc</kbd> Désactiver l'édition en plein écran
-                                -->
                             </div>
 
                             <div flex="95">
@@ -60,9 +57,7 @@
                                         <strong>{{'file.error' | translate}}</i></strong> {{item.content}}
                                     </div>
                                     <ui-codemirror ui-codemirror-opts="codeMirrorOptions"
-                                                   ng-model="item.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"
-                                                   ng-switch-default
-                                            ></ui-codemirror>
+                                                   ng-model="item.content" ng-switch-default></ui-codemirror>
                                 </div>
                             </div>
                         </div>
