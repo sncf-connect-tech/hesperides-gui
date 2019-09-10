@@ -546,19 +546,7 @@ a.module-link, a.module-link:hover {
 }
 
 /******************************************************************************
- * Module
- */
-.module-file {
-    text-overflow:ellipsis;
-    overflow: hidden;
-}
-
-.module-file blockquote {
-    font-size: 14px;
-}
-
-/******************************************************************************
- * Module
+ * Techno
  */
 .techno-file {
     text-overflow:ellipsis;

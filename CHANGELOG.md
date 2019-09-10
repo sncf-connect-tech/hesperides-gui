@@ -26,9 +26,21 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 <!-- gitchangelog START -->
 ## _(unreleased)_
+### Added
+
+- Liste des propriétés valorisables sur la page de module - close #160. [Lucas Cimon]
+
+
 ### Fixed
 
-- Restauration du mode plein écran. [Lucas Cimon]
+- On /diff page, not saving properties with a null value (#297) [Lucas Cimon]
+
+
+
+## 2019-09-10
+### Fixed
+
+- Restauration du mode plein écran - close #294. [Lucas Cimon]
 
 
 
