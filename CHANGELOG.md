@@ -28,17 +28,19 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Added
 
-- Liste des propriétés valorisables sur la page de module - close #160. [Lucas Cimon]
+- Liste des propriétés valorisables sur la page de module - close #160 (#296) [Lucas Cimon]
 
 
 ### Fixed
 
-- On /diff page, not saving properties with a null value (#297) [Lucas Cimon]
+- Restoring "Create techno release" button + made TechnoService.create_workingcopy future-proof - close #262. [Lucas Cimon]
 
 
 
 ## 2019-09-10
 ### Fixed
+
+- On /diff page, not saving properties with a null value (#297) [Lucas Cimon]
 
 - Restauration du mode plein écran - close #294. [Lucas Cimon]
 

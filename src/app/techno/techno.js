@@ -213,171 +213,172 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
     })
 
     .factory('TechnoService',
-        [
-            '$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService', '$translate', 'notify',
-            function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate, notify) {
-                return {
-                    get_model(name, version, isWorkingCopy) {
-                        return $http.get(`rest/technos/${ encodeURIComponent(name) }/${ encodeURIComponent(version) }/${ isWorkingCopy ? 'workingcopy' : 'release' }/model`).then(function (response) {
-                            return new Properties(response.data);
-                        }, function () {
-                            return new Properties({});
-                        });
-                    },
-                    get_template_from_workingcopy(wc_name, wc_version, template_name) {
-                        return $http.get(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates/${ encodeURIComponent(template_name) }`).then(function (response) {
-                            return new Template(response.data);
-                        }, function (error) {
-                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_workingcopy' });
-                            throw error;
-                        });
-                    },
-                    get_template_from_release(wc_name, wc_version, template_name) {
-                        return $http.get(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/release/templates/${ encodeURIComponent(template_name) }`).then(function (response) {
-                            return new Template(response.data);
-                        }, function (error) {
-                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_release' });
-                            throw error;
-                        });
-                    },
-                    get_all_templates_from_workingcopy(wc_name, wc_version) {
-                        var baseUrl = `rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`;
+        function ($hesperidesHttp, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate, notify) {
+            return {
+                get_model(name, version, isWorkingCopy) {
+                    return $hesperidesHttp.get(`rest/technos/${ encodeURIComponent(name) }/${ encodeURIComponent(version) }/${ isWorkingCopy ? 'workingcopy' : 'release' }/model`).then(function (response) {
+                        return new Properties(response.data);
+                    }, function () {
+                        return new Properties({});
+                    });
+                },
+                get_template_from_workingcopy(wc_name, wc_version, template_name) {
+                    return $hesperidesHttp.get(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates/${ encodeURIComponent(template_name) }`).then(function (response) {
+                        return new Template(response.data);
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_workingcopy' });
+                        throw error;
+                    });
+                },
+                get_template_from_release(wc_name, wc_version, template_name) {
+                    return $hesperidesHttp.get(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/release/templates/${ encodeURIComponent(template_name) }`).then(function (response) {
+                        return new Template(response.data);
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_template_from_release' });
+                        throw error;
+                    });
+                },
+                get_all_templates_from_workingcopy(wc_name, wc_version) {
+                    var baseUrl = `rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`;
 
-                        return $http.get(baseUrl).then(function (response) {
-                            return response.data.map(function (data) {
-                                var entry = new TemplateEntry(data);
-                                var url = `${ baseUrl }/${ encodeURIComponent(entry.name) }`;
+                    return $hesperidesHttp.get(baseUrl).then(function (response) {
+                        return response.data.map(function (data) {
+                            var entry = new TemplateEntry(data);
+                            var url = `${ baseUrl }/${ encodeURIComponent(entry.name) }`;
 
-                                entry.getTemplate(url).then(function (template) {
-                                    entry.rights = FileService.files_rights_to_string(template.rights);
-                                    if (entry.rights < 0) {
-                                        $translate('template.rights.none').then(function (label) {
-                                            entry.rights = label;
-                                        });
-                                    }
-                                    entry.content = template.content;
-                                    entry.filename = template.filename;
-                                });
-                                entry.setMediaType();
-                                return entry;
-                            }, function (error) {
-                                if (error.status === 404) {
-                                    return [];
-                                }
-                                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_workingcopy' });
-                                throw error;
-                            });
-                        });
-                    },
-                    get_all_templates_from_release(r_name, r_version) {
-                        return $http.get(`rest/technos/${ encodeURIComponent(r_name) }/${ encodeURIComponent(r_version) }/release/templates`).then(function (response) {
-                            return response.data.map(function (data) {
-                                var entry = new TemplateEntry(data);
-                                var url = `rest/technos/${ encodeURIComponent(r_name) }/${ encodeURIComponent(r_version) }/release/templates/${ encodeURIComponent(entry.name) }`;
-                                entry.getTemplate(url).then(function (template) {
-                                    entry.rights = FileService.files_rights_to_string(template.rights);
-                                    if (entry.rights < 0) {
-                                        $translate('template.rights.none').then(function (label) {
-                                            entry.rights = label;
-                                        });
-                                    }
-                                    entry.content = template.content;
-                                    entry.filename = template.filename;
-                                });
-                                return entry;
-                            }, function (error) {
-                                if (error.status === 404) {
-                                    return [];
-                                }
-                                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_release' });
-                                throw error;
-                            });
-                        });
-                    },
-                    save_template_in_workingcopy(wc_name, wc_version, template) {
-                        template = template.toHesperidesEntity();
-                        if (template.version_id < 0) {
-                            return $http.post(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`, template).then(function (response) {
-                                $translate('template.event.created').then(function (label) {
-                                    notify({ classes: [ 'success' ], message: label });
-                                });
-                                return new Template(response.data);
-                            }, function (error) {
-                                if (error.data) {
-                                    notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.post' });
-                                } else if (error.status === 409) {
-                                    $translate('template.event.error').then(function (label) {
-                                        notify({ classes: [ 'error' ], message: label });
+                            entry.getTemplate(url).then(function (template) {
+                                entry.rights = FileService.files_rights_to_string(template.rights);
+                                if (entry.rights < 0) {
+                                    $translate('template.rights.none').then(function (label) {
+                                        entry.rights = label;
                                     });
                                 }
-                                throw error;
+                                entry.content = template.content;
+                                entry.filename = template.filename;
                             });
-                        }
-                        return $http.put(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`, template).then(function (response) {
-                            $translate('template.event.updated').then(function (label) {
+                            entry.setMediaType();
+                            return entry;
+                        }, function (error) {
+                            if (error.status === 404) {
+                                return [];
+                            }
+                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_workingcopy' });
+                            throw error;
+                        });
+                    });
+                },
+                get_all_templates_from_release(r_name, r_version) {
+                    return $hesperidesHttp.get(`rest/technos/${ encodeURIComponent(r_name) }/${ encodeURIComponent(r_version) }/release/templates`).then(function (response) {
+                        return response.data.map(function (data) {
+                            var entry = new TemplateEntry(data);
+                            var url = `rest/technos/${ encodeURIComponent(r_name) }/${ encodeURIComponent(r_version) }/release/templates/${ encodeURIComponent(entry.name) }`;
+                            entry.getTemplate(url).then(function (template) {
+                                entry.rights = FileService.files_rights_to_string(template.rights);
+                                if (entry.rights < 0) {
+                                    $translate('template.rights.none').then(function (label) {
+                                        entry.rights = label;
+                                    });
+                                }
+                                entry.content = template.content;
+                                entry.filename = template.filename;
+                            });
+                            return entry;
+                        }, function (error) {
+                            if (error.status === 404) {
+                                return [];
+                            }
+                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_release' });
+                            throw error;
+                        });
+                    });
+                },
+                save_template_in_workingcopy(wc_name, wc_version, template) {
+                    template = template.toHesperidesEntity();
+                    if (template.version_id < 0) {
+                        return $hesperidesHttp.post(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`, template).then(function (response) {
+                            $translate('template.event.created').then(function (label) {
                                 notify({ classes: [ 'success' ], message: label });
                             });
                             return new Template(response.data);
                         }, function (error) {
-                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.put' });
+                            if (error.data) {
+                                notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.post' });
+                            } else if (error.status === 409) {
+                                $translate('template.event.error').then(function (label) {
+                                    notify({ classes: [ 'error' ], message: label });
+                                });
+                            }
                             throw error;
                         });
-                    },
-                    delete_template_in_workingcopy(wc_name, wc_version, template_name) {
-                        return $http.delete(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates/${ encodeURIComponent(template_name) }`).then(function (response) {
-                            $translate('template.event.deleted').then(function (label) {
+                    }
+                    return $hesperidesHttp.put(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates`, template).then(function (response) {
+                        $translate('template.event.updated').then(function (label) {
+                            notify({ classes: [ 'success' ], message: label });
+                        });
+                        return new Template(response.data);
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.save_template_in_workingcopy.put' });
+                        throw error;
+                    });
+                },
+                delete_template_in_workingcopy(wc_name, wc_version, template_name) {
+                    return $hesperidesHttp.delete(`rest/technos/${ encodeURIComponent(wc_name) }/${ encodeURIComponent(wc_version) }/workingcopy/templates/${ encodeURIComponent(template_name) }`).then(function (response) {
+                        $translate('template.event.deleted').then(function (label) {
+                            notify({ classes: [ 'success' ], message: label });
+                        });
+                        return response;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.delete_template_in_workingcopy' });
+                        throw error;
+                    });
+                },
+                create_release(techno_name, techno_version) {
+                    return $hesperidesHttp.post(`rest/technos/create_release?techno_name=${ encodeURIComponent(techno_name) }&techno_version=${ encodeURIComponent(techno_version) }`).then(function (response) {
+                        if (response.status === 201) {
+                            $translate('release.event.created', { name: techno_name, version: techno_version }).then(function (label) {
                                 notify({ classes: [ 'success' ], message: label });
                             });
-                            return response;
-                        }, function (error) {
-                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.delete_template_in_workingcopy' });
-                            throw error;
-                        });
-                    },
-                    create_release(r_name, r_version) {
-                        return $http.post(`rest/technos/create_release?package_name=${ encodeURIComponent(r_name) }&package_version=${ encodeURIComponent(r_version) }`).then(function (response) {
-                            if (response.status === 201) {
-                                $translate('release.event.created', { name: r_name, version: r_version }).then(function (label) {
-                                    notify({ classes: [ 'success' ], message: label });
-                                });
-                            } else {
-                                notify({ classes: [ 'warn' ], message: response.data });
-                            }
-                        }, function (error) {
-                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_release' });
-                            throw error;
-                        });
-                    },
-                    create_workingcopy(wc_name, wc_version, from_name, from_version, is_from_workingcopy) {
-                        var url = `rest/technos?from_package_name=${ encodeURIComponent(from_name) }` +
-                             `&from_package_version=${ encodeURIComponent(from_version) }` +
-                             `&from_is_working_copy=${ is_from_workingcopy }`;
-                        var postBody = { name: encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy: true };
-                        return $http.post(url, postBody).then(function (response) {
-                            if (response.status === 201) {
-                                $translate('workingCopy.event.created').then(function (label) {
-                                    notify({ classes: [ 'success' ], message: label });
-                                });
-                            } else {
-                                notify({ classes: [ 'warn' ], message: response.data });
-                            }
-                        }, function (error) {
-                            notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_workingcopy' });
-                            throw error;
-                        });
-                    },
-                    with_name_like(name) {
-                        if (name && name.length > 2) { // prevent search with too few characters
-                            return $http.get(`rest/technos/perform_search?terms=${ encodeURIComponent(name.replace(' ', '#').replace('-', '#')) }`).then(function (response) {
-                                return _.map(response.data, function (techno) {
-                                    return new Techno(techno.name, techno.version, techno.working_copy);
-                                });
-                            });
+                        } else {
+                            notify({ classes: [ 'warn' ], message: response.data });
                         }
-                        var deferred = $q.defer();
-                        deferred.resolve([]);
-                        return deferred.promise;
-                    },
-                };
-            },
-        ]);
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_release' });
+                        throw error;
+                    });
+                },
+                create_workingcopy(wc_name, wc_version, from_name, from_version, is_from_workingcopy) {
+                    var url = `rest/technos?from_name=${ encodeURIComponent(from_name) }` +
+                         `&from_version=${ encodeURIComponent(from_version) }` +
+                         `&from_is_working_copy=${ is_from_workingcopy }`;
+                    // Backward-compatibility:
+                    url += `&from_package_name=${ encodeURIComponent(from_name) }` +
+                           `&from_package_version=${ encodeURIComponent(from_version) }`;
+                    var postBody = { name: encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy: true };
+                    return $hesperidesHttp.post(url, postBody).then(function (response) {
+                        if (response.status === 201) {
+                            $translate('workingCopy.event.created').then(function (label) {
+                                notify({ classes: [ 'success' ], message: label });
+                            });
+                        } else {
+                            notify({ classes: [ 'warn' ], message: response.data });
+                        }
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.create_workingcopy' });
+                        throw error;
+                    });
+                },
+                with_name_like(name) {
+                    if (name && name.length > 2) { // prevent search with too few characters
+                        return $hesperidesHttp.get(`rest/technos/perform_search?terms=${ encodeURIComponent(name.replace(' ', '#').replace('-', '#')) }`).then(function (response) {
+                            return _.map(response.data, function (techno) {
+                                return new Techno(techno.name, techno.version, techno.working_copy);
+                            });
+                        });
+                    }
+                    var deferred = $q.defer();
+                    deferred.resolve([]);
+                    return deferred.promise;
+                },
+            };
+        }
+    );
