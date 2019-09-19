@@ -92,10 +92,10 @@ angular.module('hesperides.template', [])
                     'F11'(cm) {
                         if (cm.getOption('fullScreen')) {
                             // Rapatriement à l'emplacement du DOM initial
-                            $document.getElementById('template-modal-codemirror-parent').appendChild($document.getElementById('template-modal-codemirror'));
+                            $document[0].getElementById('template-modal-codemirror-parent').appendChild($document[0].getElementById('template-modal-codemirror'));
                         } else {
                             // Rattachement au body, cf. commentaire explicatif ci-dessus
-                            $document.getElementsByTagName('body')[0].appendChild($document.getElementById('template-modal-codemirror'));
+                            $document.find('body')[0].appendChild($document[0].getElementById('template-modal-codemirror'));
                         }
                         cm.setOption('fullScreen', !cm.getOption('fullScreen'));
                         cm.focus();
@@ -103,7 +103,7 @@ angular.module('hesperides.template', [])
                     'Esc'(cm) {
                         if (cm.getOption('fullScreen')) {
                             // Rapatriement à l'emplacement du DOM initial
-                            $document.getElementById('template-modal-codemirror-parent').appendChild($document.getElementById('template-modal-codemirror'));
+                            $document[0].getElementById('template-modal-codemirror-parent').appendChild($document[0].getElementById('template-modal-codemirror'));
                             cm.setOption('fullScreen', false);
                             cm.focus();
                         }

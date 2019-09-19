@@ -25,19 +25,19 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-09-18
+### Fixed
+
+- Restoring "Create techno release" button + made TechnoService.create_workingcopy future-proof - close #262 (#299) [Lucas Cimon]
+
+
+
+## 2019-09-10
 ### Added
 
 - Liste des propriétés valorisables sur la page de module - close #160 (#296) [Lucas Cimon]
 
 
-### Fixed
-
-- Restoring "Create techno release" button + made TechnoService.create_workingcopy future-proof - close #262. [Lucas Cimon]
-
-
-
-## 2019-09-10
 ### Fixed
 
 - On /diff page, not saving properties with a null value (#297) [Lucas Cimon]
