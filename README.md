@@ -21,6 +21,10 @@ and available online here: <https://voyages-sncf-technologies.github.io/hesperid
 
 Technical documentation can be found in `CONTRIBUTING.md` and the `tech_docs/` directory.
 
+Changelog
+---------
+All the last features & fixes are listed there: [CHANGELOG.md](https://github.com/voyages-sncf-technologies/hesperides-gui/blob/master/CHANGELOG.md).
+
 Build
 =====
 
