@@ -25,10 +25,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-09-19
 ### Fixed
 
-- Mode plein écran dans l'éditeur de template - close #302. [Lucas Cimon]
+- Mode plein écran dans l'éditeur de template - close #302 (#305) [Lucas Cimon]
 
 
 

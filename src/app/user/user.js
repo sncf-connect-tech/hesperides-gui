@@ -22,6 +22,7 @@ angular.module('hesperides.user', [])
         UserService.authenticate().then((user) => {
             $scope.user = user;
             $scope.loading = false;
+            $scope.$digest();
         });
     })
 
