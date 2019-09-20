@@ -32,9 +32,9 @@
 
         <section>
             <h2>{{ 'user.profile.sectionTitle.perAppRoles' | translate }}</h2>
-            <! -- Note: "translate-compile" permet l'interprétation du HTML dans les 2 lignes suivantes -->
-            <p ng-if="!user.appsWithProdRole.length"translate="user.profile.desc.noAppRoles" translate-compile></p>
-            <p ng-if="user.appsWithProdRole.length"translate="user.profile.desc.perAppRoles" translate-compile></p>
+            <!-- Note: "translate-compile" permet l'interprétation du HTML dans les 2 lignes suivantes -->
+            <p ng-if="!user.appsWithProdRole.length" translate="user.profile.desc.noAppRoles" translate-compile></p>
+            <p ng-if="user.appsWithProdRole.length" translate="user.profile.desc.perAppRoles" translate-compile></p>
             <ul class="User__appList">
                 <li ng-repeat="app in user.appsWithProdRole | orderBy"><md-button class="md-raised md-accent" href="/#/properties/{{ app }}">{{ app }}</md-button></li>
             </ul>

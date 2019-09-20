@@ -61,26 +61,16 @@ describe('Manage properties (global, module, instance) and annotations (default,
         // utils.checkIfElementIsPresentWithClass('.property-saved');
     });
 
-    it('should not save properties for a wrong pattern (TREE MODE)', () => {
-        // we use random_string for at least 1 property to avoid saving plateform without changes for property values
-        var random_string = utils.getRandomString(20);
-
+    it('should not save properties with a value not matching its @pattern (TREE MODE)', () => {
         // always clear before sendKeys
         utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_pattern')), data.value_prop_wrong_pattern);
-        utils.clickOnElement(element(by.id('e2e-tree-properties-save-module-properties-button')));
+        utils.checkElementIsDisabled('e2e-tree-properties-save-module-properties-button');
+    });
 
-        // Issue 175 : on devrait tester qu'on a un message d'erreur et
-        // la validation devrait se faire dans un premier temps côté front
-
-        // add comment for saving modifications
-        element(by.id('e2e-save-properties-modal_input-comment-autocomplete')).sendKeys(`${ data.comment_for_saving_properties }_${ random_string }`);
-        utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));
-
-        // check events if modification is not saved because of pattern is not correct
-        utils.clickOnElement(element(by.id('properties_show-platform-event-button')));
-        element.all(by.id(`properties-saved_comment-span-${ data.comment_for_saving_properties }_${ random_string }`)).then((items) =>
-            expect(items.length).toBe(0)
-        );
+    it('should not save properties without a @required value (TREE MODE)', () => {
+        // always clear before sendKeys
+        element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_required')).clear();
+        utils.checkElementIsDisabled('e2e-tree-properties-save-module-properties-button');
     });
 
     it('should find default value for the property with a default value (TREE MODE)', () => {

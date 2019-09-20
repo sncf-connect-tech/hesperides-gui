@@ -76,7 +76,7 @@
         </div>
         <div layout="row" ng-show="showGlobalProperties" flex="100">
             <div flex="100">
-                <form>
+                <form name="globalPropertiesForm">
                     <properties-globales-tree platform="platform" sort-order="order"/>
                 </form>
             </div>
@@ -96,9 +96,9 @@
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
-                <md-button id="e2e-tree-properties-save-module-properties-local-button" ng-click="save_properties_locally(properties, selected_module)"
-
-                           ng-disabled="technoForm.$invalid"
+                <md-button id="e2e-tree-properties-save-module-properties-local-button"
+                           ng-click="save_properties_locally(properties, selected_module)"
+                           ng-disabled="modulePropertiesForm.$invalid"
                            class="md-raised md-warn">
                     <span class="fa fa-floppy-o"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
@@ -106,13 +106,13 @@
                 <md-button ng-if="hasLocalChanges(selected_module)"
                            ng-really-click="cleanLocalChanges(selected_module)"
                            ng-really-message="{{ 'properties.module.editProperties.cleanLocalChangesConfirm' | translate }}"
-                           ng-disabled="technoForm.$invalid"
                            class="md-raised md-button ng-scope md-ink-ripple">
                     <span class="fa fa-trash"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
                 </md-button>
                 <md-button id="e2e-tree-properties-save-module-properties-button"
                            ng-click="save_properties(properties, selected_module)"
+                           ng-disabled="modulePropertiesForm.$invalid"
                            class="md-raised md-primary">
                     <i class="fa fa-floppy-o"></i>
                     <span>{{ 'properties.module.editProperties.save' | translate }}</span>
@@ -121,9 +121,9 @@
         </div>
 
         <div layout="row" ng-show="properties">
-            <div flex="100">
+            <form name="modulePropertiesForm" flex="100">
                 <properties-list properties="properties" properties-model="model" platform="platform" module="selected_module"></properties-list>
-            </div>
+            </form>
         </div>
 
         <div layout="row" ng-show="instance">
@@ -143,7 +143,9 @@
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
 
-                <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
+                <md-button ng-click="save_platform_from_box(mainBox)"
+                           ng-disabled="instancePropertiesForm.$invalid"
+                           class="md-raised md-primary">
                     <i class="fa fa-floppy-o"></i>
                     <span>{{ 'properties.module.editProperties.save' | translate }}</span>
                 </md-button>

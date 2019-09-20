@@ -24,20 +24,20 @@ describe('Checks around production role', () => {
     );
 
     it('should check on logical representation page that switch "Production platform" is disabled for a "non production" user', () =>
-        utils.checkIfElementIsDisabled('properties_isProduction-switch', 'true')
+        utils.checkElementIsDisabled('properties_isProduction-switch')
     );
 
     it('should check that a "non production" user cannot create a production platform', () => {
         utils.clickOnElement(element(by.id('e2e-navbar-app')));
         utils.clickOnElement(element(by.id('e2e-navbar-app-create')));
 
-        utils.checkIfElementIsDisabled('e2e-modal-platform-create-is-prod-switch', 'true');
+        utils.checkElementIsDisabled('e2e-modal-platform-create-is-prod-switch');
     });
 
     it('should check that a "non production" user cannot create a production platform from another one', () => {
         utils.clickOnElement(element(by.id('e2e-navbar-app')));
         utils.clickOnElement(element(by.id('e2e-navbar-app-create-from')));
 
-        utils.checkIfElementIsDisabled('e2e-modal-platform-create-from-is-prod-switch', 'true');
+        utils.checkElementIsDisabled('e2e-modal-platform-create-from-is-prod-switch');
     });
 });

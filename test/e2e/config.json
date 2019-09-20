@@ -19,7 +19,7 @@
   "new_template_title": "template_title_added_by_ptor",
   "new_template_filename": "template_filename_added_by_ptor.txt",
   "new_template_location": "template_location_added_by_ptor",
-  "new_template_content": "prop_simple={{prop_simple}} prop_required={{prop_required|@required}} prop_password={{prop_password|@password}} prop_pattern={{prop_pattern|@pattern [a-z]*}} prop_comment={{prop_comment|@comment comment}} prop_default={{prop_default|@default default_value}} prop_globale={{prop_globale}} prop_instance={{prop_instance}} {{#iterable}}i_comment={{i_comment|@comment \"This is a comment\"}} i_default={{i_default|@default localhost}} i_pattern={{i_pattern|@pattern [0-9]+}} i_password={{i_password|@password}}{{/iterable}}{{#last_iterable}}{{/last_iterable}}",
+  "new_template_content": "prop_simple={{prop_simple}} prop_required={{prop_required|@required}} prop_password={{prop_password|@password}} prop_pattern={{prop_pattern|@pattern [a-z]+}} prop_comment={{prop_comment|@comment comment}} prop_default={{prop_default|@default default_value}} prop_globale={{prop_globale}} prop_instance={{prop_instance}} {{#iterable}}i_comment={{i_comment|@comment \"This is a comment\"}} i_default={{i_default|@default localhost}} i_pattern={{i_pattern|@pattern [0-9]+}} i_password={{i_password|@password}}{{/iterable}}{{#last_iterable}}{{/last_iterable}}",
   "json_new_template_title": "json_template_title_added_by_ptor",
   "json_new_template_filename": "json_template_filename_added_by_ptor.json",
   "json_new_template_location": "json_template_location_added_by_ptor",

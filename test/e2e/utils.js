@@ -36,8 +36,8 @@ exports.checkIfElementIsMissing = function (selector) {
     expect(element(by.css(selector)).isPresent()).toBeFalsy();
 };
 
-exports.checkIfElementIsDisabled = function (id, state) {
-    expect(element(by.id(id)).getAttribute('disabled')).toBe(state);
+exports.checkElementIsDisabled = function (id) {
+    expect(element(by.id(id)).getAttribute('disabled')).toBe('true');
 };
 
 
