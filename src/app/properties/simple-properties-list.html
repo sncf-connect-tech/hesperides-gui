@@ -76,10 +76,9 @@
                         <div class="truncate-ellipsis">
                             <label id="simple-properties-list_key-property-isnotglobale-input-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
-                                    >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span></label>
-                            <md-tooltip md-direction="top">
-                                {{key_value_property.name}}
-                            </md-tooltip>
+                                    >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span>
+                                <i class="fa fa-info-circle" ng-if="key_value_property.tooltip"><md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></i>
+                            </label>
                         </div>
                     </div>
                     <div layout="column" flex>
@@ -96,7 +95,6 @@
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>
-                        <md-tooltip ng-if="key_value_property.tooltip" md-direction="top">{{key_value_property.tooltip}}</md-tooltip>
                     </div>
                 </div>
 
