@@ -68,6 +68,6 @@
     color: rgb(255,87,34) !important;;
 }
 
-.diff-left-value > div {
+.diff-left-title > div, .diff-left-value > div {
     text-align:right;
 }

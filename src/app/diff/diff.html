@@ -37,7 +37,7 @@
     <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
         {{ 'properties.compare.togglePropertyDetails' | translate }}
         <md-tooltip md-direction="right">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
-        <md-icon class="fa fa-question-circle"></md-icon>
+        <i class="fa fa-question-circle"></i>
     </md-switch>
 </div>
 
@@ -71,21 +71,21 @@
     </div>
     <div layout="row" ng-show="toggle0" class="diff-property-headers">
         <div flex="20" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
-        <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+        <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line diff-left-title">
             <div flex="30">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue' : 'properties.compare.values.columnHeaders.finalValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue.tooltip' : 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue' : 'properties.compare.values.columnHeaders.storedValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue.tooltip' : 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
                 <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
         </div>
     </div>
@@ -95,7 +95,7 @@
         <div flex="20" layout-align="end start" layout="row">
             <div class="diff-property-name">{{diff_container.property_name}}</div>
         </div>
-        <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line" ng-class="{'diff-column-break-word': togglePropertyDetails}">
+        <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value" ng-class="{'diff-column-break-word': togglePropertyDetails}">
             <div flex="30" class="diff-property-final-value">
                 <span ng-if="!isGlobalDiff && diff_container.property_to_compare_to.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                 {{ compareStoredValues ? diff_container.property_to_modify.value.storedValue : diff_container.property_to_modify.value.finalValue }}
@@ -166,21 +166,21 @@
     </div>
     <div layout="row" ng-show="toggle1" class="diff-property-headers">
         <div flex="15" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
-        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line diff-left-title">
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
                 <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue' : 'properties.compare.values.columnHeaders.storedValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue.tooltip' : 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue' : 'properties.compare.values.columnHeaders.finalValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue.tooltip' : 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
         </div>
         <div flex="5"></div>
@@ -188,17 +188,17 @@
             <div flex="30">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue' : 'properties.compare.values.columnHeaders.finalValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue.tooltip' : 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue' : 'properties.compare.values.columnHeaders.storedValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue.tooltip' : 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
                 <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
         </div>
     </div>
@@ -291,21 +291,21 @@
     </div>
     <div layout="row" ng-show="toggle2" class="diff-property-headers">
         <div flex="15" class="diff-property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
-        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line diff-left-title">
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
                 <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue' : 'properties.compare.values.columnHeaders.storedValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue.tooltip' : 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue' : 'properties.compare.values.columnHeaders.finalValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue.tooltip' : 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
         </div>
         <div flex="5"></div>
@@ -313,17 +313,17 @@
             <div flex="30">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue' : 'properties.compare.values.columnHeaders.finalValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue.tooltip' : 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue' : 'properties.compare.values.columnHeaders.storedValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue.tooltip' : 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
                 <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
         </div>
     </div>
@@ -414,21 +414,21 @@
         <div flex="10">{{ 'properties.compare.values.columnHeaders.absentValue' | translate }}</div>
         <div flex="10"></div>
         <div flex="5"></div>
-        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line">
+        <div flex="40" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value diff-line diff-left-title">
             <div flex="30">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue' : 'properties.compare.values.columnHeaders.finalValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.storedValue.tooltip' : 'properties.compare.values.columnHeaders.finalValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue' : 'properties.compare.values.columnHeaders.storedValue' | translate }}
                 <md-tooltip md-direction="right">{{ compareStoredValues ? 'properties.compare.values.columnHeaders.finalValue.tooltip' : 'properties.compare.values.columnHeaders.storedValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 {{ 'properties.compare.values.columnHeaders.defaultValue' | translate }}
                 <md-tooltip md-direction="right">{{ 'properties.compare.values.columnHeaders.defaultValue.tooltip' | translate }}</md-tooltip>
-                <md-icon class="fa fa-question-circle"></md-icon>
+                <i class="fa fa-question-circle"></i>
             </div>
         </div>
     </div>
@@ -464,6 +464,6 @@
     <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
         {{ 'properties.compare.togglePropertyDetails' | translate }}
         <md-tooltip md-direction="right">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
-        <md-icon class="fa fa-question-circle"></md-icon>
+        <i class="fa fa-question-circle"></i>
     </md-switch>
 </div>
