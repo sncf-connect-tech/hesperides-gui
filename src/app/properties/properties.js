@@ -137,7 +137,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
         $scope.cached_empty_module = [];
 
-        $scope.quickOpen = false;
+        $scope.quickOpen = true;
 
         $scope.mainBox = null;
 
