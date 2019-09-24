@@ -31,6 +31,7 @@ describe('Manage properties (global, module, instance) and annotations (default,
 
         // on déroule l'arbre
         utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
+        utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
 
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)));
     });
