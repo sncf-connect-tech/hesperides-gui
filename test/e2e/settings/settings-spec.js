@@ -64,6 +64,7 @@ describe('Manage settings', () => {
         expect(element.all(by.id(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`)).count()).toEqual(0);
 
         utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
+        utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
 
         expect(element.all(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).count()).toEqual(1);
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
@@ -133,6 +134,7 @@ describe('Manage settings', () => {
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(1);
         expect(element.all(by.id(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`)).count()).toEqual(1);
 
+        utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
         utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));
 
         expect(element.all(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).count()).toEqual(1);
