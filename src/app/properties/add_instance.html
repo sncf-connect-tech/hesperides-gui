@@ -25,7 +25,7 @@
               ng-submit="addInstanceForm.$valid && $add(new_instance_name, box)">
             <div class="ng-binding">
                 <h2>{{ 'properties.module.instance.add' | translate }}</h2>
-                <md-content layout-padding class="autoScroll">
+                <md-content layout-padding>
                     <md-input-container md-no-float class="md-block">
                         <label><strong>{{ 'properties.module.instance.name' | translate }}</strong></label>
                         <input id="e2e-add-instance-instance-name-input" type="text" required ng-trim="true" ng-model="new_instance_name"

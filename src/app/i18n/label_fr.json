@@ -173,7 +173,6 @@
   "properties.deletedOnes.switch": "Afficher les propriétés supprimées",
   "properties.logicGroup.add": "Ajouter un groupe logique",
   "properties.logicGroup.add.name": "Nom",
-  "properties.logicGroup.add.name.placeholder": "Exemple LEVEL1,WEBSITE,...",
   "properties.logicGroup.update": "Modifier le nom du groupe logique",
   "properties.logicGroup.delete": "Supprimer le groupe logique {{name}} ?",
   "properties.module.add": "Ajouter un module",
@@ -331,5 +330,7 @@
   "user.profile.userHasntGlobalProdRole": "Vous <strong>n'avez pas</strong> les droits de production globaux",
   "user.profile.sectionTitle.perAppRoles": "Privilèges par application",
   "user.profile.desc.noAppRoles": "Vous <strong>n'avez pas</strong> de droits de <strong>production</strong> pour des applications spécifiques",
-  "user.profile.desc.perAppRoles": "Vous avez les droits de <strong>production</strong> sur ces applications spécifiques :"
+  "user.profile.desc.perAppRoles": "Vous avez les droits de <strong>production</strong> sur ces applications spécifiques :",
+  "newFeature.label": "Nouveau !",
+  "newFeature.createSeveralLogicalGroupsAtOnce": "Vous pouvez désormais créer #plusieurs#groupes#logiques#d'un#coup en les séparant par le symbole #"
 }

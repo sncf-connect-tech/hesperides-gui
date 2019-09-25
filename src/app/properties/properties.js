@@ -349,11 +349,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             $scope.mainBox = mainBox;
         };
 
-        $scope.add_box = function (name, box) {
-            box.children[name] = new Box({ parent_box: box, name });
-            return box.children[name];
-        };
-
         $scope.remove_box = function (name, box) {
             delete box.parent_box.children[name];
         };
@@ -370,8 +365,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.open_add_box_dialog = function (box) {
             var modalScope = $scope.$new();
 
-            modalScope.$add = function (logicGroupName) {
-                $scope.add_box(logicGroupName, box);
+            modalScope.addBox = function (logicGroupNames) {
+                let parentBox = box;
+                logicGroupNames.split('#').filter(_.identity) // Permet d'ignorer les chaines vides, par exemple si logicGroupNames=#A##B#
+                                          .forEach(logicGroupName => {
+                    parentBox.children[logicGroupName] = new Box({ parent_box: parentBox, name: logicGroupName.trim() });
+                    parentBox = parentBox.children[logicGroupName];
+                });
                 $mdDialog.cancel();
             };
 

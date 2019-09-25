@@ -23,7 +23,7 @@
     <md-dialog-content>
         <div class="ng-binding">
             <h2>{{ 'properties.module.version.modal.title' | translate }} {{module.title}}</h2>
-            <md-content layout-padding class="autoScroll">
+            <md-content layout-padding>
                 <form name="searchModuleForm" novalidate
                       ng-submit="searchModuleForm.$valid && $update({new_module: moduleSearched, copy_properties: copyProperties})">
                     <!--<md-input-container class="md-block">-->

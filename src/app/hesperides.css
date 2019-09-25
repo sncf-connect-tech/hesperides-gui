@@ -367,6 +367,11 @@ repeated-item
     font-size: 12px;
 }
 
+.newFeature {
+    padding: 0 1rem;
+    color: rgb(255,87,34);
+}
+
 button.preview {
     margin-left: 0;
     margin-right: 0;

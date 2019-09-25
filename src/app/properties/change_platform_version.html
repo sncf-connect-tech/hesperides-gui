@@ -24,7 +24,7 @@
         <div class="ng-binding">
             <h2>{{ 'properties.platform.version.modal.title' | translate }}</h2>
 
-            <md-content layout-padding class="autoScroll">
+            <md-content layout-padding>
                 <form name="platformVersionForm" novalidate
                       ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, copy_properties: copyProperties})">
 

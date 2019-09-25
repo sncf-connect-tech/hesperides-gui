@@ -173,7 +173,6 @@
   "properties.deletedOnes.switch": "Show deleted properties",
   "properties.logicGroup.add": "Add a logic group",
   "properties.logicGroup.add.name": "Name",
-  "properties.logicGroup.add.name.placeholder": "Example LEVEL1,WEBSITE,...",
   "properties.logicGroup.update": "Edit the logic group name",
   "properties.logicGroup.delete": "Delete the logic group {{name}} ?",
   "properties.module.add": "Add a module",
@@ -331,5 +330,7 @@
   "user.profile.userHasntGlobalProdRole": "You <strong>do not have</strong> global production rights",
   "user.profile.sectionTitle.perAppRoles": "Per-application rights",
   "user.profile.desc.noAppRoles": "You <strong>do not</strong> have any <strong>production</strong> permissions for specific applications",
-  "user.profile.desc.perAppRoles": "You have <strong>production</strong> permissions on those specific applications:"
+  "user.profile.desc.perAppRoles": "You have <strong>production</strong> permissions on those specific applications:",
+  "newFeature.label": "New !",
+  "newFeature.createSeveralLogicalGroupsAtOnce": "You can now #create#several#logical#groups#at#once by separating them with the symbol #"
 }

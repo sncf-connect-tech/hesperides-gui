@@ -27,7 +27,7 @@
                     <div class="ng-binding">
                         <h2>{{ 'properties.compare.modal.title' | translate }}
                             {{fromPlatform.application_name}} - {{fromPlatform.platform}} ({{ 'editable' | translate }})</h2>
-                        <md-content layout-padding class="autoScroll">
+                        <md-content layout-padding>
                             <div layout="row" flex="100" ng-init="setForm(diffForm)">
                                 <md-input-container md-no-float class="md-block" flex="50">
                                     <label><strong>{{ 'properties.compare.modal.toApplicationName' | translate }} ({{ 'readonly' | translate }})</strong></label>
@@ -93,7 +93,7 @@
                 <wz-step title="{{ 'properties.compare.modal.step2' | translate }}">
                     <div class="ng-binding">
                         <h2>{{ 'properties.compare.modal.moduleChoice' | translate : {toApplication:toPlatform.application_name,toPlatform:toPlatform.platform,fromModule:fromModule.title,fromApplication:fromPlatform.application_name,fromPlatform:fromPlatform.platform} }}</h2>
-                        <md-content layout-padding class="autoScroll">
+                        <md-content layout-padding>
                             <div layout="row" class="align-items-center" layout-margin>
                                 <div flex="66">
                                     <ul class="breadcrumb margin-bottom-2px">
