@@ -368,10 +368,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             modalScope.addBox = function (logicGroupNames) {
                 let parentBox = box;
                 logicGroupNames.split('#').filter(_.identity) // Permet d'ignorer les chaines vides, par exemple si logicGroupNames=#A##B#
-                                          .forEach(logicGroupName => {
-                    parentBox.children[logicGroupName] = new Box({ parent_box: parentBox, name: logicGroupName.trim() });
-                    parentBox = parentBox.children[logicGroupName];
-                });
+                    .forEach((logicGroupName) => {
+                        parentBox.children[logicGroupName] = new Box({ parent_box: parentBox, name: logicGroupName.trim() });
+                        parentBox = parentBox.children[logicGroupName];
+                    });
                 $mdDialog.cancel();
             };
 
@@ -935,7 +935,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             properties.key_value_properties.forEach(function (elem) {
                 if (('filtrable_value' in elem && elem.filtrable_value !== elem.value) ||
-            (!('filtrable_value' in elem) && elem.value && elem.value.toString().length > 0 && !elem.inGlobal)) {
+            (!('filtrable_value' in elem) && elem.value && elem.value.toString().length > 0 && !elem.valuedByAGlobal)) {
                     LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem.name, elem.value);
                     hasSavedLocalChange = true;
                 }
@@ -1411,44 +1411,37 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 _.remove(this.key_value_properties, key_value_property);
             };
 
+            function buildTooltip(key_value) {
+                return (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
+                       (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
+                       (key_value.password ? ' *password*' : '') +
+                       (key_value.comment ? ` ${ key_value.comment }` : '') +
+                       (key_value.valuedByAGlobal ? ' [valued by a global property with same name]' : '') +
+                       // eslint-disable-next-line
+                       (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => name + '=' + value).join(', ') }]`);
+            }
+
             this.mergeWithGlobalProperties = function (global_properties) {
                 // Here we just want to mark the one existing identical in the global properties,
                 // because they wont be editable
                 // Mark also the ones just using a global in their valorisation
                 _.each(this.key_value_properties, function (key_value) {
-                // First clean, in case there has been updates from the server
-                    key_value.inGlobal = false;
-                    key_value.useGlobal = false;
-
-                    var existing_global_property = _.find(global_properties.key_value_properties, { name: key_value.name });
-                    if (existing_global_property) {
-                        key_value.inGlobal = true;
-                        key_value.value = existing_global_property.value;
-                    } else if (_.some(global_properties.key_value_properties, (kvp) =>
-                        key_value.value && _.includes(key_value.value, `{{${ kvp.name }}}`)
-                    )) { // Try to check if it uses a global in the valorisation
-                        key_value.useGlobal = true;
-                        key_value.globalValue = {};
-
-                        _.forEach(global_properties.key_value_properties, function (kvp) {
-                            if (_.includes(key_value.value, `{{${ kvp.name }}}`)) {
-                                key_value.globalValue[kvp.name] = kvp.value;
-                            }
-                        });
-                    }
+                    // First clean, in case there has been updates from the server
+                    key_value.valuedByAGlobal = Boolean(_.find(global_properties.key_value_properties, { name: key_value.name }));
+                    key_value.globalsUsed = {};
+                    _.forEach(global_properties.key_value_properties, (kvp) => {
+                        if (new RegExp(`{{ *${ kvp.name } *}}`).test(key_value.value)) {
+                            key_value.globalsUsed[kvp.name] = kvp.value;
+                        }
+                    });
+                    // We refresh the tooltip to include those info:
+                    key_value.tooltip = buildTooltip(key_value);
                 });
 
                 return this;
             };
 
             this.mergeWithModel = function (model) {
-                function buildTooltip(key_value) {
-                    return (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
-                           (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
-                           (key_value.password ? ' *password*' : '') +
-                           (key_value.comment ? ` ${ key_value.comment }` : '');
-                }
-
                 /* Mark key_values that are in the model */
                 _.each(this.key_value_properties, function (key_value) {
                     key_value.inModel = model.hasKey(key_value.name);
@@ -1904,7 +1897,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         tab = $filter('displayGlobalProperties')(tab, true);
                         if (tab) {
                             _.each(tab, function (item) {
-                                if (item.inGlobal) {
+                                if (item.valuedByAGlobal) {
                                     count++;
                                 }
                             });
@@ -1936,7 +1929,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     .filter('displayGlobalProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
-                return display || (!display && !item.inGlobal);
+                return display || (!display && !item.valuedByAGlobal);
             });
         };
     })

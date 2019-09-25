@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Ability to create several logical groups at once - close #79 (#311) [Lucas Cimon]
+
+
+
 ## 2019-09-23
 ### Fixed
 

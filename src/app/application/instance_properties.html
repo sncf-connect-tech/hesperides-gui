@@ -48,9 +48,7 @@
                 | displayProperties:displayDeletedProperties
                 | orderBy:'name':order"
                  class="repeated-item height-20px " flex >
-                <!-- Non Global Properties -->
                 <div layout="row"
-                     ng_if="!key_value_property.inGlobal"
                      class="margin-1pc">
                     <div layout="column" flex="50">
                         <div class="truncate-ellipsis">
@@ -73,33 +71,6 @@
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
                                class="property-value">
-                    </div>
-                </div>
-
-                <!-- Global Properties -->
-                <div layout="row"
-                     ng_if="key_value_property.inGlobal"
-                     class="margin-1pc">
-                    <div layout="column" flex="50">
-                        <div class="truncate-ellipsis">
-                            <label class="property-label"
-                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
-                            >{{key_value_property.name}}</label>
-                            <md-tooltip md-direction="top">
-                                {{key_value_property.name}}
-                            </md-tooltip>
-                        </div>
-                    </div>
-                    <div layout="column" flex>
-                        <input ng-model="key_value_property.value"
-                               ng-trim="true"
-                               ng-readonly="true"
-                               class="property-value">
-                        <md-tooltip md-direction="top">
-                            <!-- <br/> do not work in tooltip -->
-                            {{ 'properties.module.editProperties.simpleProperties.global' | translate }}
-                        </md-tooltip>
-
                     </div>
                 </div>
             </div>
