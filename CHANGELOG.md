@@ -25,15 +25,30 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-09-23
 ### Fixed
 
-- /profile page spinner never disapears - close #304 (#307) [Lucas Cimon]
+- #303: amélioration des tooltips lors de la valorisation. [Thomas L'Hostis]
+
+- Tooltip du diff positionné au dessus des éléments pour éviter un problème d'affichage. [Thomas L'Hostis]
+
+- #309: aligner le titre des colonnes à droite pour la plateforme de gauche dans le diff. [Thomas L'Hostis]
+
+- Correction de l'état par défaut du bouton d'ouverture/fermeture des modules déployés. [Thomas L'Hostis]
+
+
+
+## 2019-09-20
+### Fixed
+
+- Fix: frontend @pattern & @required annotations are now properly validated - close #175 (#298) [Lucas Cimon]
 
 
 
 ## 2019-09-19
 ### Fixed
+
+- /profile page spinner never disapears - close #304 (#307) [Lucas Cimon]
 
 - Mode plein écran dans l'éditeur de template - close #302 (#305) [Lucas Cimon]
 
