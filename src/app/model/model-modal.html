@@ -23,7 +23,7 @@
     <md-dialog-content>
         <div class="ng-binding">
             <h2>{{ 'model.modal.title' | translate : {name:module.name} }}</h2>
-            <md-content layout-padding class="autoScroll" layout="column">
+            <md-content layout-padding layout="column">
 
                 <div ng-show="(!model.key_value_properties || model.key_value_properties.length == 0) && (!model.iterable_properties || model.iterable_properties.length == 0)">
                     <h2 class="no-entries"> {{ 'model.modal.empty' | translate }} </h2>

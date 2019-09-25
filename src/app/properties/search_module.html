@@ -25,7 +25,7 @@
               ng-submit="searchModuleForm.$valid && addModule(moduleSearched)">
             <div class="ng-binding">
                 <h2>{{ 'properties.module.add' | translate }}</h2>
-                <md-content layout-padding class="autoScroll">
+                <md-content layout-padding>
                         <label><strong>{{ 'placeholder.search' | translate }}</strong></label>
                         <br/>
                         <md-autocomplete
@@ -48,7 +48,7 @@
                 </md-content>
             </div>
             <md-dialog-actions>
-                <md-button id="e2e-search-module-add-module-button" class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
+                <md-button id="e2e-search-module-add-module-button" class="md-raised md-primary" ng-disabled="searchModuleForm.$invalid"
                            type="submit" ng-hide="isReadOnly">{{ 'button.modal.add' | translate }}</md-button>
                 <md-button ng-click="closeAddModuleDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
             </md-dialog-actions>

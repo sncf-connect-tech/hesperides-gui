@@ -68,7 +68,42 @@ describe('Manage logical representation', () => {
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
     });
 
-    // Les 2 prochains tests passent en local mais pas sur Travis. Nous le désactivons temporairement
+    it('should add several logic groups at once (BOX MODE)', () => {
+        // set box mode
+        utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
+        // add first level
+        utils.clickOnElement(element(by.id('e2e-box-properties-add-first-box-dialog-button')));
+        element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(data.logic_group_1 + '#' + data.logic_group_2);
+        utils.clickOnElement(element(by.id('e2e-add-box-create-logic-group-button')));
+
+        // add module
+        utils.clickOnElement(element(by.id(`e2e-box-renderer-add-module-button-${ data.logic_group_2 }`)));
+        var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
+        elm_module_name_input.sendKeys(`${ data.new_module_name } ${ data.new_module_version }`);
+        utils.selectFirstElemOfAutocomplete(elm_module_name_input);
+        utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));
+
+        // add instance
+        utils.clickOnElement(element(by.id(`e2e-deployed-module-controls-add-instance-button-${ data.new_module_name }`)));
+        element(by.id('e2e-add-instance-instance-name-input')).sendKeys(data.new_instance_name);
+
+        element(by.id('e2e-add-instance-create-instance-button')).click().then(() => {
+            element(by.id(`e2e-box-renderer-edit-module-button-${ data.new_module_name }`)).isPresent().then((isPresent) => {
+                expect(isPresent).toBe(true);
+                utils.checkResponseStatusCode(`${ hesperides_url }/rest/files/applications/${ data.new_application }/platforms/${ data.new_platform }/%23${ data.logic_group_1 }%23${ data.logic_group_2 }/${ data.new_module_name }/${ data.new_module_version }/instances/${ data.new_instance_name }?isWorkingCopy=true`, 200);
+            });
+        });
+
+        // display/hide instance
+        expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
+        utils.clickOnElement(element(by.id(`e2e-deployed-module-unfold-all-instances-for-${ data.new_module_name }`)));
+        utils.checkIfElementIsPresent(`e2e-instance-list-for-${ data.new_module_name }`);
+        utils.checkIfElementIsPresent(`e2e-instance-${ data.new_module_name }-${ data.new_instance_name }`);
+        utils.clickOnElement(element(by.id(`e2e-deployed-module-fold-all-instances-for-${ data.new_module_name }`)));
+        expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
+    });
+
+    // Les 2 prochains tests passent en local mais pas sur Travis. Nous les désactivons temporairement
     // (pas bien) et nous allons mettre en place des moyens de faciliter le debug sur Travis (bien)
     // => https://github.com/voyages-sncf-technologies/hesperides-gui/issues/279
 
