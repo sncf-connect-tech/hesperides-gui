@@ -1,6 +1,9 @@
 {
     "plugins": ["angular", "lodash"],
     "extends": ["strict", "plugin:angular/johnpapa", "plugin:lodash/recommended"],
+    "parserOptions": {
+        "ecmaVersion": 8
+    },
     "globals": {
         "BANNER_URL": "readonly",
         "BUILD_TIME": "readonly",

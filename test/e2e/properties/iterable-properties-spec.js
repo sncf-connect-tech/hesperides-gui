@@ -19,7 +19,7 @@
 const utils = require('../utils.js');
 const until = protractor.ExpectedConditions;
 
-function openIterableProperties () {
+function openIterableProperties() {
     utils.clickOnElement(element(by.id('e2e-properties-list_display-iterable-properties-button')));
 }
 
@@ -42,7 +42,7 @@ describe('Manage iterable properties and annotations (default, comment, required
         var randomString = utils.getRandomString(20);
 
         // Ensure required property has a value
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_required')), data.simple_value);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_required')), data.simple_value);
 
         // Open iterable properties
         openIterableProperties();
@@ -51,7 +51,6 @@ describe('Manage iterable properties and annotations (default, comment, required
         utils.clickOnElement(element(by.id('e2e-iterable-property-iterable-add-bloc-button')));
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
         bloc.getAttribute('id').then(function (itemId) {
-
             // always clear before sendKeys
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_comment`)), randomString);
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_password`)), data.simple_value);
@@ -59,7 +58,7 @@ describe('Manage iterable properties and annotations (default, comment, required
 
             utils.clickOnElement(element(by.id('e2e-box-properties-save-module-properties-button')));
             // add comment for saving modifications
-            const commentInput = element(by.id('e2e-save-properties-modal_input-comment-autocomplete'))
+            const commentInput = element(by.id('e2e-save-properties-modal_input-comment-autocomplete'));
             browser.wait(until.presenceOf(commentInput), 1000, 'comment input is taking too long to appear in the DOM');
             commentInput.sendKeys(`${ data.comment_for_saving_iterable_properties }_${ randomString }`);
             utils.clickOnElement(element(by.id('e2e-save-properties-modal_save-comment-button')));

@@ -41,11 +41,11 @@ describe('Manage properties (global, module, instance) and annotations (default,
         var random_string = utils.getRandomString(20);
 
         // always clear before sendKeys
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_comment')), random_string);
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_password')), data.simple_value);
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_pattern')), data.value_prop_good_pattern);
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_required')), data.simple_value);
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_simple')), data.simple_value);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_comment')), random_string);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_password')), data.simple_value);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_pattern')), data.value_prop_good_pattern);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_required')), data.simple_value);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_simple')), data.simple_value);
 
         utils.clickOnElement(element(by.id('e2e-tree-properties-save-module-properties-button')));
 
@@ -64,18 +64,18 @@ describe('Manage properties (global, module, instance) and annotations (default,
 
     it('should not save properties with a value not matching its @pattern (TREE MODE)', () => {
         // always clear before sendKeys
-        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_pattern')), data.value_prop_wrong_pattern);
+        utils.clearAndSendkeys(element(by.id('e2e-simple-properties-list_value-property-input-prop_pattern')), data.value_prop_wrong_pattern);
         utils.checkElementIsDisabled('e2e-tree-properties-save-module-properties-button');
     });
 
     it('should not save properties without a @required value (TREE MODE)', () => {
         // always clear before sendKeys
-        element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_required')).clear();
+        element(by.id('e2e-simple-properties-list_value-property-input-prop_required')).clear();
         utils.checkElementIsDisabled('e2e-tree-properties-save-module-properties-button');
     });
 
     it('should find default value for the property with a default value (TREE MODE)', () => {
-        element(by.id('e2e-simple-properties-list_value-property-isnotglobale-input-prop_default')).getAttribute('placeholder').then(function (element) {
+        element(by.id('e2e-simple-properties-list_value-property-input-prop_default')).getAttribute('placeholder').then(function (element) {
             // attention aux 2 espaces après le crochet ...
             expect(element).toEqual('[default=default_value] ');
         });

@@ -70,11 +70,10 @@
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
-                     ng_if="!key_value_property.inGlobal"
                      class="margin-1pc">
                     <div layout="column" flex="30">
                         <div class="truncate-ellipsis">
-                            <label id="simple-properties-list_key-property-isnotglobale-input-{{key_value_property.name}}" class="property-label"
+                            <label id="simple-properties-list_key-property-input-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
                                     >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span>
                                 <i class="fa fa-info-circle" ng-if="key_value_property.tooltip"><md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></i>
@@ -82,7 +81,7 @@
                         </div>
                     </div>
                     <div layout="column" flex>
-                        <textarea id="e2e-simple-properties-list_value-property-isnotglobale-input-{{key_value_property.name}}"
+                        <textarea id="e2e-simple-properties-list_value-property-input-{{key_value_property.name}}"
                                   ng-model="key_value_property.value"
                                   ng-trim="true"
                                   ng-readonly="!key_value_property.inModel"
@@ -95,34 +94,6 @@
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>
-                    </div>
-                </div>
-
-                <!-- Global Properties -->
-                <div layout="row"
-                     ng_if="key_value_property.inGlobal"
-                     class="margin-1pc">
-                    <div layout="column" flex="30">
-                        <div class="truncate-ellipsis">
-                            <label id="simple-properties-list_key-property-isglobale-input-{{key_value_property.name}}" class="property-label"
-                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
-                            >{{key_value_property.name}}</label>
-                            <md-tooltip md-direction="top">
-                                {{key_value_property.name}}
-                            </md-tooltip>
-                        </div>
-                    </div>
-                    <div layout="column" flex>
-                        <input id="e2e-simple-properties-list_value-property-isglobale-input-{{key_value_property.name}}"
-                               ng-model="key_value_property.value"
-                               ng-trim="true"
-                               ng-readonly="true"
-                               class="property-value inLocal_{{key_value_property.inLocal}}">
-                        <md-tooltip md-direction="top">
-                            <!-- <br/> do not work in tooltip -->
-                            {{ 'properties.module.editProperties.simpleProperties.global' | translate }}
-                        </md-tooltip>
-
                     </div>
                 </div>
             </div>

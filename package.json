@@ -43,6 +43,7 @@
   "devDependencies": {
     "angular-mocks": "latest",
     "buildify": "latest",
+    "cucumber": "latest",
     "eslint": "latest",
     "eslint-config-strict": "latest",
     "eslint-plugin-angular": "latest",
@@ -61,7 +62,7 @@
     "karma-verbose-reporter": "latest",
     "moment": "latest",
     "protractor": "latest",
-    "protractor-jasmine2-html-reporter": "latest",
+    "protractor-cucumber-framework": "latest",
     "restling": "latest",
     "serve-static": "latest",
     "webdriver-manager": "latest"
@@ -72,6 +73,7 @@
     "lint": "eslint --fix src/app test",
     "test": "karma start test/unit/karma.conf.js",
     "webdriver-start": "webdriver-manager update && webdriver-manager start",
-    "e2e-tests": "protractor test/e2e/protractor-conf.js"
+    "e2e-tests": "protractor test/e2e/protractor-conf.js",
+    "e2e-bdd-tests": "protractor test/e2e/protractor-bdd.js"
   }
 }

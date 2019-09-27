@@ -73,7 +73,7 @@ describe('Manage logical representation', () => {
         utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
         // add first level
         utils.clickOnElement(element(by.id('e2e-box-properties-add-first-box-dialog-button')));
-        element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(data.logic_group_1 + '#' + data.logic_group_2);
+        element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(`${ data.logic_group_1 }#${ data.logic_group_2 }`);
         utils.clickOnElement(element(by.id('e2e-add-box-create-logic-group-button')));
 
         // add module

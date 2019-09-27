@@ -25,6 +25,20 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Tooltip indiquant lorsque des propriétés globales sont employées pour valoriser des propriétés - close #254. [Lucas Cimon]
+
+
+
+## 2019-09-25
+### Added
+
+- Ability to create several logical groups at once - close #79 (#311) [Lucas Cimon]
+
+
+
 ## 2019-09-23
 ### Fixed
 

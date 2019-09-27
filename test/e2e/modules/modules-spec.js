@@ -23,7 +23,7 @@ var fs = require('fs');
 describe('Manage modules', () => {
     beforeAll(() => {
         browser.get(hesperides_url);
-        // delete module on hesperides for cleaning
+        // delete all modules for cleaning
         utils.deleteHttpRequest(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }/workingcopy`);
         utils.deleteHttpRequest(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }/release`);
         utils.deleteHttpRequest(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }_from/workingcopy`);
@@ -36,12 +36,13 @@ describe('Manage modules', () => {
         element(by.css('#e2e-modal-module-create input[name="moduleName"]')).sendKeys(data.new_module_name);
         element(by.css('#e2e-modal-module-create input[name="moduleVersion"]')).sendKeys(data.new_module_version);
 
-        return element(by.css('#e2e-modal-module-create button[type="submit"]')).click().then(() =>
+        return element(by.css('#e2e-modal-module-create button[type="submit"]')).click().then(() => {
+            utils.checkSuccessNotification('The working copy of the module has been created');
             element(by.id('e2e-module-create-release-button')).isPresent().then((isPresent) => {
                 expect(isPresent).toBe(true);
                 return utils.checkResponseStatusCode(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }/workingcopy`, 200);
-            })
-        );
+            });
+        });
     });
 
     it('should find module on autocomplete in menu "module"', () => {
@@ -57,10 +58,8 @@ describe('Manage modules', () => {
     it('should add a template in a working copy module', () => {
         browser.get(`${ hesperides_url }/#/module/${ data.new_module_name }/${ data.new_module_version }?type=workingcopy`);
 
-        // open modal
         utils.clickOnElement(element(by.id('e2e-template-list-create-template-button')));
 
-        // fill in informations
         element(by.css('input[name="templateName"]')).sendKeys(data.new_template_title);
         element(by.css('input[name="templateFilename"]')).sendKeys(data.new_template_filename);
         element(by.css('input[name="templateLocation"]')).sendKeys(data.new_template_location);
@@ -68,6 +67,7 @@ describe('Manage modules', () => {
         browser.executeScript(`document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('${ data.new_template_content }');`);
 
         element(by.css('button[type="submit"]')).click().then(() => {
+            utils.checkSuccessNotification('The template has been created');
             expect(element(by.css(`#e2e-template-list a[title="${ data.new_template_location }/${ data.new_template_filename }"]`)).isPresent()).toBe(true);
         });
     });
@@ -75,10 +75,8 @@ describe('Manage modules', () => {
     it('should add a json template in a working copy module', () => {
         browser.get(`${ hesperides_url }/#/module/${ data.new_module_name }/${ data.new_module_version }?type=workingcopy`);
 
-        // open modal
         utils.clickOnElement(element(by.id('e2e-template-list-create-template-button')));
 
-        // fill in informations
         element(by.css('input[name="templateName"]')).sendKeys(data.json_new_template_title);
         element(by.css('input[name="templateFilename"]')).sendKeys(data.json_new_template_filename);
         element(by.css('input[name="templateLocation"]')).sendKeys(data.json_new_template_location);
@@ -86,6 +84,7 @@ describe('Manage modules', () => {
         browser.executeScript(`document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('${ data.json_new_template_content }');`);
 
         element(by.css('button[type="submit"]')).click().then(() => {
+            utils.checkSuccessNotification('The template has been created');
             expect(element(by.css(`#e2e-template-list a[title="${ data.json_new_template_location }/${ data.json_new_template_filename }"]`)).isPresent()).toBe(true);
         });
     });
@@ -125,14 +124,15 @@ describe('Manage modules', () => {
         browser.executeScript(`document.getElementsByClassName('CodeMirror')[0].CodeMirror.setValue('${ data.new_template_content }');`);
 
         element(by.css('button[type="submit"]')).click().then(() => {
+            utils.checkSuccessNotification('The template has been created');
             expect(element(by.css(`#e2e-template-list a[title="${ data.new_template_location }_to_delete/${ data.new_template_filename }_to_delete"]`)).isPresent()).toBe(true);
         });
 
         element(by.id(`e2e-template-list-trash-button-for-${ data.new_template_title }_to_delete`)).click().then(() => {
-            browser.switchTo().alert().accept().then(
-                () => expect(element(by.css(`#e2e-template-list a[title="${ data.new_template_location }_to_delete/${ data.new_template_filename }_to_delete"]`)).isPresent()).toBe(false),
-                () => false
-            );
+            browser.switchTo().alert().accept().then(() => {
+                utils.checkSuccessNotification('The template has been deleted');
+                expect(element(by.css(`#e2e-template-list a[title="${ data.new_template_location }_to_delete/${ data.new_template_filename }_to_delete"]`)).isPresent()).toBe(false);
+            });
         });
     });
 
