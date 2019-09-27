@@ -52,6 +52,25 @@ jobs:
       script:
         - npm run e2e-tests -- --suite all
 
+    - name: End-2-end BDD tests
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      before_script:
+        - google-chrome-stable --version
+        - npm install
+        - export DISPLAY=:99.0
+        # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
+        - sudo env "PATH=$PATH" npm run webdriver-start --verbose &
+        - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
+        - sudo env "PATH=$PATH" npm start &
+        - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
+      script:
+        - npm run e2e-bdd-tests
+
     - name: Deploy to Docker hub
       stage: deploy
       if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"

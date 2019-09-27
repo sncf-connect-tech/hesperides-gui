@@ -31,12 +31,6 @@ Ces IDs doivent uniquement être utilisé pour les tests _end-to-end_, et jamais
 
 - privilégier l'utilisation de `browser.wait( ExpectedConditions... )` à l'utilisation de `browser.sleep`
 
-### En cas d'erreur
-
-Un rapport HTMl avec capture d'écran est généré dans `test-reports-e2e/htmlReport.html`.
-
-Sur Travis CI, il devrait être également possible d'avoir accès à ce rapport d'après [cette réponse sur StackOverflow](https://stackoverflow.com/a/55243704/636849) (non encore testé).
-
 ### Options d'exécution
 
     npm run e2e-tests -- --suite $suite

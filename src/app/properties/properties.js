@@ -1417,8 +1417,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                        (key_value.password ? ' *password*' : '') +
                        (key_value.comment ? ` ${ key_value.comment }` : '') +
                        (key_value.valuedByAGlobal ? ' [valued by a global property with same name]' : '') +
-                       // eslint-disable-next-line
-                       (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => name + '=' + value).join(', ') }]`);
+                       (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => `${ name }=${ value }`).join(', ') }]`);
             }
 
             this.mergeWithGlobalProperties = function (global_properties) {
