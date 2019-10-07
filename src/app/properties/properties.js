@@ -1421,7 +1421,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                        (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
                        (key_value.password ? ' *password*' : '') +
                        (key_value.comment ? ` ${ key_value.comment }` : '') +
-                       (key_value.valuedByAGlobal ? ' [valued by a global property with same name]' : '') +
+                       (key_value.valuedByAGlobal ? ` [ Valued by a global property with same name: ${ key_value.globalValue } ]` : '') +
                        (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => `${ name }=${ value }`).join(', ') }]`);
             }
 
@@ -1432,6 +1432,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 _.each(this.key_value_properties, function (key_value) {
                     // First clean, in case there has been updates from the server
                     key_value.valuedByAGlobal = Boolean(_.find(global_properties.key_value_properties, { name: key_value.name }));
+                    if (key_value.valuedByAGlobal) {
+                        key_value.globalValue = _.find(global_properties.key_value_properties, { name: key_value.name }).value;
+                    }
                     key_value.globalsUsed = {};
                     _.forEach(global_properties.key_value_properties, (kvp) => {
                         if (new RegExp(`{{ *${ kvp.name } *}}`).test(key_value.value)) {
