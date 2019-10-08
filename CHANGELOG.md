@@ -25,10 +25,14 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2019-09-27
 ### Added
 
-- Tooltip indiquant lorsque des propriétés globales sont employées pour valoriser des propriétés - close #254. [Lucas Cimon]
+- Tooltip indiquant lorsque des propriétés globales sont employées pour valoriser des propriétés - close #254 (#313) [Lucas Cimon]
+
+  * Add: tooltip indiquant lorsque des propriétés globales sont employées pour valoriser des propriétés - close #254
+
+  * Add initial Cucumber scenario using Protractor
 
 
 

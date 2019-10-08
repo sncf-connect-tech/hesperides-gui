@@ -43,7 +43,7 @@
   "devDependencies": {
     "angular-mocks": "latest",
     "buildify": "latest",
-    "cucumber": "latest",
+    "cucumber": "^4.2.1",
     "eslint": "latest",
     "eslint-config-strict": "latest",
     "eslint-plugin-angular": "latest",

@@ -1,5 +1,5 @@
 # Hacktoberfest
-This year, the Hesperides project takes part to [Hacktoberfest](https://hacktoberfest.digitalocean.com) !
+This year, the Hesperides project takes part to [Hacktoberfest](https://hacktoberfest.digitalocean.com)!
 
 We have labeled some of our issues with [#Hacktoberfest](https://github.com/voyages-sncf-technologies/hesperides-gui/labels/Hacktoberfest)
 to make it easier for you to contribute :)
@@ -58,9 +58,9 @@ Should be as simple as:
     npm install
     npm start
 
-You should now be able to visit <http://localhost/#/properties/TEST_APP?platform=TEST_PTF> and start hacking the JS / HTML code !
+You should now be able to visit <http://localhost/#/properties/TEST_APP?platform=TEST_PTF> and start hacking the JS / HTML code!
 
-If you want to get a little bit familiar with Hesperides frontend, try the following :
+If you want to get a little bit familiar with Hesperides frontend, try the following:
 1. change the value of the property `foo` on the platform `TEST_PTF` of application `TEST_APP`
 2. navigate to the module page of `test-module#1.0#WORKINGCOPY` and some text of your choice to the template
 3. preview the final value of the `app.conf` file by finding the "eye" icon and clicking on it
