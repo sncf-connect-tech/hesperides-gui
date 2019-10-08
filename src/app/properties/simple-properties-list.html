@@ -40,7 +40,17 @@
         </div>
         <div flex="none" class="margin-right-2pc"><toggle-deleted-properties key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
         <div flex="none" class="margin-right-2pc"><toggle-unspecified-properties key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
-        <div flex="none"><toggle-global-properties key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties></div>
+        <div flex="none" class="margin-right-2pc"><toggle-global-properties key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties></div>
+        <div flex="none">
+            <md-switch 
+                ng-model="switchActivated" 
+                ng-change="isSwitchChanged" 
+                ng-not-empty="switchNotEmpty"
+                class="md-primary md-block" 
+                aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
+                {{'properties.onlyRequiredProperties.switch' | translate}}
+            </md-switch>
+        </div>
     </div>
 
     <div layout="row">
@@ -70,6 +80,7 @@
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
+                     ng_if="!key_value_property.inGlobal && !shownOlyRequiredProperties(key_value_property.required)"
                      class="margin-1pc">
                     <div layout="column" flex="30">
                         <div class="truncate-ellipsis">

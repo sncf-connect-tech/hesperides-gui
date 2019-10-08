@@ -1212,6 +1212,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 link(scope) {
                     scope.propertiesKeyFilter = '';
                     scope.propertiesValueFilter = '';
+                    scope.isSwitchChanged = false;
 
                     scope.hasLocalChanges = function () {
                         return LocalChanges.hasLocalChanges(scope.platform.application_name, scope.platform.name, scope.module ? scope.module.properties_path : '');
@@ -1231,6 +1232,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     scope.cleanLocalChanges = function () {
                         LocalChanges.clearLocalChanges({ 'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path });
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
+                    };
+
+                    scope.shownOlyRequiredProperties = function(param) { 
+                       if(scope.isSwitchChanged && !param) {
+                           return true;
+                       }
+                       return false;
                     };
                 },
             };
@@ -1869,6 +1877,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             ],
         };
     })
+    
 
     /**
      * This directive is for filtering only the no global properties.
@@ -1907,6 +1916,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             ],
         };
     })
+
 
     /**
      * Display only the 'empty' properties
