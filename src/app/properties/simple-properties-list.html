@@ -43,9 +43,7 @@
         <div flex="none" class="margin-right-2pc"><toggle-global-properties key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties></div>
         <div flex="none">
             <md-switch 
-                ng-model="switchActivated" 
-                ng-change="isSwitchChanged" 
-                ng-not-empty="switchNotEmpty"
+                ng-model="onlyRequiredPropertiesSwitchActivated"                
                 class="md-primary md-block" 
                 aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
                 {{'properties.onlyRequiredProperties.switch' | translate}}
