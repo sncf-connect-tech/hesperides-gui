@@ -35,20 +35,13 @@
 
     </div>
     <div layout="row">
-        <div flex="none" class="margin-right-2pc">
-            <toggle-sort-properties sort-order="order"></toggle-sort-properties>
-        </div>
-        <div flex="none" class="margin-right-2pc"><toggle-deleted-properties key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
-        <div flex="none" class="margin-right-2pc"><toggle-unspecified-properties key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
-        <div flex="none" class="margin-right-2pc"><toggle-global-properties key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties></div>
-        <div flex="none">
-            <md-switch 
-                ng-model="onlyRequiredPropertiesSwitchChanged"                
-                class="md-primary md-block" 
-                aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
-                {{'properties.onlyRequiredProperties.switch' | translate}}
-            </md-switch>
-        </div>
+        <toggle-sort-properties sort-order="order" class="margin-right-2pc"></toggle-sort-properties>
+        <toggle-deleted-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
+        <toggle-unspecified-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties>
+        <toggle-global-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties>
+        <md-switch ng-model="onlyRequiredPropertiesSwitchChanged" class="md-primary md-block" aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
+            {{'properties.onlyRequiredProperties.switch' | translate}}
+        </md-switch>    
     </div>
 
     <div layout="row">

@@ -1234,8 +1234,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
 
-                    scope.shownOnlyRequiredProperties = function(param) {                       
-                       return scope.onlyRequiredPropertiesSwitchChanged && !param;
+                    scope.shownOnlyRequiredProperties = function(propertyIsRequired) {                       
+                       return scope.onlyRequiredPropertiesSwitchChanged && !propertyIsRequired;
                     };
                 },
             };
