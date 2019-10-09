@@ -43,7 +43,7 @@
         <div flex="none" class="margin-right-2pc"><toggle-global-properties key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties></div>
         <div flex="none">
             <md-switch 
-                ng-model="onlyRequiredPropertiesSwitchActivated"                
+                ng-model="onlyRequiredPropertiesSwitchChanged"                
                 class="md-primary md-block" 
                 aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
                 {{'properties.onlyRequiredProperties.switch' | translate}}
@@ -78,7 +78,7 @@
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
-                     ng_if="!key_value_property.inGlobal && !shownOlyRequiredProperties(key_value_property.required)"
+                     ng_if="!key_value_property.inGlobal && !shownOnlyRequiredProperties(key_value_property.required)"
                      class="margin-1pc">
                     <div layout="column" flex="30">
                         <div class="truncate-ellipsis">

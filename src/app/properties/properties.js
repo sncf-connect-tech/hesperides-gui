@@ -1212,7 +1212,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 link(scope) {
                     scope.propertiesKeyFilter = '';
                     scope.propertiesValueFilter = '';
-                    scope.isSwitchOnlyRequirePropertiesChanged = false;
+                    scope.onlyRequiredPropertiesSwitchChanged = false;
 
                     scope.hasLocalChanges = function () {
                         return LocalChanges.hasLocalChanges(scope.platform.application_name, scope.platform.name, scope.module ? scope.module.properties_path : '');
@@ -1234,8 +1234,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
 
-                    scope.shownOlyRequiredProperties = function(param) {                       
-                       return scope.onlyRequiredPropertiesSwitchActivated && !param;
+                    scope.shownOnlyRequiredProperties = function(param) {                       
+                       return scope.onlyRequiredPropertiesSwitchChanged && !param;
                     };
                 },
             };
