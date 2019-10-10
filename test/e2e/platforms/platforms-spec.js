@@ -44,11 +44,11 @@ describe('Manage platforms', () => {
     });
 
     it('should find platform on autocomplete in menu "applications"', () => {
+        utils.waitForNotificationToDisappear();
         utils.clickOnElement(element(by.id('e2e-navbar-app')));
 
         element(by.id('input-4')).sendKeys(data.new_application);
-        browser.waitForAngular();// ajout pour que l'autocompletion soit prise en compte au moment du test
-
+        browser.waitForAngular();// ajout pour que l'autocompletion soit prise en compte au moment du test      
         browser.driver.findElements(by.css('.md-autocomplete-suggestions li'))
             .then((elems) => expect(elems.length).toBeGreaterThan(0));
     });
