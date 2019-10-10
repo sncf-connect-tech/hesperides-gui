@@ -170,6 +170,7 @@
   "properties.sort.switch": "Sort properties",
   "properties.unspecifiedValues.switch": "Show unfilled properties",
   "properties.globalPropertiesValues.switch": "Show global properties",
+  "properties.onlyRequiredProperties.switch": "Show only required properties",
   "properties.deletedOnes.switch": "Show deleted properties",
   "properties.logicGroup.add": "Add a logic group",
   "properties.logicGroup.add.name": "Name",

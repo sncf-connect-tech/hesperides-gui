@@ -29,20 +29,18 @@
         <div layout="row" ng-if="hasSyncedChanges() && !areFullySynced()">
             <div flex="none" class="inLocal_true header_edit_properties">
                 {{ 'properties.module.editProperties.partiallySyncedLocalChanges' | translate }}
-
             </div>
         </div>
-
     </div>
-    <div layout="row">
-        <div flex="none" class="margin-right-2pc">
-            <toggle-sort-properties sort-order="order"></toggle-sort-properties>
-        </div>
-        <div flex="none" class="margin-right-2pc"><toggle-deleted-properties key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
-        <div flex="none" class="margin-right-2pc"><toggle-unspecified-properties key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
-        <div flex="none"><toggle-global-properties key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties></div>
+    <div layout="row" layout-wrap>
+        <toggle-sort-properties sort-order="order" class="margin-right-2pc"></toggle-sort-properties>
+        <toggle-deleted-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
+        <toggle-unspecified-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties>
+        <toggle-global-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties>
+        <md-switch ng-model="onlyRequiredPropertiesSwitchChanged" class="md-primary md-block" aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
+            {{'properties.onlyRequiredProperties.switch' | translate}}
+        </md-switch>    
     </div>
-
     <div layout="row">
         <div flex="30">
             <md-input-container class="md-block">
@@ -57,7 +55,6 @@
             </md-input-container>
         </div>
     </div>
-
     <md-content layout="column" class="properties-container">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
         <md-virtual-repeat-container id="vertical-container" class="height-300px">
@@ -70,6 +67,7 @@
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
+                     ng_if="!key_value_property.inGlobal && !shownOnlyRequiredProperties(key_value_property.required)"
                      class="margin-1pc">
                     <div layout="column" flex="30">
                         <div class="truncate-ellipsis">
