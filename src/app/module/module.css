@@ -9,6 +9,7 @@
 
 .module-row-for-properties {
     width: 100%;
+    overflow: auto;
 }
 
 .module-properties-headers, .module-properties-row {
@@ -36,6 +37,7 @@
     font-weight: bold;
 }
 
-.module-annotation-container{
+.module-property-annotation-container {
     overflow: auto;
+    margin-right: 10px;
 }
