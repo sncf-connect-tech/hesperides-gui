@@ -72,7 +72,7 @@
   "module.specificFiles": "Files attached to the module",
   "module.technoList": "Technos of this module",
   "module.platformList": "List of platform using this module",
-  "modules.propertiesList.tooltip": "Display or hide the list of module properties",
+  "modules.propertiesList.tooltip": "Display or hide the list of module properties (model)",
   "module.propertiesList.showButton": "Show properties",
   "module.propertiesList.hideButton": "Hide properties",
   "module.propertiesList.headers.name": "Name",
