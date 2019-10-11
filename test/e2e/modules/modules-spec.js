@@ -27,6 +27,9 @@ describe('Manage modules', () => {
         utils.deleteHttpRequest(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }/workingcopy`);
         utils.deleteHttpRequest(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }/release`);
         utils.deleteHttpRequest(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }_from/workingcopy`);
+        // We delete any platforms that could be using modules:
+        utils.deleteHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }`);
+        utils.deleteHttpRequest(`${ hesperides_url }/rest/applications/${ data.new_application }/platforms/${ data.new_platform }_from`);
     });
 
     it('should create module in working copy', () => {

@@ -29,9 +29,6 @@
                            ng-show="is_workingcopy"
                            ng-click="open_create_release_dialog(module)">
                     <i class="fa fa-code-fork"></i> {{ 'button.release.create' | translate }}</md-button>
-                <md-button id="e2e-module-associated-properties-button" class="md-raised md-warn"
-                           ng-click="open_associated_properties_dialog(module)">
-                    <i class="fa fa-list"></i> {{ 'button.associateProperties' | translate }}</md-button>
             </h3>
         </div>
     </div>
@@ -71,9 +68,12 @@
     </div>
 </div>
 <div layout="row">
-    <div class="bg-light module-row-for-properties">
-        <h4>{{ 'module.propertiesList' | translate }}</h4>
-        <div class="module-properties">
+    <div class="bg-light module-row-for-properties" >
+        <md-button class="md-raised md-primary" ng-model="collapsePropertiesList" ng-click="collapsePropertiesList =! collapsePropertiesList"> 
+            <md-tooltip>{{'modules.propertiesList.tooltip' | translate}}</md-tooltip>
+            <i class="fa fa-list"></i> {{ collapsePropertiesList ? 'module.propertiesList.hideButton' : 'module.propertiesList.showButton' | translate }}
+        </md-button>             
+        <div ng-show="collapsePropertiesList" class="module-properties">
             <div layout="row" class="module-properties-headers">
                 <div flex="30" class="module-property-name">{{ 'module.propertiesList.headers.name' | translate }}</div>
                 <div class="module-property-annotation module-property-annotation-name">{{ 'module.propertiesList.headers.annotations' | translate }}</div>
@@ -84,9 +84,9 @@
                 <div flex layout="row" class="module-property-annotation">
                     <div flex="20" ng-if="property.required"><span class="module-property-annotation-name">@required</span></div>
                     <div flex="20" ng-if="property.password"><span class="module-property-annotation-name">@password</span></div>
-                    <div flex="20" ng-if="property.defaultValue"><span class="module-property-annotation-name">@default</span>&nbsp;{{ property.defaultValue }}</div>
-                    <div flex="20" ng-if="property.pattern"><span class="module-property-annotation-name">@pattern</span>&nbsp;{{ property.pattern }}</div>
-                    <div flex="20" ng-if="property.comment"><span class="module-property-annotation-name">@comment</span>&nbsp;{{ property.comment }}</div>
+                    <div flex="20" ng-if="property.defaultValue" class="module-property-annotation-container"><span class="module-property-annotation-name">@default</span>&nbsp;{{ property.defaultValue }}</div>
+                    <div flex="20" ng-if="property.pattern" class="module-property-annotation-container"><span class="module-property-annotation-name">@pattern</span>&nbsp;{{ property.pattern }}</div>
+                    <div flex="20" ng-if="property.comment" class="module-property-annotation-container"><span class="module-property-annotation-name">@comment</span>&nbsp;{{ property.comment }}</div>
                 </div>
             </div>
         </div>
