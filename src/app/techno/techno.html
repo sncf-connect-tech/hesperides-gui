@@ -51,3 +51,21 @@
         </div>
     </div>
 </div>
+<div layout="row">
+    <div class="bg-light" flex>
+            <h4>{{ 'techno.modulesList' | translate }}</h4>
+            <list-of-links items="modules"
+                   label="$item.module_name + ' [' + $item.module_version + ']'"
+                   filter="searchInModules"
+                   sorton="$item.module_name"
+                   selected-item="module"
+                   selectable="true"
+                   editable="false"
+                   css="md-warn"
+                   href="'/module/' + $item.module_name + '/' + $item.module_version + '?type=' + getModuleType($item)"
+                   new_tab="true"
+                   tooltip="{{ 'properties.module.selection.tooltip' | translate }}"
+                   size="small">
+            </list-of-links>
+    </div>
+</div>
