@@ -471,6 +471,7 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
     ]);
 
     /** global method to get module or techno type : {workingcopy, release} */
+   /*eslint-disable no-undef*/
     getVersionType = function(isWorkingCopy) {
         return isWorkingCopy ? 'workingcopy' : 'release';       
     };
