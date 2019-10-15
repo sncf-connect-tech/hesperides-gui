@@ -69,7 +69,7 @@
   "techno.modal.version.placeholder": "1.0.0, 1.1.2, ...",
   "techno.modalFrom.title": "Nouvelle techno (working copy) à partir d'une précédente version",
   "techno.modalFrom.origin.placeholder": "Nom de la techno existante...",
-  "techno.modulesList": "List des modules qui utilisent cette techno",
+  "techno.modulesList": "Liste des modules qui utilisent cette techno",
   "module.specificFiles": "Les fichiers associés au module",
   "module.technoList": "Les technos de ce module",
   "module.platformList": "Liste des plateformes utilisant ce module",

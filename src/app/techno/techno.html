@@ -62,7 +62,7 @@
                    selectable="true"
                    editable="false"
                    css="md-warn"
-                   href="'/module/' + $item.module_name + '/' + $item.module_version + '?type=' + getModuleType($item)"
+                   href="getModuleUrl($item)"
                    new_tab="true"
                    tooltip="{{ 'properties.module.selection.tooltip' | translate }}"
                    size="small">

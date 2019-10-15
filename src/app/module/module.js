@@ -469,3 +469,8 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
             };
         },
     ]);
+
+    /** global method to get module or techno type : {workingcopy, release} */
+    getType = function(isWorkingCopy) {
+        return isWorkingCopy ? 'workingcopy' : 'release';       
+    };

@@ -52,7 +52,6 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     
                     TechnoService.get_all_modules_using_this_techno($scope.techno).then(function(modules) {
                         $scope.modules = modules;
-                        console.log(modules);
                     });
                 };
 
@@ -184,8 +183,12 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     });
                 };
 
-                $scope.getModuleType = function(module) {
-                    return module.is_working_copy ? 'workingcopy' : 'release';
+                $scope.getModuleUrl = function(module) {
+                    return  '/module/' 
+                            + module.module_name 
+                            + '/' + module.module_version 
+                            + '?type=' 
+                            + getType(module.is_working_copy);;
                 };
                
             },
@@ -303,7 +306,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     });
                 },
                 get_all_modules_using_this_techno(techno) {
-                    return $hesperidesHttp.get(`rest/modules/using_techno/${ encodeURIComponent(techno.name) }/${ encodeURIComponent(techno.version) }/${ techno.is_working_copy ? 'workingcopy' : 'release' }`).then(function (response) {
+                    return $hesperidesHttp.get(`rest/modules/using_techno/${ encodeURIComponent(techno.name) }/${ encodeURIComponent(techno.version) }/${ getType(techno.is_working_copy) }`).then(function (response) {
                         return response.data.map(function (current) {
                             return new Module(current);
                         });
