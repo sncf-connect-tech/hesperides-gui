@@ -49,6 +49,10 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     TechnoService.get_model($scope.techno.name, $scope.techno.version, $scope.techno.is_working_copy).then(function (model) {
                         $scope.model = model;
                     });
+                    
+                    TechnoService.get_all_modules_using_this_techno($scope.techno).then(function(modules) {
+                        $scope.modules = modules;
+                    });
                 };
 
                 $scope.refreshModel();
@@ -178,6 +182,16 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                         scope: modalScope,
                     });
                 };
+
+                $scope.getModuleUrl = function(module) {
+                     /*eslint-disable no-undef*/
+                    return  '/module/' 
+                            + module.module_name 
+                            + '/' + module.module_version 
+                            + '?type=' 
+                            + getVersionType(module.is_working_copy);;
+                };
+               
             },
         ])
 
@@ -213,7 +227,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
     })
 
     .factory('TechnoService',
-        function ($hesperidesHttp, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate, notify) {
+        function ($hesperidesHttp, $q, Techno, Module, Template, TemplateEntry, Properties, FileService, $translate, notify) {
             return {
                 get_model(name, version, isWorkingCopy) {
                     return $hesperidesHttp.get(`rest/technos/${ encodeURIComponent(name) }/${ encodeURIComponent(version) }/${ isWorkingCopy ? 'workingcopy' : 'release' }/model`).then(function (response) {
@@ -290,6 +304,16 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                             notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in TechnoService.get_all_templates_from_release' });
                             throw error;
                         });
+                    });
+                },
+                get_all_modules_using_this_techno(techno) {
+                     /*eslint-disable no-undef*/
+                    return $hesperidesHttp.get(`rest/modules/using_techno/${ encodeURIComponent(techno.name) }/${ encodeURIComponent(techno.version) }/${ getVersionType(techno.is_working_copy) }`).then(function (response) {
+                        return response.data.map(function (current) {
+                            return new Module(current);
+                        });
+                    }, function () {
+                        return new Module([]);
                     });
                 },
                 save_template_in_workingcopy(wc_name, wc_version, template) {
