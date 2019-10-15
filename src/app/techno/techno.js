@@ -184,6 +184,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                 };
 
                 $scope.getModuleUrl = function(module) {
+                     /*eslint-disable no-undef*/
                     return  '/module/' 
                             + module.module_name 
                             + '/' + module.module_version 
@@ -306,6 +307,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     });
                 },
                 get_all_modules_using_this_techno(techno) {
+                     /*eslint-disable no-undef*/
                     return $hesperidesHttp.get(`rest/modules/using_techno/${ encodeURIComponent(techno.name) }/${ encodeURIComponent(techno.version) }/${ getVersionType(techno.is_working_copy) }`).then(function (response) {
                         return response.data.map(function (current) {
                             return new Module(current);
