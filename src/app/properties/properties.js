@@ -89,7 +89,6 @@ var addFromModel = function (property, model) {
  * Hesperides properties module
  */
 angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify', 'hesperides.module.propertiesList'])
-
     .controller('PlatformVersionController', [
         '$scope', '$mdDialog',
         function ($scope, $mdDialog) {

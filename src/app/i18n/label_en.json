@@ -352,5 +352,4 @@
   "platform.properties.modal.columnHeaders.annotations.comment": "@comment: {{commentValue}}",
   "platform.properties.modal.columnHeaders.annotations.default": "@default: {{defaultValue}}",
   "platform.properties.modal.columnHeaders.switch.message": "Display only properties with an empty final value"
-
 }
