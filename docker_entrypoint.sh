@@ -1,7 +1,7 @@
 #!/bin/sh
 set -o pipefail -o errexit -o nounset
 
-if [ -n "${PORT:-}" ]; then
+if [ -z "${PORT:-}" ]; then
     export PORT=80
 fi
 if [ -n "${PROXY_TIMEOUT_IN_SECS:-}" ]; then
