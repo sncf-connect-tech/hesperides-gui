@@ -54,7 +54,7 @@
   "platform.event.restoredByuser": "has restored the platform",
   "platform.event.created": "The platform has been created",
   "platform.event.updated": "The platform has been updated",
-  "platform.event.deleted": "The platform has been deleted",
+  "platform.event.deleted": "The platform has been deleted", 
   "properties.event.savedByUser": "has updated the values of the module",
   "properties.event.savedGlobalByUser": "has updated global properties of the module",
   "properties.event.saved": "The properties have been saved",
@@ -120,11 +120,13 @@
   "platform.modal.applicationVersion": "Version of the application on this platform",
   "platform.modal.applicationVersion.placeholder": "This information is purely informative and can be changed later",
   "platform.modal.isProduction": "Is this platform a production one?",
+  "platform.modal.properties.tooltip": "Provide the properties of a platform with default value",
+  "platform.properties.list": "platform properties",
   "platform.modalFrom.title": "New platform from an existing one",
   "platform.modalFrom.needCopy": "Deep Copy (Valuations, Instances)",
   "platform.modalFrom.overrideExisting": "{{application_name}}-{{platform_name}} already exist, by switching this on, i'm aware that i will override this platform",
   "platform.modalFrom.originApplication": "Name of the original application",
-  "platform.modalFrom.originPlatform": "Name of the original platform",
+  "platform.modalFrom.originPlatform": "Name of the original platform", 
   "properties.application.title": "Platforms of",
   "properties.application.prodPerms.userHasProdRole": "You <strong>have</strong> production rights for",
   "properties.application.prodPerms.userHasntProdRole": "You <strong>do not have</strong> production rights for",
@@ -335,5 +337,11 @@
   "user.profile.desc.noAppRoles": "You <strong>do not</strong> have any <strong>production</strong> permissions for specific applications",
   "user.profile.desc.perAppRoles": "You have <strong>production</strong> permissions on those specific applications:",
   "newFeature.label": "New !",
-  "newFeature.createSeveralLogicalGroupsAtOnce": "You can now #create#several#logical#groups#at#once by separating them with the symbol #"
+  "newFeature.createSeveralLogicalGroupsAtOnce": "You can now #create#several#logical#groups#at#once by separating them with the symbol #",
+  "platform.properties.modal.columnHeaders.propertyName": "Property name",
+  "platform.properties.modal.columnHeaders.nbUsages": "Number of modules where it is define",
+  "platform.properties.modal.columnHeaders.finalValue": "Final value",
+  "platform.properties.modal.columnHeaders.globalValue": "Global default value",
+  "platform.properties.modal.columnHeaders.moduleValue": "Stored value"
+
 }

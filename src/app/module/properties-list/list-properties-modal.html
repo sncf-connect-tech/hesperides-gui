@@ -1,0 +1,36 @@
+<md-dialog flex="90" aria-label="List dialog">
+    <md-dialog-content>
+            <div layout="row" class="center">  
+                    <h3 flex="20">Titre de la dialogue à internationaliser</h3>
+            </div>  
+            <div layout="column" class="properties-headers">
+                <div flex layout="row" layout-align="space-around">
+                    <div class="property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
+                    <div>
+                        {{ 'platform.properties.modal.columnHeaders.nbUsages' | translate }}
+                        <i class="fa fa-question-circle"></i>
+                    </div>
+                    <div>
+                        {{ 'platform.properties.modal.columnHeaders.finalValue' | translate }}
+                    </div>
+                    <div>
+                        {{ 'platform.properties.modal.columnHeaders.globalValue' | translate }}
+                        <i class="fa fa-question-circle"></i>
+                    </div>
+                    <div>
+                        {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
+                        <i class="fa fa-question-circle"></i>
+                    </div>
+                </div>
+                <md-divider class="properties-list-divider"></md-divider>
+                <div flex layout="row" layout-align="space-around" ng-repeat="property in platform.global_properties">
+                    <div flex="20" layout-align="end start" layout="row">
+                        <div class="value-property-name">{{property.name}}</div>
+                    </div>
+                </div>                
+            </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="$closeDialog()" class="md-primary">Close Dialog</md-button>
+    </md-dialog-actions>
+</md-dialog>

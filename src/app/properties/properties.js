@@ -88,7 +88,7 @@ var addFromModel = function (property, model) {
 /**
  * Hesperides properties module
  */
-angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify' ])
+angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify'])
 
     .controller('PlatformVersionController', [
         '$scope', '$mdDialog',
@@ -480,6 +480,19 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 scope: modalScope,
             });
         };
+
+        $scope.show_dialog_properties_list = function(providedplatform) {
+            var modalScope = $scope.$new();
+            console.log(providedplatform);
+            modalScope.platform=providedplatform;
+
+            $mdDialog.show({
+                templateUrl: 'module/properties-list/list-properties-modal.html',
+                // controller: 'PropertiesListController',
+                clickOutsideToClose: true,               
+                scope: modalScope,
+            });
+        }
 
         $scope.diffProperties = function (fromModule) {
             const modalScope = $scope.$new();
@@ -1099,7 +1112,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 $scope.instance = null;
             }
         };
-
+        
         function ensureDirectoryGroupsNotEmpty() {
             if (!$scope.application.directoryGroups) {
                 $scope.application.directoryGroups = {};
