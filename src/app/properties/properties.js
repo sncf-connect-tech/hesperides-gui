@@ -483,7 +483,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.showDialogPropertiesList = function (providedplatform) {
             var modalScope = $scope.$new();
             modalScope.platform = providedplatform;
-
             $mdDialog.show({
                 templateUrl: 'module/properties-list/properties-list-modal.html',
                 controller: 'PropertiesListController',
