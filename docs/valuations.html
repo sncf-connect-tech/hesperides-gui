@@ -314,6 +314,25 @@
                                         </table>
                                     </div>
                                 </div>
+                                <div id="upgrade-module-version" class="section-block">
+                                    <h3 class="block-title">Upgrade module version</h3>
+                                    <div class="section-block">
+                                        <p>
+                                            When you're changing a module's version, it is possible to copy its properties to the new version.
+                                            You just have to check <strong>"Copy valuated properties"</strong> option.
+                                        </p>
+                                        <br><img class="img-responsive" alt="" src="assets/images/screenshots/upgrade-module-version.png"><br>
+                                        <p>
+                                            If you forgot to check this option, don't panic, your values are not lost. You just have to <strong>downgrade</strong>
+                                            the module's version to the previous one - <em>from 2 to 1</em> - without checking the copy of properties.
+                                            Then you upgrade the version again - <em>from 1 to 2</em> - with the option checked.
+                                        </p>
+                                        <p>
+                                            If you let this option checked when you downgraded - <em>from 2 to 1</em> - it will override the properties of
+                                            the version 1 only if you already saved new properties for the version 1.
+                                        </p>
+                                    </div>
+                                </div>
                             </section>
                             <section id="instance-level" class="doc-section">
                                 <h2 class="section-title">Instance level</h2>
@@ -489,6 +508,9 @@ etc ...</code></pre>
                                         </li>
                                         <li>
                                             <a class="scrollto" href="#annotations-on-ihm">Handle with annotations</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#upgrade-module-version">Upgrade module version</a>
                                         </li>
                                     </ul><!--//nav-->
                                 </li>
