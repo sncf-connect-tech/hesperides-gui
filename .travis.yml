@@ -76,6 +76,4 @@ jobs:
       script: .travis/docker_build_push.sh
 
 notifications:
-  email:
-    recipients:
-      - thomas.lhostis@gmail.com
+  email: false

@@ -1,7 +1,7 @@
 <md-dialog flex="90" aria-label="List dialog">
     <md-dialog-content>
             <div layout="row" class="center">  
-                    <h3 flex="20">Titre de la dialogue à internationaliser</h3>
+                    <h3 flex="50">Titre de la dialogue à internationaliser</h3>
             </div>  
             <div layout="column" class="properties-headers">
                 <div flex layout="row" layout-align="space-around">
@@ -23,14 +23,15 @@
                     </div>
                 </div>
                 <md-divider class="properties-list-divider"></md-divider>
-                <div flex layout="row" layout-align="space-around" ng-repeat="property in platform.global_properties">
-                    <div flex="20" layout-align="end start" layout="row">
-                        <div class="value-property-name">{{property.name}}</div>
-                    </div>
-                </div>                
+                <div flex layout="row" layout-align="space-around" ng-repeat="property in properties">                
+                    <div class="property-name">{{property.name}}</div>
+                    <div class="property-usage">{{global_properties_usage}}</div> 
+                    <div class="property-value">{{property.value}}</div> 
+                                 
+                </div>
             </div>
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button ng-click="$closeDialog()" class="md-primary">Close Dialog</md-button>
+        <md-button ng-click="closeDialog()" class="md-primary">Close Dialog</md-button>
     </md-dialog-actions>
 </md-dialog>

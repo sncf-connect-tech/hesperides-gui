@@ -88,7 +88,7 @@ var addFromModel = function (property, model) {
 /**
  * Hesperides properties module
  */
-angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify'])
+angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify', 'hesperides.module.propertiesList'])
 
     .controller('PlatformVersionController', [
         '$scope', '$mdDialog',
@@ -483,7 +483,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
         $scope.show_dialog_properties_list = function(providedplatform) {
             var modalScope = $scope.$new();
-            console.log(providedplatform);
             modalScope.platform=providedplatform;
 
             $mdDialog.show({
