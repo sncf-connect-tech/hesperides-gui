@@ -1,37 +1,45 @@
-<md-dialog flex="90" aria-label="List dialog">
+<md-dialog flex="90" aria-label="Titre de la dialogue à internationaliser">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><h3 flex="30">Titre de la dialogue à internationaliser</h3></h2>
+        </div>
+    </md-toolbar>
     <md-dialog-content>
-            <div layout="row" class="center">  
-                    <h3 flex="50">Titre de la dialogue à internationaliser</h3>
-            </div>  
-            <div layout="column" class="properties-headers">
-                <div flex layout="row" layout-align="space-around">
-                    <div class="property-name">{{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
-                    <div>
-                        {{ 'platform.properties.modal.columnHeaders.nbUsages' | translate }}
-                        <i class="fa fa-question-circle"></i>
-                    </div>
-                    <div>
-                        {{ 'platform.properties.modal.columnHeaders.finalValue' | translate }}
-                    </div>
-                    <div>
-                        {{ 'platform.properties.modal.columnHeaders.globalValue' | translate }}
-                        <i class="fa fa-question-circle"></i>
-                    </div>
-                    <div>
-                        {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
-                        <i class="fa fa-question-circle"></i>
-                    </div>
+        <!-- <div layout="row" class="center">
+            <h3 flex="30">Titre de la dialogue à internationaliser</h3>
+        </div> -->
+        <div layout="column" class="properties-conntainer">
+            <div layout="row" layout-align="space-around center">
+                <div flex="15" class="properties-headers">
+                    {{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
+                <div flex="30" class="properties-headers">
+                    {{ 'platform.properties.modal.columnHeaders.nbUsages' | translate }}
+                    <i class="fa fa-question-circle"></i>
                 </div>
-                <md-divider class="properties-list-divider"></md-divider>
-                <div flex layout="row" layout-align="space-around" ng-repeat="property in properties">                
-                    <div class="property-name">{{property.name}}</div>
-                    <div class="property-usage">{{global_properties_usage}}</div> 
-                    <div class="property-value">{{property.value}}</div> 
-                                 
+                <div flex="20" class="properties-headers">
+                    {{ 'platform.properties.modal.columnHeaders.finalValue' | translate }}
+                </div>
+                <div flex="30" class="properties-headers">
+                    {{ 'platform.properties.modal.columnHeaders.globalValue' | translate }}
+                    <i class="fa fa-question-circle"></i>
+                </div>
+                <div flex="30" class="properties-headers">
+                    {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
+                    <i class="fa fa-question-circle"></i>
                 </div>
             </div>
+            <md-divider class="properties-list-divider"></md-divider>
+            <div layout="row" layout-align="space-around center"
+                ng-repeat="property in properties.key_value_properties">
+                <div flex="15" class="properties-values">{{property.name}}</div>
+                <div flex="30" class="properties-values" ng-init="getUsageOfGlobalProperty(property)">{{property.nbUsage}}</div>
+                <div flex="20" class="properties-values">{{property.value}}</div>
+                <div flex="30" class="properties-values">{{property.globalValue}}</div>
+                <div flex="30" class="properties-values">{{property.defaultValue}}</div>
+            </div>
+        </div>
     </md-dialog-content>
-    <md-dialog-actions>
-        <md-button ng-click="closeDialog()" class="md-primary">Close Dialog</md-button>
+    <md-dialog-actions layout="row">
+        <md-button ng-click="closeDialog()" class="md-raised md-primary">Close Dialog</md-button>
     </md-dialog-actions>
 </md-dialog>

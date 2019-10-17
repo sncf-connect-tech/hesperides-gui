@@ -1,4 +1,17 @@
 .properties-list-divider {
     margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.properties-conntainer {
+   padding-top: 10px;
+    padding-left: 10px;
+}
+
+.properties-headers {
+    font-weight: bold;
+}
+
+.properties-values {
     margin-top: 5px;
 }
