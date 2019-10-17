@@ -1,40 +1,53 @@
 angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 'cgNotify', 'hesperides.properties' ])
-    .controller('PropertiesListController', function ($scope, $mdDialog, ModuleService) {
+    .controller('PropertiesListController', function ($scope, $mdDialog, ModuleService, ApplicationService) {
 
-        $scope.properties = $scope.platform.global_properties.key_value_properties;
+        $scope.properties = null;        
+        $scope.oldGolbalPropertiesUsages = $scope.platform.global_properties_usage;
         $scope.oldProperties = null;
-        $scope.oldGolbalProperties = null;
-        $scope.global_properties_usage = null;
+        $scope.nbGlobalPropertyUsages = 0;       
 
-        if ($scope.platform.modules && $scope.platform.modules.length) {
-            console.log($scope.platform);
-            $scope.refreshGlobalPropertiesData();
-            console.log($scope.platform);
+        console.log($scope.platform); 
+        $scope.refreshGlobalPropertiesData = function () {
+            ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                $scope.platform.global_properties = response;
+                $scope.properties = response.mergeWithGlobalProperties($scope.platform.global_properties);
+                console.log($scope.properties); 
+            });
+            ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                $scope.platform.global_properties_usage = response;                          
+            });
+        };   
+
+        if ($scope.platform.modules && $scope.platform.modules.length) {           
+            $scope.refreshGlobalPropertiesData();       
+            
             for ( module of $scope.platform.modules) {
                 ModuleService.get_model(module).then(function (model) {
-                    $scope.platform.global_properties.mergeWithModel(model);
-                    // Keep the saved properties as old
-                    $scope.oldProperties = angular.copy($scope.properties);
+                    if( $scope.properties) {
+                        $scope.properties.mergeWithModel(model);
+                    }                   
                 });
+            }           
+        }
+        
+        $scope.getUsageOfGlobalProperty = function (property) {
+           
+            if($scope.platform.global_properties_usage && property.valuedByAGlobal) {
+                console.log(property.name);
+                console.log($scope.platform.global_properties_usage);
+                property.nbUsage = $scope.platform.global_properties_usage[property.name].length;               
+            }
+            else{
+                console.log($scope.platform.global_properties_usage);
+                property.nbUsage = 0;
             }
            
-        }
+        };
+       
         
         $scope.closeDialog = function () {
             $mdDialog.cancel();
         };
 
-        $scope.refreshGlobalPropertiesData = function () {
-            ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
-                $scope.platform.global_properties = response;
-                // making a copy, for changes detection
-                $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
-            });
-            ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
-                $scope.platform.global_properties_usage = response;
-                $scope.global_properties_usage = response.length;
-            });
-        };
-
-       
+            
     })
