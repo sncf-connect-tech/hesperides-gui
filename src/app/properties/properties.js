@@ -486,8 +486,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             modalScope.platform=providedplatform;
 
             $mdDialog.show({
-                templateUrl: 'module/properties-list/list-properties-modal.html',
-                controller: 'PropertiesListController',
+                templateUrl: 'module/properties-list/properties-list-modal.html',
+                controller: PropertiesListController,
                 clickOutsideToClose: true,               
                 scope: modalScope,
             });

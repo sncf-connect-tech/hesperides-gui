@@ -1,7 +1,7 @@
 <md-dialog flex="90" aria-label="Titre de la dialogue à internationaliser">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2><h3 flex="30">Titre de la dialogue à internationaliser</h3></h2>
+            <h2><h3 flex="50"> {{'platform.properties.modal.title' | translate : {platformName:platform.name} }}</h3></h2>
         </div>
     </md-toolbar>
     <md-dialog-content>
@@ -32,7 +32,7 @@
             <div layout="row" layout-align="space-around center"
                 ng-repeat="property in properties.key_value_properties">
                 <div flex="15" class="properties-values">{{property.name}}</div>
-                <div flex="30" class="properties-values" ng-init="getUsageOfGlobalProperty(property)">{{property.nbUsage}}</div>
+                <div flex="30" class="properties-values">{{property.nbUsage}}</div>
                 <div flex="20" class="properties-values">{{property.value}}</div>
                 <div flex="30" class="properties-values">{{property.globalValue}}</div>
                 <div flex="30" class="properties-values">{{property.defaultValue}}</div>

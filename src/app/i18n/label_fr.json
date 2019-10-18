@@ -342,5 +342,6 @@
   "platform.properties.modal.columnHeaders.nbUsages": "Nombre de modules où elle est définie",
   "platform.properties.modal.columnHeaders.finalValue": "Valeur finale",
   "platform.properties.modal.columnHeaders.globalValue": "Valeur global",
-  "platform.properties.modal.columnHeaders.moduleValue": "Valeur stockée"
+  "platform.properties.modal.columnHeaders.moduleValue": "Valeur stockée",
+  "platform.properties.modal.title": "Liste des propriétés de la plateforme: {{platformName}}"
 }
