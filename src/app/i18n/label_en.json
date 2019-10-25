@@ -343,5 +343,13 @@
   "platform.properties.modal.columnHeaders.finalValue": "Final value",
   "platform.properties.modal.columnHeaders.globalValue": "Global default value",
   "platform.properties.modal.columnHeaders.moduleValue": "Stored value",
-  "platform.properties.modal.title": "Properties list of the platform: {{platformName}}"
+  "platform.properties.modal.columnHeaders.annotations": "Associated Annotations",
+  "platform.properties.modal.title": "Properties list of the platform: {{platformName}}",
+  "platform.properties.modal.columnHeaders.annotations.required": "@required: {{requiredValue}}",
+  "platform.properties.modal.columnHeaders.annotations.pattern": "@pattern: {{patternValue}}",
+  "platform.properties.modal.columnHeaders.annotations.password": "@password: {{passwordValue}}",
+  "platform.properties.modal.columnHeaders.annotations.comment": "@comment: {{commentValue}}",
+  "platform.properties.modal.columnHeaders.annotations.default": "@default: {{defaultValue}}"
+  
+
 }

@@ -1,4 +1,4 @@
-.properties-list-divider {
+.properties-header-divider {
     margin-bottom: 5px;
     margin-top: 10px;
 }
@@ -14,4 +14,12 @@
 
 .properties-values {
     margin-top: 5px;
+}
+
+.properties-name {
+    font-weight: bold;
+}
+
+.property-line {
+    border-bottom: 1px solid rgb(0,150,136);
 }

@@ -27,15 +27,28 @@
                     {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
                     <i class="fa fa-question-circle"></i>
                 </div>
+                <div flex="30" class="properties-headers">
+                    {{ 'platform.properties.modal.columnHeaders.annotations' | translate }}
+                    <i class="fa fa-question-circle"></i>
+                </div>
             </div>
-            <md-divider class="properties-list-divider"></md-divider>
-            <div layout="row" layout-align="space-around center"
-                ng-repeat="property in properties.key_value_properties">
-                <div flex="15" class="properties-values">{{property.name}}</div>
+            <md-divider class="properties-header-divider"></md-divider>
+            <div layout="row" class="property-line" layout-align="space-around center" ng-repeat="property in properties.key_value_properties">
+                <div flex="15" class="properties-values properties-name">{{property.name}}</div>
                 <div flex="30" class="properties-values">{{property.nbUsage}}</div>
-                <div flex="20" class="properties-values">{{property.value}}</div>
+                <div flex="20" class="properties-values">{{property.finalValue}}</div>
                 <div flex="30" class="properties-values">{{property.globalValue}}</div>
-                <div flex="30" class="properties-values">{{property.defaultValue}}</div>
+                <div flex="30" class="properties-values">{{property.storedValue}}</div>
+                <div flex="30" class="properties-values">
+                   <div flex="80" class="row">
+                       <div>{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</div>
+                       <div>{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</div>
+                       <div>{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</div>
+                       <div>{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</div>
+                       <div>{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</div>
+                   </div>
+                </div>
+                
             </div>
         </div>
     </md-dialog-content>

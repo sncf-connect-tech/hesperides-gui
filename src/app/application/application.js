@@ -289,7 +289,7 @@ angular.module('hesperides.application', [])
                         // Try to get the global properties
                         var platform = new Platform(response.data);
                         store.set('current_platform_versionID', platform.version_id || null);
-                        appService.get_properties(application_name, platform_name, '#', timestamp).then(function (properties) {
+                        appService.get_properties(application_name, platform_name, '#', {timestamp: timestamp}).then(function (properties) {
                             platform.global_properties = properties;
                         });
                         return platform;
@@ -386,10 +386,13 @@ angular.module('hesperides.application', [])
                         throw error;
                     });
                 },
-                get_properties(application_name, platform_name, path, timestamp) {
-                    var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties?path=${ encodeURIComponent(path) }`;
+                get_properties(applicationName, platformName, path, {timestamp, withDetails} = {}) {
+                    var url = `rest/applications/${ encodeURIComponent(applicationName) }/platforms/${ encodeURIComponent(platformName) }/properties?path=${ encodeURIComponent(path) }`;
                     if (timestamp) {
                         url += `&timestamp=${ timestamp }`;
+                    }
+                    if (withDetails) {
+                        url += `&with_details=${ withDetails }`;
                     }
                     return $http.get(url).then(function (response) {
                         return new Properties(response.data);
