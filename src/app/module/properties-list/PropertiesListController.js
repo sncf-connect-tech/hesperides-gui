@@ -1,7 +1,8 @@
-function PropertiesListController($scope, $mdDialog, ModuleService, ApplicationService) {
+function PropertiesListController($scope, $q, $mdDialog, ModuleService, ApplicationService) {
     var ctrl = this;
 
     $scope.properties = null;
+    $scope.oldGlobalProperties = null;
 
     $scope.getNbUsageOfGlobalProperty = function (property) {
         if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
@@ -11,30 +12,43 @@ function PropertiesListController($scope, $mdDialog, ModuleService, ApplicationS
             property.nbUsage = 0;
         }
     };
-
-    $scope.refreshGlobalPropertiesData = function () {
-        ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
-            $scope.platform.global_properties = response;
-            $scope.properties = response.mergeWithGlobalProperties($scope.platform.global_properties);            
-        });
-        ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
-            $scope.platform.global_properties_usage = response;
-        });       
-    };
-
+    
     if ($scope.platform.modules && $scope.platform.modules.length) {
-        $scope.refreshGlobalPropertiesData();
-
+        console.log('PropertiesListController $scope.platform=', $scope.platform);   
+         
+        const propertyModelsPromises = [];
+        const propertiesModulesPromies = [];
         for (module of $scope.platform.modules) {
-            ModuleService.get_model(module).then(function (model) {
-                if ($scope.properties) {
-                    $scope.properties.mergeWithModel(model);
-                }
-                for (property of $scope.properties.key_value_properties) {
-                    $scope.getNbUsageOfGlobalProperty(property);
-                }
-            });
+            propertyModelsPromises.push(ModuleService.get_model(module));
+            propertiesModulesPromies.push(ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, {withDetails: true}))
         }
+        
+        $q.all({
+            globalProperties: ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#'),
+            globalPropertyUsages: ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#'),
+            modulePropertyModels: propertyModelsPromises,
+            moduleProperties: propertiesModulesPromies
+        }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, moduleProperties }) => {
+                    
+            console.log('Properties :', moduleProperties);
+            console.log('Global properties:', globalProperties);
+            moduleProperties.forEach(function (modulePropery) {
+                modulePropery.then( function (properties) {
+                    $scope.properties = properties.mergeWithGlobalProperties(globalProperties); 
+                    modulePropertyModels.forEach(function (model) {                
+                        model.then(function(modelProperties) {
+                            $scope.properties = properties.mergeWithModel(modelProperties);                           
+                            $scope.platform.global_properties = globalProperties;
+                            $scope.platform.global_properties_usage = globalPropertyUsages;    
+                            console.log('Properties :', $scope.properties); // instance of Property 
+                            for (property of $scope.properties.key_value_properties) {
+                                $scope.getNbUsageOfGlobalProperty(property);
+                            }           
+                        });                           
+                    });                                   
+                });
+            });           
+        })
     }    
 
     $scope.closeDialog = function () {
