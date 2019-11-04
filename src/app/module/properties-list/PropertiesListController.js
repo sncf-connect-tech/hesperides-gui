@@ -3,6 +3,7 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
 
     $scope.properties = null;
     $scope.oldGlobalProperties = null;
+    $scope.onlyPropertiesWithBlankFinalValue = false;
 
     $scope.getNbUsageOfGlobalProperty = function (property) {
         if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
@@ -12,7 +13,19 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
             property.nbUsage = 0;
         }
     };
-    
+
+    $scope.displayOnlyPropertiesWithBlankFinalValue = function(property) {
+        isBlank = false;
+        if(property.finalValue==="" || property.finalValue===null) {
+            isBlank = true;
+        }
+        return $scope.onlyPropertiesWithBlankFinalValue && !isBlank;
+    }
+
+    $scope.isGlobalValuationIsDiffrentWithModuleValuation = function(property) {
+        return property.storedValue !== property.finalValue
+    } 
+
     if ($scope.platform.modules && $scope.platform.modules.length) {
         console.log('PropertiesListController $scope.platform=', $scope.platform);   
          
@@ -40,7 +53,7 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
                             $scope.properties = properties.mergeWithModel(modelProperties);                           
                             $scope.platform.global_properties = globalProperties;
                             $scope.platform.global_properties_usage = globalPropertyUsages;    
-                            console.log('Properties :', $scope.properties); // instance of Property 
+                            console.log('Properties :', $scope.properties);
                             for (property of $scope.properties.key_value_properties) {
                                 $scope.getNbUsageOfGlobalProperty(property);
                             }           

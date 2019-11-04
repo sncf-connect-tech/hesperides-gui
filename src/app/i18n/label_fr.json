@@ -345,9 +345,11 @@
   "platform.properties.modal.columnHeaders.moduleValue": "Valeur stockée",
   "platform.properties.modal.columnHeaders.annotations": "Annotations Associées",
   "platform.properties.modal.title": "Liste des propriétés de la plateforme: {{platformName}}",
+  "platform.properties.modal.button.message": "Fermer la fenêtre",
   "platform.properties.modal.columnHeaders.annotations.required": "@required: {{requiredValue}}",
   "platform.properties.modal.columnHeaders.annotations.pattern": "@pattern: {{patternValue}}",
   "platform.properties.modal.columnHeaders.annotations.password": "@password: {{passwordValue}}",
   "platform.properties.modal.columnHeaders.annotations.comment": "@comment: {{commentValue}}",
-  "platform.properties.modal.columnHeaders.annotations.default": "@default: {{defaultValue}}"
+  "platform.properties.modal.columnHeaders.annotations.default": "@default: {{defaultValue}}",
+  "platform.properties.modal.columnHeaders.switch.message": "Afficher que les propriétés avec une valeur finale vide"
 }

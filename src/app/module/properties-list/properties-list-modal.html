@@ -2,12 +2,12 @@
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2><h3 flex="50"> {{'platform.properties.modal.title' | translate : {platformName:platform.name} }}</h3></h2>
-        </div>
+            <md-switch ng-model="onlyPropertiesWithBlankFinalValue" class="md-warn md-block" aria-label="{{'platform.properties.modal.columnHeaders.switch.message' | translate}}">
+                {{'platform.properties.modal.columnHeaders.switch.message' | translate}}
+            </md-switch> 
+        </div>         
     </md-toolbar>
     <md-dialog-content>
-        <!-- <div layout="row" class="center">
-            <h3 flex="30">Titre de la dialogue à internationaliser</h3>
-        </div> -->
         <div layout="column" class="properties-conntainer">
             <div layout="row" layout-align="space-around center">
                 <div flex="15" class="properties-headers">
@@ -33,26 +33,47 @@
                 </div>
             </div>
             <md-divider class="properties-header-divider"></md-divider>
-            <div layout="row" class="property-line" layout-align="space-around center" ng-repeat="property in properties.key_value_properties">
-                <div flex="15" class="properties-values properties-name">{{property.name}}</div>
-                <div flex="30" class="properties-values">{{property.nbUsage}}</div>
-                <div flex="20" class="properties-values">{{property.finalValue}}</div>
-                <div flex="30" class="properties-values">{{property.globalValue}}</div>
-                <div flex="30" class="properties-values">{{property.storedValue}}</div>
-                <div flex="30" class="properties-values">
-                   <div flex="80" class="row">
-                       <div>{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</div>
-                       <div>{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</div>
-                       <div>{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</div>
-                       <div>{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</div>
-                       <div>{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</div>
-                   </div>
+            <div layout="row" class="property-line" layout-align="space-around center"
+                ng-repeat="property in properties.key_value_properties">
+                <div flex="15"
+                    ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
+                    ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values properties-name">
+                    {{property.name}}</div>
+                <div flex="30" ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values">
+                    {{property.nbUsage}}</div>
+                <div flex="20"
+                    ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
+                    ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values">{{property.finalValue}}
                 </div>
-                
+                <div flex="30" ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values">
+                    {{property.globalValue}}</div>
+                <div flex="30"
+                    ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
+                    ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values">{{property.storedValue}}
+                </div>
+                <div flex="30" ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values">
+                    <div flex="80" class="row">
+                        <div>
+                            {{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}
+                        </div>
+                        <div>
+                            {{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}
+                        </div>
+                        <div>
+                            {{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}
+                        </div>
+                        <div>
+                            {{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}
+                        </div>
+                        <div>
+                            {{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button ng-click="closeDialog()" class="md-raised md-primary">Close Dialog</md-button>
+        <md-button ng-click="closeDialog()" class="md-raised md-primary">{{'platform.properties.modal.button.message'| translate }}</md-button>
     </md-dialog-actions>
 </md-dialog>
