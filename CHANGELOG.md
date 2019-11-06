@@ -25,6 +25,22 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2019-10-15
+### Added
+
+- Configuration env var $PORT (#330) [Lucas Cimon]
+
+
+
+## 2019-10-10
+### Fixed
+
+- #318: Affiche la valeur de la propriété globale référencée par une proriété non valorisée dans le tooltip. [Thomas L'Hostis]
+
+- #158: filtre les propriétés valorisés pour n'afficher que celles obligatoire + correction du test e2e. [Bhoye05]
+
+
+
 ## 2019-09-27
 ### Added
 
