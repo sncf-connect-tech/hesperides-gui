@@ -15,7 +15,7 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
     };
 
     $scope.displayOnlyPropertiesWithBlankFinalValue = function(property) {
-        isBlank = false;
+        let isBlank = false;
         if(property.finalValue==="" || property.finalValue===null) {
             isBlank = true;
         }
