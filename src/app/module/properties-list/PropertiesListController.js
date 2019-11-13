@@ -1,6 +1,5 @@
-function PropertiesListController($scope, $q, $mdDialog, ModuleService, ApplicationService) {
-    var ctrl = this;
-
+function propertiesListController($scope, $q, $mdDialog, ModuleService, ApplicationService) {
+    
     $scope.properties = null;
     $scope.oldGlobalProperties = null;
     $scope.onlyPropertiesWithBlankFinalValue = false;
@@ -15,7 +14,7 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
     };
 
     $scope.displayOnlyPropertiesWithBlankFinalValue = function(property) {
-        let isBlank = false;
+        var isBlank = false;
         if(property.finalValue==="" || property.finalValue===null) {
             isBlank = true;
         }
@@ -27,11 +26,11 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
     } 
 
     if ($scope.platform.modules && $scope.platform.modules.length) {
-        console.log('PropertiesListController $scope.platform=', $scope.platform);   
+        console.log('propertiesListController $scope.platform=', $scope.platform);   
          
         const propertyModelsPromises = [];
         const propertiesModulesPromies = [];
-        for (module of $scope.platform.modules) {
+        for (const module of $scope.platform.modules) {
             propertyModelsPromises.push(ModuleService.get_model(module));
             propertiesModulesPromies.push(ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, {withDetails: true}))
         }
@@ -54,7 +53,7 @@ function PropertiesListController($scope, $q, $mdDialog, ModuleService, Applicat
                             $scope.platform.global_properties = globalProperties;
                             $scope.platform.global_properties_usage = globalPropertyUsages;    
                             console.log('Properties :', $scope.properties);
-                            for (property of $scope.properties.key_value_properties) {
+                            for (const property of $scope.properties.key_value_properties) {
                                 $scope.getNbUsageOfGlobalProperty(property);
                             }           
                         });                           
