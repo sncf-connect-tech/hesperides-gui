@@ -121,3 +121,5 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                 $mdDialog.cancel();
             };
         });
+
+        
