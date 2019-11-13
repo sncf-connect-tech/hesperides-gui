@@ -1,7 +1,7 @@
 angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 'cgNotify', 'hesperides.properties' ])
 .component('propertiesListComponent', {
     templateUrl: 'list-properties-modal.html',
-    controller: propertiesListController
+    controller: 'propertiesListController'
   });
   function propertiesListController($scope, $q, $mdDialog, ModuleService, ApplicationService) {
     
