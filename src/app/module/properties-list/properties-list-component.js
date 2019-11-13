@@ -4,7 +4,6 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
   controller: 'PropertiesListController'
 })
 .controller('PropertiesListController', 
-// eslint-disable-next-line no-unused-vars
 function ($scope, $q, $mdDialog, ModuleService, ApplicationService) {
     
   $scope.properties = null;
