@@ -33,3 +33,10 @@
 .fa-colored {
     color: red;
 }
+
+.flex-98 {
+    flex: 1 1 100%;
+    max-width: 98%;
+    max-height: 100%;
+    box-sizing: border-box;
+}
