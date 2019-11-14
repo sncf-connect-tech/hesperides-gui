@@ -33,8 +33,7 @@
                 </div>
             </div>
             <md-divider class="properties-header-divider"></md-divider>
-            <div layout="row" class="property-line" layout-align="space-around center"
-                ng-repeat="property in properties.key_value_properties">
+            <div layout="row" class="property-line" layout-align="space-around center" ng-repeat="property in properties.key_value_properties">
                 <div flex="15"
                     ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
                     ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values properties-name">
@@ -54,20 +53,12 @@
                 <div flex="30" ng-if="!displayOnlyPropertiesWithBlankFinalValue(property)" class="properties-values">
                     <div flex="80" class="row">
                         <div>
-                            {{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}
-                        </div>
-                        <div>
-                            {{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}
-                        </div>
-                        <div>
-                            {{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}
-                        </div>
-                        <div>
-                            {{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}
-                        </div>
-                        <div>
-                            {{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}
-                        </div>
+                            <span>{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</span>
+                            <span ng-if="property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
+                            <span>{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</span>
+                            <span ng-if="property.comment">{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</span>
+                            <span ng-if="property.defaultValue">{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</span>
+                        </div>                        
                     </div>
                 </div>
             </div>
