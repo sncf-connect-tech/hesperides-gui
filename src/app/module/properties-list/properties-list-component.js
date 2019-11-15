@@ -1,95 +1,106 @@
-angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 'cgNotify', 'hesperides.properties' ])
-.component('propertiesListComponent', {
-  templateUrl: 'list-properties-modal.html',
-  controller: 'PropertiesListController'
-})
-.controller('PropertiesListController', 
-function ($scope, $q, $mdDialog, ModuleService, ApplicationService) {
-    
-  $scope.properties = null;
-  $scope.oldGlobalProperties = null;
-  $scope.onlyPropertiesWithBlankFinalValue = false;
-  $scope.modulesProperties =[];
+angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', 'cgNotify', 'hesperides.properties'])
+    .component('propertiesListComponent', {
+        templateUrl: 'list-properties-modal.html',
+        controller: 'PropertiesListController'
+    })
+    .controller('PropertiesListController',
+        function ($scope, $q, $mdDialog, ModuleService, ApplicationService) {
 
-  $scope.getNbUsageOfGlobalProperty = function (property) {
-      if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
-          property.nbUsage = $scope.platform.global_properties_usage[property.name].length;
-      }
-      else {          
-          property.nbUsage = 0;
-      }
-  };
+            $scope.properties = [];
+            $scope.oldGlobalProperties = null;
+            $scope.onlyPropertiesWithBlankFinalValue = false;
+            $scope.modulesProperties = [];
+            $scope.properties.modulesProperties = [];
 
-  $scope.getNbModuleDefinitionsOfProperty = function(property) {
-    property.nbUsage = 0;
-    property.modulesWhereDefine = [];
-    $scope.properties.forEach(function(prop) {
-        if(property.name ===prop.name) {
-            property.nbUsage +=1;
-            property.modulesWhereDefine.push();
-        }
-    }) 
-  }
+            // copmpter le nombre de fois où la propriété globale a été réutilisé
+            $scope.getNbUsageOfGlobalProperty = function (property) {
+                if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
+                    property.nbUsage = $scope.platform.global_properties_usage[property.name].length;
+                }
+                else {
+                    property.nbUsage = 0;
+                }
+            };
 
-  $scope.propertyFilter = function (property) {  
-    displayAllProperties = true;     
-    if($scope.onlyPropertiesWithBlankFinalValue) {
-        displayAllProperties = (property.finalValue==="" || property.finalValue===null);
-    }
-    return displayAllProperties;
-  };
+            $scope.merpePrperties = function (properties, propertiesTomergeWith) {
 
-  $scope.isGlobalValuationIsDiffrentWithModuleValuation = function(property) {
-      return property.storedValue !== property.finalValue
-  } 
+                propertiesTomergeWith.key_value_properties.forEach(function (property) {
+                    property.modulesWhereUsed = [propertiesTomergeWith.moduleName];
+                    property.nbUsage = 1;
+                });
+                if (properties.key_value_properties) {
+                    propertiesTomergeWith.key_value_properties.forEach(function (property) {
+                        if (properties.key_value_properties.some(e => e.name === property.name)) {
+                            property.nbUsage += 1;                           
+                        } else {
+                            properties.key_value_properties.push(property);
+                        }
+                    });
+                }
+                else {
+                    console.log("undefined : ", properties.key_value_properties)
+                    properties.key_value_properties = propertiesTomergeWith.key_value_properties.slice();                    
+                }
+            }
 
-  if ($scope.platform.modules && $scope.platform.modules.length) {
-           
-      const propertyModelsPromises = [];
-      const propertiesModulesPromies = [];
-      for (const module of $scope.platform.modules) {
-          propertyModelsPromises.push(ModuleService.get_model(module));
-          propertiesModulesPromies.push(ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, {withDetails: true}))
-          propertiesModulesPromies.forEach(function(propertyPromise) {
-            propertyPromise.moduleName = module.name;
-          })
-        }
-      
-      $q.all({
-          globalProperties: ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#'),
-          globalPropertyUsages: ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#'),
-          modulePropertyModels: propertyModelsPromises,
-          moduleProperties: propertiesModulesPromies
-      }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, moduleProperties }) => {
-          moduleProperties.forEach(function (modulePropery) {
-              console.log("Module Properties : " , modulePropery);
-              modulePropery.then( function (properties) {                 
-                  $scope.properties = properties.mergeWithGlobalProperties(globalProperties);    
-                  newProperties = properties.mergeWithGlobalProperties(globalProperties);
-                  newProperties.moduleName = modulePropery.moduleName;             
-                  $scope.properties.moduleName = modulePropery.moduleName;  
-                                                
-                  modulePropertyModels.forEach(function (model) {                
-                      model.then(function(modelProperties) {
-                          $scope.properties = properties.mergeWithModel(modelProperties); 
-                          newProperties = properties.mergeWithModel(modelProperties); 
-                          $scope.modulesProperties.push(newProperties);                          
-                          $scope.platform.global_properties = globalProperties;
-                          $scope.platform.global_properties_usage = globalPropertyUsages;                    
-                          for (const property of $scope.properties.key_value_properties) {
-                              $scope.getNbUsageOfGlobalProperty(property);
-                          }   
+            $scope.propertyFilter = function (property) {
+                displayAllProperties = true;
+                if ($scope.onlyPropertiesWithBlankFinalValue) {
+                    displayAllProperties = (property.finalValue === "" || property.finalValue === null);
+                }
+                return displayAllProperties;
+            };
+
+            $scope.isGlobalValuationIsDiffrentWithModuleValuation = function (property) {
+                return property.storedValue !== property.finalValue
+            }
+
+            if ($scope.platform.modules && $scope.platform.modules.length) {
+
+                const propertyModelsPromises = [];
+                const propertiesModulesPromies = [];
+                propertiesPromises = [];
+                for (const module of $scope.platform.modules) {
+                    propertyModelsPromises.push(ModuleService.get_model(module));
+                    modulesProperties = ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, { withDetails: true })
+                    propertiesPromises.push({ moduleName: module.name, modulesProperties: modulesProperties });
+                }
+
+                $q.all({
+                    globalProperties: ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#'),
+                    globalPropertyUsages: ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#'),
+                    modulePropertyModels: propertyModelsPromises,
+                    modulesPromises: propertiesPromises
+                }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, modulesPromises }) => {
+
+                    modulesPromises.forEach(function (moduleProp) {
+                        moduleProp.modulesProperties.then(function (modulePropery) {
+                            mergedProperties = modulePropery.mergeWithGlobalProperties(globalProperties);
+                            mergedProperties.moduleName = moduleProp.moduleName;
+                            modulePropertyModels.forEach(function (model) {
+                                model.then(function (modelProperties) {
+                                    mergedProperties = modulePropery.mergeWithModel(modelProperties);
+                                    $scope.platform.global_properties = globalProperties;
+                                    $scope.platform.global_properties_usage = globalPropertyUsages;   
+                                    console.log("ModelProperties : ", modelProperties); 
+                                    console.log("mergedProperties: ",  mergedProperties);                 
+
+                                });
+                            });
                           
-                          console.log("ALL PROPERTIES : ",   $scope.modulesProperties);        
-                      });                           
-                  });                                   
-              });
-          });           
-      })
-  }    
+                            $scope.properties.modulesProperties.push({
+                                moduleName: mergedProperties.moduleName,
+                                properties: mergedProperties.key_value_properties
+                            });
+                            $scope.merpePrperties($scope.properties, mergedProperties);                           
+                        });
+                    });
+                });
+                console.log("Properties : ", $scope.properties);
+            }
 
-  $scope.closeDialog = function () {
-      $mdDialog.cancel();
-  };
+            $scope.closeDialog = function () {
+                $mdDialog.cancel();
+            };
 
-});
+        });
