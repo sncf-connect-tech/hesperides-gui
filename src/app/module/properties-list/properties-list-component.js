@@ -22,16 +22,22 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 }
             };
 
-            $scope.merpePrperties = function (properties, propertiesTomergeWith) {
+            $scope.mergeProperties = function (properties, propertiesTomergeWith) {
 
                 propertiesTomergeWith.key_value_properties.forEach(function (property) {
                     property.modulesWhereUsed = [propertiesTomergeWith.moduleName];
                     property.nbUsage = 1;
                 });
-                if (properties.key_value_properties) {
+                if (properties.key_value_properties) {                    
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
-                        if (properties.key_value_properties.some(e => e.name === property.name)) {
-                            property.nbUsage += 1;                           
+                        if (properties.key_value_properties.some(e => e.name === property.name)) {                           
+                            for (var i in properties.key_value_properties) {
+                                if (properties.key_value_properties[i].name === property.name) {
+                                  properties.key_value_properties[i].nbUsage ++; 
+                                  properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
+                                }
+                              }
+
                         } else {
                             properties.key_value_properties.push(property);
                         }
@@ -75,24 +81,24 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
 
                     modulesPromises.forEach(function (moduleProp) {
                         moduleProp.modulesProperties.then(function (modulePropery) {
+                             
                             mergedProperties = modulePropery.mergeWithGlobalProperties(globalProperties);
                             mergedProperties.moduleName = moduleProp.moduleName;
-                            modulePropertyModels.forEach(function (model) {
-                                model.then(function (modelProperties) {
-                                    mergedProperties = modulePropery.mergeWithModel(modelProperties);
-                                    $scope.platform.global_properties = globalProperties;
-                                    $scope.platform.global_properties_usage = globalPropertyUsages;   
-                                    console.log("ModelProperties : ", modelProperties); 
-                                    console.log("mergedProperties: ",  mergedProperties);                 
 
-                                });
-                            });
-                          
                             $scope.properties.modulesProperties.push({
                                 moduleName: mergedProperties.moduleName,
                                 properties: mergedProperties.key_value_properties
                             });
-                            $scope.merpePrperties($scope.properties, mergedProperties);                           
+                            $scope.mergeProperties($scope.properties, mergedProperties);
+                              
+                            modulePropertyModels.forEach(function (model) {
+                                model.then(function (modelProperties) {
+                                    mergedProperties = modulePropery.mergeWithModel(modelProperties);
+                                    $scope.platform.global_properties = globalProperties;
+                                    $scope.platform.global_properties_usage = globalPropertyUsages;          
+
+                                });
+                            });                                
                         });
                     });
                 });

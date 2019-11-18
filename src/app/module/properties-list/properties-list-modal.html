@@ -38,9 +38,11 @@
                 <div flex="15"
                     ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
                     class="properties-values properties-name">
-                    {{property.name}}</div>
+                    {{property.name}}
+                </div>
                 <div flex="30" class="properties-values">
-                    {{property.nbUsage}}</div>
+                    {{property.nbUsage}} {{property.modulesWhereUsed}}
+                </div>
                 <div flex="20"
                     ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
                     class="properties-values">{{property.finalValue}}
