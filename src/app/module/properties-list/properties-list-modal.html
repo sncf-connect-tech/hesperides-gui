@@ -57,7 +57,7 @@
                     <div flex="80" class="row">
                         <div>
                             <span ng-if="property.required">{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</span>
-                            <span ng-if="property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
+                            <span ng-if="property.pattern && property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
                             <span ng-if="property.password">{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</span>
                             <span ng-if="property.comment">{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</span>
                             <span ng-if="property.defaultValue">{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</span>
