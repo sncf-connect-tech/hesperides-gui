@@ -7,16 +7,23 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
         function ($scope, $q, $mdDialog, ModuleService, ApplicationService) {
 
             $scope.properties = [];
-            $scope.oldGlobalProperties = null;
             $scope.onlyPropertiesWithBlankFinalValue = false;
-            $scope.modulesProperties = [];
-            $scope.properties.modulesProperties = [];
-            $scope.modulePropertyModels = null;
 
-            function isEmpty(str) {
-                return (!str || 0 === str.length);
-            }
-
+            function isModelPropertiesAreModelOfGivenProperties(propertiesModel, givenProperties) {
+                var ismodelOfGivenProperties = false;                
+                if(propertiesModel.key_value_properties.length === givenProperties.key_value_properties.length) {
+                    ismodelOfGivenProperties = true;
+                    const sortedModelProperties = _.sortBy(propertiesModel.key_value_properties, 'name');
+                    const sortedGivenProperties = _.sortBy(givenProperties.key_value_properties, 'name');
+                    for(const i in sortedModelProperties) {
+                        if(sortedModelProperties[i].name !== sortedGivenProperties[i].name) {
+                            ismodelOfGivenProperties = false;
+                            break;
+                        }
+                     }
+                }                
+                return ismodelOfGivenProperties;
+             }
 
             // copmpter le nombre de fois où la propriété globale a été réutilisé
             $scope.getNbUsageOfGlobalProperty = function (property) {
@@ -36,20 +43,6 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 });
             }
             
-            $scope.isEqual = function (propertyTocompare, propertyToCompareWith) {
-                var equal = false;
-                if (propertyTocompare.name === propertyToCompareWith.name &&
-                    propertyTocompare.defaultValue === propertyToCompareWith.defaultValue &&
-                    propertyTocompare.finalValue === propertyToCompareWith.finalValue &&
-                    propertyTocompare.password === propertyToCompareWith.password &&
-                    propertyTocompare.required === propertyToCompareWith.required &&
-                    propertyTocompare.pattern === propertyToCompareWith.pattern) {
-                    equal = true;
-
-                }
-                return equal;
-            }
-
             $scope.mergeProperties = function (properties, propertiesTomergeWith) {
                 propertiesTomergeWith.key_value_properties.forEach(function (property) {
                     property.modulesWhereUsed = [propertiesTomergeWith.moduleName];
@@ -59,13 +52,10 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
                         if (properties.key_value_properties.some(e => e.name === property.name)) {
                             for (var i in properties.key_value_properties) {
-                                if ($scope.isEqual(properties.key_value_properties[i], property)) {
-                                    properties.key_value_properties[i].nbUsage++;
-                                    properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
-                                } else if(properties.key_value_properties[i].name === property.name) {
+                                if(properties.key_value_properties[i].name === property.name) {
                                     properties.key_value_properties[i].nbUsage++; 
                                     property.nbUsage ++;
-                                    properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);                                   
+                                    properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);                            
                                 }
                             }
                         } else {
@@ -79,7 +69,8 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 }
             }
 
-            $scope.propertyFilter = function (property) {
+            // filter pour afficher que les propriétés avec une valeur finale vide
+            $scope.propertyWIthBlankFinalValueFilter = function (property) {
                 displayAllProperties = true;
                 if ($scope.onlyPropertiesWithBlankFinalValue) {
                     displayAllProperties = (property.finalValue === "" || property.finalValue === null);
@@ -88,20 +79,20 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
             };
 
             $scope.isGlobalValuationIsDiffrentWithModuleValuation = function (property) {
-                var isNotEqual;
-                if (property.storedValue) {
-                    isNotEqual = property.storedValue !== property.finalValue
-                }
-                else {
-                    isNotEqual = property.finalValue !== "";
-                }
+                var isNotEqual = false;
+                if(property.valuedByAGlobal) {
+                    if (property.storedValue ) {
+                        isNotEqual = property.storedValue !== property.finalValue
+                    }
+                    else {
+                        isNotEqual = property.finalValue !== "";
+                    }
+                }                
                 return isNotEqual;
             }
 
             if ($scope.platform.modules && $scope.platform.modules.length) {
-
                 const propertyModelsPromises = [];
-                const propertiesModulesPromies = [];
                 propertiesPromises = [];
                 for (const module of $scope.platform.modules) {
                     propertyModelsPromises.push(ModuleService.get_model(module));
@@ -116,27 +107,22 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     modulesPromises: propertiesPromises
                 }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, modulesPromises }) => {
 
-                    $scope.modulePropertyModels = modulePropertyModels;
                     modulesPromises.forEach(function (moduleProp) {
-                        moduleProp.modulesProperties.then(function (modulePropery) {
-
-                            mergedProperties = modulePropery.mergeWithGlobalProperties(globalProperties);
-                            mergedProperties.moduleName = moduleProp.moduleName;
-
-                            $scope.properties.modulesProperties.push({
-                                moduleName: mergedProperties.moduleName,
-                                properties: mergedProperties.key_value_properties
+                        moduleProp.modulesProperties.then(function (moduleProperty) {
+                            moduleProperty.mergeWithGlobalProperties(globalProperties);
+                            moduleProperty.moduleName = moduleProp.moduleName;
+                            modulePropertyModels.forEach(function (modelProperty) {
+                                modelProperty.then(function (modelProperties) {
+                                    if(isModelPropertiesAreModelOfGivenProperties(modelProperties, moduleProperty)) {
+                                        moduleProperty.mergeWithModel(modelProperties);
+                                        $scope.mergeProperties($scope.properties, moduleProperty); 
+                                    }
+                                });
                             });
-
-                            $scope.platform.global_properties = globalProperties;
-                            $scope.platform.global_properties_usage = globalPropertyUsages;
-
-                                                   
-                            $scope.mergeProperties($scope.properties, mergedProperties);                                                     
-                        });
+                            console.log("module property : ", moduleProperty);
+                        });                       
                     });
                 });
-                console.log("Properties : ", $scope.properties);
             }
 
             $scope.closeDialog = function () {

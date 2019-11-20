@@ -34,7 +34,7 @@
             </div>
             <md-divider class="properties-header-divider"></md-divider>
             <div layout="row" class="property-line" layout-align="space-around center" 
-            ng-repeat="property in properties.key_value_properties | filter: propertyFilter">
+            ng-repeat="property in properties.key_value_properties | filter: propertyWIthBlankFinalValueFilter">
                 <div flex="15"
                     ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
                     class="properties-values properties-name">
