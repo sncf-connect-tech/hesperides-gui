@@ -9,7 +9,7 @@
     "@cgross/angular-notify": "^2.5.1",
     "@sentry/browser": "^5.6.3",
     "@sentry/integrations": "^5.6.1",
-    "angular": "^1.7.8",
+    "angular": "^1.7.9",
     "angular-animate": "^1.7.8",
     "angular-aria": "^1.7.8",
     "angular-dragdrop": "^1.0.5",
