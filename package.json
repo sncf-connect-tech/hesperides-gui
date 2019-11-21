@@ -7,8 +7,8 @@
   "private": true,
   "dependencies": {
     "@cgross/angular-notify": "^2.5.1",
-    "@sentry/browser": "^5.6.3",
-    "@sentry/integrations": "^5.6.1",
+    "@sentry/browser": "^5.7.0",
+    "@sentry/integrations": "^5.7.0",
     "angular": "^1.7.9",
     "angular-animate": "^1.7.8",
     "angular-aria": "^1.7.8",
@@ -28,7 +28,7 @@
     "angular-xeditable": "^0.9.0",
     "angular-xml": "^2.2.5",
     "arrive": "^2.4.1",
-    "codemirror": "^5.48.4",
+    "codemirror": "^5.49.0",
     "downloadjs": "^1.4.7",
     "font-awesome": "^4.7.0",
     "html2canvas": "^0.5.0-beta4",
@@ -65,15 +65,17 @@
     "protractor-cucumber-framework": "latest",
     "restling": "latest",
     "serve-static": "latest",
-    "webdriver-manager": "latest"
+    "webdriver-manager": "latest",
+    "chai": "latest",
+    "chai-as-promised": "latest"
   },
   "scripts": {
     "postinstall": "node bundler.js",
     "start": "grunt server",
     "lint": "eslint --fix src/app test",
     "test": "karma start test/unit/karma.conf.js",
-    "webdriver-start": "webdriver-manager update && webdriver-manager start",
+    "webdriver-start": "webdriver-manager update && webdriver-manager --verbose start",
     "e2e-tests": "protractor test/e2e/protractor-conf.js",
-    "e2e-bdd-tests": "protractor test/e2e/protractor-bdd.js"
+    "bdd-tests": "protractor test/bdd/protractor-bdd.js"
   }
 }

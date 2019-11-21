@@ -9,7 +9,6 @@
 
 .module-row-for-properties {
     width: 100%;
-    
     overflow: auto; /* pour eviter que la div ne deborde du containeur parrent et dépasser la taille maximale fixée */
 }
 

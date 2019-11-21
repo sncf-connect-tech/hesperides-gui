@@ -14,20 +14,18 @@ exports.config = {
     specs: [ 'features/**/*.feature' ],
     cucumberOpts: {
         require: [
-            'stepDefinitions/*.js',
-            'stepDefinitions/**/*.steps.js',
+            'glue/*.js',
+            'glue/scenarios/commons.steps.js',
+            'glue/scenarios/**/*.steps.js',
         ],
     },
     onPrepare() {
         global.baseUrl = 'http://user:password@localhost';
-        global.testModuleName = 'module-ptor';
-        global.testModuleVersion = '1.0';
 
-        const { Given, Then, When, Before } = require('cucumber');
+        const { Given, Then, When } = require('cucumber');
         global.Given = Given;
         global.When = When;
         global.Then = Then;
-        global.Before = Before;
 
         return browser.get(global.baseUrl);
     },
