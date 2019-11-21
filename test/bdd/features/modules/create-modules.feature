@@ -4,4 +4,4 @@ Feature: Creating modules
     When I open the menu for creating new workingcopy modules
     And I submit valid values
     Then I am redirected to the newly created module page
-    And a message inform me of its successful creation
+    And I get a the following success notification: "The working copy of the module has been created"

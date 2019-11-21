@@ -51,7 +51,7 @@ jobs:
       script:
         - npm run e2e-tests -- --suite all
 
-    - name: End-2-end BDD tests
+    - name: BDD tests
       stage: test
       services:
         - docker
@@ -68,7 +68,7 @@ jobs:
         - sudo env "PATH=$PATH" npm start &
         - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
       script:
-        - npm run e2e-bdd-tests
+        - npm run bdd-tests
 
     - name: Deploy to Docker hub
       stage: deploy

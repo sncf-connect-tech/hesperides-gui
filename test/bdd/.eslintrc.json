@@ -1,0 +1,14 @@
+{
+    "globals": {
+        "baseUrl": "readonly",
+        "browser": "readonly",
+        "Given": "readonly",
+        "When": "readonly",
+        "Then": "readonly",
+        "element": "readonly",
+        "by": "readonly"
+    },
+    "rules": {
+        "global-require": 0
+    }
+}

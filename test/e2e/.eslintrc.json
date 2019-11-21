@@ -1,19 +1,13 @@
 {
     "globals": {
         "ExpectedConditions": "readonly",
-        "Given": "readonly",
-        "When": "readonly",
-        "Then": "readonly",
-        "baseUrl": "readonly",
         "browser": "readonly",
-        "by": "readonly",
         "data": "readonly",
         "element": "readonly",
+        "by": "readonly",
         "global": "readonly",
         "hesperides_url": "readonly",
-        "protractor": "readonly",
-        "testModuleName": "readonly",
-        "testModuleVersion": "readonly"
+        "protractor": "readonly"
     },
     "rules": {
         "global-require": 0
