@@ -2,6 +2,61 @@
  * This is for testing the properties-list 'hesperides.module.propertiesList'
  */
 describe('Testing hesperides properties-list', function () {
+
+    const firstModelMock = {
+        'key_value_properties': [
+            {
+                'name': 'property_1', 'comment': '', 'required': false,
+                'defaultValue': 'DEFAULT', 'pattern': '',  'password': true,
+            },
+            {
+                'name': 'property_2', 'comment': null, 'required': false,
+                'defaultValue': '45', 'pattern': '45', 'password': false,
+            },
+        ],
+    };
+
+    const secondModelMock = {
+        'key_value_properties': [
+            {
+                'name': 'John', 'comment': '', 'required': true,
+                'defaultValue': '31', 'pattern': '',  'password': false,
+            },
+            {
+                'name': 'Doe', 'comment': null, 'required': false,
+                'defaultValue': '', 'pattern': '', 'password': false,
+            },
+        ],
+    };
+
+    // create properties mocks for the tests
+    const firstPropertiesMock = {
+        'key_value_properties': [
+            {
+                'name': 'property_1', 'value': false,                
+            },
+            {
+                'name': "property_2", 'value': true,           
+            }
+        ],
+        'moduleName': "Foo"
+    };
+
+    const secondPropertiesMock = {
+        'key_value_properties' : [
+            {
+                'name': 'property_1', 'value': '45',                  
+            },
+            {
+                'name': "property_3", 'value': "",                   
+            },
+            {
+                'name': "property_4", 'value': "42",                    
+            }
+        ],
+        'moduleName': "Bar"
+    };            
+
     // load the module to be tested
     beforeEach(angular.mock.module('hesperides.module.propertiesList'));
 
