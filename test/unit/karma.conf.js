@@ -27,6 +27,7 @@ module.exports = function (config) {
             '../../src/app/hesperides/hesperides.js',
             '../../src/app/local_changes/localChanges.js', // doit venir avant les autres fichiers dans local_changes/
             '../../src/app/properties/properties.js', // doit venir avant iterable-properties-container.js
+            '../../src/app/module/properties-list/properties-list-component.js',
             '../../src/app/*/**/*.js',
 
             // mocks

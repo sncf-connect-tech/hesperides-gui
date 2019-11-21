@@ -25,6 +25,17 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 return ismodelOfGivenProperties;
              }
 
+            function initiliseModuleNameAndNbUsageOfProperties(properties) {
+                if(properties.key_value_properties) {
+                    properties.key_value_properties.forEach(function (property) {
+                        if(!property.modulesWhereUsed) {
+                            property.modulesWhereUsed = [properties.moduleName];
+                            property.nbUsage = 1;
+                        }                  
+                    });
+                }               
+            }
+
             // copmpter le nombre de fois où la propriété globale a été réutilisé
             $scope.getNbUsageOfGlobalProperty = function (property) {
                 if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
@@ -44,10 +55,8 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
             }
             
             $scope.mergeProperties = function (properties, propertiesTomergeWith) {
-                propertiesTomergeWith.key_value_properties.forEach(function (property) {
-                    property.modulesWhereUsed = [propertiesTomergeWith.moduleName];
-                    property.nbUsage = 1;
-                });
+                initiliseModuleNameAndNbUsageOfProperties(propertiesTomergeWith);
+                initiliseModuleNameAndNbUsageOfProperties(properties);
                 if (properties.key_value_properties) {
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
                         if (properties.key_value_properties.some(e => e.name === property.name)) {
@@ -91,7 +100,7 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 return isNotEqual;
             }
 
-            if ($scope.platform.modules && $scope.platform.modules.length) {
+            if ($scope.platform && $scope.platform.modules && $scope.platform.modules.length) {
                 const propertyModelsPromises = [];
                 propertiesPromises = [];
                 for (const module of $scope.platform.modules) {
@@ -120,6 +129,7 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                                 });
                             });
                             console.log("module property : ", moduleProperty);
+                            console.log("$scope.properties : ", $scope.properties);
                         });                       
                     });
                 });
