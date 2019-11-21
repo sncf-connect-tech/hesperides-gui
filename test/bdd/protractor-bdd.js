@@ -20,7 +20,7 @@ exports.config = {
         ],
     },
     onPrepare() {
-        global.baseUrl = 'http://user:password@localhost';
+        global.baseUrl = 'http://prod:password@localhost';
 
         const { Given, Then, When } = require('cucumber');
         global.Given = Given;

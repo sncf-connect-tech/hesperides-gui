@@ -1,4 +1,4 @@
-const get = require('./getters');
+const get = require('./get');
 
 exports.clickById = async function (id) {
     await get.elementById(id).click();

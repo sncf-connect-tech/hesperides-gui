@@ -63,4 +63,5 @@ End-to-end tests :
 $ npm start
 $ npm run webdriver-start
 $ npm run e2e-tests
+$ npm run bdd-tests
 ```
