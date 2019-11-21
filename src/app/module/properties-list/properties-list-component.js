@@ -9,7 +9,7 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
             $scope.properties = [];
             $scope.onlyPropertiesWithBlankFinalValue = false;
 
-            function isModelPropertiesAreModelOfGivenProperties(propertiesModel, givenProperties) {
+            $scope.isModelPropertiesAreModelOfGivenProperties = function (propertiesModel, givenProperties) {
                 var ismodelOfGivenProperties = false;                
                 if(propertiesModel.key_value_properties.length === givenProperties.key_value_properties.length) {
                     ismodelOfGivenProperties = true;
@@ -25,7 +25,7 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 return ismodelOfGivenProperties;
              }
 
-            function initiliseModuleNameAndNbUsageOfProperties(properties) {
+             $scope.initiliseModulesWhereUsedAndNbUsageOfProperties = function (properties) {
                 if(properties.key_value_properties) {
                     properties.key_value_properties.forEach(function (property) {
                         if(!property.modulesWhereUsed) {
@@ -45,18 +45,10 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     property.nbUsage = 0;
                 }
             };
-
-            $scope.mergeWithModel = function (modulesProperties, modelPropertiesPromise) {
-                modelPropertiesPromise.forEach(function (model) {
-                    model.then(function (modelProperties) {
-                        modulesProperties.mergeWithModel(modelProperties);
-                    });
-                });
-            }
             
             $scope.mergeProperties = function (properties, propertiesTomergeWith) {
-                initiliseModuleNameAndNbUsageOfProperties(propertiesTomergeWith);
-                initiliseModuleNameAndNbUsageOfProperties(properties);
+                $scope.initiliseModulesWhereUsedAndNbUsageOfProperties(propertiesTomergeWith);
+                $scope.initiliseModulesWhereUsedAndNbUsageOfProperties(properties);
                 if (properties.key_value_properties) {
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
                         if (properties.key_value_properties.some(e => e.name === property.name)) {
@@ -122,7 +114,7 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                             moduleProperty.moduleName = moduleProp.moduleName;
                             modulePropertyModels.forEach(function (modelProperty) {
                                 modelProperty.then(function (modelProperties) {
-                                    if(isModelPropertiesAreModelOfGivenProperties(modelProperties, moduleProperty)) {
+                                    if($scope.isModelPropertiesAreModelOfGivenProperties(modelProperties, moduleProperty)) {
                                         moduleProperty.mergeWithModel(modelProperties);
                                         $scope.mergeProperties($scope.properties, moduleProperty); 
                                     }
