@@ -37,7 +37,7 @@ Ces IDs doivent uniquement être utilisé pour les tests _end-to-end_, et jamais
 
     npm run e2e-tests -- --specs test/e2e/menus/menus-spec.js --grep "$should"
 
-    npm run bdd-tests -- --specs test/bdd/features/properties/deployed-modules-properties-filtering.feature
+    npm run bdd-tests -- --specs test/bdd/features/platforms/get-platforms.feature
 
 Pour exécuter un unique test, une alternative à `--grep` est de simplement remplacer temporairement
 un appel à `it($should, function...` par `fit(...`, le "f" signifiant "focus".

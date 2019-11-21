@@ -225,6 +225,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             return (_.startsWith($scope.platform.name, 'PRD') || _.startsWith($scope.platform.name, 'PROD')) && !$scope.platform.production;
         };
 
+        $scope.productionPlatformContainsWorkingCopyModules = function () {
+            if (!$scope.platform) { // cette fonction peut être appelée avant que cette propriété ne soit initialisée
+                return false;
+            }
+            return $scope.platform.production && $scope.getPlatformWorkingCopyModules().length > 0;
+        };
+
+        $scope.getPlatformWorkingCopyModules = function () {
+            return _.filter($scope.platform.modules, { is_working_copy: true });
+        };
+
         $scope.contain_empty_module = function (box) {
             var return_value = '';
 
@@ -1234,7 +1245,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
 
-                    scope.shownOnlyRequiredProperties = function(propertyIsRequired) {                       
+                    scope.shownOnlyRequiredProperties = function(propertyIsRequired) {
                        return scope.onlyRequiredPropertiesSwitchChanged && !propertyIsRequired;
                     };
                 },
@@ -1877,7 +1888,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             ],
         };
     })
-    
+
 
     /**
      * This directive is for filtering only the no global properties.

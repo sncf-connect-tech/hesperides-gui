@@ -1,6 +1,6 @@
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
-const get = require('./getters');
+const get = require('./get');
 
 exports.checkSuccessNotification = async function (message) {
     const elements = get.elementsByCss('.cg-notify-message.success');

@@ -138,6 +138,16 @@
     <div layout="row" ng-show="is_prod_flag_missing()">
         <h4 class="contain_empty_module"><i class="fa fa-exclamation-triangle"></i>{{ 'properties.platform.prodFlagMissing' | translate }}</h4>
     </div>
+    <div layout="row" ng-if="productionPlatformContainsWorkingCopyModules()" id="e2e-warning-production-platform-contains-workingcopy-modules">
+        <h4 class="contain_empty_module">
+            <i class="fa fa-exclamation-triangle"></i>{{ 'properties.platform.prodPlatformWorkingCopyModules' | translate: {workingCopyModulesCount: getPlatformWorkingCopyModules().length} }}
+            <ul>
+                <li ng-repeat="workingCopyModule in getPlatformWorkingCopyModules()">
+                    {{workingCopyModule.properties_path}}
+                </li>
+            </ul>
+        </h4>
+    </div>
     <div layout="row">
         <div flex="none">
             <md-button id="e2e-properties-show-tree-mode-button" ng-click="treeModeShow()" ng-class="{'md-raised':tree}"
