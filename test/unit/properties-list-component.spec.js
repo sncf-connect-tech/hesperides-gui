@@ -21,11 +21,11 @@ describe('Testing hesperides properties-list', function () {
         'key_value_properties': [
             {
                 'name': 'John', 'comment': '', 'required': true,
-                'defaultValue': '31', 'pattern': '',  'password': false,
+                'defaultValue': '31', 'pattern': '',  'password': false
             },
             {
                 'name': 'Doe', 'comment': null, 'required': false,
-                'defaultValue': '', 'pattern': '', 'password': false,
+                'defaultValue': '', 'pattern': '', 'password': false
             },
         ],
     };
@@ -34,10 +34,10 @@ describe('Testing hesperides properties-list', function () {
     const firstPropertiesMock = {
         'key_value_properties': [
             {
-                'name': 'property_1', 'value': false,                
+                'name': 'property_1', 'value': 'foo',                
             },
             {
-                'name': "property_2", 'value': true,           
+                'name': "property_2", 'value': 'bar',           
             }
         ],
         'moduleName': "Foo"
@@ -125,6 +125,34 @@ describe('Testing hesperides properties-list', function () {
             expect(firstPropertiesToMerge.key_value_properties.length).toEqual(4);
             expect(firstPropertiesToMerge.key_value_properties[0].modulesWhereUsed).toEqual(['Foo', 'Bar']);
             expect(firstPropertiesToMerge.key_value_properties[0].nbUsage).toEqual(2);
+        });
+    });
+
+    // Testing merge with model
+    describe('Testing the properties mergeWithModel method', function() {
+
+        let scope = null;
+        let Properties = null;
+
+        beforeEach(inject(function ($rootScope, $controller, _Properties_) {
+            scope = $rootScope.$new();              
+            $controller('PropertiesListController', { $scope: scope }); 
+            Properties = _Properties_;          
+        }));
+
+        it('should check that all the properties are valued by model properties', function() {
+            propertiesModel = new Properties(angular.copy(firstModelMock));
+            properties = new Properties(angular.copy(firstPropertiesMock));
+            properties.mergeWithModel(propertiesModel);
+            expect(properties.key_value_properties.length).toEqual(2);
+            expect(properties.key_value_properties[0])
+                .toEqual(jasmine.objectContaining({ name: 'property_1', value: 'foo', 
+                    filtrable_value: 'foo', inModel: true, required: false, password: true, 
+                    defaultValue: 'DEFAULT', pattern: '', tooltip: '[default=DEFAULT]  *password*' }));
+            expect(properties.key_value_properties[1])
+                .toEqual(jasmine.objectContaining({ name: 'property_2', value: 'bar', 
+                    filtrable_value: 'bar', inModel: true, required: false, password: false, 
+                    defaultValue: '45', pattern: '45', tooltip: '[default=45]  [pattern=45] ' }));
         });
     });
 });

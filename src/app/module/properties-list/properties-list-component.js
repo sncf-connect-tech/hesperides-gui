@@ -16,8 +16,8 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     ismodelOfGivenProperties = true;
                     const sortedModelProperties = _.sortBy(propertiesModel.key_value_properties, 'name');
                     const sortedGivenProperties = _.sortBy(givenProperties.key_value_properties, 'name');
-                    for (const i in sortedModelProperties) {
-                        if (sortedModelProperties[i].name !== sortedGivenProperties[i].name) {
+                    for (const property in sortedModelProperties) {
+                        if (sortedModelProperties[property].name !== sortedGivenProperties[property].name) {
                             ismodelOfGivenProperties = false;
                             break;
                         }
@@ -52,12 +52,12 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 $scope.initModulesWhereUsedAndNbUsageOfProperties(properties);
                 if (properties.key_value_properties) {
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
-                        if (properties.key_value_properties.some(e => e.name === property.name)) {
-                            for (var i in properties.key_value_properties) {
-                                if (properties.key_value_properties[i].name === property.name) {
-                                    properties.key_value_properties[i].nbUsage++;
+                        if (properties.key_value_properties.some(element => element.name === property.name)) {
+                            for (var key_value in properties.key_value_properties) {
+                                if (properties.key_value_properties[ key_value].name === property.name) {
+                                    properties.key_value_properties[ key_value].nbUsage++;
                                     property.nbUsage++;
-                                    properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
+                                    properties.key_value_properties[ key_value].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
                                 }
                             }
                         } else {
@@ -72,7 +72,7 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
 
             // filter pour afficher que les propriétés avec une valeur finale vide
             $scope.propertyWIthBlankFinalValueFilter = function (property) {
-                displayAllProperties = true;
+                var displayAllProperties = true;
                 if ($scope.onlyPropertiesWithBlankFinalValue) {
                     displayAllProperties = (property.finalValue === "" || property.finalValue === null);
                 }
@@ -94,10 +94,10 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
 
             if ($scope.platform && $scope.platform.modules && $scope.platform.modules.length) {
                 const propertyModelsPromises = [];
-                propertiesPromises = [];
+                const propertiesPromises = [];
                 for (const module of $scope.platform.modules) {
                     propertyModelsPromises.push(ModuleService.get_model(module));
-                    modulesProperties = ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, { withDetails: true })
+                    const modulesProperties = ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, { withDetails: true })
                     propertiesPromises.push({ moduleName: module.name, modulesProperties: modulesProperties });
                 }
 
