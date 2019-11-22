@@ -3,6 +3,7 @@
  */
 describe('Testing hesperides properties-list', function () {
 
+ // create model properties mocks for the tests
     const firstModelMock = {
         'key_value_properties': [
             {
