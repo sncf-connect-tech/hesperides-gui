@@ -1,11 +1,10 @@
-angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', 'cgNotify', 'hesperides.properties'])
+angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 'cgNotify', 'hesperides.properties' ])
     .component('propertiesListComponent', {
         templateUrl: 'list-properties-modal.html',
-        controller: 'PropertiesListController'
+        controller: 'PropertiesListController',
     })
     .controller('PropertiesListController',
         function ($scope, $q, $mdDialog, ModuleService, ApplicationService) {
-
             $scope.properties = [];
             $scope.onlyPropertiesWithBlankFinalValue = false;
             $scope.propertiesKeyFilter = '';
@@ -24,25 +23,24 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     }
                 }
                 return ismodelOfGivenProperties;
-            }
+            };
 
             $scope.initModulesWhereUsedAndNbUsageOfProperties = function (properties) {
                 if (properties.key_value_properties) {
                     properties.key_value_properties.forEach(function (property) {
                         if (!property.modulesWhereUsed) {
-                            property.modulesWhereUsed = [properties.moduleName];
+                            property.modulesWhereUsed = [ properties.moduleName ];
                             property.nbUsage = 1;
                         }
                     });
                 }
-            }
+            };
 
             // copmpter le nombre de fois où la propriété globale a été réutilisé
             $scope.getNbUsageOfGlobalProperty = function (property) {
                 if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
                     property.nbUsage = $scope.platform.global_properties_usage[property.name].length;
-                }
-                else {
+                } else {
                     property.nbUsage = 0;
                 }
             };
@@ -52,29 +50,28 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 $scope.initModulesWhereUsedAndNbUsageOfProperties(properties);
                 if (properties.key_value_properties) {
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
-                        if (properties.key_value_properties.some(element => element.name === property.name)) {
+                        if (properties.key_value_properties.some((element) => element.name === property.name)) {
                             for (var key_value in properties.key_value_properties) {
-                                if (properties.key_value_properties[ key_value].name === property.name) {
-                                    properties.key_value_properties[ key_value].nbUsage++;
+                                if (properties.key_value_properties[key_value].name === property.name) {
+                                    properties.key_value_properties[key_value].nbUsage++;
                                     property.nbUsage++;
-                                    properties.key_value_properties[ key_value].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
+                                    properties.key_value_properties[key_value].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
                                 }
                             }
                         } else {
                             properties.key_value_properties.push(property);
                         }
                     });
-                }
-                else {
+                } else {
                     properties.key_value_properties = propertiesTomergeWith.key_value_properties.slice();
                 }
-            }
+            };
 
             // filter pour afficher que les propriétés avec une valeur finale vide
             $scope.propertyWIthBlankFinalValueFilter = function (property) {
                 var displayAllProperties = true;
                 if ($scope.onlyPropertiesWithBlankFinalValue) {
-                    displayAllProperties = (property.finalValue === "" || property.finalValue === null);
+                    displayAllProperties = (property.finalValue === '' || property.finalValue === null);
                 }
                 return displayAllProperties;
             };
@@ -83,31 +80,32 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                 var isNotEqual = false;
                 if (property.valuedByAGlobal) {
                     if (property.storedValue) {
-                        isNotEqual = property.storedValue !== property.finalValue
-                    }
-                    else {
-                        isNotEqual = property.finalValue !== "";
+                        isNotEqual = property.storedValue !== property.finalValue;
+                    } else {
+                        isNotEqual = property.finalValue !== '';
                     }
                 }
                 return isNotEqual;
-            }
+            };
 
-            if ($scope.platform && $scope.platform.modules && $scope.platform.modules.length) {
+            if ($scope.platform && _.get($scope.platform, 'modules')) {
                 const propertyModelsPromises = [];
                 const propertiesPromises = [];
                 for (const module of $scope.platform.modules) {
                     propertyModelsPromises.push(ModuleService.get_model(module));
-                    const modulesProperties = ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, module.properties_path, { withDetails: true })
-                    propertiesPromises.push({ moduleName: module.name, modulesProperties: modulesProperties });
+                    const properties = ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name,
+                        module.properties_path, { withDetails: true });
+                    propertiesPromises.push({ moduleName: module.name, modulesProperties: properties });
                 }
 
                 $q.all({
                     globalProperties: ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#'),
                     globalPropertyUsages: ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#'),
                     modulePropertyModels: propertyModelsPromises,
-                    modulesPromises: propertiesPromises
+                    modulesPromises: propertiesPromises,
                 }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, modulesPromises }) => {
-
+                    console.log('Global properties', globalProperties);
+                    $scope.platform.globalPropertyUsages = globalPropertyUsages;
                     modulesPromises.forEach(function (moduleProp) {
                         moduleProp.modulesProperties.then(function (moduleProperty) {
                             moduleProperty.mergeWithGlobalProperties(globalProperties);
@@ -120,8 +118,8 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                                     }
                                 });
                             });
-                            console.log("module property : ", moduleProperty);
-                            console.log("$scope.properties : ", $scope.properties);
+                            console.log('module property : ', moduleProperty);
+                            console.log('$scope.properties : ', $scope.properties);
                         });
                     });
                 });
