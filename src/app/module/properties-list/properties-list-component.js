@@ -8,32 +8,33 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
 
             $scope.properties = [];
             $scope.onlyPropertiesWithBlankFinalValue = false;
+            $scope.propertiesKeyFilter = '';
 
             $scope.isModelPropertiesAreModelOfGivenProperties = function (propertiesModel, givenProperties) {
-                var ismodelOfGivenProperties = false;                
-                if(propertiesModel.key_value_properties.length === givenProperties.key_value_properties.length) {
+                var ismodelOfGivenProperties = false;
+                if (propertiesModel.key_value_properties.length === givenProperties.key_value_properties.length) {
                     ismodelOfGivenProperties = true;
                     const sortedModelProperties = _.sortBy(propertiesModel.key_value_properties, 'name');
                     const sortedGivenProperties = _.sortBy(givenProperties.key_value_properties, 'name');
-                    for(const i in sortedModelProperties) {
-                        if(sortedModelProperties[i].name !== sortedGivenProperties[i].name) {
+                    for (const i in sortedModelProperties) {
+                        if (sortedModelProperties[i].name !== sortedGivenProperties[i].name) {
                             ismodelOfGivenProperties = false;
                             break;
                         }
-                     }
-                }                
+                    }
+                }
                 return ismodelOfGivenProperties;
-             }
+            }
 
-             $scope.initiliseModulesWhereUsedAndNbUsageOfProperties = function (properties) {
-                if(properties.key_value_properties) {
+            $scope.initModulesWhereUsedAndNbUsageOfProperties = function (properties) {
+                if (properties.key_value_properties) {
                     properties.key_value_properties.forEach(function (property) {
-                        if(!property.modulesWhereUsed) {
+                        if (!property.modulesWhereUsed) {
                             property.modulesWhereUsed = [properties.moduleName];
                             property.nbUsage = 1;
-                        }                  
+                        }
                     });
-                }               
+                }
             }
 
             // copmpter le nombre de fois où la propriété globale a été réutilisé
@@ -45,18 +46,18 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     property.nbUsage = 0;
                 }
             };
-            
+
             $scope.mergeProperties = function (properties, propertiesTomergeWith) {
-                $scope.initiliseModulesWhereUsedAndNbUsageOfProperties(propertiesTomergeWith);
-                $scope.initiliseModulesWhereUsedAndNbUsageOfProperties(properties);
+                $scope.initModulesWhereUsedAndNbUsageOfProperties(propertiesTomergeWith);
+                $scope.initModulesWhereUsedAndNbUsageOfProperties(properties);
                 if (properties.key_value_properties) {
                     propertiesTomergeWith.key_value_properties.forEach(function (property) {
                         if (properties.key_value_properties.some(e => e.name === property.name)) {
                             for (var i in properties.key_value_properties) {
-                                if(properties.key_value_properties[i].name === property.name) {
-                                    properties.key_value_properties[i].nbUsage++; 
-                                    property.nbUsage ++;
-                                    properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);                            
+                                if (properties.key_value_properties[i].name === property.name) {
+                                    properties.key_value_properties[i].nbUsage++;
+                                    property.nbUsage++;
+                                    properties.key_value_properties[i].modulesWhereUsed.push(propertiesTomergeWith.moduleName);
                                 }
                             }
                         } else {
@@ -65,7 +66,6 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                     });
                 }
                 else {
-                    //console.log("undefined : ", properties.key_value_properties)
                     properties.key_value_properties = propertiesTomergeWith.key_value_properties.slice();
                 }
             }
@@ -81,14 +81,14 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
 
             $scope.isGlobalValuationIsDiffrentWithModuleValuation = function (property) {
                 var isNotEqual = false;
-                if(property.valuedByAGlobal) {
-                    if (property.storedValue ) {
+                if (property.valuedByAGlobal) {
+                    if (property.storedValue) {
                         isNotEqual = property.storedValue !== property.finalValue
                     }
                     else {
                         isNotEqual = property.finalValue !== "";
                     }
-                }                
+                }
                 return isNotEqual;
             }
 
@@ -114,15 +114,15 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
                             moduleProperty.moduleName = moduleProp.moduleName;
                             modulePropertyModels.forEach(function (modelProperty) {
                                 modelProperty.then(function (modelProperties) {
-                                    if($scope.isModelPropertiesAreModelOfGivenProperties(modelProperties, moduleProperty)) {
+                                    if ($scope.isModelPropertiesAreModelOfGivenProperties(modelProperties, moduleProperty)) {
                                         moduleProperty.mergeWithModel(modelProperties);
-                                        $scope.mergeProperties($scope.properties, moduleProperty); 
+                                        $scope.mergeProperties($scope.properties, moduleProperty);
                                     }
                                 });
                             });
                             console.log("module property : ", moduleProperty);
                             console.log("$scope.properties : ", $scope.properties);
-                        });                       
+                        });
                     });
                 });
             }
@@ -130,5 +130,4 @@ angular.module('hesperides.module.propertiesList', ['hesperides.localChanges', '
             $scope.closeDialog = function () {
                 $mdDialog.cancel();
             };
-
         });

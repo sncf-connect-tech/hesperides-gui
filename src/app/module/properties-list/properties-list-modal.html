@@ -1,13 +1,23 @@
-<md-dialog flex="98" aria-label="Titre de la dialogue à internationaliser">
+<md-dialog flex="98">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2><h3 flex="50"> {{'platform.properties.modal.title' | translate : {platformName:platform.name} }}</h3></h2>
-            <md-switch ng-model="onlyPropertiesWithBlankFinalValue" class="md-warn md-block" aria-label="{{'platform.properties.modal.columnHeaders.switch.message' | translate}}">
+            <h2>
+                <h3 flex="50"> {{'platform.properties.modal.title' | translate : {platformName:platform.name} }}</h3>
+            </h2>
+            <md-switch ng-model="onlyPropertiesWithBlankFinalValue" class="md-warn md-block"
+                aria-label="{{'platform.properties.modal.columnHeaders.switch.message' | translate}}">
                 {{'platform.properties.modal.columnHeaders.switch.message' | translate}}
-            </md-switch> 
-        </div>         
+            </md-switch>
+        </div>
     </md-toolbar>
     <md-dialog-content>
+        <div flex="50" class="properties-filter">
+            <md-input-container class="filter-block">
+                <label>{{ 'properties.filter.byKey' | translate }}</label>
+                <input type="text" ng-trim="true" ng-model="propertiesKeyFilter"
+                    aria-label="{{ 'properties.filter.byKey' | translate }}" />
+            </md-input-container>
+        </div>
         <div layout="column" class="properties-conntainer">
             <div layout="row" layout-align="space-around center">
                 <div flex="15" class="properties-headers">
@@ -33,8 +43,8 @@
                 </div>
             </div>
             <md-divider class="properties-header-divider"></md-divider>
-            <div layout="row" class="property-line" layout-align="space-around center" 
-            ng-repeat="property in properties.key_value_properties | filter: propertyWIthBlankFinalValueFilter">
+            <div layout="row" class="property-line" layout-align="space-around center"
+                ng-repeat="property in properties.key_value_properties | filter: propertyWIthBlankFinalValueFilter | filter: {'name': propertiesKeyFilter}">
                 <div flex="15"
                     ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
                     class="properties-values properties-name">
@@ -56,18 +66,24 @@
                 <div flex="30" class="properties-values">
                     <div flex="80" class="row">
                         <div>
-                            <span ng-if="property.required">{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</span>
-                            <span ng-if="property.pattern && property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
-                            <span ng-if="property.password">{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</span>
-                            <span ng-if="property.comment">{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</span>
-                            <span ng-if="property.defaultValue">{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</span>
-                        </div>                        
+                            <span
+                                ng-if="property.required">{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</span>
+                            <span
+                                ng-if="property.pattern && property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
+                            <span
+                                ng-if="property.password">{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</span>
+                            <span
+                                ng-if="property.comment">{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</span>
+                            <span
+                                ng-if="property.defaultValue">{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button ng-click="closeDialog()" class="md-raised md-primary">{{'platform.properties.modal.button.message'| translate }}</md-button>
+        <md-button ng-click="closeDialog()" class="md-raised md-primary">
+            {{'platform.properties.modal.button.message'| translate }}</md-button>
     </md-dialog-actions>
 </md-dialog>

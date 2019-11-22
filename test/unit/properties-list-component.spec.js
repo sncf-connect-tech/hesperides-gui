@@ -3,6 +3,7 @@
  */
 describe('Testing hesperides properties-list', function () {
 
+ // create model properties mocks for the tests
     const firstModelMock = {
         'key_value_properties': [
             {
@@ -60,8 +61,8 @@ describe('Testing hesperides properties-list', function () {
     // load the module to be tested
     beforeEach(module('hesperides.module.propertiesList'));
 
-     // Testing the initialise modulesWhereUsedAnNBusage of property
-    describe('Testing the initiliseModuleNameAndNbUsageOfProperties', function() {
+    describe('Testing the isModelPropertiesAreModelOfGivenProperties', function() {
+
         let scope = null;
         let Properties = null;
 
@@ -72,7 +73,7 @@ describe('Testing hesperides properties-list', function () {
             Properties = _Properties_;          
         }));
 
-        it('should initialise propertiesToMerge.moduleWhereUsed and propertiesToMerge.nbUsage', function () {  
+        it('should test if modelProperties is a model of given properties', function () {  
 
             properties = new Properties(angular.copy(firstPropertiesMock)); 
             firstModelProperties = new Properties(angular.copy(firstModelMock));
@@ -82,29 +83,26 @@ describe('Testing hesperides properties-list', function () {
         });
     });
 
+    describe('Testing initModulesWhereUsedAndNbUsageOfProperties', function() {
 
-    describe('Testing the isModelPropertiesAreModelOfGivenProperties', function() {
         let scope = null;
         let Properties = null;
 
         beforeEach(inject(function ($rootScope, $controller, _Properties_) {
-            // new scope and test data
             scope = $rootScope.$new();              
             $controller('PropertiesListController', { $scope: scope }); 
             Properties = _Properties_;          
         }));
 
-        it('should test if model is a model of properties', function () {  
+        it('should test initialization of nbUsage and modules where property is used', function () {  
 
             propertiesToMerge = (new Properties(angular.copy(firstPropertiesMock)));
-
-            scope.initiliseModulesWhereUsedAndNbUsageOfProperties(propertiesToMerge);
+            scope.initModulesWhereUsedAndNbUsageOfProperties(propertiesToMerge);
             expect(propertiesToMerge.key_value_properties.length).toEqual(2);
             expect(propertiesToMerge.key_value_properties[0].modulesWhereUsed).toEqual(["Foo"]);
             expect(propertiesToMerge.key_value_properties[0].nbUsage).toEqual(1);
         });
     });
-
 
     // Testing merge properties
     describe('Testing the MergeProperties', function () {      
@@ -113,7 +111,6 @@ describe('Testing hesperides properties-list', function () {
         let Properties = null;
 
         beforeEach(inject(function ($rootScope, $controller, _Properties_) {
-            // new scope and test data
             scope = $rootScope.$new();              
             $controller('PropertiesListController', { $scope: scope }); 
             Properties = _Properties_;          
@@ -121,14 +118,10 @@ describe('Testing hesperides properties-list', function () {
 
         // tests
         it('should check that all the properties have been merged without duplication key (name)', function () {
-            // Create properties
+
             firstPropertiesToMerge = new Properties(angular.copy(firstPropertiesMock));           
             secondPropertiesToMerge = new Properties(angular.copy(secondPropertiesMock)); 
-
-            // Execute methode to test
             scope.mergeProperties(firstPropertiesToMerge, secondPropertiesToMerge); 
-
-            // Validating merge of two properties is successfull
             expect(firstPropertiesToMerge.key_value_properties.length).toEqual(4);
             expect(firstPropertiesToMerge.key_value_properties[0].modulesWhereUsed).toEqual(['Foo', 'Bar']);
             expect(firstPropertiesToMerge.key_value_properties[0].nbUsage).toEqual(2);
