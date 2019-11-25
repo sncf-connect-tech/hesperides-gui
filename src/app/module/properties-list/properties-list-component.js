@@ -25,6 +25,8 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                 return ismodelOfGivenProperties;
             };
 
+            // initialise le nombre d'utilisation d'une propriété dans un module, et
+            // le nom des modules où la propriété est utilisé
             $scope.initModulesWhereUsedAndNbUsageOfProperties = function (properties) {
                 if (properties.key_value_properties) {
                     properties.key_value_properties.forEach(function (property) {
