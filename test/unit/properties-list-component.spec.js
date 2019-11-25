@@ -191,7 +191,6 @@ describe('Testing hesperides properties-list', function () {
             const globalProperties = new Properties(angular.copy(globalPropertiesMock));
             const properties = new Properties(angular.copy(thirdPropertiesMock));
             properties.mergeWithGlobalProperties(globalProperties);
-            console.log(properties.key_value_properties[1]);
             expect(properties.key_value_properties[0])
                 .toEqual(jasmine.objectContaining({ name: 'property_1', value: 'foo',
                     valuedByAGlobal: false, filtrable_value: 'foo', globalsUsed: {}, tooltip: '' }));

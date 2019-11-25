@@ -104,7 +104,6 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                     modulePropertyModels: propertyModelsPromises,
                     modulesPromises: propertiesPromises,
                 }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, modulesPromises }) => {
-                    console.log('Global properties', globalProperties);
                     $scope.platform.globalPropertyUsages = globalPropertyUsages;
                     modulesPromises.forEach(function (moduleProp) {
                         moduleProp.modulesProperties.then(function (moduleProperty) {
@@ -118,8 +117,6 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                                     }
                                 });
                             });
-                            console.log('module property : ', moduleProperty);
-                            console.log('$scope.properties : ', $scope.properties);
                         });
                     });
                 });

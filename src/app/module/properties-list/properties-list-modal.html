@@ -4,20 +4,21 @@
             <h2>
                 <h3 flex="50"> {{'platform.properties.modal.title' | translate : {platformName:platform.name} }}</h3>
             </h2>
+            <div flex="40" class="properties-filter">
+                <md-input-container class="filter-block">
+                    <label class="filter-label-style">{{ 'properties.filter.byKey' | translate }}</label>
+                    <input type="text" class="filter-input-style" ng-trim="true" ng-model="propertiesKeyFilter"
+                        aria-label="{{ 'properties.filter.byKey' | translate }}" />
+                </md-input-container>
+            </div>
             <md-switch ng-model="onlyPropertiesWithBlankFinalValue" class="md-warn md-block"
                 aria-label="{{'platform.properties.modal.columnHeaders.switch.message' | translate}}">
-                {{'platform.properties.modal.columnHeaders.switch.message' | translate}}
+                <span class="switch-label-style">{{'platform.properties.modal.columnHeaders.switch.message' | translate}}</span>
             </md-switch>
+            
         </div>
     </md-toolbar>
-    <md-dialog-content>
-        <div flex="50" class="properties-filter">
-            <md-input-container class="filter-block">
-                <label>{{ 'properties.filter.byKey' | translate }}</label>
-                <input type="text" ng-trim="true" ng-model="propertiesKeyFilter"
-                    aria-label="{{ 'properties.filter.byKey' | translate }}" />
-            </md-input-container>
-        </div>
+    <md-dialog-content>        
         <div layout="column" class="properties-conntainer">
             <div layout="row" layout-align="space-around center">
                 <div flex="15" class="properties-headers">
