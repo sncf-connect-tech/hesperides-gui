@@ -88,7 +88,7 @@ describe('Testing hesperides properties-list', function () {
     // load the module to be tested
     beforeEach(module('hesperides.module.propertiesList'));
 
-    describe('Testing the isModelPropertiesAreModelOfGivenProperties', function () {
+    describe('Testing if  modelProperties are model of givenProperties', function () {
         let scope = null;
         let Properties = null;
 
@@ -99,12 +99,12 @@ describe('Testing hesperides properties-list', function () {
             Properties = _Properties_;
         }));
 
-        it('should test if modelProperties is a model of given properties', function () {
+        it('should verify that, all property names from modelProperties are equals to all property names from properties', function () {
             const properties = new Properties(angular.copy(firstPropertiesMock));
             const firstModelProperties = new Properties(angular.copy(firstModelMock));
-            expect(scope.isModelPropertiesAreModelOfGivenProperties(firstModelProperties, properties)).toEqual(true);
+            expect(scope.allPropertiesNameEquals(firstModelProperties, properties)).toEqual(true);
             const secondModelProperties = new Properties(angular.copy(secondModelMock));
-            expect(scope.isModelPropertiesAreModelOfGivenProperties(secondModelProperties, properties)).toEqual(false);
+            expect(scope.allPropertiesNameEquals(secondModelProperties, properties)).toEqual(false);
         });
     });
 

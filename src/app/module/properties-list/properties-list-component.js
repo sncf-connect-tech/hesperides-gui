@@ -9,20 +9,12 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
             $scope.onlyPropertiesWithBlankFinalValue = false;
             $scope.propertiesKeyFilter = '';
 
-            $scope.isModelPropertiesAreModelOfGivenProperties = function (propertiesModel, givenProperties) {
-                var ismodelOfGivenProperties = false;
-                if (propertiesModel.key_value_properties.length === givenProperties.key_value_properties.length) {
-                    ismodelOfGivenProperties = true;
-                    const sortedModelProperties = _.sortBy(propertiesModel.key_value_properties, 'name');
-                    const sortedGivenProperties = _.sortBy(givenProperties.key_value_properties, 'name');
-                    for (const property in sortedModelProperties) {
-                        if (sortedModelProperties[property].name !== sortedGivenProperties[property].name) {
-                            ismodelOfGivenProperties = false;
-                            break;
-                        }
-                    }
-                }
-                return ismodelOfGivenProperties;
+            function allPropertyNamesEqual(leftProperties, rightProperties) {
+                return _.isEqual(new Set(_.map(leftProperties, 'name')), new Set(_.map(rightProperties, 'name')));
+            }
+
+            $scope.allPropertiesNameEquals = function (propertiesModel, givenProperties) {
+                return allPropertyNamesEqual(propertiesModel.key_value_properties, givenProperties.key_value_properties);
             };
 
             // initialise le nombre d'utilisation d'une propriété dans un module, et
@@ -35,15 +27,6 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                             property.nbUsage = 1;
                         }
                     });
-                }
-            };
-
-            // copmpter le nombre de fois où la propriété globale a été réutilisé
-            $scope.getNbUsageOfGlobalProperty = function (property) {
-                if ($scope.platform.global_properties_usage && property.valuedByAGlobal) {
-                    property.nbUsage = $scope.platform.global_properties_usage[property.name].length;
-                } else {
-                    property.nbUsage = 0;
                 }
             };
 
@@ -69,7 +52,7 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                 }
             };
 
-            // filter pour afficher que les propriétés avec une valeur finale vide
+            // filter pour afficher uniquement les propriétés avec une valeur finale vide
             $scope.propertyWIthBlankFinalValueFilter = function (property) {
                 var displayAllProperties = true;
                 if ($scope.onlyPropertiesWithBlankFinalValue) {
@@ -103,17 +86,17 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                 $q.all({
                     globalProperties: ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#'),
                     globalPropertyUsages: ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#'),
-                    modulePropertyModels: propertyModelsPromises,
-                    modulesPromises: propertiesPromises,
-                }).then(({ globalProperties, globalPropertyUsages, modulePropertyModels, modulesPromises }) => {
+                    modelPropertyValuesPromises: propertyModelsPromises,
+                    modulePropertyValuesPromises: propertiesPromises,
+                }).then(({ globalProperties, globalPropertyUsages, modelPropertyValuesPromises, modulePropertyValuesPromises }) => {
                     $scope.platform.globalPropertyUsages = globalPropertyUsages;
-                    modulesPromises.forEach(function (moduleProp) {
-                        moduleProp.modulesProperties.then(function (moduleProperty) {
+                    modulePropertyValuesPromises.forEach(function (moduleProperties) {
+                        moduleProperties.modulesProperties.then(function (moduleProperty) {
                             moduleProperty.mergeWithGlobalProperties(globalProperties);
-                            moduleProperty.moduleName = moduleProp.moduleName;
-                            modulePropertyModels.forEach(function (modelProperty) {
+                            moduleProperty.moduleName = moduleProperties.moduleName;
+                            modelPropertyValuesPromises.forEach(function (modelProperty) {
                                 modelProperty.then(function (modelProperties) {
-                                    if ($scope.isModelPropertiesAreModelOfGivenProperties(modelProperties, moduleProperty)) {
+                                    if ($scope.allPropertiesNameEquals(modelProperties, moduleProperty)) {
                                         moduleProperty.mergeWithModel(modelProperties);
                                         $scope.mergeProperties($scope.properties, moduleProperty);
                                     }

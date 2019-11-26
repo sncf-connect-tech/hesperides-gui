@@ -121,7 +121,7 @@
   "platform.modal.applicationVersion.placeholder": "Cette information est purement indicative et pourra être changée par la suite",
   "platform.modal.isProduction": "Est-ce une plateforme de production ?",
   "platform.modal.properties.tooltip": "Fournir la liste des propriétés d'une plateforme avec valeur par défaut",
-  "platform.properties.list": "Liste des propriétés",
+  "platform.properties.list": "Liste des propriétés de la plateforme",
   "platform.modalFrom.title": "Nouvelle plateforme à partir d'une existante",
   "platform.modalFrom.needCopy": "Copie complète (valorisations, instances)",
   "platform.modalFrom.overrideExisting": "{{application_name}}-{{platform_name}} existe déjà, en activant ce switch, je vais ecraser les données sur cette plateforme",
@@ -338,12 +338,12 @@
   "user.profile.desc.perAppRoles": "Vous avez les droits de <strong>production</strong> sur ces applications spécifiques :",
   "newFeature.label": "Nouveau !",
   "newFeature.createSeveralLogicalGroupsAtOnce": "Vous pouvez désormais créer #plusieurs#groupes#logiques#d'un#coup en les séparant par le symbole #",
-  "platform.properties.modal.columnHeaders.propertyName": "Nom de la Propriété",
+  "platform.properties.modal.columnHeaders.propertyName": "Nom de la propriété",
   "platform.properties.modal.columnHeaders.nbUsages": "Nombre de modules où elle est définie",
   "platform.properties.modal.columnHeaders.finalValue": "Valeur finale",
-  "platform.properties.modal.columnHeaders.globalValue": "Valeur global",
+  "platform.properties.modal.columnHeaders.globalValue": "Valeur globale",
   "platform.properties.modal.columnHeaders.moduleValue": "Valeur stockée",
-  "platform.properties.modal.columnHeaders.annotations": "Annotations Associées",
+  "platform.properties.modal.columnHeaders.annotations": "Annotations associées",
   "platform.properties.modal.title": "Liste des propriétés de la plateforme: {{platformName}}",
   "platform.properties.modal.button.message": "Fermer la fenêtre",
   "platform.properties.modal.columnHeaders.annotations.required": "@required: {{requiredValue}}",
@@ -351,5 +351,5 @@
   "platform.properties.modal.columnHeaders.annotations.password": "@password: {{passwordValue}}",
   "platform.properties.modal.columnHeaders.annotations.comment": "@comment: {{commentValue}}",
   "platform.properties.modal.columnHeaders.annotations.default": "@default: {{defaultValue}}",
-  "platform.properties.modal.columnHeaders.switch.message": "Afficher que les propriétés avec une valeur finale vide"
+  "platform.properties.modal.columnHeaders.switch.message": "Afficher uniquement les propriétés avec une valeur finale vide"
 }

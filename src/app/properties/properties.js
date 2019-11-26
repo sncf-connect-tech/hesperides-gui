@@ -481,17 +481,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             });
         };
 
-        $scope.show_dialog_properties_list = function(providedplatform) {
+        $scope.showDialogPropertiesList = function (providedplatform) {
             var modalScope = $scope.$new();
-            modalScope.platform=providedplatform;
+            modalScope.platform = providedplatform;
 
             $mdDialog.show({
                 templateUrl: 'module/properties-list/properties-list-modal.html',
                 controller: 'PropertiesListController',
-                clickOutsideToClose: true,               
+                clickOutsideToClose: true,
                 scope: modalScope,
             });
-        }
+        };
 
         $scope.diffProperties = function (fromModule) {
             const modalScope = $scope.$new();
