@@ -18,3 +18,4 @@ coverage/
 /src/app/vendor.css
 /src/app/vendor*.js
 /yarn.lock
+/test/bdd/config.json

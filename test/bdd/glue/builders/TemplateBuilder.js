@@ -10,7 +10,7 @@ class TemplateBuilder {
     }
 
     withContent(content) {
-        this.content += content;
+        this.content = content;
     }
 
     build() {

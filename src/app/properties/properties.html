@@ -51,7 +51,8 @@
                 </div>-->
             </div>
             <div ng-show="isPlatformOpen" class="file-content ng-hide" layout="column" flex="100">
-                <list-of-items items="platforms"
+                <list-of-items id-prefix="e2e-application-platform-button"
+                               items="platforms"
                                label="$item.name + ' [' + $item.application_version + ']'"
                                filter="searchInPlatforms"
                                sorton="$item.name"
@@ -148,7 +149,7 @@
             </ul>
         </h4>
     </div>
-    <div layout="row">
+    <!-- #nomorebloc <div layout="row">
         <div flex="none">
             <md-button id="e2e-properties-show-tree-mode-button" ng-click="treeModeShow()" ng-class="{'md-raised':tree}"
                        aria-label="{{ 'properties.platform.treeMode.tooltip' | translate }}">
@@ -167,7 +168,7 @@
 
     <div id="box" class="slide-animate" ng-if="box">
         <box-properties isInstanceOpen="isInstanceOpen"></box-properties>
-    </div>
+    </div> -->
     <div id="tree" class="slide-animate" ng-if="tree">
         <tree-properties></tree-properties>
     </div>

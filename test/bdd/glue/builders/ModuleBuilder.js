@@ -1,3 +1,5 @@
+const cloneDeep = require('lodash/cloneDeep');
+
 class ModuleBuilder {
     constructor() {
         this.name = 'module-ptor';
@@ -5,14 +7,30 @@ class ModuleBuilder {
         this.isWorkingcopy = true;
         this.templateBuilders = [];
         this.versionId = 0;
-        this.technos = [];
+        this.technoBuilders = [];
+    }
+
+    withName(name) {
+        this.name = name;
+    }
+
+    withVersion(version) {
+        this.version = version;
+    }
+
+    withIsWorkingcopy(isWorkingcopy) {
+        this.isWorkingcopy = isWorkingcopy;
     }
 
     withTemplateBuilder(templateBuilder) {
-        this.templateBuilders.push(templateBuilder);
+        this.templateBuilders.push(cloneDeep(templateBuilder));
     }
 
-    getModuleType() {
+    withTechnoBuilder(techoBuilder) {
+        this.technoBuilders.push(cloneDeep(techoBuilder));
+    }
+
+    getVersionType() {
         return this.isWorkingcopy ? 'workingcopy' : 'release';
     }
 
@@ -22,7 +40,7 @@ class ModuleBuilder {
             version: this.version,
             working_copy: this.isWorkingcopy,
             version_id: this.versionId,
-            technos: this.technos,
+            technos: this.technoBuilders.map((technoBuilder) => technoBuilder.build()),
         };
     }
 }

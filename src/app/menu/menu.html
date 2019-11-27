@@ -36,7 +36,7 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button ng-click="open_create_techno_from_dialog()">
+                            <md-button id="e2e-navbar-techno-create-from" ng-click="open_create_techno_from_dialog()">
                                 {{ 'menu.techno.createFrom' | translate }}
                             </md-button>
                         </md-menu-item>
@@ -77,6 +77,7 @@
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
                             <md-autocomplete
+                                    id="e2e-navbar-module-autocomplete"
                                     md-no-cache="true"
                                     md-selected-item="ctrl.selectedItem"
                                     md-search-text="ctrl.searchText"
@@ -111,6 +112,7 @@
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
                             <md-autocomplete
+                                    id="e2e-navbar-application-autocomplete"
                                     md-no-cache="true"
                                     md-selected-item="ctrl.selectedItem"
                                     md-search-text="ctrl.searchText"

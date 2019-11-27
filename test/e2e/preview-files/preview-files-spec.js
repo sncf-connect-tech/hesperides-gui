@@ -29,7 +29,7 @@ describe('Preview files', () => {
 
     it('should be able to preview files (TREE MODE) and check if template has the right location', () => {
         // set tree mode
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
 
         utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,
@@ -50,7 +50,7 @@ describe('Preview files', () => {
 
     it('should be able to download a single instance file (TREE MODE)', () => {
         // set tree mode
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
 
         utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,
@@ -80,7 +80,7 @@ describe('Preview files', () => {
 
     it('should be able to download all files for an instance (TREE MODE)', () => {
         // set tree mode
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
 
         utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,

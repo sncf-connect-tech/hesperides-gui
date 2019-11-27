@@ -4,16 +4,19 @@ exports.post = async function (url, body) {
     await rest.postJson(url, body).catch((error) => console.error(error.message, error.statusCode, error.data));
 };
 
+exports.createTechno = async function (technoBuilder, template) {
+    await this.post(`${ baseUrl }/rest/technos/${ technoBuilder.name }/${ technoBuilder.version }/${ technoBuilder.getVersionType() }/templates`, template);
+};
+
 exports.addTemplateToModule = async function (moduleBuilder, template) {
-    await this.post(`${ baseUrl }/rest/modules/${ moduleBuilder.name }/${ moduleBuilder.version }/${ moduleBuilder.getModuleType() }/templates`, template);
+    await this.post(`${ baseUrl }/rest/modules/${ moduleBuilder.name }/${ moduleBuilder.version }/${ moduleBuilder.getVersionType() }/templates`, template);
 };
 
 exports.createModule = async function (moduleBuilder) {
     await this.post(`${ baseUrl }/rest/modules`, moduleBuilder.build());
-    const api = this;
-    await moduleBuilder.templateBuilders.forEach(function (templateBuilder) {
-        api.addTemplateToModule(moduleBuilder, templateBuilder.build());
-    });
+    for (const templateBuilder of moduleBuilder.templateBuilders) {
+        await this.addTemplateToModule(moduleBuilder, templateBuilder.build());
+    }
 };
 
 exports.createPlatform = async function (platform) {

@@ -103,7 +103,7 @@
         <!-- Debut des box affichant les instances -->
         <div id="e2e-instance-list-for-{{module.name}}" ng-if="openByClick === null ? module.openBySearchFilter : openByClick">
             <ul>
-                <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
+                <li id="e2e-instance-{{module.name}}-{{instance.name}}" ng-repeat="instance in module.instances | orderObjectBy:'name'"
                     class="list-inline"
                     ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                     <md-button id="e2e-tree-renderer-edit-instance-button-{{instance.name}}" class="md-raised" ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"

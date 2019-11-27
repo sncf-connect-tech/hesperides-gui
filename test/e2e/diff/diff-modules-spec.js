@@ -27,8 +27,9 @@ describe('Manage diff', () => {
 
     it('should display two platform for TEST_AUTO application', () => {
         // set bloc mode (in case the default mode change)
-        utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
 
+        browser.actions().mouseMove(element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`))).perform();
         utils.clickOnElement(element(by.id(`e2e-deployed-module-controls-diff-properties-button-${ data.new_module_name }`)));
 
         expect(element.all(by.css('.cg-notify-message')).count()).toEqual(0);

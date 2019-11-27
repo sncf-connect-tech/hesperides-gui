@@ -10,6 +10,10 @@ class DeployedModuleBuilder {
         this.instances = [];
     }
 
+    withModulePath(modulePath) {
+        this.modulePath = modulePath;
+    }
+
     fromModuleBuilder(moduleBuilder) {
         this.name = moduleBuilder.name;
         this.version = moduleBuilder.version;
