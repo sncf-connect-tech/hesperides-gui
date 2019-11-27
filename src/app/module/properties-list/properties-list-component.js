@@ -49,6 +49,36 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                 return `${ moduleWhereUsed.length } : ${ moduleWhereUsed }`;
             };
 
+            $scope.findModulesWherePropertyUsed = function (properties) {
+                if (properties.key_value_properties) {
+                    properties.key_value_properties.forEach(function (property) {
+                        if (_.find($scope.modulesPerPropertyName, function (prop) {
+                            return prop.propertyName === property.name;
+                        })) {
+                            $scope.modulesPerPropertyName.forEach(function (moduleProperty) {
+                                if (moduleProperty.propertyName === property.name) {
+                                    moduleProperty.modulesWhereUsed.push(properties.moduleName);
+                                }
+                            });
+                        } else {
+                            $scope.modulesPerPropertyName.push({ 'propertyName': property.name, 'modulesWhereUsed': new Array(properties.moduleName) });
+                        }
+                    });
+                }
+            };
+
+            $scope.getModulesWherePropertyUsed = function (property) {
+                var moduleWhereUsed = [];
+                if ($scope.modulesPerPropertyName) {
+                    $scope.modulesPerPropertyName.forEach(function (moduleProperty) {
+                        if (property.name === moduleProperty.propertyName) {
+                            moduleWhereUsed = moduleProperty.modulesWhereUsed;
+                        }
+                    });
+                }
+                return moduleWhereUsed;
+            };
+
             $scope.mergeProperties = function (properties, propertiesTomergeWith) {
                 $scope.findModulesWherePropertyUsed(propertiesTomergeWith);
                 if (properties.key_value_properties) {
