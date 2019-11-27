@@ -6,7 +6,8 @@
         "When": "readonly",
         "Then": "readonly",
         "element": "readonly",
-        "by": "readonly"
+        "by": "readonly",
+        "downloadsPath": "readonly"
     },
     "rules": {
         "global-require": 0

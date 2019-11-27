@@ -21,13 +21,15 @@
 
 <ul class="shared-list-inline">
     <li ng-repeat="item in items | filterPlatform:filter | orderBy:sortOn">
-        <md-button ng-mouseenter="hover = true"
+        <md-button id="{{ idPrefix }}-{{ item.name }}"
+                   ng-mouseenter="hover = true"
                    ng-mouseleave="hover = false"
                    ng-show="!isReadOnly"
                    ng-click="selfEdit(item)"
                    ng-style="{'background-color': backgroundColor(item)}"
                 >{{selfLabel(item)}}
-            <md-button class="md-warn md-xs"
+            <md-button id="{{ idPrefix }}-{{ item.name }}-remove-button"
+                       class="md-warn md-xs"
                        ng-really-message="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
                        aria-label="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
                        ng-click="$event.stopPropagation();"
@@ -42,7 +44,8 @@
 
     </li>
     <li class="vertical-align-middle" ng-if="editable">
-        <md-button class="md-raised md-success"
+        <md-button id="{{ idPrefix }}-add-button"
+                   class="md-raised md-success"
                    ng-click="showInput()"
                    ng-hide="show_input"
                    aria-label="Ajouter une techno"

@@ -25,19 +25,18 @@ function openIterableProperties() {
 
 describe('Manage iterable properties and annotations (default, comment, required etc ...)', () => {
     beforeAll(() =>
-        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`),
     );
 
     beforeEach(() => {
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
 
         // open bloc mode
-        utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
-
-        utils.clickOnElement(element(by.id(`e2e-box-renderer-edit-module-button-${ data.new_module_name }`)));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
+        utils.clickOnElement(element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)));
     });
 
-    it('should fill in iterable properties with right values (BLOC MODE) and check if save event is correctly stored', () => {
+    it('should fill in iterable properties with right values and check if save event is correctly stored', () => {
         // we use random_string for at least 1 property to avoid saving plateform without changes for property values
         var randomString = utils.getRandomString(20);
 
@@ -56,7 +55,7 @@ describe('Manage iterable properties and annotations (default, comment, required
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_password`)), data.simple_value);
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_pattern`)), data.value_prop_wrong_pattern);
 
-            utils.clickOnElement(element(by.id('e2e-box-properties-save-module-properties-button')));
+            utils.clickOnElement(element(by.id('e2e-tree-properties-save-module-properties-button')));
             // add comment for saving modifications
             const commentInput = element(by.id('e2e-save-properties-modal_input-comment-autocomplete'));
             browser.wait(until.presenceOf(commentInput), 1000, 'comment input is taking too long to appear in the DOM');
@@ -77,7 +76,7 @@ describe('Manage iterable properties and annotations (default, comment, required
             // always clear before sendKeys and try to save
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_pattern`)), randomString);
 
-            utils.checkElementIsDisabled('e2e-box-properties-save-module-properties-button');
+            utils.checkElementIsDisabled('e2e-tree-properties-save-module-properties-button');
         });
     });
 

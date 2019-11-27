@@ -21,7 +21,7 @@
 
 <md-dialog flex="50">
     <md-dialog-content>
-        <form name="technoForm" novalidate
+        <form name="technoForm" novalidate id="e2e-modal-techno-create-from"
               ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
             <div class="ng-binding">
                 <h2>{{ 'techno.modalFrom.title' | translate }}</h2>
@@ -42,6 +42,7 @@
                         <label><strong>{{ 'modalFrom.origin' | translate }}</strong></label>
                         <md-autocomplete
                                 required
+                                md-input-id="techno-menu-modal-from_input-techno-autocomplete"
                                 ng-model="technoSearched"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"

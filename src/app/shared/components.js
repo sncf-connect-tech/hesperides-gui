@@ -35,6 +35,7 @@ angular.module('hesperides.components', [])
                 restrict: 'E',
                 scope: {
                     items: '=',
+                    idPrefix: '@',
                     selectedItem: '=',
                     selectable: '=',
                     editable: '=',

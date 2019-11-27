@@ -50,7 +50,8 @@
 <div layout="row">
     <div class="bg-light" flex>
         <h4>{{ 'module.technoList' | translate }}</h4>
-        <list-of-items items="module.technos"
+        <list-of-items id-prefix="e2e-module-technos"
+                       items="module.technos"
                        createfunction="add_techno($name)"
                        download-all="download_all_template"
                        download="download_template"
@@ -69,10 +70,10 @@
 </div>
 <div layout="row">
     <div class="bg-light module-row-for-properties" >
-        <md-button class="md-raised md-primary" ng-model="collapsePropertiesList" ng-click="collapsePropertiesList =! collapsePropertiesList"> 
+        <md-button class="md-raised md-primary" ng-model="collapsePropertiesList" ng-click="collapsePropertiesList =! collapsePropertiesList">
             <md-tooltip>{{'modules.propertiesList.tooltip' | translate}}</md-tooltip>
             <i class="fa fa-list"></i> {{ collapsePropertiesList ? 'module.propertiesList.hideButton' : 'module.propertiesList.showButton' | translate }}
-        </md-button>             
+        </md-button>
         <div ng-show="collapsePropertiesList" class="module-properties">
             <div layout="row" class="module-properties-headers">
                 <div flex="30" class="module-property-name">{{ 'module.propertiesList.headers.name' | translate }}</div>

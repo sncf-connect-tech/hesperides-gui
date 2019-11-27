@@ -39,7 +39,7 @@ describe('Manage platform diff', () => {
 
     it('should display datepicker on compare two platform at a specific date switch', () => {
         // Mode 'arbre'
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         // Affiche le modal de diff
         utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-diff-button')));
         // Active le calendrier
@@ -76,7 +76,7 @@ describe('Manage platform diff', () => {
         // Affiche la seconde plateforme
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }_from`);
         // Passe en mode arbre
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         // Affiche la liste des propriétés globales
         utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-button')));
         addGlobalProperty('global_common', 'common_value');
@@ -87,7 +87,7 @@ describe('Manage platform diff', () => {
         // Affiche la première plateforme
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
         // Passe en mode arbre
-        utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
+        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         // Affiche la liste des propriétés globales
         utils.clickOnElement(element(by.id('e2e-tree-properties-display-global-properties-button')));
         addGlobalProperty('global_common', 'common_value');

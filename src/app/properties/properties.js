@@ -163,13 +163,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.user = {};
         $scope.appGroupCNs = [];
 
-        if (store.get('display_mode') === 'arbre') {
-            $scope.box = false;
-            $scope.tree = true;
-        } else {
-            $scope.box = true;
-            $scope.tree = false;
-        }
+        // #nomorebloc if (store.get('display_mode') === 'arbre') {
+        $scope.box = false;
+        $scope.tree = true;
+        // } else {
+        //     $scope.box = true;
+        //     $scope.tree = false;
+        // }
 
         var Box = function (data) {
             return angular.extend(this, {

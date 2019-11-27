@@ -19,8 +19,6 @@ exports.config = {
     suites: {
         // L'ordre importe car, par exemple, platforms/*spec.js crée une plateforme employée par diff/*spec.js :
         all: [
-            'menus/*spec.js',
-            'technos/*spec.js',
             'modules/*spec.js',
             'platforms/*spec.js',
             'logic-representation/*spec.js',

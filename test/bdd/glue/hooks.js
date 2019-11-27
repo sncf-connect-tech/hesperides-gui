@@ -1,9 +1,15 @@
+const api = require('./helpers/api');
 const rest = require('restling');
+const fs = require('fs');
 const { BeforeAll, Before, After, AfterAll, setWorldConstructor, setDefaultTimeout } = require('cucumber');
+const { TechnoBuilder } = require('./builders/TechnoBuilder');
 const { ModuleBuilder } = require('./builders/ModuleBuilder');
 const { TemplateBuilder } = require('./builders/TemplateBuilder');
 const { PlatformBuilder } = require('./builders/PlatformBuilder');
 const { DeployedModuleBuilder } = require('./builders/DeployedModuleBuilder');
+const { TechnoHistory } = require('./builders/TechnoHistory');
+const { ModuleHistory } = require('./builders/ModuleHistory');
+const { PlatformHistory } = require('./builders/PlatformHistory');
 
 BeforeAll(function (next) {
     console.log('BeforeAll hook');
@@ -12,14 +18,64 @@ BeforeAll(function (next) {
 
 Before(/** @this CustomWorld */ async function () {
     console.log('Before hook');
-    const errorCallback = function (error) {
-        if (error.statusCode !== 404) { // we ignore errors only if the entity did not exist
-            console.error(`HTTP ${ error.statusCode }: ${ error.data }`);
-            throw error;
-        }
-    };
-    await rest.del(`${ baseUrl }/rest/applications/${ this.platformBuilder.applicationName }/platforms/${ this.platformBuilder.platformName }`).catch(errorCallback);
-    await rest.del(`${ baseUrl }/rest/modules/${ this.moduleBuilder.name }/${ this.moduleBuilder.version }/${ this.moduleBuilder.getModuleType() }`).catch(errorCallback);
+    const world = this;
+    await browser.get(global.baseUrl);
+    // Supprime le fichier téléchargé (limité à ce fichier)
+    await fs.promises.unlink(downloadsPath + this.templateBuilder.filename).catch(function () {
+    });
+    // Pour une raison obscure les collections `techno` et `module` ont
+    // besoin d'être initialisées par une demande de création...
+    await rest.get(`${ baseUrl }/rest/technos`).catch(async function () {
+        await api.createTechno(world.technoBuilder, world.templateBuilder.build());
+    }).then(async function () {
+        await rest.get(`${ baseUrl }/rest/modules`).catch(async function () {
+            await api.createModule(world.moduleBuilder);
+        });
+    }).then(async function () {
+        // Nettoyage des données
+        await rest.get(`${ baseUrl }/rest/applications`).then(async function (applications) {
+            // Garde-fou permettant d'éviter de supprimer
+            // des données autres que celles de test
+            if (applications.data.length > 10) {
+                throw new Error('Be careful with which data you are erasing');
+            }
+            for (const application of applications.data) {
+                await rest.get(`${ baseUrl }/rest/applications/${ application.name }`).then(async function (currentApplication) {
+                    for (const platform of currentApplication.data.platforms) {
+                        await rest.del(`${ baseUrl }/rest/applications/${ application.name }/platforms/${ platform.platform_name }`);
+                    }
+                });
+            }
+        });
+    }).then(async function () {
+        await rest.get(`${ baseUrl }/rest/modules`).then(async function (modules) {
+            for (const moduleName of modules.data) {
+                await rest.get(`${ baseUrl }/rest/modules/${ moduleName }`).then(async function (moduleVersions) {
+                    for (const moduleVersion of moduleVersions.data) {
+                        await rest.get(`${ baseUrl }/rest/modules/${ moduleName }/${ moduleVersion }`).then(async function (versionTypes) {
+                            for (const versionType of versionTypes.data) {
+                                await rest.del(`${ baseUrl }/rest/modules/${ moduleName }/${ moduleVersion }/${ versionType }`);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }).then(async function () {
+        await rest.get(`${ baseUrl }/rest/technos`).then(async function (technos) {
+            for (const technoName of technos.data) {
+                await rest.get(`${ baseUrl }/rest/technos/${ technoName }`).then(async function (technoVersions) {
+                    for (const technoVersion of technoVersions.data) {
+                        await rest.get(`${ baseUrl }/rest/technos/${ technoName }/${ technoVersion }`).then(async function (versionTypes) {
+                            for (const versionType of versionTypes.data) {
+                                await rest.del(`${ baseUrl }/rest/technos/${ technoName }/${ technoVersion }/${ versionType }`);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 });
 
 After(function () {
@@ -33,10 +89,14 @@ AfterAll(function (next) {
 
 class CustomWorld {
     constructor() {
+        this.technoBuilder = new TechnoBuilder();
         this.moduleBuilder = new ModuleBuilder();
         this.templateBuilder = new TemplateBuilder();
         this.platformBuilder = new PlatformBuilder();
         this.deployedModuleBuilder = new DeployedModuleBuilder();
+        this.technoHistory = new TechnoHistory();
+        this.moduleHistory = new ModuleHistory();
+        this.platformHistory = new PlatformHistory();
     }
 }
 
@@ -44,4 +104,4 @@ class CustomWorld {
 // exposed to the hooks and steps as `this`
 setWorldConstructor(CustomWorld);
 
-setDefaultTimeout(60 * 1000);
+setDefaultTimeout(30 * 1000);
