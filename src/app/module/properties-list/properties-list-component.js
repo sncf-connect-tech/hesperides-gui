@@ -76,7 +76,7 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
                         }
                     });
                 }
-                return moduleWhereUsed;
+                return `${ moduleWhereUsed.length } : ${ moduleWhereUsed }`;
             };
 
             $scope.mergeProperties = function (properties, propertiesTomergeWith) {
