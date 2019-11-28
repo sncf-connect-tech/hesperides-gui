@@ -108,7 +108,7 @@ describe('Testing hesperides properties-list', function () {
         });
     });
 
-    describe('Testing initModulesWhereUsedAndNbUsageOfProperties', function () {
+    describe('Testing findModulesWherePropertyUsed', function () {
         let scope = null;
         let Properties = null;
 
@@ -118,12 +118,23 @@ describe('Testing hesperides properties-list', function () {
             Properties = _Properties_;
         }));
 
-        it('should test initialization of nbUsage and modules where property is used', function () {
-            const propertiesToMerge = (new Properties(angular.copy(firstPropertiesMock)));
-            scope.initModulesWhereUsedAndNbUsageOfProperties(propertiesToMerge);
-            expect(propertiesToMerge.key_value_properties.length).toEqual(2);
-            expect(propertiesToMerge.key_value_properties[0].modulesWhereUsed).toEqual([ 'Foo' ]);
-            expect(propertiesToMerge.key_value_properties[0].nbUsage).toEqual(1);
+        it('should test method findModulesWherePropertyUsed: (modules where property is defined)', function () {
+            const firstProperties = (new Properties(angular.copy(firstPropertiesMock)));
+            scope.findModulesWherePropertyUsed(firstProperties);
+            expect(scope.modulesPerPropertyName)
+                .toEqual(jasmine.objectContaining([
+                    { propertyName: 'property_1', modulesWhereUsed: [ 'Foo' ] },
+                    { propertyName: 'property_2', modulesWhereUsed: [ 'Foo' ] },
+                ]));
+            const secondProperties = (new Properties(angular.copy(secondPropertiesMock)));
+            scope.findModulesWherePropertyUsed(secondProperties);
+            expect(scope.modulesPerPropertyName)
+                .toEqual(jasmine.objectContaining([
+                    { propertyName: 'property_1', modulesWhereUsed: [ 'Foo', 'Bar' ] },
+                    { propertyName: 'property_2', modulesWhereUsed: [ 'Foo' ] },
+                    { propertyName: 'property_3', modulesWhereUsed: [ 'Bar' ] },
+                    { propertyName: 'property_4', modulesWhereUsed: [ 'Bar' ] },
+                ]));
         });
     });
 
@@ -144,8 +155,6 @@ describe('Testing hesperides properties-list', function () {
             const secondPropertiesToMerge = new Properties(angular.copy(secondPropertiesMock));
             scope.mergeProperties(firstPropertiesToMerge, secondPropertiesToMerge);
             expect(firstPropertiesToMerge.key_value_properties.length).toEqual(4);
-            expect(firstPropertiesToMerge.key_value_properties[0].modulesWhereUsed).toEqual([ 'Foo', 'Bar' ]);
-            expect(firstPropertiesToMerge.key_value_properties[0].nbUsage).toEqual(2);
         });
     });
 

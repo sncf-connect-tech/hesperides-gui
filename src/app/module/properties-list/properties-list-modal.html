@@ -52,7 +52,7 @@
                     {{property.name}}
                 </div>
                 <div flex="30" class="properties-values">
-                    {{property.nbUsage}} {{getModulesWherePropertyUsed(property)}}
+                    {{getModulesWherePropertyUsed(property)}}
                 </div>
                 <div flex="20"
                     ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
