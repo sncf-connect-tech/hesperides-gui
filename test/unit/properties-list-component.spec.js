@@ -2,6 +2,9 @@
  * This is for testing the properties-list 'hesperides.module.propertiesList'
  */
 describe('Testing hesperides properties-list', function () {
+    // load the module to be tested
+    beforeEach(module('hesperides.module.propertiesList'));
+
     // create model properties mocks for the tests
     const firstModelMock = {
         'key_value_properties': [
@@ -84,9 +87,6 @@ describe('Testing hesperides properties-list', function () {
         ],
         'moduleName': 'Foo',
     };
-
-    // load the module to be tested
-    beforeEach(module('hesperides.module.propertiesList', []));
 
     describe('Testing if  modelProperties are model of givenProperties', function () {
         let scope = null;
