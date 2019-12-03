@@ -86,7 +86,7 @@ describe('Testing hesperides properties-list', function () {
     };
 
     // load the module to be tested
-    beforeEach(module('hesperides.module.propertiesList'));
+    beforeEach(module('hesperides.module.propertiesList', []));
 
     describe('Testing if  modelProperties are model of givenProperties', function () {
         let scope = null;
