@@ -3,7 +3,7 @@
  */
 describe('Testing hesperides properties-list', function () {
     // load the module to be tested
-    beforeEach(module('hesperides.module.propertiesList'));
+    beforeEach(angular.mock.module('hesperides.module.propertiesList'));
 
     // create model properties mocks for the tests
     const firstModelMock = {
