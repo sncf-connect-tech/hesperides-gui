@@ -23,7 +23,7 @@ jobs:
     - name: Unit tests
       stage: test
       addons:
-        firefox: "50.0"
+        firefox: "70.0"
       services:
         - xvfb
       before_script:
