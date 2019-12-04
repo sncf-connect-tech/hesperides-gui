@@ -149,6 +149,12 @@
             </ul>
         </h4>
     </div>
+    <div flex>
+            <md-button class="md-raised md-primary" ng-model="platformProperties" ng-click="showDialogPropertiesList(platform)">
+                <md-tooltip>{{'platform.modal.properties.tooltip' | translate}}</md-tooltip>
+                <i class="fa fa-list"></i> {{ 'platform.properties.list' | translate }}
+            </md-button>
+        </div>
     <!-- #nomorebloc <div layout="row">
         <div flex="none">
             <md-button id="e2e-properties-show-tree-mode-button" ng-click="treeModeShow()" ng-class="{'md-raised':tree}"
