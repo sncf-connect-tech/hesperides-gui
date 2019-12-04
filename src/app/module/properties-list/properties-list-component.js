@@ -10,27 +10,15 @@ angular.module('hesperides.module.propertiesList', [ 'hesperides.localChanges', 
             $scope.propertiesKeyFilter = '';
             $scope.modulesPerPropertyName = [];
 
-            function allPropertyNamesEqual(leftProperties, rightProperties) {
-                return _.isEqual(new Set(_.map(leftProperties, 'name')), new Set(_.map(rightProperties, 'name')));
+            function toSet(properties) {
+                return new Set(_.map(properties, 'name'));
             }
 
             $scope.allPropertiesNameEquals = function (propertiesModel, givenProperties) {
-                return allPropertyNamesEqual(propertiesModel.key_value_properties, givenProperties.key_value_properties);
+                return _.isEqual(toSet(propertiesModel.key_value_properties), toSet(givenProperties.key_value_properties));
             };
 
-            // initialise le nombre d'utilisation d'une propriété dans un module, et
-            // le nom des modules où la propriété est utilisé
-            $scope.initModulesWhereUsedAndNbUsageOfProperties = function (properties) {
-                if (properties.key_value_properties) {
-                    properties.key_value_properties.forEach(function (property) {
-                        if (!property.modulesWhereUsed) {
-                            property.modulesWhereUsed = [ properties.moduleName ];
-                            property.nbUsage = 1;
-                        }
-                    });
-                }
-            };
-
+            // compte le nombre de modules où une propriété est utilisé
             $scope.findModulesWherePropertyUsed = function (properties) {
                 if (properties.key_value_properties) {
                     properties.key_value_properties.forEach(function (property) {
