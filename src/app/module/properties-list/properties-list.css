@@ -75,5 +75,8 @@
     padding-right: 10px;
     border-bottom: 1px solid rgb(0,150,136);
     height: 30px;
+}
 
+#dialogContent_65 {
+    overflow-x: hidden;
 }
