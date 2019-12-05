@@ -18,70 +18,84 @@
             
         </div>
     </md-toolbar>
-    <md-dialog-content>        
-        <div layout="column" class="properties-conntainer">
-            <div layout="row" layout-align="space-around center">
-                <div flex="15" class="properties-headers">
-                    {{ 'properties.compare.values.columnHeaders.propertyName' | translate }}</div>
-                <div flex="30" class="properties-headers">
-                    {{ 'platform.properties.modal.columnHeaders.nbUsages' | translate }}
-                    <i class="fa fa-question-circle"></i>
-                </div>
-                <div flex="20" class="properties-headers">
-                    {{ 'platform.properties.modal.columnHeaders.finalValue' | translate }}
-                </div>
-                <div flex="30" class="properties-headers">
-                    {{ 'platform.properties.modal.columnHeaders.globalValue' | translate }}
-                    <i class="fa fa-question-circle"></i>
-                </div>
-                <div flex="30" class="properties-headers">
-                    {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
-                    <i class="fa fa-question-circle"></i>
-                </div>
-                <div flex="30" class="properties-headers">
-                    {{ 'platform.properties.modal.columnHeaders.annotations' | translate }}
-                    <i class="fa fa-question-circle"></i>
-                </div>
-            </div>
-            <md-divider class="properties-header-divider"></md-divider>
-            <div layout="row" class="property-line" layout-align="space-around center"
-                ng-repeat="property in properties.key_value_properties | filter: propertyWIthBlankFinalValueFilter | filter: {'name': propertiesKeyFilter}">
-                <div flex="15"
-                    ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
-                    class="properties-values properties-name">
-                    {{property.name}}
-                </div>
-                <div flex="30" class="properties-values">
-                    {{getModulesWherePropertyUsed(property)}}
-                </div>
-                <div flex="20"
-                    ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
-                    class="properties-values">{{property.finalValue}}
-                </div>
-                <div flex="30" class="properties-values">
-                    {{property.globalValue}}</div>
-                <div flex="30"
-                    ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
-                    class="properties-values">{{property.storedValue}}
-                </div>
-                <div flex="30" class="properties-values">
-                    <div flex="80" class="row">
-                        <div>
-                            <span
-                                ng-if="property.required">{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</span>
-                            <span
-                                ng-if="property.pattern && property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
-                            <span
-                                ng-if="property.password">{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</span>
-                            <span
-                                ng-if="property.comment">{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</span>
-                            <span
-                                ng-if="property.defaultValue">{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</span>
+    <md-dialog-content> 
+        <table class="table-properties-list">
+            <thead class="head-table-properties-list">
+                <tr calss="row-head-table-properties-list">
+                   <th class="col-tab-titles">
+                        {{ 'properties.compare.values.columnHeaders.propertyName' | translate }}
+                   </th>
+                   <th class="col-tab-titles">
+                        {{ 'platform.properties.modal.columnHeaders.nbUsages' | translate }}
+                   </th> 
+                   <th class="col-tab-titles">
+                        {{ 'platform.properties.modal.columnHeaders.finalValue' | translate }}
+                   </th>
+                   <th class="col-tab-titles">
+                        {{ 'platform.properties.modal.columnHeaders.globalValue' | translate }}
+                   </th>
+                   <th class="col-tab-titles">
+                        {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
+                   </th>
+                   <th class="col-tab-titles">
+                        {{ 'platform.properties.modal.columnHeaders.annotations' | translate }}
+                   </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="property in properties.key_value_properties | filter: propertyWIthBlankFinalValueFilter | filter: {'name': propertiesKeyFilter}">
+                    <td class="col-tab-properties-datas">
+                        <div
+                            ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
+                            class="properties-values properties-name">
+                            {{property.name}}
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </td>
+                    <td class="col-tab-properties-datas">
+                        <div class="properties-values">
+                            {{getModulesWherePropertyUsed(property)}}
+                        </div>
+                    </td>
+                    <td class="col-tab-properties-datas">
+                        <div
+                            ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
+                            class="properties-values">
+                            {{property.finalValue}}
+                        </div>
+                    </td>
+                    <td class="col-tab-properties-datas">
+                        <div class="properties-values">
+                            {{property.globalValue}}
+                        </div>
+                    </td>
+                    <td class="col-tab-properties-datas">
+                        <div
+                            ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
+                            class="properties-values">
+                            {{property.storedValue}}
+                        </div>
+                    </td>
+                    <td class= "col-tab-properties-datas">
+                        <div class="properties-values">
+                            <div flex="80" class="row">
+                                <div>
+                                    <span
+                                        ng-if="property.required">{{'platform.properties.modal.columnHeaders.annotations.required'| translate : {requiredValue:property.required} }}</span>
+                                    <span
+                                        ng-if="property.pattern && property.pattern !==''">{{'platform.properties.modal.columnHeaders.annotations.pattern' | translate : {patternValue:property.pattern} }}</span>
+                                    <span
+                                        ng-if="property.password">{{'platform.properties.modal.columnHeaders.annotations.password'| translate : {passwordValue:property.password} }}</span>
+                                    <span
+                                        ng-if="property.comment">{{'platform.properties.modal.columnHeaders.annotations.comment' | translate : {commentValue:property.comment} }}</span>
+                                    <span
+                                        ng-if="property.defaultValue">{{'platform.properties.modal.columnHeaders.annotations.default' | translate : {defaultValue:property.defaultValue} }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table> 
     </md-dialog-content>
     <md-dialog-actions class="dialog-actions" layout="row">
         <md-button ng-click="closeDialog()" class="md-raised md-primary">
