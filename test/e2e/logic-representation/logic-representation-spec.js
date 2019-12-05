@@ -85,6 +85,7 @@ describe('Manage logical representation', () => {
         var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
         elm_module_name_input.sendKeys(`${ data.new_module_name } ${ data.new_module_version }`);
         utils.selectFirstElemOfAutocomplete(elm_module_name_input);
+        browser.waitForAngular();
         utils.clickOnElement(element(by.id('e2e-search-module-add-module-button')));
 
         // add instance
