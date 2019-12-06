@@ -149,6 +149,7 @@ exports.switchBrowserBackToFirstTab = function () {
 };
 
 exports.checkSuccessNotification = function (text) {
+    browser.waitForAngular();
     this.checkIfElementIsPresentWithClass('.cg-notify-message.success');
     this.checkIfElementContainsText(element.all(by.css('.cg-notify-message.success')).get(0), text);
 };
