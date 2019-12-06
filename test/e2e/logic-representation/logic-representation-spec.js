@@ -44,6 +44,7 @@ describe('Manage logical representation', () => {
 
         // add module
         browser.actions().mouseMove(element(by.id(`e2e-tree-renderer-edit-logic-group-${ data.logic_group_2 }`))).perform();
+        browser.waitForAngular();
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-module-button-${ data.logic_group_2 }`)));
         var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
         elm_module_name_input.sendKeys(`${ data.new_module_name } ${ data.new_module_version }`);
@@ -81,6 +82,7 @@ describe('Manage logical representation', () => {
 
         // add module
         browser.actions().mouseMove(element(by.id(`e2e-tree-renderer-edit-logic-group-${ data.logic_group_2 }`))).perform();
+        browser.waitForAngular();
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-add-module-button-${ data.logic_group_2 }`)));
         var elm_module_name_input = element(by.css('md-autocomplete input#e2e-search-module-input-module-autocomplete'));
         elm_module_name_input.sendKeys(`${ data.new_module_name } ${ data.new_module_version }`);
