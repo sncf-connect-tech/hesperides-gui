@@ -101,6 +101,7 @@ describe('Manage logical representation', () => {
             });
         });
 
+        browser.waitForAngular();
         // display/hide instance
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
