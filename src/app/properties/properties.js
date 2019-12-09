@@ -814,7 +814,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
         $scope.edit_properties = function (platform, module) {
             if ($scope.platform.global_properties_usage === null) {
-                $scope.refreshGlobalPropertiesData();
+                $scope.getGlobalProperties();
+                $scope.getGlobalPropertiesUsage();
             }
             ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
                 ModuleService.get_model(module).then(function (model) {
@@ -882,7 +883,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                         // Increase platform number
                         $scope.platform.version_id++;
-                        $scope.refreshGlobalPropertiesData();
+                        $scope.getGlobalProperties();
+                        $scope.getGlobalPropertiesUsage();
 
                         // Key the saved as old
                         $scope.oldGolbalProperties = angular.copy(savedProperties);
@@ -1043,12 +1045,15 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             });
         };
 
-        $scope.refreshGlobalPropertiesData = function () {
+        $scope.getGlobalProperties = function () {
             ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
                 $scope.platform.global_properties = response;
                 // making a copy, for changes detection
                 $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
             });
+        };
+
+        $scope.getGlobalPropertiesUsage = function () {
             ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
                 $scope.platform.global_properties_usage = response;
             });
@@ -1058,7 +1063,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             // --- Testing retrive on demand
             // If the usage is already filled, we don't call the backend, and serve cache instead
             if ($scope.platform.global_properties_usage === null) {
-                $scope.refreshGlobalPropertiesData();
+                $scope.getGlobalProperties();
+                $scope.getGlobalPropertiesUsage();
             }
 
             $scope.instance = null;
