@@ -813,6 +813,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         };
 
         $scope.edit_properties = function (platform, module) {
+            if ($scope.platform.global_properties_usage === null) {
+                $scope.getGlobalProperties();
+                $scope.getGlobalPropertiesUsage();
+            }
             ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
                 ModuleService.get_model(module).then(function (model) {
                     $scope.properties = properties.mergeWithModel(model);
@@ -882,9 +886,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                         // Increase platform number
                         $scope.platform.version_id++;
-                        $scope.getGlobalProperties().then(function (globalProperties) {
-                            $scope.platform.global_properties = globalProperties;
-                        });
+                        $scope.getGlobalProperties();
+                        $scope.getGlobalPropertiesUsage();
 
                         // Key the saved as old
                         $scope.oldGlobalProperties = angular.copy(savedProperties);
@@ -1054,17 +1057,25 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         };
 
         $scope.getGlobalProperties = function () {
-            return ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#');
+            ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                $scope.platform.global_properties = response;
+                // making a copy, for changes detection
+                $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
+            });
+        };
+
+        $scope.getGlobalPropertiesUsage = function () {
+            ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
+                $scope.platform.global_properties_usage = response;
+            });
         };
 
         $scope.showGlobalPropertiesDisplay = function () {
             // --- Testing retrive on demand
             // If the usage is already filled, we don't call the backend, and serve cache instead
-            if ($scope.platform.global_properties === null) {
-                $scope.getGlobalProperties().then(function (globalProperties) {
-                    $scope.platform.global_properties = globalProperties;
-                    $scope.oldGlobalProperties = angular.copy($scope.platform.global_properties);
-                });
+            if ($scope.platform.global_properties_usage === null) {
+                $scope.getGlobalProperties();
+                $scope.getGlobalPropertiesUsage();
             }
 
             $scope.instance = null;
