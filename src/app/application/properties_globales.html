@@ -73,7 +73,7 @@
                                         <span id="properties-globales_zoom-{{key_value_property.name}}" flex class="ng-scope zoom-in-property-icon"
                                               ng-class="zoomInGlobalProperties ? 'fa fa-compress' : 'fa fa-expand'"
                                               ng-click="zoomInGlobalProperties = !zoomInGlobalProperties"
-                                              ng-show="(platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}).length">
+                                              ng-show="(globalPropertiesUsage[key_value_property.name] | filter : {inModel:'true'}).length">
                                         </span>
                                     </div>
                                 </div>
@@ -102,9 +102,9 @@
                                        class="property-value">
                         </div>
                     </div>
-                    <div ng-show="zoomInGlobalProperties && (platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}).length">
+                    <div ng-show="zoomInGlobalProperties && (globalPropertiesUsage[key_value_property.name] | filter : {inModel:'true'}).length">
                         <md-list flex="auto"class="global-property-usage">
-                            <md-list-item ng-repeat="usage in (platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}) track by $index">
+                            <md-list-item ng-repeat="usage in (globalPropertiesUsage[key_value_property.name] | filter : {inModel:'true'}) track by $index">
                                 <div class="truncate-ellipsis">
                                     <label id="properties-globales_platform-prettyfy-path-label-{{key_value_property.name}}" class="global-property-usage-label">{{platform.prettify_path(usage.path)}}</label>
                                 </div>
