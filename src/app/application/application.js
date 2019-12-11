@@ -511,11 +511,13 @@ angular.module('hesperides.application', [])
     })
 
 
-    .directive('propertiesGlobalesTree', function () {
+    .directive('propertiesGlobalesTree', function (ApplicationService) {
         return {
             restrict: 'E',
             scope: {
                 platform: '=',
+                platformName: '=',
+                applicationName: '=',
                 sortOrder: '=',
             },
             templateUrl: 'application/properties_globales.html',
@@ -523,6 +525,10 @@ angular.module('hesperides.application', [])
                 scope.isBox = false;
                 scope.globalPropertiesKeyFilter = '';
                 scope.globalPropertiesValueFilter = '';
+                ApplicationService.get_global_properties_usage(scope.applicationName, scope.platformName, '#')
+                    .then(function (globalPropertiesUsage) {
+                        scope.globalPropertiesUsage = globalPropertiesUsage;
+                    });
             },
         };
     })
