@@ -820,11 +820,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                     // Merge with global properties
                     $scope.getGlobalProperties().then(function (globalProperties) {
-                        console.log('globalProperties : ', globalProperties);
                         $scope.properties = properties.mergeWithGlobalProperties(globalProperties);
                         $scope.oldProperties = angular.copy($scope.properties);
                         $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
                         $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
+                        $scope.platform.global_properties = globalProperties;
+                        $scope.oldGlobalProperties = angular.copy($scope.platform.global_properties);
                     });
 
                     $scope.selected_module = module;
@@ -881,8 +882,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                         // Increase platform number
                         $scope.platform.version_id++;
-                        $scope.getGlobalProperties();
-                        $scope.getGlobalPropertiesUsage();
+                        $scope.getGlobalProperties().then(function (globalProperties) {
+                            $scope.platform.global_properties = globalProperties;
+                        });
 
                         // Key the saved as old
                         $scope.oldGlobalProperties = angular.copy(savedProperties);
@@ -1011,7 +1013,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                         // Specify that the global_properties_usage = null means that data may have become outdated.
                         // So next time user wants global_properties we reload then instead of using cached ones.
-                        // $scope.platform.global_properties_usage = null;
+                        $scope.platform.global_properties_usage = null;
 
                         // Cleanning up local change because they have been saved already
                         LocalChanges.clearLocalChanges({
@@ -1049,30 +1051,16 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             return ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#');
         };
 
-        $scope.getGlobalPropertiesUsage = function () {
-            return ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#');
-        };
-
         $scope.showGlobalPropertiesDisplay = function () {
             // --- Testing retrive on demand
             // If the usage is already filled, we don't call the backend, and serve cache instead
-            // if ($scope.platform.global_properties_usage === null) {
-            //     $scope.getGlobalProperties();
-            //     console.log('$scope.platform.global_properties : ', $scope.platform.global_properties);
-            //     $scope.getGlobalPropertiesUsage();
-            // }
+            if ($scope.platform.global_properties === null) {
+                $scope.getGlobalProperties().then(function (globalProperties) {
+                    $scope.platform.global_properties = globalProperties;
+                    $scope.oldGlobalProperties = angular.copy($scope.platform.global_properties);
+                });
+            }
 
-            $scope.getGlobalProperties().then(function (globalProperties) {
-                console.log('globalProperties : ', globalProperties);
-                return globalProperties;
-            });
-
-            $scope.getGlobalPropertiesUsage().then(function (globalPropertiesUsage) {
-                console.log('globalPropertiesUsage : ', globalPropertiesUsage);
-                return globalPropertiesUsage;
-            });
-
-            console.log('$scope.showGlobalProperties : ', $scope.showGlobalProperties);
             $scope.instance = null;
             $scope.properties = null;
             $scope.showGlobalProperties = !$scope.showGlobalProperties;
