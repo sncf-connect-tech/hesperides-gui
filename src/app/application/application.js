@@ -515,9 +515,9 @@ angular.module('hesperides.application', [])
         return {
             restrict: 'E',
             scope: {
-                // on pouvait faire un appel à getGlobalProperties() pour récupèrer les global_properties et supprimer
+                // on pouvais faire un appel à getGlobalProperties() pour récupèrer les global_properties et supprimer
                 // ce paramètre platform, mais cela serait une opération de trop car les propriétés globales sont déja
-                // valorisées dans platform avec platform.global_properties, d'où l'idée de réutiliser ce paramètre
+                // valorisées dans platform avec platform.global_properties, d'où l'idée de réutilisé ce paramètre
                 platform: '=',
                 platformName: '=',
                 applicationName: '=',
