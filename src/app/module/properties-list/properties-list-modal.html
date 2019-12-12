@@ -32,7 +32,7 @@
                         {{ 'platform.properties.modal.columnHeaders.finalValue' | translate }}
                    </th>
                    <th class="col-tab-titles">
-                        {{ 'platform.properties.modal.columnHeaders.globalValue' | translate }}
+                        {{ 'platform.properties.modal.columnHeaders.global' | translate }}
                    </th>
                    <th class="col-tab-titles">
                         {{ 'platform.properties.modal.columnHeaders.moduleValue' | translate }}
@@ -45,14 +45,17 @@
             <tbody>
                 <tr ng-repeat="property in properties.key_value_properties | filter: propertyWIthBlankFinalValueFilter | filter: {'name': propertiesKeyFilter}">
                     <td class="col-tab-properties-datas">
-                        <div
-                            ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
-                            class="properties-values properties-name">
-                            {{property.name}}
+                        <div  ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}">                      
+                            <div class="text-container">
+                                <label class="property-label-class"> {{property.name}}</label>
+                                <md-tooltip md-direction="left">
+                                    {{property.name}}
+                                </md-tooltip>
+                            </div>
                         </div>
                     </td>
                     <td class="col-tab-properties-datas">
-                        <div class="properties-values">
+                        <div class="properties-values" >
                             {{getModulesWherePropertyUsed(property)}}
                         </div>
                     </td>
@@ -64,15 +67,46 @@
                         </div>
                     </td>
                     <td class="col-tab-properties-datas">
-                        <div class="properties-values">
-                            {{property.globalValue}}
+                        <div layout="column">
+                            <div flex="60">
+                                <div class="text-container" ng-if="(platform.globalPropertyUsages[property.name] | filter : {inModel:'true'}).length">
+                                    <label class="property-label-class">{{property.name}}</label>
+                                    <md-tooltip md-direction="left">
+                                        {{property.name}}
+                                    </md-tooltip>
+                                </div>
+                            </div>
+                            <div flex="10" ng-init="zoomInGlobalProperties = false">
+                                <div layout="column" layout-wrap>
+                                    <span id="properties-globales_zoom-{{property.name}}" flex class="ng-scope zoom-in-property-icon"
+                                          ng-class="zoomInGlobalProperties ? 'fa fa-compress' : 'fa fa-expand'"
+                                          ng-click="zoomInGlobalProperties = !zoomInGlobalProperties"
+                                          ng-show="(platform.globalPropertyUsages[property.name] | filter : {inModel:'true'}).length">
+                                    </span>
+                                </div>
+                            </div>
+                            <div flex="30">
+                                <span ng-show="zoomInGlobalProperties" ng-bind="'properties.platform.globalProperties.used_in' | translate"></span>
+                            </div>
+                            <div ng-show="zoomInGlobalProperties && (platform.globalPropertyUsages[property.name] | filter : {inModel:'true'}).length">
+                                <md-list flex="auto"class="global-property-usage">
+                                    <md-list-item ng-repeat="usage in (platform.globalPropertyUsages[property.name] | filter : {inModel:'true'}) track by $index">
+                                        <div class="text-container">
+                                            <label id="properties-globales_platform-prettyfy-path-label-{{property.name}}" class="global-property-usage-label">{{platform.prettify_path(usage.path)}}</label>
+                                        </div>
+                                    </md-list-item>
+                                </md-list>
+                            </div>
                         </div>
                     </td>
                     <td class="col-tab-properties-datas">
-                        <div
-                            ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}"
-                            class="properties-values">
-                            {{property.storedValue}}
+                        <div ng-attr-class="{{isGlobalValuationIsDiffrentWithModuleValuation(property) && 'fa-colored' || 'fa-not-colored' }}">
+                            <div class="text-container">
+                                <label class="properties-values">{{property.storedValue}}</label>
+                                <md-tooltip md-direction="left">
+                                    {{property.storedValue}}
+                                </md-tooltip>
+                            </div>
                         </div>
                     </td>
                     <td class= "col-tab-properties-datas">

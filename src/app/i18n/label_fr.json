@@ -341,7 +341,7 @@
   "platform.properties.modal.columnHeaders.propertyName": "Nom de la propriété",
   "platform.properties.modal.columnHeaders.nbUsages": "Nombre de modules où elle est définie",
   "platform.properties.modal.columnHeaders.finalValue": "Valeur finale",
-  "platform.properties.modal.columnHeaders.globalValue": "Valeur globale",
+  "platform.properties.modal.columnHeaders.global": "Usages des propriétés globale",
   "platform.properties.modal.columnHeaders.moduleValue": "Valeur stockée",
   "platform.properties.modal.columnHeaders.annotations": "Annotations associées",
   "platform.properties.modal.title": "Liste des propriétés de la plateforme: {{platformName}}",
