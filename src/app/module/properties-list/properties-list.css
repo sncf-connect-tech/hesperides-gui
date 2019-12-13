@@ -94,3 +94,7 @@
     overflow: hidden;
     word-wrap: break-word;
   }
+
+  .col-tab-titles {
+      background: white !important;
+  }
