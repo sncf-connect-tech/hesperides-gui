@@ -1247,8 +1247,14 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
 
-                    scope.shownOnlyRequiredProperties = function (propertyIsRequired) {
-                        return scope.onlyRequiredPropertiesSwitchChanged && !propertyIsRequired;
+                    scope.getNumBerOfrequiredProperties = function (properties) {
+                        var count = 0;
+                        properties.forEach(function (property) {
+                            if (property.required) {
+                                count++;
+                            }
+                        });
+                        return count;
                     };
                 },
             };
@@ -1661,6 +1667,14 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         return function (items, display) {
             return _.filter(items, function (item) {
                 return (display ? !item.inModel : _.isUndefined(display) || display || item.inModel);
+            });
+        };
+    })
+
+    .filter('displayOnlyRequiredProperties', function () {
+        return function (items, display) {
+            return _.filter(items, function (item) {
+                return (display) ? item.required : _.isUndefined(display) || display || item.inModel;
             });
         };
     })
