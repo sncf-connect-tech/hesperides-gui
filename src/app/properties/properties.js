@@ -1249,11 +1249,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                     scope.getNumBerOfrequiredProperties = function (properties) {
                         var count = 0;
-                        properties.forEach(function (property) {
-                            if (property.required) {
-                                count++;
-                            }
-                        });
+                        if (properties) {
+                            properties.forEach(function (property) {
+                                if (property.required) {
+                                    count++;
+                                }
+                            });
+                        }
                         return count;
                     };
                 },
