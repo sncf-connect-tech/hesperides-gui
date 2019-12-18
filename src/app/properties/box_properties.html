@@ -92,10 +92,10 @@
     <div flex="50">
         <div id="propertiesButtonsContainer" layout="row" layout-align="end">
             <md-button id="cleanPropertiesButton" class="md-raised"
-                       ng-really-click="clean_properties(properties)" ng-if="hasDeletedProperties()"
-                       ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
-                <span class="fa fa-trash"></span>
-                <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
+                       ng-really-click="cleanUnusedProperties(selected_module.properties_path)" ng-if="hasDeletedProperties()"
+                       ng-really-message="{{ 'properties.platform.cleanUnusedModuleProperties.confirm' | translate }}">
+                <span class="fa fa-eraser"></span>
+                <span>{{ 'properties.platform.cleanUnusedProperties.tooltip' | translate }}</span>
             </md-button>
             <md-button id="e2e-box-properties-save-module-properties-local-button"
                        ng-click="save_properties_locally(properties, selected_module)"

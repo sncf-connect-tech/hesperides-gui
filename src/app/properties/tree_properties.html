@@ -26,27 +26,43 @@
             <md-input-container class="md-block margin-inherit">
                 <label>{{ 'properties.treeMode.title' | translate }}</label>
                 <!-- Add ngModelOptions for big tree, to prevent key press hang -->
-                <input type="text" id="e2e-tree-properties-filter" ng-trim="true" ng-model="parentScope.searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" ng-change="resetOpenByClick()" />
+                <input type="text" id="e2e-tree-properties-filter" ng-trim="true" ng-model="parentScope.searchInTree"
+                       ng-model-options="{ debounce: { 'default': 250 } }" ng-change="resetOpenByClick()"/>
             </md-input-container>
         </div>
 
         <!-- Element root de l'arbre -->
         <div id="header" layout="row">
-            <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' | translate }}</h3></div>
+            <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' |
+                translate }}</h3></div>
             <div flex="grow" layout="row" layout-align="none center">
-                <md-button id="e2e-tree-properties-add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
+                <md-button id="e2e-tree-properties-add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)"
+                           class="md-xs" aria-label="{{ 'properties.logicGroup.add' | translate }}" tooltip="">
                     <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button id="e2e-tree-properties-display-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay()">
+                <md-button id="e2e-tree-properties-display-global-properties-button" class="md-xs"
+                           aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}"
+                           ng-click="showGlobalPropertiesDisplay()">
                     <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button id="e2e-tree-properties-display-global-properties-diff-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diffGlobalProperties()">
+                <md-button id="e2e-tree-properties-display-global-properties-diff-button" class="md-xs"
+                           aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}"
+                           ng-click="diffGlobalProperties()">
                     <md-tooltip>{{ 'properties.platform.globalProperties.compare' | translate }}</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
-                <md-button id="e2e-tree-properties-quick-display-button" class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
+                <md-button id="e2e-tree-properties-clean-unused-properties-button" class="md-xs"
+                           aria-label="{{ 'properties.platform.cleanUnusedProperties.tooltip' | translate }}"
+                           ng-really-click="cleanUnusedProperties()"
+                           ng-really-message="{{ 'properties.platform.cleanUnusedProperties.confirm' | translate }}">
+                    <md-tooltip>{{ 'properties.platform.cleanUnusedProperties.tooltip' | translate }}</md-tooltip>
+                    <i class="fa fa-eraser"></i>
+                </md-button>
+                <md-button id="e2e-tree-properties-quick-display-button" class="md-xs"
+                           aria-label="{{ 'properties.platform.quickDisplay' | translate }}"
+                           ng-click="quickDisplayInstance()">
                     <md-tooltip>{{ 'properties.platform.quickDisplay' | translate }}</md-tooltip>
                     <i class="fa fa-bolt" ng-class="{'fa-rotate-270': quickOpen}"></i>
                 </md-button>
@@ -56,11 +72,11 @@
         <!-- Elements enfants -->
         <div>
             <div
-                 ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:parentScope.searchInTree"
-                 ng-include="'properties/tree_renderer.html'"/>
-            </div>
+                    ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:parentScope.searchInTree"
+                    ng-include="'properties/tree_renderer.html'"/>
         </div>
     </div>
+</div>
 
 <div flex="70">
     <div id="propertiesDivHolder">
@@ -83,18 +99,18 @@
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div class="has_model_{{selected_module.has_model}}">
-                <h3><span>{{ 'properties.module.editProperties.title' | translate }} <strong>{{selected_module.path.split('#').join('
-                    | ')}} | {{selected_module.title}}</strong></span>
-                </h3>
+                <h3><span>{{ 'properties.module.editProperties.title' | translate }}
+                        <strong>{{selected_module.path.split('#').join(' | ')}} | {{selected_module.title}}</strong>
+                    </span></h3>
             </div>
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>
                 <md-button class="md-raised"
-                           ng-really-click="clean_properties(properties)" ng-if="hasDeletedProperties()"
-                           ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
-                    <i class="fa fa-trash"></i>
-                    <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
+                           ng-really-click="cleanUnusedProperties(selected_module.properties_path)" ng-if="hasDeletedProperties()"
+                           ng-really-message="{{ 'properties.platform.cleanUnusedModuleProperties.confirm' | translate }}">
+                    <i class="fa fa-eraser"></i>
+                    <span>{{ 'properties.platform.cleanUnusedProperties.tooltip' | translate }}</span>
                 </md-button>
                 <md-button id="e2e-tree-properties-save-module-properties-local-button"
                            ng-click="save_properties_locally(properties, selected_module)"
@@ -122,16 +138,18 @@
 
         <div layout="row" ng-show="properties">
             <form name="modulePropertiesForm" flex="100">
-                <properties-list properties="properties" properties-model="model" platform="platform" module="selected_module"></properties-list>
+                <properties-list properties="properties" properties-model="model" platform="platform"
+                                 module="selected_module"></properties-list>
             </form>
         </div>
 
         <div layout="row" ng-show="instance">
-            <div >
+            <div>
                 <h3 class="margin-top-0px">
                     <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }}
                         <strong>
-                            <a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a>
+                            <a href="" editable-text="instance.name"
+                               onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a>
                         </strong>
                     </span>
                 </h3>
