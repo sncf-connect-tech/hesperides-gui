@@ -341,7 +341,7 @@ angular.module('hesperides.application', [])
                     var appService = this;
                     platform = platform.to_rest_entity();
                     var path = `rest/applications/${ encodeURIComponent(platform.application_name) }/platforms` +
-                               `?from_application=${ encodeURIComponent(from_application) }&from_platform=${ encodeURIComponent(from_platform) }&copy_instances_and_properties=${ copyInstancesAndProperties }`;
+                        `?from_application=${ encodeURIComponent(from_application) }&from_platform=${ encodeURIComponent(from_platform) }&copy_instances_and_properties=${ copyInstancesAndProperties }`;
                     return $http.post(path, platform).then(function (response) {
                         $translate('platform.event.created').then(function (label) {
                             notify({ classes: [ 'success' ], message: label });
@@ -438,18 +438,32 @@ angular.module('hesperides.application', [])
                         return new InstanceModel({});
                     });
                 },
+                cleanUnusedProperties(applicationName, platformName, propertiesPath) {
+                    let url = `rest/applications/${ encodeURIComponent(applicationName) }/platforms/${ encodeURIComponent(platformName) }/properties/clean_unused_properties`;
+                    if (propertiesPath) {
+                        url += `?properties_path=${ encodeURIComponent(propertiesPath) }`;
+                    }
+                    return $http.delete(url).then(function () {
+                        $translate('properties.platform.cleanUnusedProperties.success').then(function (label) {
+                            notify({ classes: [ 'success' ], message: label });
+                        });
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.cleanUnusedProperties' });
+                        throw error;
+                    });
+                },
 
-                /** a
-         * Met à jour la configuration des modules d'une plateforme.
-         * <p>
-         * Attention, seule l'instance "locale" est modifiée. La modification n'est pas persistée.
-         * </p>
-         *
-         * @param platform platforme à mettre à jour
-         * @param newVersion nouvelle version de la plateforme
-         * @param newModulesConfig nouvelle version des modules
-         * @returns {Array} la liste des modules misà jour
-         */
+                /**
+                 * Met à jour la configuration des modules d'une plateforme.
+                 * <p>
+                 * Attention, seule l'instance "locale" est modifiée. La modification n'est pas persistée.
+                 * </p>
+                 *
+                 * @param platform platforme à mettre à jour
+                 * @param newVersion nouvelle version de la plateforme
+                 * @param newModulesConfig nouvelle version des modules
+                 * @returns {Array} la liste des modules misà jour
+                 */
                 updatePlatformConfig(platform, newVersion, newModulesConfig) {
                     var updatedModules = [];
 

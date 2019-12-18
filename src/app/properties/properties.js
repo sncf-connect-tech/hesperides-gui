@@ -20,8 +20,8 @@
  * Global utility function for generation a unique id
  * each for iterable properties bloc.
  * This is used by :
-    - mergeWithModel function
-    - IterablePropertiesContainer directive
+ - mergeWithModel function
+ - IterablePropertiesContainer directive
  */
 var getIdentifier = function () {
     /**
@@ -45,8 +45,8 @@ var getIdentifier = function () {
  * Private function for adding the new empty value from the model
  * This makes use of recursion
  * This is used by :
-      - mergeWithModel function
-      - IterablePropertiesContainer directive
+ - mergeWithModel function
+ - IterablePropertiesContainer directive
  * @param {Object} property : the property the value should be added to
  * @param {Object} model : the model of the property
  */
@@ -192,7 +192,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     return this.modules.concat(
                         _.flatten(_.map(this.children, function (box) {
                             return box.to_modules();
-                        }))
+                        })),
                     );
                 },
             }, data);
@@ -504,6 +504,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             });
         };
 
+        $scope.cleanUnusedProperties = function (propertiesPath) {
+            ApplicationService.cleanUnusedProperties($scope.platform.application_name, $scope.platform.platform_name, propertiesPath)
+                .then(function () {
+                    if (propertiesPath) {
+                        $scope.edit_properties($scope.platform, $scope.selected_module);
+                    } else {
+                        $scope.on_edit_platform($scope.platform);
+                    }
+                });
+        };
+
         $scope.quickDisplayInstance = function () {
             $scope.$broadcast(($scope.quickOpen ? 'quickHideInstanceDetails' : 'quickDisplayInstanceDetails'), {});
             $scope.quickOpen = !$scope.quickOpen;
@@ -525,7 +536,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         version,
                         is_working_copy,
                         path: box.get_path(),
-                    }
+                    },
                 ));
 
                 $scope.save_platform_from_box($scope.mainBox).then(function () {
@@ -636,7 +647,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                 /**
                  * Private function used to check if the events are selectabled or not
-                  */
+                 */
                 modalScope.checkSelectStatus = function () {
                     // get the target items
                     var isGlobal = null;
@@ -830,15 +841,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         };
 
         /**
-         * Clean properties.
-         * Used to delete unsed properties in module template.
-         */
-        $scope.clean_properties = function (properties) {
-            // Filter to keep properties only existing in model
-            properties.filter_according_to_model();
-        };
-
-        /**
          * Clean instance properties.
          * Used to deleted unused instance properties.
          */
@@ -932,8 +934,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.save_properties_locally = function (properties, module) {
             if (
                 _.isEqual(properties.key_value_properties, $scope.oldProperties.key_value_properties) &&
-        // we use angular copy for these to remove the $$hashKey
-        _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperties.iterable_properties))) {
+                // we use angular copy for these to remove the $$hashKey
+                _.isEqual(angular.copy(properties.iterable_properties), angular.copy($scope.oldProperties.iterable_properties))) {
                 $translate('properties-not-changed.message').then(function (label) {
                     notify({ classes: [ 'warn' ], message: label });
                 });
@@ -946,7 +948,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             properties.key_value_properties.forEach(function (elem) {
                 if (('filtrable_value' in elem && elem.filtrable_value !== elem.value) ||
-            (!('filtrable_value' in elem) && elem.value && elem.value.toString().length > 0 && !elem.valuedByAGlobal)) {
+                    (!('filtrable_value' in elem) && elem.value && elem.value.toString().length > 0 && !elem.valuedByAGlobal)) {
                     LocalChanges.addLocalChange($routeParams.application, $scope.platform.name, module.properties_path, elem.name, elem.value);
                     hasSavedLocalChange = true;
                 }
@@ -956,7 +958,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 LocalChanges.smartClearLocalChanges({ 'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path }, properties);
 
                 $translate('properties.module.editProperties.savedLocally').then((label) =>
-                    notify({ classes: [ 'success' ], message: label })
+                    notify({ classes: [ 'success' ], message: label }),
                 );
             }
 
@@ -1016,8 +1018,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                             properties_path: module.properties_path,
                         });
 
-                    // Dismiss the modal
-                    // modalScope.$closeDialog();
+                        // Dismiss the modal
+                        // modalScope.$closeDialog();
                     }, function () {
                         // If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
                         $location.url(`/properties/${ $scope.platform.application_name }`).search({ platform: $scope.platform.name });
@@ -1127,7 +1129,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 $scope.application.directoryGroups = directoryGroups;
                 setValidatedAppGroupCNs();
                 $translate('properties.application.prodPerms.changeSuccess').then((label) =>
-                    notify({ classes: [ 'success' ], message: label })
+                    notify({ classes: [ 'success' ], message: label }),
                 );
             }).catch(() => {
                 // Retrocompatibility: we handle the case of non-existing .directoryGroups
@@ -1245,8 +1247,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
 
-                    scope.shownOnlyRequiredProperties = function(propertyIsRequired) {
-                       return scope.onlyRequiredPropertiesSwitchChanged && !propertyIsRequired;
+                    scope.shownOnlyRequiredProperties = function (propertyIsRequired) {
+                        return scope.onlyRequiredPropertiesSwitchChanged && !propertyIsRequired;
                     };
                 },
             };
@@ -1350,12 +1352,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 toggle: '=',
             },
             template: '<md-switch id="toggle-deleted-properties_switch" class="md-primary md-block" ' +
-            'ng-model="toggle"' +
-            'ng-init="toggle=false" ' +
-            'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
-            'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
-            '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties() }})          ' +
-            '</md-switch>',
+                'ng-model="toggle"' +
+                'ng-init="toggle=false" ' +
+                'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
+                'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
+                '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties() }})          ' +
+                '</md-switch>',
             link(scope) {
                 scope.getNumberOfDeletedProperties = function () {
                     var count = 0;
@@ -1429,11 +1431,11 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             function buildTooltip(key_value) {
                 return (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
-                       (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
-                       (key_value.password ? ' *password*' : '') +
-                       (key_value.comment ? ` ${ key_value.comment }` : '') +
-                       (key_value.valuedByAGlobal ? ` [ Valued by a global property with same name: ${ key_value.globalValue } ]` : '') +
-                       (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => `${ name }=${ value }`).join(', ') }]`);
+                    (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
+                    (key_value.password ? ' *password*' : '') +
+                    (key_value.comment ? ` ${ key_value.comment }` : '') +
+                    (key_value.valuedByAGlobal ? ` [ Valued by a global property with same name: ${ key_value.globalValue } ]` : '') +
+                    (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => `${ name }=${ value }`).join(', ') }]`);
             }
 
             this.mergeWithGlobalProperties = function (global_properties) {
@@ -1465,7 +1467,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     key_value.inModel = model.hasKey(key_value.name);
 
                     if (key_value.inModel) {
-                    // Add required/default
+                        // Add required/default
                         var prop = _.find(model.key_value_properties, { name: key_value.name });
 
                         key_value.required = (prop.required) ? prop.required : false;
@@ -1540,16 +1542,16 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                  */
                 var scanIterableItems = function (iterable_model, iterable_properties) {
                     _.each(iterable_model, function (modelIterable) {
-                    // Found iterable properties for iterable_model
+                        // Found iterable properties for iterable_model
                         var itProps = _.filter(iterable_properties, { name: modelIterable.name });
 
                         // For each item in iterable found
                         _.each(itProps, function (itProp) {
-                        // For each valorisation of iterable
+                            // For each valorisation of iterable
                             _.each(itProp.iterable_valorisation_items, function (val) {
-                            // For each values in iterable
+                                // For each values in iterable
                                 _.each(val.values, function (item) {
-                                // give it an identifier
+                                    // give it an identifier
                                     val.id = getIdentifier();
 
                                     // clean the title if necessary
@@ -1558,13 +1560,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                                     }
 
                                     if (item.iterable_valorisation_items) {
-                                    // New iterable
+                                        // New iterable
                                         _.each(_.filter(modelIterable.fields, { name: item.name }), (prop) => {
                                             item.inModel = true;
                                             scanIterableItems([ prop ], [ item ]);
                                         });
                                     } else {
-                                    // Search model
+                                        // Search model
                                         _.each(_.filter(modelIterable.fields, { name: item.name }), function (prop) {
                                             item.comment = prop.comment;
                                             item.inModel = true;
@@ -1579,7 +1581,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                                 _.each(modelIterable.fields, function (prop) {
                                     if (!_.find(val.values, { name: prop.name })) {
-                                    // is it an iterable ?
+                                        // is it an iterable ?
                                         if (prop.fields) {
                                             val.values.push({
                                                 name: prop.name,
@@ -1613,7 +1615,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 // Taking care of missing values
                 // for each model in iterable
                 _.each(model.iterable_properties, function (_model) {
-                // find the values
+                    // find the values
                     var values = _.find(me.iterable_properties, { name: _model.name });
 
                     if (_.isUndefined(values)) {
@@ -1629,26 +1631,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 });
 
                 return this;
-            };
-
-            this.filter_according_to_model = function () {
-                this.key_value_properties = _.filter(this.key_value_properties, function (property) {
-                    return property.inModel;
-                });
-
-                // for iterable properties
-                this.iterable_properties = _.filter(this.iterable_properties, function (property) {
-                    if (!property.inModel) {
-                        return false;
-                    }
-                    _.each(property.iterable_valorisation_items, function (valorisation) {
-                        var inModelVals = null;
-                        inModelVals = _.filter(valorisation.values, (val) => val.inModel);
-                        // set by the filtered
-                        valorisation.values = inModelVals;
-                    });
-                    return true;
-                });
             };
 
             this.to_rest_entity = function () {
@@ -1671,10 +1653,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         return Properties;
     })
 
-/**
- * This is for filtering the deleted properties.
- * Used only for simple properties.
- */
+    /**
+     * This is for filtering the deleted properties.
+     * Used only for simple properties.
+     */
     .filter('displayProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
@@ -1693,7 +1675,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 _.each(box.modules, (module) => {
                     if (searchString) {
                         module.openBySearchFilter = _.includes(module.name.toUpperCase(), searchString) ||
-                                                    _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString));
+                            _.some(module.instances, (instance) => _.includes(instance.name.toUpperCase(), searchString));
                     } else {
                         module.openBySearchFilter = store.get('unfoldInstancesByDefault');
                     }
@@ -1829,17 +1811,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 toggle: '=',
             },
             template: '<md-switch id="toggle-unspecified-properties_switch" class="md-primary md-block" ' +
-                  'ng-model="toggle"' +
-                  'ng-init="toggle=false" ' +
-                  'ng-disabled="(getNumberOfUnspecifiedProperties(keyValueProperties) <= 0)" ' +
-                  'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
-                  '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
-                  '</md-switch>',
+                'ng-model="toggle"' +
+                'ng-init="toggle=false" ' +
+                'ng-disabled="(getNumberOfUnspecifiedProperties(keyValueProperties) <= 0)" ' +
+                'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
+                '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
+                '</md-switch>',
             controller: [
                 '$scope', '$filter', function ($scope, $filter) {
                     /**
-             * This calculate the number of unspecified properties.
-             */
+                     * This calculate the number of unspecified properties.
+                     */
                     $scope.getNumberOfUnspecifiedProperties = function (tab) {
                         var count = 0;
 
@@ -1867,7 +1849,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     /**
      * This directive is for sorting the properties list in asc and desc order of properties name
      * This is shared between all properties display :
-            Global Properties, Simple Properties, Iterable Properties and Instance Properties.
+     Global Properties, Simple Properties, Iterable Properties and Instance Properties.
      */
     .directive('toggleSortProperties', function () {
         return {
@@ -1879,8 +1861,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             controller: [
                 '$scope', function ($scope) {
                     /**
-             * Inverse the sort order
-             */
+                     * Inverse the sort order
+                     */
                     $scope.switchOrder = function () {
                         $scope.sortOrder = !$scope.sortOrder;
                     };
@@ -1901,16 +1883,16 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 toggle: '=',
             },
             template: '<md-switch id="toggle-global-properties_switch" class="md-primary md-block" ' +
-        'ng-model="toggle"' +
-        'ng-disabled="(getNumberOfGlobalProperties(keyValueProperties) <= 0)" ' +
-        'aria-label="{{ \'properties.globalPropertiesValues.switch\' | translate }}">' +
-        '{{ \'properties.globalPropertiesValues.switch\' | translate }} ({{ getNumberOfGlobalProperties(keyValueProperties) }})' +
-        '</md-switch>',
+                'ng-model="toggle"' +
+                'ng-disabled="(getNumberOfGlobalProperties(keyValueProperties) <= 0)" ' +
+                'aria-label="{{ \'properties.globalPropertiesValues.switch\' | translate }}">' +
+                '{{ \'properties.globalPropertiesValues.switch\' | translate }} ({{ getNumberOfGlobalProperties(keyValueProperties) }})' +
+                '</md-switch>',
             controller: [
                 '$scope', '$filter', function ($scope, $filter) {
                     /**
-             * This calculate the number of global properties.
-             */
+                     * This calculate the number of global properties.
+                     */
                     $scope.getNumberOfGlobalProperties = function (tab) {
                         var count = 0;
                         tab = $filter('displayGlobalProperties')(tab, true);
@@ -1936,9 +1918,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         return function (items, display) {
             return _.filter(items, function (item) {
                 return _.isUndefined(display) ||
-                !display ||
-                (!item.filtrable_value && _.isEmpty(item.defaultValue)) ||
-                (_.isEmpty(item.defaultValue) && _.isEmpty(item.value));
+                    !display ||
+                    (!item.filtrable_value && _.isEmpty(item.defaultValue)) ||
+                    (_.isEmpty(item.defaultValue) && _.isEmpty(item.value));
             });
         };
     })
@@ -2021,7 +2003,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                             element.children().addClass('popover-hover');
                             scope.currentPopup = element.children();
                         },
-                        1000
+                        1000,
                     );
                 });
 
