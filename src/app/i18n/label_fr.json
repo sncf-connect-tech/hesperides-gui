@@ -175,7 +175,7 @@
   "properties.sort.switch": "Tri des propriétés",
   "properties.unspecifiedValues.switch": "Afficher les propriétés non renseignées",
   "properties.globalPropertiesValues.switch": "Afficher les globales",
-  "properties.onlyRequiredProperties.switch": "Afficher seulement les propriétés obligatoires ({{numBerOfRequired}})",
+  "properties.onlyRequiredProperties.switch": "Afficher seulement les propriétés obligatoires ({{numberOfRequired}})",
   "properties.deletedOnes.switch": "Afficher les propriétés supprimées",
   "properties.logicGroup.add": "Ajouter un groupe logique",
   "properties.logicGroup.add.name": "Nom",

@@ -1247,14 +1247,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
 
-                    scope.getNumBerOfrequiredProperties = function (properties) {
+                    scope.getNumberOfrequiredProperties = function (properties) {
                         var count = 0;
                         if (properties) {
-                            properties.forEach(function (property) {
-                                if (property.required) {
-                                    count++;
-                                }
-                            });
+                            count = properties.filter((property) => property.required).length;
                         }
                         return count;
                     };
@@ -1676,7 +1672,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     .filter('displayOnlyRequiredProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
-                return (display) ? item.required : _.isUndefined(display) || display || item.inModel;
+                // si display à true on affiches les items required, à false et undefined on affiche toutes les propriétés du model
+                return (display ? item.required : _.isUndefined(display) || item.inModel);
             });
         };
     })
