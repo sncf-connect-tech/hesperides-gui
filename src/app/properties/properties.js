@@ -978,6 +978,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             }).length > 0;
         };
 
+        $scope.hasUnfilledRequiredProperties = function () {
+            return _.filter($scope.properties ? $scope.properties.key_value_properties : [], function (prop) {
+                return prop.required && (_.isEmpty(prop.value) || _.isUndefined(prop.value));
+            }).length > 0;
+        };
+
         $scope.instanceHasDeletedProperties = function (instance) {
             return _.filter(instance ? instance.key_values : [], function (prop) {
                 return !prop.inModel;

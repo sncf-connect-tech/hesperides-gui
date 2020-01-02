@@ -130,7 +130,7 @@
                 </md-button>
                 <md-button id="e2e-tree-properties-save-module-properties-button"
                            ng-click="save_properties(properties, selected_module)"
-                           ng-disabled="modulePropertiesForm.$invalid"
+                           ng-disabled="hasUnfilledRequiredProperties()"
                            class="md-raised md-primary">
                     <i class="fa fa-floppy-o"></i>
                     <span>{{ 'properties.module.editProperties.save' | translate }}</span>
