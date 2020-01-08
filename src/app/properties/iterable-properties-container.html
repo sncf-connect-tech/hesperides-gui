@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="iterable-properties-container">
 
-    <div class="iterable-bloc" id="{{item.id}}">
+    <div class="iterable-bloc" id="iterable-block-{{item.id}}" block-id="{{item.id}}">
 
         <div layout="row" class="iterable-bloc-title">
             <md-button id="e2e-iterable-property-{{property.name}}-bloc-{{item.id}}-remove-bloc-button"
@@ -83,5 +83,7 @@
         {{property.name}}
     </md-button>
 
-    <div ng-repeat="item in property.iterable_valorisation_items" ng-include="'iterable-properties-container'"></div>
+    <div id="e2e-iterable-property-{{property.name}}-blocks"
+         ng-repeat="item in property.iterable_valorisation_items"
+         ng-include="'iterable-properties-container'"></div>
 </div>

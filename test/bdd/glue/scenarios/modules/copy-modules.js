@@ -8,8 +8,6 @@ When('I submit valid values to copy the existing module, setting the version to 
     this.moduleBuilder.withVersion(newVersion);
     await send.inputByCss('#e2e-modal-module-create-from input[name="moduleName"]', this.moduleBuilder.name);
     await send.inputByCss('#e2e-modal-module-create-from input[name="moduleVersion"]', this.moduleBuilder.version);
-    await send.inputByCss('md-autocomplete input#module-menu-modal-from_input-module-autocomplete', this.moduleBuilder.name);
-    browser.waitForAngular();
-    await send.clickById('selected_option');
+    await send.searchAndSelectFirstByCss('md-autocomplete input#module-menu-modal-from_input-module-autocomplete', this.moduleBuilder.name);
     await send.clickByCss('#e2e-modal-module-create-from button[type="submit"]');
 });

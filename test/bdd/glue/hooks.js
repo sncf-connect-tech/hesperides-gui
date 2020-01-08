@@ -7,6 +7,7 @@ const { ModuleBuilder } = require('./builders/ModuleBuilder');
 const { TemplateBuilder } = require('./builders/TemplateBuilder');
 const { PlatformBuilder } = require('./builders/PlatformBuilder');
 const { DeployedModuleBuilder } = require('./builders/DeployedModuleBuilder');
+const { TemplateHistory } = require('./builders/TemplateHistory');
 const { TechnoHistory } = require('./builders/TechnoHistory');
 const { ModuleHistory } = require('./builders/ModuleHistory');
 const { PlatformHistory } = require('./builders/PlatformHistory');
@@ -19,10 +20,16 @@ BeforeAll(function (next) {
 Before(/** @this CustomWorld */ async function () {
     console.log('Before hook');
     const world = this;
-    await browser.get(global.baseUrl);
-    // Supprime le fichier téléchargé (limité à ce fichier)
+    await browser.get(baseUrl);
+
+    // Supprime le fichier téléchargé (limité à ce fichier). L'idéal serait de stocker les
+    // fichiers dans un dossier spécifique pour supprimer ce dossier avant chaque scénario
+    // mais c'est à la création de ce dossire que ça plante sur Travis (problème de droits).
+    // Une autre solution serait de créer ce dossier à la main, le commiter et le vider
+    // plutôt que le supprimer avant chaque scénario.
     await fs.promises.unlink(downloadsPath + this.templateBuilder.filename).catch(function () {
     });
+
     // Pour une raison obscure les collections `techno` et `module` ont
     // besoin d'être initialisées par une demande de création...
     await rest.get(`${ baseUrl }/rest/technos`).catch(async function () {
@@ -42,7 +49,7 @@ Before(/** @this CustomWorld */ async function () {
             for (const application of applications.data) {
                 await rest.get(`${ baseUrl }/rest/applications/${ application.name }`).then(async function (currentApplication) {
                     for (const platform of currentApplication.data.platforms) {
-                        await rest.del(`${ baseUrl }/rest/applications/${ application.name }/platforms/${ platform.platform_name }`);
+                        await rest.del(`${ world.productionUserUrl }/rest/applications/${ application.name }/platforms/${ platform.platform_name }`);
                     }
                 });
             }
@@ -54,7 +61,7 @@ Before(/** @this CustomWorld */ async function () {
                     for (const moduleVersion of moduleVersions.data) {
                         await rest.get(`${ baseUrl }/rest/modules/${ moduleName }/${ moduleVersion }`).then(async function (versionTypes) {
                             for (const versionType of versionTypes.data) {
-                                await rest.del(`${ baseUrl }/rest/modules/${ moduleName }/${ moduleVersion }/${ versionType }`);
+                                await rest.del(`${ world.productionUserUrl }/rest/modules/${ moduleName }/${ moduleVersion }/${ versionType }`);
                             }
                         });
                     }
@@ -68,7 +75,7 @@ Before(/** @this CustomWorld */ async function () {
                     for (const technoVersion of technoVersions.data) {
                         await rest.get(`${ baseUrl }/rest/technos/${ technoName }/${ technoVersion }`).then(async function (versionTypes) {
                             for (const versionType of versionTypes.data) {
-                                await rest.del(`${ baseUrl }/rest/technos/${ technoName }/${ technoVersion }/${ versionType }`);
+                                await rest.del(`${ world.productionUserUrl }/rest/technos/${ technoName }/${ technoVersion }/${ versionType }`);
                             }
                         });
                     }
@@ -89,11 +96,13 @@ AfterAll(function (next) {
 
 class CustomWorld {
     constructor() {
+        this.productionUserUrl = 'http://prod:password@localhost';
         this.technoBuilder = new TechnoBuilder();
         this.moduleBuilder = new ModuleBuilder();
         this.templateBuilder = new TemplateBuilder();
         this.platformBuilder = new PlatformBuilder();
         this.deployedModuleBuilder = new DeployedModuleBuilder();
+        this.templateHistory = new TemplateHistory();
         this.technoHistory = new TechnoHistory();
         this.moduleHistory = new ModuleHistory();
         this.platformHistory = new PlatformHistory();
@@ -104,4 +113,4 @@ class CustomWorld {
 // exposed to the hooks and steps as `this`
 setWorldConstructor(CustomWorld);
 
-setDefaultTimeout(30 * 1000);
+setDefaultTimeout(60 * 1000);

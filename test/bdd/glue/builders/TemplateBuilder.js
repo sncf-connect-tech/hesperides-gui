@@ -9,7 +9,7 @@ class TemplateBuilder {
         this.versionId = 0;
     }
 
-    withContent(content) {
+    setContent(content) {
         this.content = content;
     }
 

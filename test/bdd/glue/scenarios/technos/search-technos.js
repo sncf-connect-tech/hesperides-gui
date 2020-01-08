@@ -1,13 +1,8 @@
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 
-When('I search for this techno', /** @this CustomWorld */ async function () {
-    await send.inputByCss('#e2e-navbar-techno-autocomplete input', this.technoBuilder.name);
-    await browser.waitForAngular();
-});
-
-When('I click on the first element of the list of technos', async function () {
-    await send.clickById('selected_option');
+When('I search and select this techno', /** @this CustomWorld */ async function () {
+    await send.searchAndSelectFirstByCss('#e2e-navbar-techno-autocomplete input', this.technoBuilder.name);
 });
 
 Then('I am redirected to the selected techno page', /** @this CustomWorld */ async function () {

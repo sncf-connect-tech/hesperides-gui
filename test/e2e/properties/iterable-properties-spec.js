@@ -49,7 +49,7 @@ describe('Manage iterable properties and annotations (default, comment, required
         // Add a bloc
         utils.clickOnElement(element(by.id('e2e-iterable-property-iterable-add-bloc-button')));
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
-        bloc.getAttribute('id').then(function (itemId) {
+        bloc.getAttribute('block-id').then(function (itemId) {
             // always clear before sendKeys
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_comment`)), randomString);
             utils.clearAndSendkeys(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-value-i_password`)), data.simple_value);
@@ -69,7 +69,7 @@ describe('Manage iterable properties and annotations (default, comment, required
         openIterableProperties();
 
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
-        bloc.getAttribute('id').then(function (itemId) {
+        bloc.getAttribute('block-id').then(function (itemId) {
             // we use randomString for at least 1 property to avoid saving plateform without changes for property values
             var randomString = utils.getRandomString(20);
 
@@ -86,7 +86,7 @@ describe('Manage iterable properties and annotations (default, comment, required
         utils.clickOnElement(element(by.id('e2e-iterable-property-iterable-add-bloc-button')));
 
         const bloc = element.all(by.css('.iterable-bloc')).get(0);
-        bloc.getAttribute('id').then(function (itemId) {
+        bloc.getAttribute('block-id').then(function (itemId) {
             utils.clickOnElement(element(by.id(`e2e-iterable-property-iterable-bloc-${ itemId }-remove-bloc-button`)));
             element.all(by.css('.iterable-bloc')).then(function (items) {
                 expect(items.length).toBe(1);
@@ -100,7 +100,7 @@ describe('Manage iterable properties and annotations (default, comment, required
         utils.clickOnElement(element(by.id('e2e-iterable-property-last_iterable-add-bloc-button')));
 
         const secondBloc = element.all(by.css('.iterable-bloc')).get(1);
-        secondBloc.getAttribute('id').then(function (itemId) {
+        secondBloc.getAttribute('block-id').then(function (itemId) {
             utils.clickOnElement(element(by.id(`e2e-iterable-property-last_iterable-bloc-${ itemId }-remove-bloc-button`)));
             element.all(by.css('.iterable-bloc')).then(function (items) {
                 expect(items.length).toBe(1);

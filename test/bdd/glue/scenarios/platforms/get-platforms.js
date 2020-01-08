@@ -6,11 +6,15 @@ When('I open this application', /** @this CustomWorld */ async function () {
     await browser.get(`${ baseUrl }/#/properties/${ this.platformBuilder.applicationName }`);
 });
 
-When('I open this platform', /** @this CustomWorld */ async function () {
-    await browser.get(`${ baseUrl }/#/properties/${ this.platformBuilder.applicationName }?platform=${ this.platformBuilder.platformName }`);
+When(/^I open (?:this|the) platform(?: "([^"]*)")?( as a production user)?$/, /** @this CustomWorld */ async function (platformName, productionUser) {
+    if (!platformName) {
+        platformName = this.platformBuilder.platformName;
+    }
+    const urlPrefix = productionUser ? this.productionUserUrl : baseUrl;
+    await browser.get(`${ urlPrefix }/#/properties/${ this.platformBuilder.applicationName }?platform=${ platformName }`);
 });
 
-When('I display the platform {string}', async function (platformName) {
+When('I click on the platform {string}', async function (platformName) {
     await send.clickById(`e2e-application-platform-button-${ platformName }`);
 });
 

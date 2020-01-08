@@ -76,7 +76,7 @@
                 <span ng-switch="module.instances.length">
                     <span ng-switch-when="0">
                         <span class="property-tree-sign" ng-click="toggleModuleExpanded()">
-                            <md-button ng-click="preview_instance(box, application, platform, instance, module, true)" class="md-xs preview">
+                            <md-button id="e2e-tree-renderer-module-preview-file-button-{{module.name}}" ng-click="preview_instance(box, application, platform, instance, module, true)" class="md-xs preview">
                                 <span class="fa fa-eye preview"></span>
                                 <md-tooltip>{{ 'properties.module.instance.preview' | translate }}</md-tooltip>
                             </md-button>

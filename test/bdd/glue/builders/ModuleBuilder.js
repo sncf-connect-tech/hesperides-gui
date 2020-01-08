@@ -2,7 +2,7 @@ const cloneDeep = require('lodash/cloneDeep');
 
 class ModuleBuilder {
     constructor() {
-        this.name = 'module-ptor';
+        this.name = 'module-ptor-mock';
         this.version = '1.0';
         this.isWorkingcopy = true;
         this.templateBuilders = [];
