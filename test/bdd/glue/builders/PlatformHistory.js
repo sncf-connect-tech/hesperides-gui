@@ -5,12 +5,23 @@ class PlatformHistory {
         this.platformBuilders = [];
     }
 
-    getPlatformBuilders() {
-        return this.platformBuilders;
+    addPlatformBuilder(platformBuilder) {
+        platformBuilder.incrementPlatformVersionId();
+        this.platformBuilders.push(cloneDeep(platformBuilder));
     }
 
-    addPlatformBuilder(platformBuilder) {
-        this.platformBuilders.push(cloneDeep(platformBuilder));
+    findPlatformBuilderByName(platformName) {
+        return this.platformBuilders.filter((platformBuilder) => platformBuilder.platformName === platformName)[0];
+    }
+
+    updatePlatformBuilder(platformBuilder) {
+        platformBuilder.incrementPlatformVersionId();
+        platformBuilder.setDeployedModuleIds();
+        const updatedPlatformBuilder = cloneDeep(platformBuilder);
+
+        this.platformBuilders = this.platformBuilders
+            .map((existingPlatformBuilder) => (existingPlatformBuilder.equalsByKey(updatedPlatformBuilder) ?
+                updatedPlatformBuilder : existingPlatformBuilder));
     }
 }
 

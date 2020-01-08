@@ -8,7 +8,8 @@ const getTemplateSelector = function (templateBuilder) {
 
 Given('an existing template with this content', /** @this CustomWorld */ function (content) {
     this.templateBuilder = new TemplateBuilder();
-    this.templateBuilder.withContent(content);
+    this.templateBuilder.setContent(content);
+    this.templateHistory.addTemplateBuilder(this.templateBuilder);
 });
 
 When(/^I add a new template to this (?:techno|module)$/, /** @this CustomWorld */ async function () {
@@ -17,7 +18,6 @@ When(/^I add a new template to this (?:techno|module)$/, /** @this CustomWorld *
     await send.inputByCss('input[name="templateFilename"]', this.templateBuilder.filename);
     await send.inputByCss('input[name="templateLocation"]', this.templateBuilder.location);
     await send.clickByCss('button[type="submit"]');
-    await browser.waitForAngular();
 });
 
 When(/^I download the template file for this (?:techno|module) template$/, /** @this CustomWorld */ async function () {
@@ -25,8 +25,7 @@ When(/^I download the template file for this (?:techno|module) template$/, /** @
 });
 
 When(/^I delete a template of this (?:techno|module)$/, /** @this CustomWorld */ async function () {
-    await send.clickById(`e2e-template-list-trash-button-for-${ this.templateBuilder.name }`);
-    await send.acceptAlert();
+    await send.clickByIdAndAcceptAlert(`e2e-template-list-trash-button-for-${ this.templateBuilder.name }`);
 });
 
 Then(/^the template is successfully added to the (?:techno|module)$/, /** @this CustomWorld */ async function () {
@@ -40,8 +39,7 @@ Then(/^the template is successfully deleted from the (?:techno|module)$/, /** @t
 });
 
 Then('the template file is downloaded and it has the content of the template', /** @this CustomWorld */ async function () {
-    const filePath = downloadsPath + this.templateBuilder.filename;
-    await assert.fileContains(filePath, this.templateBuilder.content);
+    await assert.fileContains(this.templateBuilder.filename, this.templateBuilder.content);
 });
 
 Then(/^the existing template is also (?:copied|released)$/, /** @this CustomWorld */ async function () {

@@ -3,7 +3,6 @@ const send = require('../../helpers/send');
 const get = require('../../helpers/get');
 
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
-    await browser.get(`${ baseUrl }/#/properties/${ this.platformBuilder.applicationName }?platform=${ this.platformBuilder.platformName }`);
     await send.clickById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
 });
 

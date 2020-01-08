@@ -40,7 +40,8 @@
                             <div layout="row" flex="100">
                                 <ul class="shared-list-inline" flex>
                                     <li ng-repeat="item in targetPlatforms | orderObjectBy:'name'">
-                                        <md-button ng-click="toPlatform.platform = item.name; checkToPlatformExist()"
+                                        <md-button id="e2e-platform-to-compare-button-{{ item.name }}"
+                                                   ng-click="toPlatform.platform = item.name; checkToPlatformExist()"
                                                    class="md-raised md-mini diff-platform-tag"
                                                    ng-class="{'md-primary': item.name === toPlatform.platform}"
                                                    ng-style="item.name === toPlatform.platform ? {} : {'background-color': backgroundColor(item)}">
@@ -74,10 +75,10 @@
                                 <md-icon class="fa fa-question-circle fa-2x"></md-icon>
                             </label>
                             <md-radio-group ng-model="formScope.compareMode" layout="row">
-                                <md-radio-button value="stored">
+                                <md-radio-button value="stored" id="e2e-module-properties-diff-option-stored">
                                     {{ 'properties.compare.modal.stored' | translate }}
                                 </md-radio-button>
-                                <md-radio-button value="final">
+                                <md-radio-button value="final" id="e2e-module-properties-diff-option-final">
                                     {{ 'properties.compare.modal.final' | translate }}
                                 </md-radio-button>
                             </md-radio-group>
@@ -130,7 +131,7 @@
                                 {{ platformQueryError }}
                             </div>
                             <div layout="row" layout-margin>
-                                <a href="" ng-click="toggleModules=!toggleModules">
+                                <a href="" id="e2e-module-properties-diff-choose-other-module" ng-click="toggleModules=!toggleModules">
                                     {{ 'properties.compare.modal.otherChoice' | translate }}
                                     {{toPlatform.application_name}} -
                                     {{toPlatform.platform}}</a>
@@ -142,7 +143,7 @@
                                     <ul class="breadcrumb margin-bottom-2px" ng-show="toggleModules"
                                         ng-repeat="module in toPlatform.modules | orderBy:'path'">
                                         <li ng-repeat="token in module.path.split('#')">{{token}}</li>
-                                        <li class="active"><a href="" ng-click="selectToModule(module)">{{module.title}}</a>
+                                        <li class="active"><a href="" id="e2e-module-properties-diff-choose-other-module-{{ module.name }}" ng-click="selectToModule(module)">{{module.title}}</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -16,7 +16,8 @@ exports.isPresentByCss = async function (selector) {
 };
 
 exports.isNotPresentById = async function (id) {
-    await expect(get.elementById(id).isPresent()).to.eventually.be.false;
+    const elem = get.elementById(id);
+    await expect(elem.isPresent()).to.eventually.be.false;
 };
 
 exports.isNotPresentByCss = async function (selector) {
@@ -40,6 +41,13 @@ exports.containsValue = async function (elem, text) {
     await expect(elem.getAttribute('value')).to.eventually.have.string(text);
 };
 
+exports.elementAtIndexContainsTextByCss = async function (selector, index, text) {
+    const assert = this;
+    await get.elementsByCss(selector).then(async function (items) {
+        await assert.containsText(items[index], text);
+    });
+};
+
 exports.notification = async function (success, message) {
     const successClassName = success ? '.success' : '';
     const elements = get.elementsByCss(`.cg-notify-message${ successClassName }`);
@@ -53,9 +61,19 @@ exports.itemsAreRequired = async function (items) {
     }
 };
 
-exports.fileContains = async function (filePath, content) {
+exports.fileContains = async function (filename, content) {
+    const filePath = downloadsPath + filename;
     // eslint-disable-next-line no-sync
     await browser.wait(() => fs.existsSync(filePath), 1000).then(async function () {
         await expect(fs.promises.readFile(filePath, { encoding: 'utf8' })).to.eventually.be.equal(content);
     });
+};
+
+exports.codeMirrorContains = async function (expectedContent) {
+    const actualContent = browser.executeScript('return document.getElementsByClassName(\'CodeMirror\')[0].CodeMirror.getValue()');
+    await expect(actualContent).to.eventually.be.equal(expectedContent);
+};
+
+exports.isDisabledById = async function (id) {
+    await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
 };

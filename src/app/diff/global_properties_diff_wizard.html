@@ -38,7 +38,8 @@
                     <div layout="row" flex="100">
                         <ul class="shared-list-inline" flex>
                             <li ng-repeat="item in targetPlatforms | orderObjectBy:'name'">
-                                <md-button ng-click="toPlatform.platform = item.name; checkToPlatformExist()"
+                                <md-button id="e2e-platform-to-compare-button-{{ item.name }}"
+                                        ng-click="toPlatform.platform = item.name; checkToPlatformExist()"
                                            class="md-raised md-mini diff-platform-tag"
                                            ng-class="{'md-primary': item.name === toPlatform.platform}"
                                            ng-style="item.name === toPlatform.platform ? {} : {'background-color': backgroundColor(item)}">
@@ -71,10 +72,10 @@
                         <md-icon class="fa fa-question-circle fa-2x"></md-icon>
                     </label>
                     <md-radio-group ng-model="formScope.compareMode" layout="row">
-                        <md-radio-button value="stored">
+                        <md-radio-button value="stored" id="e2e-global-properties-diff-option-stored">
                             {{ 'properties.compare.modal.stored' | translate }}
                         </md-radio-button>
-                        <md-radio-button value="final">
+                        <md-radio-button value="final" id="e2e-global-properties-diff-option-final">
                             {{ 'properties.compare.modal.final' | translate }}
                         </md-radio-button>
                     </md-radio-group>

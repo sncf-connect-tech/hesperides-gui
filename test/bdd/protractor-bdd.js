@@ -28,14 +28,13 @@ exports.config = {
         ],
     },
     onPrepare() {
-        global.baseUrl = 'http://prod:password@localhost';
-        global.downloadsPath = downloadsPath;
-
         const { Given, Then, When } = require('cucumber');
         global.Given = Given;
         global.When = When;
         global.Then = Then;
 
-        return browser.get(global.baseUrl);
+        global.baseUrl = 'http://user:password@localhost';
+        global.downloadsPath = downloadsPath;
+        browser.driver.manage().window().maximize();
     },
 };
