@@ -116,7 +116,7 @@
                 </md-button>
                 <md-button id="e2e-tree-properties-save-module-properties-local-button"
                            ng-click="save_properties_locally(properties, selected_module)"
-                           ng-disabled="modulePropertiesForm.$invalid"
+                           ng-disabled="hasUnfilledRequiredProperties()"
                            class="md-raised md-warn">
                     <span class="fa fa-floppy-o"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
