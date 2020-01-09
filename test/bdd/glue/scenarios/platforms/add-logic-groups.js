@@ -1,5 +1,4 @@
 const assert = require('../../helpers/assert');
-const get = require('../../helpers/get');
 const send = require('../../helpers/send');
 
 const addLogicGroupToPlatform = async function (deployedModuleBuilder) {
@@ -18,7 +17,7 @@ When('I add several logic groups at once to this platform', /** @this CustomWorl
 });
 
 When('I add a logic group to this logic group', /** @this CustomWorld */ async function () {
-    await browser.actions().mouseMove(get.elementById('e2e-tree-renderer-edit-logic-group-ABC')).perform();
+    await send.mouseOnById('e2e-tree-renderer-edit-logic-group-ABC');
     await send.clickById(`e2e-tree-renderer-add-logic-group-button-${ this.deployedModuleBuilder.logicGroup }`);
     this.deployedModuleBuilder.withLogicGroup('DEF');
     await send.inputById('e2e-add-box-new-logic-group-name', this.deployedModuleBuilder.logicGroup);

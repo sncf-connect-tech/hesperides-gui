@@ -16,9 +16,11 @@ jobs:
         - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
       script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
 
+
     - name: JS Linter
       stage: test
       script: npm run lint
+
 
     - name: Unit tests
       stage: test
@@ -32,29 +34,312 @@ jobs:
         - npm test
         - cat test/unit/reports/coverage.txt
 
-    - name: BDD tests
+
+    - name: BDD Tests - Technos - Copy technos
       stage: test
       services:
         - docker
         - xvfb
       addons:
         chrome: stable
-      before_script:
-        - google-chrome-stable --version
-        - npm install
-        - export DISPLAY=:99.0
-        # sudo is needed here, cf. https://docs.travis-ci.com/user/gui-and-headless-browsers/#starting-a-web-server
-        - sudo env "PATH=$PATH" npm run webdriver-start --verbose &
-        - docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides:latest &
-        - sudo env "PATH=$PATH" npm start &
-        - wget --waitretry=5 --retry-connrefused -T 60 -O - http://localhost:8080/rest/versions
-      script:
-        - npm run bdd-tests
+      provider: script
+      script: bash .travis/run_bdd_test.sh technos/copy-technos.feature
+
+    - name: BDD Tests - Technos - Create technos
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh technos/create-technos.feature
+
+    - name: BDD Tests - Technos - Delete templates
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh technos/delete-templates.feature
+
+    - name: BDD Tests - Technos - Download templates
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh technos/download-templates.feature
+
+    - name: BDD Tests - Technos - Release technos
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh technos/release-technos.feature
+
+    - name: BDD Tests - Technos - Search technos
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh technos/search-technos.feature
+
+    - name: BDD Tests - Modules - Add technos
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/add-technos.feature
+
+    - name: BDD Tests - Modules - Add templates
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/add-templates.feature
+
+    - name: BDD Tests - Modules - Copy modules
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/copy-modules.feature
+
+    - name: BDD Tests - Modules - Create modules
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/create-modules.feature
+
+    - name: BDD Tests - Modules - Delete templates
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/delete-templates.feature
+
+    - name: BDD Tests - Modules - Download templates
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/download-templates.feature
+
+    - name: BDD Tests - Modules - Release modules
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/release-modules.feature
+
+    - name: BDD Tests - Modules - Remove technos
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/remove-technos.feature
+
+    - name: BDD Tests - Modules - Search modules
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh modules/search-modules.feature
+
+    - name: BDD Tests - Platforms - Add deployed-modules
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/add-deployed-modules.feature
+
+    - name: BDD Tests - Platforms - Add instances
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/add-instances.feature
+
+    - name: BDD Tests - Platforms - Add logic-groups
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/add-logic-groups.feature
+
+    - name: BDD Tests - Platforms - Copy platforms
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/copy-platforms.feature
+
+    - name: BDD Tests - Platforms - Create platforms
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/create-platforms.feature
+
+    - name: BDD Tests - Platforms - Deployed modules
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/deployed-modules.feature
+
+    - name: BDD Tests - Platforms - Get platforms
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/get-platforms.feature
+
+    - name: BDD Tests - Platforms - Global properties diff
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/global-properties-diff.feature
+
+    - name: BDD Tests - Platforms - Module properties diff
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/module-properties-diff.feature
+
+    - name: BDD Tests - Platforms - Module properties list
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/module-properties-list.feature
+
+    - name: BDD Tests - Platforms - Preview files
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/preview-files.feature
+
+    - name: BDD Tests - Platforms - Save global properties
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/save-global-properties.feature
+
+    - name: BDD Tests - Platforms - Save iterable properties
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/save-iterable-properties.feature
+
+    - name: BDD Tests - Platforms - Save module properties
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/save-module-properties.feature
+
+    - name: BDD Tests - Platforms - Search applications
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: bash .travis/run_bdd_test.sh platforms/search-applications.feature
+
 
     - name: Deploy to Docker hub
       stage: deploy
       if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
       script: .travis/docker_build_push.sh
 
-#    notifications:
-#      email: false
+notifications:
+  email: false

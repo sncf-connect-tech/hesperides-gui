@@ -1,12 +1,27 @@
 const get = require('./get');
 
+const mouseOn = async function (elem) {
+    await browser.actions().mouseMove(elem).perform();
+};
+
+exports.mouseOnById = async function (id) {
+    await mouseOn(get.elementById(id));
+};
+
+exports.mouseOnByCss = async function (selector) {
+    await mouseOn(get.elementByCss(selector));
+};
+
 exports.clickById = async function (id) {
     await browser.waitForAngular();
+    await this.mouseOnById(id);
     await get.elementById(id).click();
     await browser.waitForAngular();
 };
 
 exports.clickByCss = async function (selector) {
+    await browser.waitForAngular();
+    await this.mouseOnByCss(selector);
     await get.elementByCss(selector).click();
     await browser.waitForAngular();
 };

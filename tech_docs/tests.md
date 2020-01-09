@@ -26,10 +26,14 @@ et sont lancés par la commande `npm run e2e-tests`, qui instrumente le navigate
 
 ### Bonnes pratiques
 
-- pour sélectionner des élements de la page, introduisez des IDs HTML dédiés préfixés avec `e2e-`.
+- Pour sélectionner des élements de la page, introduisez des IDs HTML dédiés préfixés avec `e2e-`.
 Ces IDs doivent uniquement être utilisé pour les tests _end-to-end_, et jamais dans le code applicatif.
 
-- privilégier l'utilisation de `browser.wait( ExpectedConditions... )` à l'utilisation de `browser.sleep`
+- Privilégier l'utilisation de `browser.wait( ExpectedConditions... )` à l'utilisation de `browser.sleep`
+
+- `browser.waitForAngular` est à utiliser dans les cas suivants (liste non exhaustive) :
+  - Lors de l'ouverture une page, d'un onglet ou d'une modale
+  - Après un clic déclenchant du code géré par Angular (mais c'est déjà fait dans `send.clickBy...`)
 
 ### Options d'exécution
 
