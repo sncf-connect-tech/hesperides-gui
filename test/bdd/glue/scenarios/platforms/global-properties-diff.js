@@ -44,6 +44,7 @@ When('I open the diff of global properties', /** @this CustomWorld */ async func
     const fromPlatformBuilder = this.platformHistory.platformBuilders[0];
     const toPlatformBuilder = this.platformHistory.platformBuilders[1];
     await browser.get(api.buildDiffUrl(fromPlatformBuilder, toPlatformBuilder, globalPropertiesPath, globalPropertiesPath));
+    await browser.waitForAngular();
 });
 
 Then(/^I get a new page with the global properties( stored values)? diff$/, /** @this CustomWorld */ async function (storedValues) {

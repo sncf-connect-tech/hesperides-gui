@@ -4,6 +4,7 @@ const send = require('../../helpers/send');
 
 When('I open this application', /** @this CustomWorld */ async function () {
     await browser.get(`${ baseUrl }/#/properties/${ this.platformBuilder.applicationName }`);
+    await browser.waitForAngular();
 });
 
 When(/^I open (?:this|the) platform(?: "([^"]*)")?( as a production user)?$/, /** @this CustomWorld */ async function (platformName, productionUser) {
@@ -12,6 +13,7 @@ When(/^I open (?:this|the) platform(?: "([^"]*)")?( as a production user)?$/, /*
     }
     const urlPrefix = productionUser ? this.productionUserUrl : baseUrl;
     await browser.get(`${ urlPrefix }/#/properties/${ this.platformBuilder.applicationName }?platform=${ platformName }`);
+    await browser.waitForAngular();
 });
 
 When('I click on the platform {string}', async function (platformName) {

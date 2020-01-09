@@ -11,7 +11,7 @@ When(/^I open the modal to compare (?:this|the) module(?: "([^"]*)")? properties
     if (!moduleName) {
         moduleName = this.moduleBuilder.name;
     }
-    await browser.actions().mouseMove(get.elementById(`e2e-tree-renderer-edit-module-button-${ moduleName }`)).perform();
+    await send.mouseOnById(`e2e-tree-renderer-edit-module-button-${ moduleName }`);
     await send.clickById(`e2e-deployed-module-controls-diff-properties-button-${ moduleName }`);
 });
 
