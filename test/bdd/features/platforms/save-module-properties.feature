@@ -25,7 +25,6 @@ Feature: Save module properties
   Scenario: Try to save a property that doesn't match a defined pattern
     Given an existing template with this content
     """
-    {{ a-first-property }}
     {{ pattern-property | @pattern [0-9] }}
     """
     And an existing module with this template
@@ -39,7 +38,6 @@ Feature: Save module properties
   Scenario: Try to save an empty required property
     Given an existing template with this content
     """
-    {{ a-first-property }}
     {{ simple-property }}
     {{ required-property | @required }}
     """
@@ -51,6 +49,4 @@ Feature: Save module properties
       | simple-property   | other-value |
     Then the save button is disabled
 
-    # 2 problèmes ici :
-    # - On ne devrait pas avoir à déclarer la propriété `a-first-property` => #353
-    # - Le bouton ne devrait pas être grisé => #334
+    # Le bouton ne devrait pas être grisé => #334
