@@ -1672,8 +1672,13 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     .filter('displayOnlyRequiredProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
-                // si display à true on affiches les items required, à false et undefined on affiche toutes les propriétés du model
-                return (display ? item.required : _.isUndefined(display) || item.inModel);
+                var displayOnlyrequiredProperties = false;
+                if (display) {
+                    displayOnlyrequiredProperties = item.required;
+                } else {
+                    displayOnlyrequiredProperties = _.isUndefined(display) || item.inModel;
+                }
+                return displayOnlyrequiredProperties;
             });
         };
     })
