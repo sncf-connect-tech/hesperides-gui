@@ -511,11 +511,16 @@ angular.module('hesperides.application', [])
     })
 
 
-    .directive('propertiesGlobalesTree', function () {
+    .directive('propertiesGlobalesTree', function (ApplicationService) {
         return {
             restrict: 'E',
             scope: {
+                // on pouvait faire un appel à getGlobalProperties() pour récupèrer les global_properties et supprimer
+                // ce paramètre platform, mais cela serait une opération de trop car les propriétés globales sont déja
+                // valorisées dans platform avec platform.global_properties, d'où l'idée de réutiliser ce paramètre
                 platform: '=',
+                platformName: '=',
+                applicationName: '=',
                 sortOrder: '=',
             },
             templateUrl: 'application/properties_globales.html',
@@ -523,6 +528,10 @@ angular.module('hesperides.application', [])
                 scope.isBox = false;
                 scope.globalPropertiesKeyFilter = '';
                 scope.globalPropertiesValueFilter = '';
+                ApplicationService.get_global_properties_usage(scope.applicationName, scope.platformName, '#')
+                    .then(function (globalPropertiesUsage) {
+                        scope.globalPropertiesUsage = globalPropertiesUsage;
+                    });
             },
         };
     })

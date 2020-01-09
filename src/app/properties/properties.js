@@ -155,7 +155,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         /**
          * An ugly copy of global properties
          */
-        $scope.oldGolbalProperties = null;
+        $scope.oldGlobalProperties = null;
 
         $scope.boxModeUnfoldInstancesByDefault = store.get('unfoldInstancesByDefault');
 
@@ -813,20 +813,20 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         };
 
         $scope.edit_properties = function (platform, module) {
-            if ($scope.platform.global_properties_usage === null) {
-                $scope.refreshGlobalPropertiesData();
-            }
             ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
                 ModuleService.get_model(module).then(function (model) {
                     $scope.properties = properties.mergeWithModel(model);
                     $scope.model = model;
 
                     // Merge with global properties
-                    $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
-                    $scope.oldProperties = angular.copy($scope.properties);
-
-                    $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
-                    $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
+                    $scope.getGlobalProperties().then(function (globalProperties) {
+                        $scope.properties = properties.mergeWithGlobalProperties(globalProperties);
+                        $scope.oldProperties = angular.copy($scope.properties);
+                        $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
+                        $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
+                        $scope.platform.global_properties = globalProperties;
+                        $scope.oldGlobalProperties = angular.copy($scope.platform.global_properties);
+                    });
 
                     $scope.selected_module = module;
                     $scope.instance = null; // hide the instance panel if opened
@@ -866,7 +866,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             }
 
             if (save) {
-                if (_.isEqual(properties, $scope.oldGolbalProperties)) {
+                if (_.isEqual(properties, $scope.oldGlobalProperties)) {
                     $translate('properties-not-changed.message').then(function (label) {
                         notify({ classes: [ 'warn' ], message: label });
                     });
@@ -882,10 +882,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                         // Increase platform number
                         $scope.platform.version_id++;
-                        $scope.refreshGlobalPropertiesData();
+                        $scope.getGlobalProperties().then(function (globalProperties) {
+                            $scope.platform.global_properties = globalProperties;
+                        });
 
                         // Key the saved as old
-                        $scope.oldGolbalProperties = angular.copy(savedProperties);
+                        $scope.oldGlobalProperties = angular.copy(savedProperties);
                     });
                 });
             } else {
@@ -1002,7 +1004,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         });
 
                         // Merge with global properties
-                        $scope.properties = savedProperties.mergeWithGlobalProperties($scope.platform.global_properties);
+                        $scope.getGlobalProperties().then(function (globalProperties) {
+                            $scope.properties = savedProperties.mergeWithGlobalProperties(globalProperties);
+                        });
 
                         // Increase platform number
                         $scope.platform.version_id++;
@@ -1043,22 +1047,18 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             });
         };
 
-        $scope.refreshGlobalPropertiesData = function () {
-            ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
-                $scope.platform.global_properties = response;
-                // making a copy, for changes detection
-                $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
-            });
-            ApplicationService.get_global_properties_usage($scope.platform.application_name, $scope.platform.name, '#').then(function (response) {
-                $scope.platform.global_properties_usage = response;
-            });
+        $scope.getGlobalProperties = function () {
+            return ApplicationService.get_properties($scope.platform.application_name, $scope.platform.name, '#');
         };
 
         $scope.showGlobalPropertiesDisplay = function () {
             // --- Testing retrive on demand
             // If the usage is already filled, we don't call the backend, and serve cache instead
-            if ($scope.platform.global_properties_usage === null) {
-                $scope.refreshGlobalPropertiesData();
+            if ($scope.platform.global_properties === null) {
+                $scope.getGlobalProperties().then(function (globalProperties) {
+                    $scope.platform.global_properties = globalProperties;
+                    $scope.oldGlobalProperties = angular.copy($scope.platform.global_properties);
+                });
             }
 
             $scope.instance = null;

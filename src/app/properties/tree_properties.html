@@ -93,7 +93,9 @@
         <div layout="row" ng-show="showGlobalProperties" flex="100">
             <div flex="100">
                 <form name="globalPropertiesForm">
-                    <properties-globales-tree platform="platform" sort-order="order"/>
+                    <!-- Le ng-if ci-dessous est nécessaire pour attendre que l'objet platform soit initialisé via un appel à l'API dans
+                    properties.js,et donc que .name & .application_name soient bien définis quand la fonction de "link" de la directive propertiesGlobalesTree s'exécute -->
+                    <properties-globales-tree ng-if="platform.name" platform="platform" application-name="platform.application_name" platform-name="platform.name" sort-order="order"/>
                 </form>
             </div>
         </div>
