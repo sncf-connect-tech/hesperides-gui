@@ -110,7 +110,7 @@
                                aria-label="{{ 'properties.module.instance.editProperties.tooltip' | translate }}"
                                class="md-instance">
                         {{instance.name}}
-                        <md-tooltip>{{ 'properties.module.instance.editProperties.tooltip' | translate }}</md-tooltip>
+                        <md-tooltip>{{ 'properties.module.instance.editProperties.tooltip' | translate : { nbInstanceProperties:instance.key_values.length} }}</md-tooltip>
                     </md-button>
                     <md-button id="e2e-tree-renderer-preview-properties-{{instance.name}}-button" ng-click="preview_instance(box, application, platform, instance, module)"
                                class="md-xs" ng-show="instance.hover">

@@ -821,6 +821,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     // Merge with global properties
                     $scope.getGlobalProperties().then(function (globalProperties) {
                         $scope.properties = properties.mergeWithGlobalProperties(globalProperties);
+                        $scope.properties = properties.mergeWithInstanceProperties(module.instances);
                         $scope.oldProperties = angular.copy($scope.properties);
                         $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
                         $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
@@ -1441,6 +1442,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     (key_value.password ? ' *password*' : '') +
                     (key_value.comment ? ` ${ key_value.comment }` : '') +
                     (key_value.valuedByAGlobal ? ` [ Valued by a global property with same name: ${ key_value.globalValue } ]` : '') +
+                    (key_value.valuedByInstance ? `[Valued by an instance property with value : ${ key_value.instanceValue }]` : '') +
                     (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => `${ name }=${ value }`).join(', ') }]`);
             }
 
@@ -1464,6 +1466,22 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     key_value.tooltip = buildTooltip(key_value);
                 });
 
+                return this;
+            };
+
+            this.mergeWithInstanceProperties = function (instanceProperties) {
+                _.each(this.key_value_properties, function (keyValue) {
+                    var instanceValue = keyValue.value;
+                    instanceValue = _.replace(instanceValue, new RegExp('{{', 'g'), '');
+                    instanceValue = _.replace(instanceValue, new RegExp('}}', 'g'), '');
+                    instanceProperties.forEach(function (instance) {
+                        keyValue.valuedByInstance = Boolean(_.find(instance.key_values, { name: instanceValue }));
+                        if (keyValue.valuedByInstance) {
+                            keyValue.instanceValue = _.find(instance.key_values, { name: instanceValue }).value;
+                        }
+                        keyValue.tooltip = buildTooltip(keyValue);
+                    });
+                });
                 return this;
             };
 

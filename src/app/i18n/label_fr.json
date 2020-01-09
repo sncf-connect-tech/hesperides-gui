@@ -210,7 +210,7 @@
   "properties.module.editProperties.iterableProperties.blocTitle": "Le titre du bloc ...",
   "properties.module.instance.add": "Ajouter une instance",
   "properties.module.instance.name": "Nom",
-  "properties.module.instance.editProperties.tooltip": "Editer les propriétés de l'instance",
+  "properties.module.instance.editProperties.tooltip": "Editer les propriétés de l'instance ({{nbInstanceProperties}})",
   "properties.module.instance.editProperties.title": "Les propriétés d'instance associées à",
   "properties.module.instance.preview": "Prévisualiser l'instance",
   "properties.module.instance.delete": "Supprimer l'instance",
