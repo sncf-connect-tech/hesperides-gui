@@ -13,6 +13,10 @@ class TemplateBuilder {
         this.content = content;
     }
 
+    withContent(content) {
+        this.content += content;
+    }
+
     build() {
         return {
             name: this.name,

@@ -44,7 +44,7 @@ Before(/** @this CustomWorld */ async function () {
             // Garde-fou permettant d'éviter de supprimer
             // des données autres que celles de test
             if (applications.data.length > 10) {
-                throw new Error('Be careful with which data you are erasing');
+                throw new Error('You are probably connected to a real database. Be careful which data you are trying to erase.');
             }
             for (const application of applications.data) {
                 await rest.get(`${ baseUrl }/rest/applications/${ application.name }`).then(async function (currentApplication) {

@@ -77,3 +77,7 @@ exports.codeMirrorContains = async function (expectedContent) {
 exports.isDisabledById = async function (id) {
     await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
 };
+
+exports.isDisplayedById = async function (id) {
+    await expect(get.elementById(id).isDisplayed()).to.eventually.be.true;
+};
