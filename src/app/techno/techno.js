@@ -393,7 +393,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                 },
                 with_name_like(name) {
                     if (name && name.length > 2) { // prevent search with too few characters
-                        return $hesperidesHttp.get(`rest/technos/perform_search?terms=${ encodeURIComponent(name.replace(' ', '#').replace('-', '#')) }`).then(function (response) {
+                        return $hesperidesHttp.get(`rest/technos/perform_search?terms=${ encodeURIComponent(name.replace(' ', '#')) }`).then(function (response) {
                             return _.map(response.data, function (techno) {
                                 return new Techno(techno.name, techno.version, techno.working_copy);
                             });
