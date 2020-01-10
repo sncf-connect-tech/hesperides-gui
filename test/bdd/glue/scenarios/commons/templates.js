@@ -12,6 +12,15 @@ Given('an existing template with this content', /** @this CustomWorld */ functio
     this.templateHistory.addTemplateBuilder(this.templateBuilder);
 });
 
+Given('an existing template with {int} properties and one required property', /** @this CustomWorld */ function (propertiesCount) {
+    this.templateBuilder = new TemplateBuilder();
+    for (let index = 0; index < propertiesCount; index++) {
+        this.templateBuilder.withContent(`{{ property-${ index } }}`);
+    }
+    this.templateBuilder.withContent('{{ required-property | @required}}');
+    this.templateHistory.addTemplateBuilder(this.templateBuilder);
+});
+
 When(/^I add a new template to this (?:techno|module)$/, /** @this CustomWorld */ async function () {
     await send.clickById('e2e-template-list-create-template-button');
     await send.inputByCss('input[name="templateName"]', this.templateBuilder.name);
