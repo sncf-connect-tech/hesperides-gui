@@ -815,11 +815,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.edit_properties = function (platform, module) {
             ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
                 ModuleService.get_model(module).then(function (model) {
-                    $scope.properties = properties.mergeWithModel(model);
-                    $scope.model = model;
-
                     // Merge with global properties
                     $scope.getGlobalProperties().then(function (globalProperties) {
+                        $scope.properties = properties.mergeWithModel(model);
+                        $scope.model = model;
                         $scope.properties = properties.mergeWithGlobalProperties(globalProperties);
                         $scope.oldProperties = angular.copy($scope.properties);
                         $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
@@ -979,8 +978,60 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         };
 
         $scope.hasUnfilledRequiredProperties = function () {
+            // console.log('InvalidIterbaleBloc : ', $scope.isInvalidIterableFormBloc());
             return _.filter($scope.properties ? $scope.properties.key_value_properties : [], function (prop) {
                 return prop.required && (_.isEmpty(prop.value) || _.isUndefined(prop.value));
+            }).length > 0;
+        };
+
+        $scope.isInvalidIterableFormBloc = function () {
+            var isInvalid = false;
+            if ($scope.model && $scope.model.iterable_properties) {
+                $scope.model.iterable_properties.forEach(function (iterable) {
+                    iterable.fields.forEach(function (field) {
+                        isInvalid = field.required && $scope.hasEmptyRequiredIterablesValorisations($scope.properties.iterable_properties);
+                        if (!isInvalid) {
+                            const value = $scope.getIterableValue($scope.properties.iterable_properties, field.name);
+                            console.log('Value : ', value);
+                            isInvalid = $scope.patternNoMatchWithIterableValue(field.pattern, value);
+                            console.log('Pattern noMatch : ', isInvalid);
+                        }
+                        return isInvalid;
+                    });
+                });
+            }
+            return isInvalid;
+        };
+
+        $scope.patternNoMatchWithIterableValue = function (pattern, value) {
+            return _.isEmpty(value) && !RegExp(pattern).test(value);
+        };
+
+        $scope.getIterableValue = function (iterableProperties, name) {
+            var retourValue = '';
+            iterableProperties.forEach(function (iterableProperty) {
+                // console.log('iterableProperty : ', iterableProperty);
+                iterableProperty.iterable_valorisation_items.forEach(function (iterableValorisation) {
+                    iterableValorisation.values.forEach(function (value) {
+                        if (value.name === name) {
+                            // console.log('======= MATCH ======');
+                            retourValue = value.value;
+                        }
+                    });
+                });
+            });
+            return retourValue;
+        };
+
+        $scope.hasEmptyRequiredIterablesValorisations = function (properties) {
+            return _.filter(properties, function (property) {
+                return property.required && _.isEmpty(property.iterable_valorisation_items);
+            }).length > 0;
+        };
+
+        $scope.hasNoMatchPattern = function () {
+            return _.filter($scope.properties ? $scope.properties.key_value_properties : [], function (prop) {
+                return !_.isEmpty(prop.pattern) && !RegExp(prop.pattern).test(prop.value);
             }).length > 0;
         };
 
