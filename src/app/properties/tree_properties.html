@@ -116,7 +116,7 @@
                 </md-button>
                 <md-button id="e2e-tree-properties-save-module-properties-local-button"
                            ng-click="save_properties_locally(properties, selected_module)"
-                           ng-disabled="hasUnfilledRequiredProperties()"
+                           ng-disabled="isBtnSaveDisabled()"
                            class="md-raised md-warn">
                     <span class="fa fa-floppy-o"></span>
                     <span>{{ 'properties.module.editProperties.saveLocal' | translate }}</span>
@@ -130,7 +130,7 @@
                 </md-button>
                 <md-button id="e2e-tree-properties-save-module-properties-button"
                            ng-click="save_properties(properties, selected_module)"
-                           ng-disabled="hasUnfilledRequiredProperties() || hasNoMatchPattern() || isInvalidIterableFormBloc()"
+                           ng-disabled="isBtnSaveDisabled()"
                            class="md-raised md-primary">
                     <i class="fa fa-floppy-o"></i>
                     <span>{{ 'properties.module.editProperties.save' | translate }}</span>
