@@ -1949,7 +1949,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     .filter('displayGlobalProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
-                return display || (!display && !item.valuedByAGlobal);
+                return display ||
+                        (!display && (!item.valuedByAGlobal || (item.valuedByAGlobal && item.value)));
             });
         };
     })

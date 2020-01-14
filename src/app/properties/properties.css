@@ -65,8 +65,18 @@ md-list.global-property-usage md-list-item {
     font-weight: bold;
 }
 
+.property-value:read-only {
+    color: black;
+    background-color: inherit;
+    outline: none;
+}
+
 .property-value.ng-invalid.ng-invalid-pattern {
     outline: 1px solid red;
+}
+
+.property-value.differed-value-from-global {
+    text-decoration: line-through;
 }
 
 .iterable-title-value {

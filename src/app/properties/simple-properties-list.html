@@ -67,9 +67,7 @@
                     | displayOnlyRequiredProperties:onlyRequiredPropertiesSwitchChanged
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
-                <div layout="row"
-                     ng_if="!key_value_property.inGlobal"
-                     class="margin-1pc">
+                <div layout="row" class="margin-1pc">
                     <div layout="column" flex="30">
                         <div class="truncate-ellipsis">
                             <label id="simple-properties-list_key-property-input-{{key_value_property.name}}" class="property-label"
@@ -79,14 +77,33 @@
                             </label>
                         </div>
                     </div>
-                    <div layout="column" flex>
+                    <!-- Use ng-switch directive to bind right ng-model - AngularJS doesn't allow dynamic ng-model -->
+                    <div ng-switch="displayGlobal && key_value_property.valuedByAGlobal" layout="column" flex>
+                        <textarea id="e2e-simple-properties-list_value-property-input-{{key_value_property.name}}-global"
+                                  ng-switch-when="true"
+                                  ng-model="key_value_property.globalValue"
+                                  ng-trim="true"
+                                  ng-readonly="true"
+                                  ng-focus="false"
+                                  ng-class="{'text-stroke':!key_value_property.inModel,
+                                             'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value}"
+                                  placeholder="{{key_value_property.tooltip}}"
+                                  ng-pattern="key_value_property.pattern"
+                                  ng-required="key_value_property.required"
+                                  class="property-value"
+                                  adjust-height-to-text-content property="key_value_property"
+                        ></textarea>
                         <textarea id="e2e-simple-properties-list_value-property-input-{{key_value_property.name}}"
+                                  ng-switch-default
                                   ng-model="key_value_property.value"
                                   ng-trim="true"
                                   ng-readonly="!key_value_property.inModel"
                                   ng-focus="focusthis = true"
                                   ng-blur="focusthis = false"
-                                  ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                                  ng-class="{'text-stroke':!key_value_property.inModel,
+                                             'differed-value-from-global': key_value_property.valuedByAGlobal && (key_value_property.value !== key_value_property.globalValue),
+                                             'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value,
+                                             'default-value-color-focus': focusthis}"
                                   placeholder="{{key_value_property.tooltip}}"
                                   ng-pattern="key_value_property.pattern"
                                   ng-required="key_value_property.required"
