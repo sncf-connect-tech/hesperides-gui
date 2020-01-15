@@ -1948,12 +1948,14 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
      */
     .filter('displayGlobalProperties', function () {
         // Indique si la valeur de la propriété est surchargée par une propriété globale
-        const hasOverriddenValue = item.valuedByAGlobal && item.value;
+        this.hasOverriddenValue = function (item) {
+            return item.valuedByAGlobal && item.value;
+        };
 
         return function (items, display) {
             return _.filter(items, function (item) {
                 return display ||
-                        (!display && (!item.valuedByAGlobal || hasOverriddenValue));
+                        (!display && (!item.valuedByAGlobal || hasOverriddenValue(item)));
             });
         };
     })
