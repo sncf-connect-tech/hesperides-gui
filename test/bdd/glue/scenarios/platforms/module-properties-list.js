@@ -2,9 +2,6 @@ const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const get = require('../../helpers/get');
 
-// Const Selectors
-const propertyNameIdSelector = `e2e-simple-properties-list_value-property-input-${propertyName}`;
-
 
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
     await send.clickById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
@@ -23,12 +20,12 @@ Then('the required property is properly displayed', async function () {
 });
 
 Then('the property {string} contain the value {string}', async function (propertyName, propertyValue) {
-    const moduleProperty = get.elementById(propertyNameIdSelector);
+    const moduleProperty = get.elementById(`e2e-simple-properties-list_value-property-input-${propertyName}`);
     await assert.containsValue(moduleProperty, propertyValue);
 });
 
 Then(/^the property "([^"]*)" value is( not)? crossed$/, async function(propertyName, notCrossed) {
-    const moduleProperty = get.elementById(propertyNameIdSelector);
+    const moduleProperty = get.elementById(`e2e-simple-properties-list_value-property-input-${propertyName}`);
     if (notCrossed) {
         await assert.notContainsCssClass(moduleProperty, 'differed-value-from-global');
     } else {
