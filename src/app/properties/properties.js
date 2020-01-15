@@ -977,51 +977,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             }).length > 0;
         };
 
-        $scope.hasUnfilledRequiredProperties = function () {
-            return _.filter($scope.properties ? $scope.properties.key_value_properties : [], function (prop) {
-                return prop.required && (_.isEmpty(prop.value) || _.isUndefined(prop.value));
-            }).length > 0;
-        };
-
-        $scope.hasNoMatchPattern = function () {
-            return _.filter($scope.properties ? $scope.properties.key_value_properties : [], function (prop) {
-                return !_.isEmpty(prop.pattern) && !RegExp(prop.pattern).test(prop.value);
-            }).length > 0;
-        };
-
-        $scope.isInvalidIterableFormBloc = function () {
-            var isInvalid = false;
-            if ($scope.model && $scope.model.iterable_properties) {
-                isInvalid = $scope.hasEmptyRequiredIterablesValorisations($scope.properties.iterable_properties);
-            }
-            return isInvalid;
-        };
-
-        $scope.hasEmptyRequiredIterablesValorisations = function (properties) {
-            return _.filter(properties, function (property) {
-                return property.iterable_valorisation_items.length === 0 || $scope.isInvalidIterableForm(property);
-            }).length > 0;
-        };
-
-        $scope.isBtnSaveDisabled = function () {
-            return $scope.hasUnfilledRequiredProperties() || $scope.hasNoMatchPattern() || $scope.isInvalidIterableFormBloc();
-        };
-
-        $scope.isInvalidIterableForm = function (iterableProperties) {
-            return _.filter(iterableProperties.iterable_valorisation_items, function (iterable_valorisation_items) {
-                return _.filter(iterable_valorisation_items.values, function (itemValue) {
-                    var isInvalid = false;
-                    if (itemValue.required) {
-                        isInvalid = _.isEmpty(itemValue.value);
-                    } else {
-                        // itemValue.value est undefined si le texte saisi ne match pas avec le pattern
-                        isInvalid = !itemValue.required && _.isUndefined(itemValue.value);
-                    }
-                    return isInvalid;
-                }).length > 0;
-            }).length > 0;
-        };
-
         $scope.instanceHasDeletedProperties = function (instance) {
             return _.filter(instance ? instance.key_values : [], function (prop) {
                 return !prop.inModel;
@@ -1265,7 +1220,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     module: '=',
                 },
                 templateUrl: 'properties/simple-properties-list.html',
-                link(scope) {
+                link(scope, element) {
                     scope.propertiesKeyFilter = '';
                     scope.propertiesValueFilter = '';
                     scope.onlyRequiredPropertiesSwitchChanged = false;
@@ -1297,6 +1252,18 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         }
                         return count;
                     };
+
+                    /* scope.registerControl = function () {
+                        let parentScope = scope.$parent;
+                        while (parentScope && _.isUndefined(parentScope.modulePropertiesForm)) {
+                            parentScope = parentScope.$parent;
+                        }
+                        if (parentScope) {
+                            console.log('scope : ', scope);
+                            // parentScope.modulePropertiesForm.$addControl(scope);
+                            parentScope.modulePropertiesForm.$addControl(scope);
+                        }
+                    }; */
                 },
             };
         },
@@ -1982,6 +1949,15 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     !display ||
                     (!item.filtrable_value && _.isEmpty(item.defaultValue)) ||
                     (_.isEmpty(item.defaultValue) && _.isEmpty(item.value));
+            });
+        };
+    })
+
+    .filter('shownOnlyRequiredProperties', function () {
+        return function (items, display) {
+            return _.filter(items, function (item) {
+                return _.isUndefined(display) || !display ||
+                (item.required);
             });
         };
     })
