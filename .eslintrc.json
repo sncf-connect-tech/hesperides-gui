@@ -25,6 +25,7 @@
         "download": "readonly",
         "location": "readonly",
         "moment": "readonly",
+        "Diff": "readonly",
         "saveAs": "readonly",
         "store": "readonly",
         "window": "readonly",
