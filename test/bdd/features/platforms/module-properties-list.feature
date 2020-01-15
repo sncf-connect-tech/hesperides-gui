@@ -19,7 +19,7 @@ Feature: Filter properties
     Then the required property is properly displayed
 
   # Issue 325
-  Scenario: Module properties that are overridden by global properties are crossed
+  Scenario: Module properties overridden by global properties should have their value crossed
     Given an existing template with this content
     """
       {{ property }}
@@ -32,25 +32,11 @@ Feature: Filter properties
       | property | property-value-global |
     When I open this platform
     And I open the deployed module properties
-    Then the property "property" contain value "property-value"
-    And the property "property" is crossed
+    Then the property "property" contain the value "property-value"
+    And the property "property" value is crossed
 
   # Issue 325
-  Scenario: Module properties that are not global properties are displayed
-    Given an existing template with this content
-    """
-      {{ property }}
-    """
-    And an existing module with this template
-    And an existing platform with this module
-    And the platform has these valued properties
-      | property | property-value |
-    When I open this platform
-    And I open the deployed module properties
-    Then the property "property" contain value "property-value"
-
-  # Issue 325
-  Scenario: Module properties that have same value as global properties are not crossed
+  Scenario: Module properties with the same value as global properties should not crossed
     Given an existing template with this content
     """
       {{ property }}
@@ -63,8 +49,8 @@ Feature: Filter properties
       | property | property-value-same-as-global |
     When I open this platform
     And I open the deployed module properties
-    Then the property "property" contain value "property-value-same-as-global"
-    And the property "property" is "not" crossed
+    Then the property "property" contain the value "property-value-same-as-global"
+    And the property "property" value is not crossed
 
 #  Scenario: Find the default value in the placeholder
 

@@ -77,7 +77,9 @@
                             </label>
                         </div>
                     </div>
-                    <!-- Use ng-switch directive to bind right ng-model - AngularJS doesn't allow dynamic ng-model -->
+                    <!-- Utilisation ng-switch : affichage conditionnel du toggle des propriétés globales : -->
+                    <!-- Si le toggle d'affichage des propriétés globales n'est pas coché, la valeur d'une propriété globale surchargée dans le
+                         module doit être affichée barrée. Sinon on affichage (en lecture seulement) la valeur globale de la propriété -->
                     <div ng-switch="displayGlobal && key_value_property.valuedByAGlobal" layout="column" flex>
                         <textarea id="e2e-simple-properties-list_value-property-input-{{key_value_property.name}}-global"
                                   ng-switch-when="true"

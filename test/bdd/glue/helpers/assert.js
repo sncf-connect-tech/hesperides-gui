@@ -24,6 +24,14 @@ exports.isNotPresentByCss = async function (selector) {
     await expect(get.elementByCss(selector).isPresent()).to.eventually.be.false;
 };
 
+exports.containsCssClass = async function (elem, className) {
+    await expect(elem.getAttribute('class')).to.eventually.be.contains(className);
+};
+
+exports.notContainsCssClass = async function (elem, className) {
+    await expect(elem.getAttribute('class')).to.eventually.not.contains(className);
+};
+
 exports.elementsCount = async function (elements, count) {
     await expect(elements.count()).to.eventually.be.equal(count);
 };
