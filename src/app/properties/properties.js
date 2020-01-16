@@ -1248,7 +1248,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     scope.getNumberOfrequiredProperties = function (properties) {
                         var count = 0;
                         if (properties) {
-                            count = properties.filter((property) => property.required).length;	
+                            count = properties.filter((property) => property.required).length;
                         }
                         return count;
                     };
