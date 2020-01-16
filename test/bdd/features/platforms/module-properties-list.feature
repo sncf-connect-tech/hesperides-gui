@@ -18,6 +18,17 @@ Feature: Filter properties
     And I click on the switch to display nothing but the required properties
     Then the required property is properly displayed
 
+  # Issue 363
+  Scenario: Show deleted properties
+    Given an existing module
+    And an existing platform with this module
+    And the platform has these valued properties
+      | property | value |
+    When I open this platform
+    And I open the deployed module properties
+    And I display the deleted properties
+    Then the property "property" is displayed
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder
