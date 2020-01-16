@@ -290,9 +290,9 @@
         </div>
     </div>
     <div ng-show="toggle2">
-        <md-switch layout-align="end" class="md-warn" ng-model="toggleDiffChars" aria-label="{{ 'properties.compare.toggleDiffChars' | translate }}">
-            {{ 'properties.compare.toggleDiffChars' | translate }}
-            <md-tooltip md-direction="top">{{ 'properties.compare.toggleDiffChars.tooltip' | translate }}</md-tooltip>
+        <md-switch layout-align="end" class="md-warn" ng-model="toggleCharsDiff" aria-label="{{ 'properties.compare.toggleCharsDiff' | translate }}">
+            {{ 'properties.compare.toggleCharsDiff' | translate }}
+            <md-tooltip md-direction="top">{{ 'properties.compare.toggleCharsDiff.tooltip' | translate }}</md-tooltip>
             <i class="fa fa-question-circle"></i>
         </md-switch>
     </div>
@@ -346,9 +346,9 @@
                 <span class="diff-text-modifiable_stored" ng-bind-html="compareStoredValues ?
                 diff_container.property_to_modify.value.finalValue :
                 diff_container.property_to_modify.value.storedValue |
-                showDiff:(compareStoredValues ?
+                highlightDiff:(compareStoredValues ?
                 diff_container.property_to_compare_to.value.finalValue :
-                diff_container.property_to_compare_to.value.storedValue):'left':toggleDiffChars">
+                diff_container.property_to_compare_to.value.storedValue):'left':toggleCharsDiff">
                 </span>
             </div>
             <div flex="30" class="diff-property-final-value-left">
@@ -356,9 +356,9 @@
                 <span ng-bind-html="compareStoredValues ?
                 diff_container.property_to_modify.value.storedValue :
                 diff_container.property_to_modify.value.finalValue |
-                showDiff:(compareStoredValues ?
+                highlightDiff:(compareStoredValues ?
                 diff_container.property_to_compare_to.value.storedValue :
-                diff_container.property_to_compare_to.value.finalValue):'left':toggleDiffChars">
+                diff_container.property_to_compare_to.value.finalValue):'left':toggleCharsDiff">
                 </span>
             </div>
         </div>
@@ -371,18 +371,18 @@
                 <span ng-bind-html="compareStoredValues ?
                 diff_container.property_to_compare_to.value.storedValue :
                 diff_container.property_to_compare_to.value.finalValue |
-                showDiff:(compareStoredValues ?
+                highlightDiff:(compareStoredValues ?
                 diff_container.property_to_modify.value.storedValue :
-                diff_container.property_to_modify.value.finalValue):'right':toggleDiffChars">
+                diff_container.property_to_modify.value.finalValue):'right':toggleCharsDiff">
                 </span>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">
                 <span class="diff-text-unmodifiable_stored" ng-bind-html="compareStoredValues ?
                 diff_container.property_to_compare_to.value.finalValue :
                 diff_container.property_to_compare_to.value.storedValue |
-                showDiff:(compareStoredValues ?
+                highlightDiff:(compareStoredValues ?
                 diff_container.property_to_modify.value.finalValue :
-                diff_container.property_to_modify.value.storedValue):'right':toggleDiffChars">
+                diff_container.property_to_modify.value.storedValue):'right':toggleCharsDiff">
                 </span>
             </div>
             <div flex="30" ng-class="{'visuallyhidden': !togglePropertyDetails}">{{ diff_container.property_to_compare_to.value.defaultValue }}</div>

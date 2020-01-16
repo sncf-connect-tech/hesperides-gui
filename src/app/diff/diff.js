@@ -42,9 +42,9 @@ function dateToTimestamp(lookPast, date) {
 
 angular.module('hesperides.diff', [])
 
-    .filter('showDiff', [ '$sce', function ($sce) {
-        return function (value, compareTo, side, toggleDiffChars) {
-            if (toggleDiffChars) {
+    .filter('highlightDiff', [ '$sce', function ($sce) {
+        return function (value, compareTo, side, toggleCharsDiff) {
+            if (toggleCharsDiff) {
                 var diff = Diff.diffChars(compareTo, value);
                 var diffStr = '';
                 for (var partId in diff) {
@@ -111,7 +111,7 @@ angular.module('hesperides.diff', [])
         $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
 
-        $scope.toggleDiffChars = true;
+        $scope.toggleCharsDiff = true;
 
         /*
          * Select the containers that corresponds to the filters (ex: status = 2).
