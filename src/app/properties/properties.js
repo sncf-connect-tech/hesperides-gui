@@ -1220,7 +1220,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     module: '=',
                 },
                 templateUrl: 'properties/simple-properties-list.html',
-                link(scope, element) {
+                link(scope) {
                     scope.propertiesKeyFilter = '';
                     scope.propertiesValueFilter = '';
                     scope.onlyRequiredPropertiesSwitchChanged = false;
@@ -1244,26 +1244,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         LocalChanges.clearLocalChanges({ 'application_name': scope.platform.application_name, 'platform': scope.platform.name, 'properties_path': scope.module.properties_path });
                         scope.properties = LocalChanges.tagWithLocalProperties(scope.platform.application_nam, scope.platform.name, scope.module.properties_path, { 'key_value_properties': scope.properties }).key_value_properties;
                     };
-
-                    scope.getNumberOfrequiredProperties = function (properties) {
-                        var count = 0;
-                        if (properties) {
-                            count = properties.filter((property) => property.required).length;
-                        }
-                        return count;
-                    };
-
-                    /* scope.registerControl = function () {
-                        let parentScope = scope.$parent;
-                        while (parentScope && _.isUndefined(parentScope.modulePropertiesForm)) {
-                            parentScope = parentScope.$parent;
-                        }
-                        if (parentScope) {
-                            console.log('scope : ', scope);
-                            // parentScope.modulePropertiesForm.$addControl(scope);
-                            parentScope.modulePropertiesForm.$addControl(scope);
-                        }
-                    }; */
                 },
             };
         },
