@@ -247,6 +247,8 @@
   "properties.compare.saveChanges.part1": "Saving",
   "properties.compare.saveChanges.part2": "changes (you have to preview them before saving them)",
   "properties.compare.togglePropertyDetails": "Detailed display",
+  "properties.compare.toggleCharsDiff": "Highlight differences",
+  "properties.compare.toggleCharsDiff.tooltip": "Highlight differences between left and right values",
   "properties.compare.togglePropertyDetails.tooltip": "Display « Stored value » & « Default value » columns below",
   "properties.compare.values.columnHeaders.propertyName": "Property name",
   "properties.compare.values.columnHeaders.finalValue": "Final value",

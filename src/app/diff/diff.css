@@ -17,6 +17,7 @@
 .diff-value {
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 1rem;
 }
 
 .diff-checkbox {
@@ -65,9 +66,24 @@
 }
 
 .diff-date-error-message {
-    color: rgb(255,87,34) !important;;
+    color: rgb(255, 87, 34) !important;;
 }
 
 .diff-left-title > div, .diff-left-value > div {
-    text-align:right;
+    text-align: right;
+}
+
+.diff-char-highlight-right,
+.diff-char-highlight-left {
+    background-color: yellow;
+    color: #24292e;
+    border-radius: 5px 5px;
+}
+
+.diff-text-unmodifiable_stored .diff-char-highlight-right {
+    background-color: #fdb8c0;
+}
+
+.diff-text-modifiable_stored .diff-char-highlight-left {
+    background-color: #acf2bd;
 }

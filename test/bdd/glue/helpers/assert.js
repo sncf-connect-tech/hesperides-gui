@@ -33,6 +33,10 @@ exports.currentUrlEquals = async function (expectedUrl) {
     await expect(browser.driver.getCurrentUrl()).to.eventually.be.equal(expectedUrl);
 };
 
+exports.equalsText = async function (elem, text) {
+    await expect(elem.getText()).to.eventually.be.equal(text);
+};
+
 exports.containsText = async function (elem, text) {
     await expect(elem.getText()).to.eventually.have.string(text);
 };

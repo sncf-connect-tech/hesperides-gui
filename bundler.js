@@ -81,6 +81,7 @@ exports.generateVendorBundles = function () {
         'node_modules/store.js/store.js',
         'node_modules/@sentry/browser/build/bundle.min.js',
         'node_modules/@sentry/integrations/build/angular.min.js',
+        'node_modules/diff/dist/diff.js',
       ]).save('src/app/vendor.js')
       .uglify().save('src/app/vendor.min.js');
     buildify().concat([

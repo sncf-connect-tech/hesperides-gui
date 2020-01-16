@@ -42,6 +42,25 @@ function dateToTimestamp(lookPast, date) {
 
 angular.module('hesperides.diff', [])
 
+    .filter('highlightDiff', [ '$sce', function ($sce) {
+        return function (value, compareTo, side, toggleCharsDiff) {
+            if (toggleCharsDiff) {
+                var diff = Diff.diffChars(compareTo, value);
+                var diffStr = '';
+                for (var partId in diff) {
+                    if (!diff[partId].added && !diff[partId].removed) {
+                        diffStr += diff[partId].value;
+                    } else if (diff[partId].added) {
+                        diffStr += '<span class="diff-char-highlight-' + side + '">' + diff[partId].value + '</span>';
+                    }
+                }
+                return $sce.trustAsHtml(diffStr);
+            }
+            return $sce.trustAsHtml(value);
+        };
+    },
+    ])
+
     .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, $q, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, Properties, notify) {
         var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
             // 0 -> only on to_modify
@@ -91,6 +110,8 @@ angular.module('hesperides.diff', [])
 
         $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
+
+        $scope.toggleCharsDiff = true;
 
         /*
          * Select the containers that corresponds to the filters (ex: status = 2).
