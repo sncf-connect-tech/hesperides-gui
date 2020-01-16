@@ -28,7 +28,7 @@ exports.containsCssClass = async function (elem, className) {
     await expect(elem.getAttribute('class')).to.eventually.be.contains(className);
 };
 
-exports.notContainsCssClass = async function (elem, className) {
+exports.doesntContainCssClass = async function (elem, className) {
     await expect(elem.getAttribute('class')).to.eventually.not.contains(className);
 };
 

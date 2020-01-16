@@ -32,11 +32,11 @@ Feature: Filter properties
       | property | property-value-global |
     When I open this platform
     And I open the deployed module properties
-    Then the property "property" contain the value "property-value"
+    Then the property "property" contains the value "property-value"
     And the property "property" value is crossed
 
   # Issue 325
-  Scenario: Module properties with the same value as global properties should not crossed
+  Scenario: Module properties with the same value as global properties should not be crossed
     Given an existing template with this content
     """
       {{ property }}
@@ -49,7 +49,7 @@ Feature: Filter properties
       | property | property-value-same-as-global |
     When I open this platform
     And I open the deployed module properties
-    Then the property "property" contain the value "property-value-same-as-global"
+    Then the property "property" contains the value "property-value-same-as-global"
     And the property "property" value is not crossed
 
 #  Scenario: Find the default value in the placeholder

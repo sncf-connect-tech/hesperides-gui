@@ -1954,8 +1954,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
         return function (items, display) {
             return _.filter(items, function (item) {
-                return display ||
-                        (!display && (!item.valuedByAGlobal || hasOverriddenValue(item)));
+                return display || !item.valuedByAGlobal || hasOverriddenValue(item);
             });
         };
     })
