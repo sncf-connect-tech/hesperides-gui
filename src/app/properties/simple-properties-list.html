@@ -68,7 +68,6 @@
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
-                     ng_if="!key_value_property.inGlobal"
                      class="margin-1pc">
                     <div layout="column" flex="30">
                         <div class="truncate-ellipsis">
@@ -89,7 +88,7 @@
                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                   placeholder="{{key_value_property.tooltip}}"
                                   ng-pattern="key_value_property.pattern"
-                                  ng-required="key_value_property.required"
+                                  ng-required="key_value_property.required"                                  
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>

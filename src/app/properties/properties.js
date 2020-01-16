@@ -815,11 +815,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.edit_properties = function (platform, module) {
             ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
                 ModuleService.get_model(module).then(function (model) {
-                    $scope.properties = properties.mergeWithModel(model);
-                    $scope.model = model;
-
                     // Merge with global properties
                     $scope.getGlobalProperties().then(function (globalProperties) {
+                        $scope.properties = properties.mergeWithModel(model);
+                        $scope.model = model;
                         $scope.properties = properties.mergeWithGlobalProperties(globalProperties);
                         $scope.oldProperties = angular.copy($scope.properties);
                         $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
@@ -988,7 +987,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             LocalChanges.clearLocalChanges({ 'application_name': $routeParams.application, 'platform': $scope.platform.name, 'properties_path': module.properties_path });
             $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, $scope.platform.name, module.properties_path, $scope.properties);
         };
-
 
         $scope.save_properties = function (properties, module) {
             if ($scope.save_properties_locally(properties, module)) {
