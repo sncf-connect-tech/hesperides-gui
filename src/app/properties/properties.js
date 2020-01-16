@@ -1936,8 +1936,15 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     .filter('shownOnlyRequiredProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
-                return _.isUndefined(display) || !display ||
-                (item.required);
+                var showOnlyRequired = false;
+                // si display est undefined on affiche toutes les propriétés sinon
+                // on affiche que les propriétés obligatoires si le switch est à true
+                if (_.isUndefined(display)) {
+                    showOnlyRequired = false;
+                } else {
+                    showOnlyRequired = !display || item.required;
+                }
+                return showOnlyRequired;
             });
         };
     })
