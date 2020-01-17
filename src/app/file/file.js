@@ -53,8 +53,8 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
     ])
 
     .factory('FileService', [
-        '$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', 'notify',
-        function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate, notify) {
+        '$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'EventHistoryModel', 'FileEntry', '$translate', 'notify',
+        function ($http, Application, Platform, Properties, InstanceModel, EventHistoryModel, FileEntry, $translate, notify) {
             // Convert file right to string
             var files_rights_to_string = function (filesRights) {
                 var clearRight = function (rights) {

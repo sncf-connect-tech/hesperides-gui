@@ -110,6 +110,29 @@ angular.module('hesperides.event', [])
  * with custom content.
  */
 
+    /**
+     * Directive for rendering event history modal .
+     */
+    .directive('eventHistoryModal', [
+        '$timeout', '$rootScope', function ($timeout, $rootScope) {
+            return {
+                restrict: 'E',
+                templateUrl: 'event/event-modal.html',
+                scope: {
+                    titre: '@',
+                    platform: '=',
+                    application: '=',
+                    module: '=',
+                },
+                link() {
+                    $timeout(() => {
+                        $rootScope.isLoading = false;
+                    }, 0);
+                },
+            };
+        },
+    ])
+
 //
 // Platforms
 //

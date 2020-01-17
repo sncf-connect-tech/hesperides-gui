@@ -55,7 +55,13 @@
                 <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events height-500px">
                     <div ng-repeat="event in eventEntries | eventsFilter: filtering.inputs | myEventsFilter: filtering.myevents" >
                         <div ng-switch="event.type" class="event">
-
+                            <div layout="column" layout-wrap>
+                                <span id="properties-globales" flex class="zoom-in-property-icon"
+                                      ng-class="zoomInGlobalProperties ? 'fa fa-compress' : 'fa fa-expand'"
+                                      ng-click="zoomInGlobalProperties = !zoomInGlobalProperties && showEventDetails()"
+                                      ng-show="true">
+                                </span>
+                            </div>
                             <!-- Platforms -->
                             <platform-created ng-switch-when="PlatformCreatedEvent" event="event"></platform-created>
                             <platform-created-from-existing ng-switch-when="PlatformCreatedFromExistingEvent" event="event"></platform-created-from-existing>
@@ -85,7 +91,7 @@
 
                             <!-- Technos -->
                             <template-package-deleted ng-switch-when="TemplatePackageDeletedEvent" event="event"></template-package-deleted>
-
+                            <div ng-show="zoomInGlobalProperties">contenu de l'envent</div>
                         </div>
                     </div>
                 </md-virtual-repeat-container>

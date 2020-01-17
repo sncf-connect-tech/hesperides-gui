@@ -177,6 +177,25 @@ angular.module('hesperides.application', [])
         return InstanceModel;
     })
 
+    .factory('EventHistoryModel', function () {
+        const EventHistoryModel = function (data) {
+            angular.extend(this, {
+                author: '',
+                comment: '',
+                added_properties: [],
+                updated_properties: [
+                    {
+                        name: '',
+                        old_value: '',
+                        new_value: '',
+                    },
+                ],
+                removed_properties: [],
+            }, data);
+        };
+        return EventHistoryModel;
+    })
+
     .factory('Instance', function () {
         var Instance = function (data) {
             angular.extend(this, {
@@ -231,8 +250,8 @@ angular.module('hesperides.application', [])
     })
 
     .factory('ApplicationService', [
-        '$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate', '$location', 'notify',
-        function ($http, Application, Platform, Properties, InstanceModel, $translate, $location, notify) {
+        '$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'EventHistoryModel', '$translate', '$location', 'notify',
+        function ($http, Application, Platform, Properties, InstanceModel, EventHistoryModel, $translate, $location, notify) {
             return {
                 get(name, unsecured) {
                     return $http.get(`rest/applications/${ encodeURIComponent(name) }?hide_platform=true`).then(function (response) {
@@ -489,6 +508,27 @@ angular.module('hesperides.application', [])
                     });
 
                     return updatedModules;
+                },
+
+                // recuperer l'historique des évenements
+                getEventHistory(applicationName, platformName, propertiesPath) {
+                    return {
+                        author: 'Monsieur test',
+                        comment: 'j\'ai réalisé plein de changements',
+                        added_properties: ['property-1', 'property-2'],
+                        updated_properties: [
+                            {
+                                name: 'ma.prop.de.ouf',
+                                old_value: 'ancienne valeur',
+                                new_value: 'nouvelle valeur',
+                            },
+                        ],
+                        removed_properties: [ 'ma.prop.qui.est.supprimee' ],
+                    };
+                    /* const url = `rest/applications/${ encodeURIComponent(applicationName) }/platforms/${ encodeURIComponent(platformName) }/properties/events?properties_path=${ encodeURIComponent(propertiesPath) }`;
+                    return $http.get(url).then(function (response) {
+                        return new EventHistoryModel(response.data);
+                    }); */
                 },
             };
         },

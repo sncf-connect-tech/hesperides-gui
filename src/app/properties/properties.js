@@ -643,6 +643,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             // Get evevents
             EventService.get(stream, page).then(function (entries) {
                 modalScope.eventEntries = setIds(0, entries);
+                console.log('modalScope : ', modalScope);
                 page++;
 
                 /**
@@ -735,6 +736,15 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         return `${ encodeURIComponent(key) }=${ encodeURIComponent(urlParams[key]) }`;
                     }).join('&') }`;
                     $window.open(url, '_blank');
+                };
+
+                /**
+                 * This function shows selected event details
+                 */
+                modalScope.showEventDetails = function () {
+                    console.log('param1 : ', param1);
+                    console.log('param2 : ', param2);
+                    // ApplicationService.getEventHistory()
                 };
             });
         };
