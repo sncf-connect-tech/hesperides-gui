@@ -42,6 +42,18 @@ class DeployedModuleBuilder {
         this.iterableProperties = iterableProperties;
     }
 
+    addInstance(instanceName) {
+        this.instances.push({ name: instanceName, properties: [] });
+    }
+
+    setInstancesProperties(instanceName, properties) {
+        this.instances.forEach((instance) => {
+            if (instance.name === instanceName) {
+                instance.properties = properties;
+            }
+        });
+    }
+
     setId(id) {
         this.id = id;
     }
@@ -59,7 +71,10 @@ class DeployedModuleBuilder {
             working_copy: this.isWorkingCopy,
             path: this.modulePath,
             properties_path: this.buildPropertiesPath(),
-            instances: this.instances,
+            instances: this.instances.map((instance) => ({
+                name: instance.name,
+                key_values: instance.properties.map((property) => property.buildKeyValuePropertyInput()),
+            })),
         };
     }
 

@@ -24,3 +24,21 @@ Given(/^the platform has these iterable properties$/, /** @this CustomWorld */ a
     this.deployedModuleBuilder.setIterableProperties(iterableProperties);
     await api.saveValuedProperties(this.platformBuilder, this.deployedModuleBuilder, this.platformHistory);
 });
+
+Given(/^the deployed module has these instances$/, /** @this CustomWorld  */ async function (dataTable) {
+    for (const [ instanceName ] of dataTable.raw()) {
+        this.deployedModuleBuilder.addInstance(instanceName);
+    }
+    this.platformBuilder.updateDeployedModuleBuilder(this.deployedModuleBuilder);
+    await api.updatePlatform(this.platformBuilder, this.platformHistory, this.platformBuilder.build());
+});
+
+Given(/^the instance "([^"]*)" has these valued properties$/, /** @this CustomWorld */ async function (instanceName, dataTable) {
+    const properties = [];
+    for (const [ name, value ] of dataTable.raw()) {
+        properties.push(new ValuedProperty(name, value));
+    }
+    this.deployedModuleBuilder.setInstancesProperties(instanceName, properties);
+    this.platformBuilder.updateDeployedModuleBuilder(this.deployedModuleBuilder);
+    await api.updatePlatform(this.platformBuilder, this.platformHistory, this.platformBuilder.build());
+});

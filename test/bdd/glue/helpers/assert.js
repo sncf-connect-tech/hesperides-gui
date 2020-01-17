@@ -41,6 +41,10 @@ exports.containsText = async function (elem, text) {
     await expect(elem.getText()).to.eventually.have.string(text);
 };
 
+exports.elementAttributeContainsText = async function (element, attribute, text) {
+    await expect(element.getAttribute(attribute)).to.eventually.have.string(text);
+};
+
 exports.containsValue = async function (elem, text) {
     await expect(elem.getAttribute('value')).to.eventually.have.string(text);
 };
