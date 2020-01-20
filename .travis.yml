@@ -8,19 +8,17 @@ env:
 
 jobs:
   include:
-    - name: HTML Linter for user manual
-      stage: test
-      before_install:
-        # Installing a more recent version than the one in the distro:
-        - wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb
-        - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
-      script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
-
-
+#    - name: HTML Linter for user manual
+#      stage: test
+#      before_install:
+#        # Installing a more recent version than the one in the distro:
+#        - wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb
+#        - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
+#      script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
+#
 #    - name: JS Linter
 #      stage: test
 #      script: npm run lint
-#
 #
 #    - name: Unit tests
 #      stage: test
@@ -34,7 +32,6 @@ jobs:
 #        - npm test
 #        - cat test/unit/reports/coverage.txt
 
-
     - name: BDD Tests - Technos - Copy technos
       stage: test
       services:
@@ -43,7 +40,7 @@ jobs:
       addons:
         chrome: stable
       provider: script
-      script: bash .travis/run_bdd_test.sh technos/copy-technos.feature
+      script: travis_retry bash .travis/run_bdd_test.sh technos/copy-technos.feature
 
 #    - name: BDD Tests - Technos - Create technos
 #      stage: test
@@ -334,7 +331,6 @@ jobs:
 #        chrome: stable
 #      provider: script
 #      script: bash .travis/run_bdd_test.sh platforms/search-applications.feature
-
 
     - name: Deploy to Docker hub
       stage: deploy
