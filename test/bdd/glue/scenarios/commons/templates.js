@@ -53,5 +53,5 @@ Then('the template file is downloaded and it has the content of the template', /
 
 Then(/^the existing template is also (?:copied|released)$/, /** @this CustomWorld */ async function () {
     const templateSelector = getTemplateSelector(this.templateBuilder);
-    await assert.isNotPresentByCss(templateSelector);
+    await assert.isPresentByCss(templateSelector);
 });
