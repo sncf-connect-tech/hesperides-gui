@@ -15,9 +15,13 @@
 }
 
 .diff-value {
-    overflow: hidden;
+    overflow-y: hidden;
     text-overflow: ellipsis;
     font-size: 1rem;
+    justify-content: start;
+}
+.diff-left-value {
+    justify-content: end;
 }
 
 .diff-checkbox {
@@ -69,7 +73,7 @@
     color: rgb(255, 87, 34) !important;;
 }
 
-.diff-left-title > div, .diff-left-value > div {
+.diff-left-title > div {
     text-align: right;
 }
 

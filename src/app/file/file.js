@@ -82,8 +82,9 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
             return {
 
                 get_files_entries(application_name, platform_name, path, module_name, module_version, instance_name, is_working_copy, simulate) {
-                    var url = `rest/files/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }` +
-                        `/${ encodeURIComponent(path) }/${ encodeURIComponent(module_name) }/${ encodeURIComponent(module_version) }/instances/${ encodeURIComponent(instance_name) }` +
+                    var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }` +
+                        `/${ encodeURIComponent(path) }/${ encodeURIComponent(module_name) }/${ encodeURIComponent(module_version) }` +
+                        `/instances/${ encodeURIComponent(instance_name) }/files` +
                         `?isWorkingCopy=${ encodeURIComponent(is_working_copy) }&simulate=${ encodeURIComponent(simulate) }`;
 
                     return $http.get(url).then(function (response) {
