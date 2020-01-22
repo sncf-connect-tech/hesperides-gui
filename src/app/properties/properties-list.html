@@ -24,7 +24,7 @@
         <div layout="row" flex="100">
             <div flex>
                 <md-button id="properties-list_display-simple-properties-button" ng-click="open(1)" class="file-title">
-                    {{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{(properties.key_value_properties | displayProperties:false).length}} )
+                    {{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{(properties.key_value_properties | includeDeletedProperties:false).length}} )
                     <span ng-if="hasLocalChange()" class="inLocal_true">{{ 'properties.module.editProperties.localChangeApplied' | translate }}</span>
                 </md-button>
             </div>
