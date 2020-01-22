@@ -144,9 +144,7 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
             /* This function is used to find technos not already chosen */
             $scope.search_technos = function (name) {
                 return TechnoService.with_name_like(name).then(function (technos) {
-                    return _.filter(technos, function (techno) {
-                        return !$scope.module.has_techno(techno);
-                    });
+                    return _.filter(technos, (techno) => !$scope.module.has_techno(techno));
                 });
             };
 

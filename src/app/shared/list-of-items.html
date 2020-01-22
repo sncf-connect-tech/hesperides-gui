@@ -68,13 +68,13 @@
                     md-selected-item="ctrl.selectedItem"
                     md-search-text="ctrl.searchText"
                     md-items="{{typeahead}}"
-                    md-item-text="techno.name"
-                    md-selected-item-change="(techno) ? selfAdd(techno) : false"
+                    md-item-text="item.name + ' ' + item.version + ' ' + ((item.is_working_copy) ? '(working copy)' : '')"
+                    md-selected-item-change="(item) ? selfAdd(item) : false"
                     md-min-length="0"
                     md-autoselect="true"
                     md-autofocus="true"
                     placeholder="{{ 'placeholder.search' | translate }}">
-                <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
+                <span md-highlight-text="ctrl.searchText">{{item.name}} {{item.version}} {{item.is_working_copy ? '(working copy)' : ''}}</span>
                 <md-not-found>
                     {{ 'message.emptyResult' | translate }}
                 </md-not-found>
