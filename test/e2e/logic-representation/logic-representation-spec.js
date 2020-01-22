@@ -29,8 +29,6 @@ describe('Manage logical representation', () => {
     });
 
     it('should add a logic representation', () => {
-        // set box mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
         // add first level
         utils.clickOnElement(element(by.id('e2e-tree-properties-add-first-box-dialog-button')));
         element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(data.logic_group_1);
@@ -72,8 +70,6 @@ describe('Manage logical representation', () => {
     });
 
     it('should add several logic groups at once', () => {
-        // set box mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
         // add first level
         utils.clickOnElement(element(by.id('e2e-tree-properties-add-first-box-dialog-button')));
         element(by.id('e2e-add-box-new-logic-group-name')).sendKeys(`${ data.logic_group_1 }#${ data.logic_group_2 }`);
@@ -107,8 +103,6 @@ describe('Manage logical representation', () => {
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
     });
-
-    // #nomorebloc afterEach(() => utils.setDefaultDisplayModeSetting('bloc'));
 });
 
 // function treeModeAddLogicGroupModuleAndInstance(logicGroup1, logicGroup2, moduleName, moduleVersion, newInstanceName) {

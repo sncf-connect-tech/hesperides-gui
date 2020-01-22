@@ -42,23 +42,24 @@ function dateToTimestamp(lookPast, date) {
 
 angular.module('hesperides.diff', [])
 
-    .filter('highlightDiff', [ '$sce', function ($sce) {
-        return function (value, compareTo, side, toggleCharsDiff) {
-            if (toggleCharsDiff) {
-                var diff = Diff.diffChars(compareTo, value);
-                var diffStr = '';
-                for (var partId in diff) {
-                    if (!diff[partId].added && !diff[partId].removed) {
-                        diffStr += diff[partId].value;
-                    } else if (diff[partId].added) {
-                        diffStr += '<span class="diff-char-highlight-' + side + '">' + diff[partId].value + '</span>';
+    .filter('highlightDiff', [
+        '$sce', function ($sce) {
+            return function (value, compareTo, side, toggleCharsDiff) {
+                if (toggleCharsDiff) {
+                    var diff = Diff.diffChars(compareTo, value);
+                    var diffStr = '';
+                    for (var partId in diff) {
+                        if (!diff[partId].added && !diff[partId].removed) {
+                            diffStr += diff[partId].value;
+                        } else if (diff[partId].added) {
+                            diffStr += `<span class="diff-char-highlight-${ side }">${ diff[partId].value }</span>`;
+                        }
                     }
+                    return $sce.trustAsHtml(diffStr);
                 }
-                return $sce.trustAsHtml(diffStr);
-            }
-            return $sce.trustAsHtml(value);
-        };
-    },
+                return $sce.trustAsHtml(value);
+            };
+        },
     ])
 
     .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, $q, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, Properties, notify) {
@@ -210,7 +211,7 @@ angular.module('hesperides.diff', [])
                     ApplicationService.save_properties($routeParams.application, platform, properties, $routeParams.properties_path, comment).then(() => {
                         $route.reload();
                     });
-                })
+                }),
             );
         };
 

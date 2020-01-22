@@ -68,21 +68,22 @@ Before(/** @this CustomWorld */ async function () {
                 });
             }
         });
-    }).then(async function () {
-        await rest.get(`${ baseUrl }/rest/technos`).then(async function (technos) {
-            for (const technoName of technos.data) {
-                await rest.get(`${ baseUrl }/rest/technos/${ technoName }`).then(async function (technoVersions) {
-                    for (const technoVersion of technoVersions.data) {
-                        await rest.get(`${ baseUrl }/rest/technos/${ technoName }/${ technoVersion }`).then(async function (versionTypes) {
-                            for (const versionType of versionTypes.data) {
-                                await rest.del(`${ world.productionUserUrl }/rest/technos/${ technoName }/${ technoVersion }/${ versionType }`);
-                            }
-                        });
-                    }
-                });
-            }
+    })
+        .then(async function () {
+            await rest.get(`${ baseUrl }/rest/technos`).then(async function (technos) {
+                for (const technoName of technos.data) {
+                    await rest.get(`${ baseUrl }/rest/technos/${ technoName }`).then(async function (technoVersions) {
+                        for (const technoVersion of technoVersions.data) {
+                            await rest.get(`${ baseUrl }/rest/technos/${ technoName }/${ technoVersion }`).then(async function (versionTypes) {
+                                for (const versionType of versionTypes.data) {
+                                    await rest.del(`${ world.productionUserUrl }/rest/technos/${ technoName }/${ technoVersion }/${ versionType }`);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
-    });
 });
 
 After(function () {

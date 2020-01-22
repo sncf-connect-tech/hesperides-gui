@@ -605,7 +605,7 @@ a.module-link, a.module-link:hover {
 
 
 /******************************************************************************
- * Tree - Box renderer
+ * Tree renderer
  */
 
 .contain_empty_module, .module-link.has_model_false, div.has_model_false {

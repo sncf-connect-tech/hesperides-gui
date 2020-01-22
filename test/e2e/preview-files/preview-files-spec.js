@@ -24,12 +24,10 @@ var utils = require('../utils.js');
 
 describe('Preview files', () => {
     beforeEach(() =>
-        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`),
     );
 
     it('should be able to preview files (TREE MODE) and check if template has the right location', () => {
-        // set tree mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
 
         utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,
@@ -49,8 +47,6 @@ describe('Preview files', () => {
     });
 
     it('should be able to download a single instance file (TREE MODE)', () => {
-        // set tree mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
 
         utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,
@@ -73,14 +69,12 @@ describe('Preview files', () => {
             // hash and see if it matches what you expect.
             console.log(`File ${ data.json_new_template_filename } downloaded`);
             return expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
-                '{"user" : "", "role" : ""}'
+                '{"user" : "", "role" : ""}',
             );
         });
     });
 
     it('should be able to download all files for an instance (TREE MODE)', () => {
-        // set tree mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-tree-sign-${ data.new_module_name }`)));
 
         utils.moveMouseOnElement(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`,
@@ -104,9 +98,9 @@ describe('Preview files', () => {
             console.log(`File ${ data.new_instance_name }.zip downloaded`);
             return expect(util.promisify(fs.readFile)(downloadedZipFilepath)
                 .then(JSZip.loadAsync)
-                .then((loadedZip) => loadedZip.file(data.json_new_template_filename).async('string'))
+                .then((loadedZip) => loadedZip.file(data.json_new_template_filename).async('string')),
             ).toEqual(
-                '{\n    "user": "",\n    "role": ""\n}'
+                '{\n    "user": "",\n    "role": ""\n}',
             );
         });
     });

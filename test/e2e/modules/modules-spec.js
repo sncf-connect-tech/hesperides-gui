@@ -108,7 +108,7 @@ describe('Manage modules', () => {
             // hash and see if it matches what you expect.
             console.log(`File ${ data.json_new_template_filename } downloaded`);
             return expect(fs.readFileSync(filename, { encoding: 'utf8' })).toEqual(
-                data.json_new_template_content
+                data.json_new_template_content,
             );
         }).then(() => utils.clickOnElement(element(by.id('e2e-template-list-download-all-button'))));
     });
@@ -154,8 +154,8 @@ describe('Manage modules', () => {
                     expect(isPresent).toBe(true);
                     return utils.checkResponseStatusCode(`${ hesperides_url }/rest/modules/${ data.new_module_name }/${ data.new_module_version }/release`, 200);
                 }),
-                () => false
-            )
+                () => false,
+            ),
         );
     });
 
@@ -176,7 +176,7 @@ describe('Manage modules', () => {
             element(by.id('e2e-module-create-release-button')).isPresent().then((isPresent) => {
                 expect(isPresent).toBe(true);
                 return utils.checkResponseStatusCode(`${ hesperides_url }/rest/modules/${ data.new_module_name }_from/${ data.new_module_version }/workingcopy`, 200);
-            })
+            }),
         );
     });
 

@@ -20,14 +20,11 @@ var utils = require('../utils.js');
 
 describe('Manage properties (global, module, instance) and annotations (default, comment, required etc ...)', () => {
     beforeAll(() =>
-        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`),
     );
 
     beforeEach(function () {
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
-
-        // set tree mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
 
         // on déroule l'arbre
         utils.clickOnElement(element(by.id('e2e-tree-properties-quick-display-button')));

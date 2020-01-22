@@ -20,11 +20,11 @@ var utils = require('../utils.js');
 
 describe('Checks around production role', () => {
     beforeEach(() =>
-        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`)
+        browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`),
     );
 
     it('should check on logical representation page that switch "Production platform" is disabled for a "non production" user', () =>
-        utils.checkElementIsDisabled('properties_isProduction-switch')
+        utils.checkElementIsDisabled('properties_isProduction-switch'),
     );
 
     it('should check that a "non production" user cannot create a production platform', () => {

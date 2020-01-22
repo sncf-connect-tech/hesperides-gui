@@ -30,9 +30,6 @@ describe('Manage iterable properties and annotations (default, comment, required
 
     beforeEach(() => {
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
-
-        // open bloc mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
         utils.clickOnElement(element(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)));
     });
 

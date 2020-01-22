@@ -136,7 +136,7 @@ angular.module('hesperides.file', [ 'pascalprecht.translate' ])
 
                     // Generate and save the zip file
                     zip.generateAsync({ type: 'blob' }).then((content) =>
-                        saveAs(content, `${ instanceName }.zip`) // exported by JSZip
+                        saveAs(content, `${ instanceName }.zip`), // exported by JSZip
                     );
                 },
                 files_rights_to_string,

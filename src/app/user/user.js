@@ -66,7 +66,7 @@ angular.module('hesperides.user', [])
                     userCache = new User(response.data);
                     if (SENTRY_DSN) {
                         Sentry.configureScope((scope) =>
-                            scope.setUser({ username: userCache.username })
+                            scope.setUser({ username: userCache.username }),
                         );
                     }
                     return userCache;

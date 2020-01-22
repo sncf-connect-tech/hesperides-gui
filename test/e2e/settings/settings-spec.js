@@ -21,7 +21,6 @@ var utils = require('../utils.js');
 describe('Manage settings', () => {
     beforeEach(() => {
         browser.get(`${ hesperides_url }/#/properties/${ data.new_application }?platform=${ data.new_platform }`);
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-box-mode-button')));
         utils.resetDisplayInstancesByDefaultSettingToDefaultValue();
     });
 
@@ -56,9 +55,6 @@ describe('Manage settings', () => {
     });
 
     it('should not display instances of a platform by default (TREE MODE)', () => {
-        // Display Tree mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
-
         expect(element.all(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).count()).toEqual(1);
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(0);
         expect(element.all(by.id(`e2e-tree-renderer-edit-instance-button-${ data.new_instance_name }`)).count()).toEqual(0);
@@ -126,9 +122,6 @@ describe('Manage settings', () => {
         utils.clickOnElement(element(by.id('e2e-navbar-settings')));
         utils.clickOnElement(element(by.id('e2e-modal-settings-switch-unfold-instances-by-default')));
         utils.clickOnElement(element(by.id('e2e-modal-settings-button-save')));
-
-        // Display Tree mode
-        // #nomorebloc utils.clickOnElement(element(by.id('e2e-properties-show-tree-mode-button')));
 
         expect(element.all(by.id(`e2e-tree-renderer-edit-module-button-${ data.new_module_name }`)).count()).toEqual(1);
         expect(element.all(by.id(`e2e-instance-list-for-${ data.new_module_name }`)).count()).toEqual(1);
