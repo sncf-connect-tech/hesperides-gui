@@ -3,6 +3,10 @@
   "version": "4.3.0",
   "description": "Hesperides GUI",
   "homepage": "https://github.com/voyages-sncf-technologies/hesperides-gui",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:voyages-sncf-technologies/hesperides-gui.git"
+  },
   "license": "GPL",
   "private": true,
   "dependencies": {

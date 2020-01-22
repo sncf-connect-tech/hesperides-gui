@@ -25,6 +25,71 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Fixed
+
+- Non-scrollable truncated property values on /diff page. [Lucas Cimon]
+
+
+
+## 2020-01-16
+### Fixed
+
+- #308: Surlignage des caractères dans le diff. [avoidwebid]
+
+- Fix #353: @pattern et @required ne sont pas vérifiés lorsqu'ils sont en première position de la liste (#357) [Bhoye05]
+
+
+
+## 2020-01-10
+### Fixed
+
+- #347: Correction de la recherche de technos dont le nom contient un '-' [Bhoye05]
+
+- #350: Correction de l'affichage des propriétés obligatoires lorsqu'il y a beaucoup (>20) propriétés. [Bhoye05]
+
+
+
+## 2020-01-08
+### Fixed
+
+- #280: Portage des tests E2E en tests BDD. [Thomas L'Hostis]
+
+
+
+## 2019-12-18
+### Fixed
+
+- #316: Permettre la suppression des propriétés inutilisées au niveau plateforme. [Thomas L'Hostis]
+
+
+
+## 2019-11-28
+### Removed
+
+- Cache le mode bloc pour la valorisation des propriétés - Fix #343. [Thomas L'Hostis]
+
+
+
+## 2019-11-21
+### Added
+
+- Afficher un message lorsqu'une plateforme de production contient un module en working copy - Fix #323. [Thomas L'Hostis]
+
+
+### Fixed
+
+- #158: Switch permettant de n'afficher que les propriétés obligatoires. [Thomas L'Hostis]
+
+
+
+## 2019-10-17
+### Fixed
+
+- #502: Documentation de la mise à jour de module avec conservation de propriétés (#335) [Thomas L'Hostis]
+
+
+
 ## 2019-10-15
 ### Added
 
