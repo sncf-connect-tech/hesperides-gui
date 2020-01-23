@@ -1,4 +1,4 @@
-exports.newTab = async function () {
+exports.toNewTab = async function () {
     await browser.getAllWindowHandles().then(async function (handles) {
         const newTabHandle = handles[1];
         await browser.switchTo().window(newTabHandle);

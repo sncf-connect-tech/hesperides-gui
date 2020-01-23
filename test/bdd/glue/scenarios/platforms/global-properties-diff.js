@@ -58,7 +58,7 @@ When('I disable differing characters highlight', async function () {
 });
 
 Then(/^I get a new page with the global properties( stored values)? diff$/, /** @this CustomWorld */ async function (storedValues) {
-    await navigate.newTab();
+    await navigate.toNewTab();
     const fromPlatformBuilder = this.platformHistory.platformBuilders[0];
     const toPlatformBuilder = this.platformHistory.platformBuilders[1];
     const expectedUrl = api.buildDiffUrl(fromPlatformBuilder, toPlatformBuilder, globalPropertiesPath, globalPropertiesPath, storedValues);
@@ -67,7 +67,7 @@ Then(/^I get a new page with the global properties( stored values)? diff$/, /** 
 });
 
 Then('I get a new page with the global properties diff with timestamp', /** @this CustomWorld */ async function () {
-    await navigate.newTab();
+    await navigate.toNewTab();
     const expectedUrl = api.buildDiffUrl(this.platformBuilder, this.platformBuilder, globalPropertiesPath, globalPropertiesPath, false, selectedTimestamp);
     await assert.currentUrlEquals(expectedUrl);
     await navigate.backToFirstTab();

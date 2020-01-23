@@ -51,7 +51,7 @@ When(/^I choose module "([^"]*)" to compare with the selected module$/, async fu
 
 Then(/^I get a new page with the module properties( stored values)? diff(?: between platform "([^"]*)" and platform "([^"]*)")?(?: between module "([^"]*)" and module "([^"]*)")?$/,
     /** @this CustomWorld */async function (storedValues, fromPlatformName, toPlatformName, fromModuleName, toModuleName) {
-        await navigate.newTab();
+        await navigate.toNewTab();
         const fromPlatformBuilder = fromPlatformName ? this.platformHistory.findPlatformBuilderByName(fromPlatformName) : this.platformBuilder;
         const toPlatformBuilder = toPlatformName ? this.platformHistory.findPlatformBuilderByName(toPlatformName) : this.platformBuilder;
         const fromDeployedModuleBuilder = fromModuleName ? this.platformBuilder.findDeployedModuleBuilderByName(fromModuleName) : this.deployedModuleBuilder;
@@ -67,7 +67,7 @@ Then(/^I get a new page with the module properties( stored values)? diff(?: betw
     });
 
 Then('I get a new page with the module properties diff with timestamp', /** @this CustomWorld */ async function () {
-    await navigate.newTab();
+    await navigate.toNewTab();
     const expectedUrl = api.buildDiffUrl(this.platformBuilder, this.platformBuilder, this.deployedModuleBuilder.buildPropertiesPath(), false, selectedTimestamp);
     await assert.currentUrlEquals(expectedUrl);
     await navigate.backToFirstTab();
