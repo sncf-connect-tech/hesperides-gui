@@ -95,7 +95,7 @@ class DeployedModuleBuilder {
                 }
                 items.push({
                     title: itemTitle,
-                    values,
+                    values: values,
                 });
             }
             iterablePropertiesInput.push({

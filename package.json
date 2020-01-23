@@ -80,7 +80,6 @@
     "lint": "eslint --fix src/app test",
     "test": "karma start test/unit/karma.conf.js",
     "webdriver-start": "webdriver-manager update && webdriver-manager --verbose start",
-    "e2e-tests": "protractor test/e2e/protractor-conf.js",
     "bdd-tests": "protractor test/bdd/protractor-bdd.js"
   }
 }
