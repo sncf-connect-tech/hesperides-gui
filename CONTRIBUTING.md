@@ -12,6 +12,7 @@
     * [Revues de code](#revues-de-code)
     * [Problèmes rencontrés](#problemes-rencontres)
         + [`npm install`](#npm-install)
+- [Contribuer à la documentation](#contribuer-a-la-documentation)
 
 <!-- tocstop -->
 
@@ -90,3 +91,8 @@ Essayer avec YARN :
 
 
 Si cela fonctionne, réessayer avec `npm install`.
+
+# Contribuer à la documentation
+Pour visualiser la documentation sur votre machine :
+
+    npm run serve-doc
