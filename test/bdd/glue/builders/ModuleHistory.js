@@ -5,10 +5,6 @@ class ModuleHistory {
         this.moduleBuilders = [];
     }
 
-    getModuleBuilders() {
-        return this.moduleBuilders;
-    }
-
     addModuleBuilder(moduleBuilder) {
         this.moduleBuilders.push(cloneDeep(moduleBuilder));
     }

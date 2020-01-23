@@ -84,7 +84,7 @@ angular.module('hesperides', MODULE_DEPS)
                 .when('/properties/:application', {
                     templateUrl: 'properties/properties.html',
                     controller: 'PropertiesController',
-                    reloadOnSearch: false, // "reload route when only $location.search() or $location.hash() changes." - cf. routeUpdateListener au-dessus
+                    reloadOnSearch: false, // "reload route when only $location.search() or $location.hash() changes." - cf. routeUpdateListener
                 })
                 .when('/diff', {
                     templateUrl: 'diff/diff.html',

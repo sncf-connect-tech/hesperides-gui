@@ -114,8 +114,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     ])
 
     // eslint-disable-next-line max-statements
-    .controller('PropertiesController', function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll,
-        ApplicationService, FileService, EventService, ModuleService, ApplicationModule, Page, $translate,
+    .controller('PropertiesController', function ($scope, $routeParams, $mdDialog, $location, $route,
+        ApplicationService, FileService, EventService, Module, ModuleService, ApplicationModule, Page, $translate,
         $window, $http, Properties, HesperidesModalFactory, LocalChanges, $rootScope, notify, UserService, $document) {
         $scope.ctrl = $scope;
 
@@ -792,7 +792,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 $scope.update_main_box(platform);
             }, function () {
                 // If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
-                $location.url(`/properties/${ $scope.platform.application_name }`).search({ platform: $scope.platform.name });
+                $location.url(`/properties/${ encodeURIComponent($scope.platform.application_name) }`).search({ platform: $scope.platform.name });
                 $route.reload(); // Force reload if needed
             });
         };
@@ -800,7 +800,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.on_edit_platform = function (platform) {
             $scope.$broadcast('quickHideInstanceDetails', {});
             $scope.quickOpen = false;
-            $location.url(`/properties/${ platform.application_name }?platform=${ platform.name }`);
+            $location.url(`/properties/${ encodeURIComponent(platform.application_name) }`).search({ platform: platform.name });
 
             ApplicationService.get_platform(platform.application_name, platform.name).then(function (searchPlatform) {
                 $scope.platform = searchPlatform;
@@ -832,9 +832,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     $scope.showGlobalProperties = null;
                     $scope.showButtonAndEye = null;
 
-                    // Auto scroll to the properties list
-                    $location.hash('propertiesDivHolder');
-                    $anchorScroll();
+                    $location.hash(module.properties_path);
                 });
             });
         };
@@ -1148,10 +1146,10 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         });
 
         ApplicationService.get($routeParams.application).then(function (application) {
-            if (!$routeParams.platform) {
+            if (!$scope.platform) {
                 return { application, platform: null };
             }
-            var platform = _.find(application.platforms, { name: $routeParams.platform });
+            var platform = _.find(application.platforms, { name: $scope.platform });
             if (!platform) {
                 throw new Error('Selected platform not found !');
             }
@@ -1162,9 +1160,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             setValidatedAppGroupCNs();
 
-            if ($routeParams.platform) {
+            if ($scope.platform) {
                 $scope.platform = match.platform;
                 $scope.update_main_box($scope.platform);
+                if ($location.hash()) {
+                    $scope.edit_properties($scope.platform, Module.fromPropertiesPath($location.hash()));
+                }
             }
         }).catch(function (error) {
             notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in PropertiesController constructor' });

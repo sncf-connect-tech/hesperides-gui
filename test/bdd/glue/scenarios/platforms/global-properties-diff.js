@@ -1,6 +1,7 @@
 const api = require('../../helpers/api');
 const assert = require('../../helpers/assert');
 const get = require('../../helpers/get');
+const navigate = require('../../helpers/navigate');
 const send = require('../../helpers/send');
 const moment = require('moment');
 
@@ -57,19 +58,19 @@ When('I disable differing characters highlight', async function () {
 });
 
 Then(/^I get a new page with the global properties( stored values)? diff$/, /** @this CustomWorld */ async function (storedValues) {
-    await get.newTab();
+    await navigate.newTab();
     const fromPlatformBuilder = this.platformHistory.platformBuilders[0];
     const toPlatformBuilder = this.platformHistory.platformBuilders[1];
     const expectedUrl = api.buildDiffUrl(fromPlatformBuilder, toPlatformBuilder, globalPropertiesPath, globalPropertiesPath, storedValues);
     await assert.currentUrlEquals(expectedUrl);
-    await get.backToFirstTab();
+    await navigate.backToFirstTab();
 });
 
 Then('I get a new page with the global properties diff with timestamp', /** @this CustomWorld */ async function () {
-    await get.newTab();
+    await navigate.newTab();
     const expectedUrl = api.buildDiffUrl(this.platformBuilder, this.platformBuilder, globalPropertiesPath, globalPropertiesPath, false, selectedTimestamp);
     await assert.currentUrlEquals(expectedUrl);
-    await get.backToFirstTab();
+    await navigate.backToFirstTab();
 });
 
 Then('I get the following properties only on left platform', async function (dataTable) {
