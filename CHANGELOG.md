@@ -25,10 +25,10 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2020-01-22
 ### Fixed
 
-- Non-scrollable truncated property values on /diff page. [Lucas Cimon]
+- #368: Correction du troncage des valeurs longues dans le diff (scroll horizontal) [Lucas Cimon]
 
 
 

@@ -1659,25 +1659,15 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
      * This is for filtering the deleted properties.
      * Used only for simple properties.
      */
-    .filter('displayProperties', function () {
-        return function (items, display) {
-            return _.filter(items, function (item) {
-                return (display ? !item.inModel : _.isUndefined(display) || display || item.inModel);
-            });
+    .filter('includeDeletedProperties', function () {
+        return function (items, displayAlsoDeleted) {
+            return _.filter(items, (item) => displayAlsoDeleted || item.inModel);
         };
     })
 
     .filter('displayOnlyRequiredProperties', function () {
-        return function (items, display) {
-            return _.filter(items, function (item) {
-                var displayOnlyrequiredProperties = false;
-                if (display) {
-                    displayOnlyrequiredProperties = item.required;
-                } else {
-                    displayOnlyrequiredProperties = _.isUndefined(display) || item.inModel;
-                }
-                return displayOnlyrequiredProperties;
-            });
+        return function (items, displayOnlyRequired) {
+            return _.filter(items, (item) => !displayOnlyRequired || item.required);
         };
     })
 

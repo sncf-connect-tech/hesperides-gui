@@ -45,7 +45,7 @@
             <div md-virtual-repeat="key_value_property in instance.key_values
                 | hideHesperidesPredefinedProperties
                 | displayUnspecifiedProperties:displayUnspecified
-                | displayProperties:displayDeletedProperties
+                | includeDeletedProperties:displayDeletedProperties
                 | orderBy:'name':order"
                  class="repeated-item height-20px " flex >
                 <div layout="row"
