@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2020-01-23
+### Fixed
+
+- #363: Correction du bouton pour n'afficher que les propriétés supprimées. [Lucas Cimon]
+
+
+
 ## 2020-01-22
 ### Fixed
 

@@ -49,8 +49,8 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     TechnoService.get_model($scope.techno.name, $scope.techno.version, $scope.techno.is_working_copy).then(function (model) {
                         $scope.model = model;
                     });
-                    
-                    TechnoService.get_all_modules_using_this_techno($scope.techno).then(function(modules) {
+
+                    TechnoService.get_all_modules_using_this_techno($scope.techno).then(function (modules) {
                         $scope.modules = modules;
                     });
                 };
@@ -81,7 +81,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     });
                     // Generate and save the zip file
                     zip.generateAsync({ type: 'blob' }).then((content) =>
-                        saveAs(content, `${ $scope.techno.title }.zip`)
+                        saveAs(content, `${ $scope.techno.title }.zip`),
                     );
                 };
 
@@ -183,15 +183,14 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     });
                 };
 
-                $scope.getModuleUrl = function(module) {
-                     /*eslint-disable no-undef*/
-                    return  '/module/' 
-                            + module.module_name 
-                            + '/' + module.module_version 
-                            + '?type=' 
-                            + getVersionType(module.is_working_copy);;
+                $scope.getModuleUrl = function (module) {
+                    /* eslint-disable no-undef*/
+                    return `/module/${
+                        module.module_name
+                    }/${ module.module_version
+                    }?type=${
+                        getVersionType(module.is_working_copy) }`;
                 };
-               
             },
         ])
 
@@ -307,7 +306,7 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     });
                 },
                 get_all_modules_using_this_techno(techno) {
-                     /*eslint-disable no-undef*/
+                    /* eslint-disable no-undef*/
                     return $hesperidesHttp.get(`rest/modules/using_techno/${ encodeURIComponent(techno.name) }/${ encodeURIComponent(techno.version) }/${ getVersionType(techno.is_working_copy) }`).then(function (response) {
                         return response.data.map(function (current) {
                             return new Module(current);
@@ -404,5 +403,5 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     return deferred.promise;
                 },
             };
-        }
+        },
     );

@@ -74,7 +74,7 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
                 });
                 // Generate and save the zip file
                 zip.generateAsync({ type: 'blob' }).then((content) =>
-                    saveAs(content, `${ $scope.module.title }.zip`)
+                    saveAs(content, `${ $scope.module.title }.zip`),
                 );
             };
 
@@ -197,7 +197,6 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
                     scope: modalScope,
                 });
             };
-
         },
     ])
 
@@ -470,8 +469,8 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
         },
     ]);
 
-    /** global method to get module or techno type : {workingcopy, release} */
-   /*eslint-disable no-undef*/
-    getVersionType = function(isWorkingCopy) {
-        return isWorkingCopy ? 'workingcopy' : 'release';       
-    };
+/** global method to get module or techno type : {workingcopy, release} */
+/* eslint-disable no-undef*/
+getVersionType = function (isWorkingCopy) {
+    return isWorkingCopy ? 'workingcopy' : 'release';
+};

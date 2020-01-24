@@ -67,7 +67,7 @@ angular.module('hesperides.template', [])
         CodeMirror.defineMode('hesperides', function (config, parserConfig) {
             return CodeMirror.overlayMode(
                 CodeMirror.getMode(config, parserConfig.backdrop || ''),
-                hesperidesOverlay
+                hesperidesOverlay,
             );
         });
 
@@ -122,7 +122,7 @@ angular.module('hesperides.template', [])
                 CodeMirror.defineMode(mode_name, function (config, parserConfig) {
                     return CodeMirror.overlayMode(
                         CodeMirror.getMode(config, parserConfig.backdrop || new_mode),
-                        hesperidesOverlay
+                        hesperidesOverlay,
                     );
                 });
                 defaultScope.editor.setOption('mode', mode_name);
@@ -170,7 +170,7 @@ angular.module('hesperides.template', [])
                 };
             },
         };
-    }
+    },
     )
 
     .directive('hesperidesTemplateList', function () {

@@ -40,7 +40,7 @@ const saveProperties = async function (api, platformBuilder, propertiesPath, pro
     let url = `${ baseUrl }/rest/applications/${ platformBuilder.applicationName }`;
     url += `/platforms/${ platformBuilder.platformName }`;
     url += `/properties?path=${ propertiesPath }`;
-    url += `&platform_vid=${ platformBuilder.versionId }`
+    url += `&platform_vid=${ platformBuilder.versionId }`;
     url += '&comment=fake-comment';
     await api.put(url, properties);
 };

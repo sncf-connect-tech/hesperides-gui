@@ -24,7 +24,7 @@
         <!-- Filtre sur l'arbre -->
         <div>
             <md-input-container class="md-block margin-inherit">
-                <label>{{ 'properties.treeMode.title' | translate }}</label>
+                <label>{{ 'properties.treeFilter' | translate }}</label>
                 <!-- Add ngModelOptions for big tree, to prevent key press hang -->
                 <input type="text" id="e2e-tree-properties-filter" ng-trim="true" ng-model="parentScope.searchInTree"
                        ng-model-options="{ debounce: { 'default': 250 } }" ng-change="resetOpenByClick()"/>
@@ -33,8 +33,7 @@
 
         <!-- Element root de l'arbre -->
         <div id="header" layout="row">
-            <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' |
-                translate }}</h3></div>
+            <div flex="none" layout="row" layout-align="none center"><h3>{{ 'platform' | translate }}</h3></div>
             <div flex="grow" layout="row" layout-align="none center">
                 <md-button id="e2e-tree-properties-add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)"
                            class="md-xs" aria-label="{{ 'properties.logicGroup.add' | translate }}" tooltip="">

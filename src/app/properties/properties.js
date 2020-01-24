@@ -163,14 +163,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.user = {};
         $scope.appGroupCNs = [];
 
-        // #nomorebloc if (store.get('display_mode') === 'arbre') {
-        $scope.box = false;
-        $scope.tree = true;
-        // } else {
-        //     $scope.box = true;
-        //     $scope.tree = false;
-        // }
-
         var Box = function (data) {
             return angular.extend(this, {
                 parent_box: null,
@@ -1074,32 +1066,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             $route.reload(); // Force reload if needed
         };
 
-        /**
-         * This will display the properties in the box mode.
-         */
-        $scope.boxModeShow = function () {
-            if (!$scope.box) {
-                $rootScope.isLoading = true;
-                $scope.box = true;
-                $scope.tree = false;
-                $scope.properties = null;
-                $scope.instance = null;
-            }
-        };
-
-        /**
-         * This will display the properties in the tree mode.
-         */
-        $scope.treeModeShow = function () {
-            if (!$scope.tree) {
-                $rootScope.isLoading = true;
-                $scope.box = false;
-                $scope.tree = true;
-                $scope.properties = null;
-                $scope.instance = null;
-            }
-        };
-
         function ensureDirectoryGroupsNotEmpty() {
             if (!$scope.application.directoryGroups) {
                 $scope.application.directoryGroups = {};
@@ -1171,23 +1137,6 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             throw error;
         });
     })
-
-    /**
-     * Directive for rendering properties on box mode.
-     */
-    .directive('boxProperties', [
-        '$timeout', '$rootScope', function ($timeout, $rootScope) {
-            return {
-                restrict: 'E',
-                templateUrl: 'properties/box_properties.html',
-                link() {
-                    $timeout(() => {
-                        $rootScope.isLoading = false;
-                    }, 0);
-                },
-            };
-        },
-    ])
 
     /**
      * Directive for rendering properties on tree mode.

@@ -19,7 +19,7 @@ Then('only the required properties are displayed', async function () {
 });
 
 Then(/the property "([^"]+)" is( not)? displayed/, async function (propertyName, notDisplayed) {
-    const propertyId = `simple-properties-list_key-property-input-${propertyName}`;
+    const propertyId = `simple-properties-list_key-property-input-${ propertyName }`;
     if (notDisplayed) {
         await assert.isNotPresentById(propertyId);
     } else {
