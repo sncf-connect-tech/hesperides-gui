@@ -280,7 +280,7 @@ jobs:
       addons:
         chrome: stable
       provider: script
-      script: travis_retry bash .travis/run_bdd_test.sh platforms/module-properties-list.feature --strict
+      script: travis_retry --strict bash .travis/run_bdd_test.sh platforms/module-properties-list.feature
 #
 #    - name: BDD Tests - Platforms - Preview files
 #      stage: test
