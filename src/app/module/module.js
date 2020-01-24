@@ -221,39 +221,51 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
                 });
 
                 this.title = `${ this.name }, ${ this.version }${ this.is_working_copy ? ' (working copy)' : '' }`;
+            };
 
-                this.add_techno = function (techno) {
-                    if (!_.some(this.technos, { 'name': techno.name, 'version': techno.version, 'is_working_copy': techno.is_working_copy })) {
-                        this.technos.push(techno);
-                    }
-                    return techno;
-                };
+            Module.prototype.add_techno = function (techno) {
+                if (!_.some(this.technos, { 'name': techno.name, 'version': techno.version, 'is_working_copy': techno.is_working_copy })) {
+                    this.technos.push(techno);
+                }
+                return techno;
+            };
 
-                this.remove_techno = function (techno) {
-                    _.remove(this.technos, function (existing) {
-                        return _.isEqual(existing, techno);
-                    });
-                };
+            Module.prototype.remove_techno = function (techno) {
+                _.remove(this.technos, function (existing) {
+                    return _.isEqual(existing, techno);
+                });
+            };
 
-                this.has_techno = function (techno) {
-                    return _.some(this.technos, { 'name': techno.name, 'version': techno.version, 'is_working_copy': techno.is_working_copy });
-                };
+            Module.prototype.has_techno = function (techno) {
+                return _.some(this.technos, { 'name': techno.name, 'version': techno.version, 'is_working_copy': techno.is_working_copy });
+            };
 
-                this.to_rest_entity = function () {
-                    return {
-                        name: this.name,
-                        version: this.version,
-                        working_copy: this.is_working_copy,
-                        version_id: this.version_id,
-                        technos: _.map(this.technos, function (techno) {
-                            return techno.to_rest_entity();
-                        }),
-                    };
+            Module.prototype.to_rest_entity = function () {
+                return {
+                    name: this.name,
+                    version: this.version,
+                    working_copy: this.is_working_copy,
+                    version_id: this.version_id,
+                    technos: _.map(this.technos, function (techno) {
+                        return techno.to_rest_entity();
+                    }),
                 };
+            };
 
-                this.get_properties_path = function () {
-                    return `${ this.path }#${ this.name }#${ this.version }#${ this.is_working_copy ? 'WORKINGCOPY' : 'RELEASE' }`;
-                };
+            // Class methods:
+            Module.fromPropertiesPath = function (propertiesPath) {
+                let pathFragments = propertiesPath.split('#');
+                let name = pathFragments[pathFragments.length - 3];
+                let version = pathFragments[pathFragments.length - 2];
+                let moduleType = pathFragments[pathFragments.length - 1];
+                if (pathFragments[0] !== '' || pathFragments.length < 5 || !['RELEASE', 'WORKINGCOPY'].includes(moduleType)) {
+                    throw new Error(`Invalid propertiesPath provided: ${propertiesPath}`);
+                }
+                return new Module({
+                    name, version,
+                    is_working_copy: moduleType === 'WORKINGCOPY',
+                    properties_path: propertiesPath,
+                });
             };
 
             return Module;

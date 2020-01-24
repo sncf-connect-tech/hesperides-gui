@@ -70,15 +70,14 @@
 
         <!-- Elements enfants -->
         <div>
-            <div
-                    ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:parentScope.searchInTree"
-                    ng-include="'properties/tree_renderer.html'"/>
+            <div ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:parentScope.searchInTree"
+                 ng-include="'properties/tree_renderer.html'"/>
         </div>
     </div>
 </div>
 
 <div flex="70">
-    <div id="propertiesDivHolder">
+    <div>
         <!-- Bouton sauvegarder -->
         <div layout="row" layout-align="end start" ng-show="showGlobalProperties">
             <md-button id="e2e-tree-properties-save-global-properties-button" class="md-raised md-primary"
@@ -98,12 +97,10 @@
                 </form>
             </div>
         </div>
-        <div class="margin-top-5px" layout="row" ng-show="properties">
-            <div class="has_model_{{selected_module.has_model}}">
-                <h3><span>{{ 'properties.module.editProperties.title' | translate }}
-                        <strong>{{selected_module.path.split('#').join(' | ')}} | {{selected_module.title}}</strong>
-                    </span></h3>
-            </div>
+        <div id="e2e-tree-properties-form-title" class="margin-top-5px" layout="row" ng-show="properties">
+            <h3>{{ 'properties.module.editProperties.title' | translate }}
+                <strong>{{selected_module.path.split('#').join(' | ')}} | {{selected_module.title}}</strong>
+            </h3>
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>

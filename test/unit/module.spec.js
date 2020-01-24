@@ -24,10 +24,11 @@ describe('Testing hesperides module', function () {
     beforeEach(module('hesperides.module'));
 
     describe('Testing the ModuleController', function () {
-        let pageService = null;
+        let injected = {};
 
-        beforeEach(inject(function ($injector, $rootScope, $controller, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page, FileService, Platform) {
-            pageService = Page;
+        beforeEach(inject(function ($injector, $rootScope, $controller, TechnoService, ModuleService, Module, HesperidesTemplateModal, Template, Page, FileService, Platform) {
+            injected.Page = Page;
+            injected.Module = Module;
 
             $controller('ModuleController', {
                 $scope: $rootScope.$new(),
@@ -47,8 +48,34 @@ describe('Testing hesperides module', function () {
         }));
 
         it('should check the page title is set to "Module"', function () {
-            var title = pageService.title();
+            let { Page } = injected;
+            let title = Page.title();
             expect(title).toBe('Hesperides > Module');
+        });
+
+        it('can build a "Module" instance from a properties path', function () {
+            let { Module } = injected;
+            expect(Module.fromPropertiesPath('#ABC-1#module-a#1.0#WORKINGCOPY')).toEqual(jasmine.objectContaining({
+                name: 'module-a',
+                version: '1.0',
+                is_working_copy: true,
+                properties_path: '#ABC-1#module-a#1.0#WORKINGCOPY',
+                title: 'module-a, 1.0 (working copy)',
+                technos: [  ],
+                version_id: -1,
+            }));
+            expect(Module.fromPropertiesPath('#ABC#DEF#module-b#1.2.3#RELEASE')).toEqual(jasmine.objectContaining({
+                name: 'module-b',
+                version: '1.2.3',
+                is_working_copy: false,
+                properties_path: '#ABC#DEF#module-b#1.2.3#RELEASE',
+                title: 'module-b, 1.2.3',
+                technos: [  ],
+                version_id: -1,
+            }));
+            expect(() => Module.fromPropertiesPath('#module-b#1.0#WORKINGCOPY')).toThrow();
+            expect(() => Module.fromPropertiesPath('#ABC-1#module-b#1.0#DUMMY')).toThrow();
+            expect(() => Module.fromPropertiesPath('ABC-1#module-b#1.0#WORKINGCOPY')).toThrow();
         });
     });
 });

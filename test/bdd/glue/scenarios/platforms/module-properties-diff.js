@@ -1,6 +1,7 @@
 const api = require('../../helpers/api');
 const assert = require('../../helpers/assert');
 const get = require('../../helpers/get');
+const navigate = require('../../helpers/navigate');
 const send = require('../../helpers/send');
 const moment = require('moment');
 
@@ -50,7 +51,7 @@ When(/^I choose module "([^"]*)" to compare with the selected module$/, async fu
 
 Then(/^I get a new page with the module properties( stored values)? diff(?: between platform "([^"]*)" and platform "([^"]*)")?(?: between module "([^"]*)" and module "([^"]*)")?$/,
     /** @this CustomWorld */async function (storedValues, fromPlatformName, toPlatformName, fromModuleName, toModuleName) {
-        await get.newTab();
+        await navigate.toNewTab();
         const fromPlatformBuilder = fromPlatformName ? this.platformHistory.findPlatformBuilderByName(fromPlatformName) : this.platformBuilder;
         const toPlatformBuilder = toPlatformName ? this.platformHistory.findPlatformBuilderByName(toPlatformName) : this.platformBuilder;
         const fromDeployedModuleBuilder = fromModuleName ? this.platformBuilder.findDeployedModuleBuilderByName(fromModuleName) : this.deployedModuleBuilder;
@@ -62,12 +63,12 @@ Then(/^I get a new page with the module properties( stored values)? diff(?: betw
             toDeployedModuleBuilder.buildPropertiesPath(),
             storedValues);
         await assert.currentUrlEquals(expectedUrl);
-        await get.backToFirstTab();
+        await navigate.backToFirstTab();
     });
 
 Then('I get a new page with the module properties diff with timestamp', /** @this CustomWorld */ async function () {
-    await get.newTab();
+    await navigate.toNewTab();
     const expectedUrl = api.buildDiffUrl(this.platformBuilder, this.platformBuilder, this.deployedModuleBuilder.buildPropertiesPath(), false, selectedTimestamp);
     await assert.currentUrlEquals(expectedUrl);
-    await get.backToFirstTab();
+    await navigate.backToFirstTab();
 });
