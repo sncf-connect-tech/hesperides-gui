@@ -48,6 +48,8 @@
   "devDependencies": {
     "angular-mocks": "latest",
     "buildify": "latest",
+    "chai": "latest",
+    "chai-as-promised": "latest",
     "cucumber": "^4.2.1",
     "eslint": "latest",
     "eslint-config-strict": "latest",
@@ -58,6 +60,7 @@
     "grunt-connect-proxy": "latest",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-watch": "latest",
+    "http-server": "^0.12.1",
     "http-server-legacy": "latest",
     "jasmine-core": "latest",
     "karma": "latest",
@@ -70,14 +73,13 @@
     "protractor-cucumber-framework": "latest",
     "restling": "latest",
     "serve-static": "latest",
-    "webdriver-manager": "latest",
-    "chai": "latest",
-    "chai-as-promised": "latest"
+    "webdriver-manager": "latest"
   },
   "scripts": {
     "postinstall": "node bundler.js",
     "start": "grunt server",
     "lint": "eslint --fix src/app test",
+    "serve-doc": "http-server docs/ -o",
     "test": "karma start test/unit/karma.conf.js",
     "webdriver-start": "webdriver-manager update && webdriver-manager --verbose start",
     "bdd-tests": "protractor test/bdd/protractor-bdd.js"
