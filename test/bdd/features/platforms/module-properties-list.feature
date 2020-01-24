@@ -31,6 +31,24 @@ Feature: Filter properties and display them as a list
     And I click on the switch to display also but the deleted properties
     Then the property "property" is displayed
 
+  Scenario: Display dedicated icon for each properties type
+    Given an existing template with this content
+     """
+    {{ required-property | @required }}
+    {{ password-property | @password }}
+    {{ default-property | @default toto }}
+    {{ pattern-property | @pattern [0-9] }}
+    {{ global-property}}
+    """  
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+     | global-property | global-value |
+    When I open this platform
+    And I open the deployed module properties
+    And I click on the switch to display also the global properties
+    Then the properties are displayed with dedicated icons
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder

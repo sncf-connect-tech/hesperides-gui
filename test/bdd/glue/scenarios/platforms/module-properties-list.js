@@ -14,8 +14,25 @@ When('I display the deleted properties', async function () {
     await send.clickById('toggle-deleted-properties_switch');
 });
 
+When('I click on the switch to display also the global properties', async function () {
+    await send.clickById('toggle-global-properties_switch');
+});
+
 Then('only the required properties are displayed', async function () {
     await get.elementsByCss('textarea.property-value').then(assert.itemsAreRequired);
+});
+
+Then('the properties are displayed with dedicated icons', async function () {
+    const defaultElement = await get.elementById('simple-properties-list_key-property-input-default-property');
+    const passwordElement = await get.elementById('simple-properties-list_key-property-input-password-property');
+    const patternElement = await get.elementById('simple-properties-list_key-property-input-pattern-property');
+    const requiredElement = await get.elementById('simple-properties-list_key-property-input-required-property');
+    const globalElement = await get.elementById('simple-properties-list_key-property-input-global-property');
+    await assert.containsText(defaultElement, '1️⃣');
+    await assert.containsText(passwordElement, '🔑');
+    await assert.containsText(patternElement, '🤏');
+    await assert.containsText(requiredElement, '*');
+    await assert.containsText(globalElement, '🌍');
 });
 
 Then(/the property "([^"]+)" is( not)? displayed/, async function (propertyName, notDisplayed) {

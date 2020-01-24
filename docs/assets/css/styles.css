@@ -1175,6 +1175,10 @@ select {
   border: none;
   color: #fff !important;
 }
+
+.red-start {
+  color: red;
+}
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {
   .doc-content {
