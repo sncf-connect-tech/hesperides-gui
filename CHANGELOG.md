@@ -25,6 +25,13 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2020-01-24
+### Added
+
+- Restful URLs pointing to deployed modules properties - close #320. [Lucas Cimon]
+
+
+
 ## 2020-01-23
 ### Fixed
 
