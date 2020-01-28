@@ -161,8 +161,8 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                 };
 
                 /**
-     * Affiche la liste des propriétés associées à un module.
-     */
+                 * Affiche la liste des propriétés associées à un module.
+                 */
                 $scope.open_associated_properties_dialog = function () {
                     var modalScope = $scope.$new(true);
 
@@ -373,9 +373,6 @@ angular.module('hesperides.techno', [ 'hesperides.template', 'hesperides.propert
                     var url = `rest/technos?from_name=${ encodeURIComponent(from_name) }` +
                          `&from_version=${ encodeURIComponent(from_version) }` +
                          `&from_is_working_copy=${ is_from_workingcopy }`;
-                    // Backward-compatibility:
-                    url += `&from_package_name=${ encodeURIComponent(from_name) }` +
-                           `&from_package_version=${ encodeURIComponent(from_version) }`;
                     var postBody = { name: encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy: true };
                     return $hesperidesHttp.post(url, postBody).then(function (response) {
                         if (response.status === 201) {

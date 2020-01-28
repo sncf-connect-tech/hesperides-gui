@@ -144,9 +144,7 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
             /* This function is used to find technos not already chosen */
             $scope.search_technos = function (name) {
                 return TechnoService.with_name_like(name).then(function (technos) {
-                    return _.filter(technos, function (techno) {
-                        return !$scope.module.has_techno(techno);
-                    });
+                    return _.filter(technos, (techno) => !$scope.module.has_techno(techno));
                 });
             };
 
@@ -304,7 +302,7 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
                     }
                     return $http.put('rest/modules', module).then(function (response) {
                         $translate('module.workingCopy.event.updated').then(function (label) {
-                            notify({ classes: [ 'error' ], message: label });
+                            notify({ classes: [ 'success' ], message: label });
                         });
                         return new Module(response.data);
                     }, function (error) {
