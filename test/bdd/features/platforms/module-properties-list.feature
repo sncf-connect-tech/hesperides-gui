@@ -9,7 +9,7 @@ Feature: Filter properties and display them as a list
     Then only the required properties are displayed
 
   # Issue 350
-  Scenario: Properly display required properties when there are lots of properties 
+  Scenario: Properly display required properties when there are lots of properties
     Given an existing template with 20 properties and one required property
     And an existing module with this template
     And an existing platform with this module
@@ -28,7 +28,7 @@ Feature: Filter properties and display them as a list
     When I open this platform
     And I open the deployed module properties
     Then the property "property" is not displayed
-    And I click on the switch to display also but the deleted properties
+    And I click on the switch to also display the deleted properties
     Then the property "property" is displayed
 
 #  Scenario: Find the default value in the placeholder
