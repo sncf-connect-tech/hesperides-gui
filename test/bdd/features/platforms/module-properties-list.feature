@@ -31,7 +31,7 @@ Feature: Filter properties and display them as a list
     And I click on the switch to display also but the deleted properties
     Then the property "property" is displayed
 
-  Scenario: Display dedicated icon for each properties type
+  Scenario: Display a dedicated icon for each properties type
     Given an existing template with this content
      """
     {{ required-property | @required }}

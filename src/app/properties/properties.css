@@ -153,3 +153,8 @@ md-content.properties-container {
 #propertiesButtonsContainer {
     z-index: 1000 !important;
 }
+
+.pattern-icon{
+    color: #266f71;
+    font-weight: bold;
+  }

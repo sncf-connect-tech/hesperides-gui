@@ -74,10 +74,10 @@
                             <label id="simple-properties-list_key-property-input-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
                                     >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span>
-                                <span id="e2e-key-value-property-{{key_value_property.name}}" ng-if="key_value_property.pattern">🤏<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
-                                <span id="e2e-key-value-property-{{key_value_property.name}}" ng-if="key_value_property.defaultValue">1️⃣<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
-                                <span id="e2e-key-value-property-{{key_value_property.name}}" ng-if="key_value_property.password">🔑<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
-                                <span id="e2e-key-value-property-{{key_value_property.name}}" ng-if="key_value_property.valuedByAGlobal">🌍<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
+                                <span ng-if="key_value_property.pattern"><span class="pattern-icon">(.*)</span><md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
+                                <span ng-if="key_value_property.defaultValue">🛡️<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
+                                <span ng-if="key_value_property.password">🔒<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
+                                <span ng-if="key_value_property.valuedByAGlobal">🌍<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
                             </label>
                         </div>
                     </div>

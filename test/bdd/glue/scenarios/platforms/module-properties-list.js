@@ -28,9 +28,9 @@ Then('the properties are displayed with dedicated icons', async function () {
     const patternElement = await get.elementById('simple-properties-list_key-property-input-pattern-property');
     const requiredElement = await get.elementById('simple-properties-list_key-property-input-required-property');
     const globalElement = await get.elementById('simple-properties-list_key-property-input-global-property');
-    await assert.containsText(defaultElement, '1️⃣');
-    await assert.containsText(passwordElement, '🔑');
-    await assert.containsText(patternElement, '🤏');
+    await assert.containsText(defaultElement, '🛡️');
+    await assert.containsText(passwordElement, '🔒');
+    await assert.containsText(patternElement, '(.*)');
     await assert.containsText(requiredElement, '*');
     await assert.containsText(globalElement, '🌍');
 });

@@ -1176,13 +1176,20 @@ select {
   color: #fff !important;
 }
 
-.red-start {
+.red-star {
   color: red;
+  font-weight: bold;
+}
+
+.pattern-icon{
+  color: #266f71;
+  font-weight: bold;
 }
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {
   .doc-content {
     margin-left: 0;
+    font-weight: bold;
   }
   .jumbotron {
     padding: 30px 15px;
