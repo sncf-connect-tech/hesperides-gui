@@ -21,11 +21,15 @@ exports.config = {
     frameworkPath: require.resolve('protractor-cucumber-framework'),
 
     specs: [ 'features/**/*.feature' ],
-    cucumberOpts: {
+    cucumberOpts: { // Doc: https://github.com/cucumber/cucumber-js/blob/master/docs/cli.md
+        // fail-fast: true,
         require: [
             'glue/*.js',
             'glue/scenarios/**/*.js',
         ],
+        // retry: 1,
+        strict: true, // fail if there are pending or undefined steps
+        // tags: '@wip',
     },
     onPrepare() {
         const { Given, Then, When } = require('cucumber');
