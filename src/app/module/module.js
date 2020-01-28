@@ -302,7 +302,7 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
                     }
                     return $http.put('rest/modules', module).then(function (response) {
                         $translate('module.workingCopy.event.updated').then(function (label) {
-                            notify({ classes: [ 'error' ], message: label });
+                            notify({ classes: [ 'success' ], message: label });
                         });
                         return new Module(response.data);
                     }, function (error) {

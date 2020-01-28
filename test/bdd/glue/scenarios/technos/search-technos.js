@@ -1,7 +1,7 @@
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 
-When('I search and select this techno', /** @this CustomWorld */ async function () {
+When('I search and select this techno in the menu', /** @this CustomWorld */ async function () {
     await send.searchAndSelectFirstByCss('#e2e-navbar-techno-autocomplete input', this.technoBuilder.name);
 });
 

@@ -62,7 +62,7 @@
         <md-input-container ng-if="type === 'search'" ng-show="show_input">
             <label></label>
             <md-autocomplete
-                    id="nameInput"
+                    id="{{ idPrefix }}-search"
                     ng-model="input.inputText"
                     md-no-cache="true"
                     md-selected-item="ctrl.selectedItem"
