@@ -1175,6 +1175,16 @@ select {
   border: none;
   color: #fff !important;
 }
+
+.red-star {
+  color: red;
+  font-weight: bold;
+}
+
+.pattern-icon{
+  color: #266f71;
+  font-weight: bold;
+}
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {
   .doc-content {
