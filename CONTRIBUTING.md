@@ -62,10 +62,38 @@ Vous en aurez besoin pour lancer le [_backend_](https://github.com/voyages-sncf-
 
     docker run --rm -p 8080:8080 -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides
 
+### Hooks de pre-commit
+
+## pre-commit hooks
+
+Afin d'effectuer certaines validations automatisées à chaque commit,
+ce projet emploie des _hooks_ `git` de `pre-commit`, via [l'outil Python du même nom](http://pre-commit.com).
+
+Les _hooks_ configurés sont listés dans le fichier de configuration [.pre-commit-config.yaml](.pre-commit-config.yaml),
+et sont exécutés via [Travis CI](https://travis-ci.org/voyages-sncf-technologies/vboard).
+Aucune PR ne sera mergée si ces _hooks_ remontent des erreurs.
+
+Dans la mesure du possible, installez ces _hooks_ sur votre poste de développement.
+Si vous ne pouvez pas ou ne voulez pas prendre le temps de le faire, vous devrez vous baser sur les logs de Travis CI
+pour débugger d'eventuelles erreurs qu'ils détecteraient.
+
+Pour les installer sur votre poste de développement, vous aurez besoin de Python,
+et du paquet `pre-commit` qui peut être installé avec `pip`.
+Pour configurer `git` afin qu'il exécute les _hooks_ à chaque commit, lancez la commande suivante :
+
+    pre-commit install
+
+Si besoin, vous pouvez lancer manuellement les _hooks_ :
+
+    pre-commit run $hook_name             # exécute un unique hook sur tous les fichiers modifiés
+    pre-commit run --files $file1 $file2  # exécute tous les hooks sur les fichiers spécifiés
+    pre-commit run --all-files            # exécute tous les hooks sur tous les fichiers
+
 
 ## Intégration continue
 [Travis CI](https://travis-ci.org/voyages-sncf-technologies/hesperides-gui) est configuré via le fichier `.travis.yml` pour exécuter les validations suivantes sur chaque _pull request_:
 - analyse statique du code avec `eslint`
+- exécutions de tous les _hooks_ de `pre-commit`
 - tests unitaires avec Karma
 - tests _end to end_ avec Protractor
 

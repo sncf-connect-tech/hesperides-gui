@@ -11,7 +11,7 @@
 }
 
 .Navbar input:focus{
-	outline-width: 0;
+    outline-width: 0;
 }
 
 .menu, .menu-title, .menu-header {

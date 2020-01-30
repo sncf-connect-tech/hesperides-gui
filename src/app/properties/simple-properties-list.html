@@ -39,7 +39,7 @@
         <toggle-global-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties>
         <md-switch id="e2e-properties-required-only-switch-button" ng-model="onlyRequiredPropertiesSwitchChanged" class="md-primary md-block" aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
             {{'properties.onlyRequiredProperties.switch' | translate : {numberOfRequired:getNumberOfrequiredProperties(properties)} }}
-        </md-switch>    
+        </md-switch>
     </div>
     <div layout="row">
         <div flex="30">
@@ -91,7 +91,7 @@
                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                   placeholder="{{key_value_property.tooltip}}"
                                   ng-pattern="key_value_property.pattern"
-                                  ng-required="key_value_property.required"                                  
+                                  ng-required="key_value_property.required"
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>

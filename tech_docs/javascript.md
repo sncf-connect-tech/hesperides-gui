@@ -6,6 +6,7 @@ Dans la mesure du possible, en plus des conventions imposées par `eslint`, on e
 
 - nommage en `camelCase`
 - on préfère `const` & `let` à `var`
+- on préfère suffixer une variable par `Count` que la préfixer par `nb`
 - on préfère les fonctions natives `.forEach` / `.map` / `.filter` à leurs équivalent Lodash
 - dans les expressions booléens type `if`, on évite les appels inutiles à `_.isUndefined`
 et les comparaisons avec `false` / `null` ou `''` quand il suffit de savoir la valeur est "falsy"
