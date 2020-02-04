@@ -76,6 +76,8 @@ angular.module('hesperides.diff', [])
             this.selected = false;
         };
 
+        console.log('$scope : ', $scope);
+
         $scope.application_name = $routeParams.application;
         $scope.platform_name = $routeParams.platform;
 
@@ -111,6 +113,7 @@ angular.module('hesperides.diff', [])
 
         $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
+        $scope.toggleDeletedProperty = false;
 
         $scope.toggleCharsDiff = true;
 
@@ -119,6 +122,7 @@ angular.module('hesperides.diff', [])
          */
         $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
             $scope.diff_containers.filter(function (container) {
+                console.log('container : ', container);
                 // If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
                 if (propertiesKeyFilter) {
                     try {
@@ -143,6 +147,10 @@ angular.module('hesperides.diff', [])
                 // Finally, we change the selection of the selected containers
                 container.selected = selected;
             });
+        };
+
+        $scope.toggleDeletedProperties = function () {
+
         };
 
         $scope.previewChanges = function () {

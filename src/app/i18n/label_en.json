@@ -243,6 +243,7 @@
   "properties.compare.title.part1": "Diff between",
   "properties.compare.previewChanges.part1": "Previewing changes",
   "properties.compare.previewChanges.part2": "does not save them",
+  "properties.compare.hideDeletedProperties": "Hide deleted properties",
   "properties.compare.saveChanges.part1": "Saving",
   "properties.compare.saveChanges.part2": "changes (you have to preview them before saving them)",
   "properties.compare.togglePropertyDetails": "Detailed display",

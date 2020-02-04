@@ -39,6 +39,9 @@
         <md-tooltip md-direction="top">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
         <i class="fa fa-question-circle"></i>
     </md-switch>
+    <md-switch class="md-primary diff-toggleDeletedProperty" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
+        {{ 'properties.compare.hideDeletedProperties' | translate }}
+    </md-switch>
 </div>
 
 <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
@@ -58,6 +61,10 @@
         <div flex>
             <h3>{{ 'properties.compare.values.onlyOn' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span>
                 ({{(diff_containers | filter:{'status':0}).length}})</h3>
+                <md-switch class="md-primary diff-toggleDeletedProperty" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
+                    {{ 'properties.compare.hideDeletedProperties' | translate }}
+                </md-switch>
+
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle0">
@@ -501,5 +508,8 @@
         {{ 'properties.compare.togglePropertyDetails' | translate }}
         <md-tooltip md-direction="top">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
         <i class="fa fa-question-circle"></i>
+    </md-switch>
+    <md-switch class="md-primary diff-toggleDeletedProperty" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
+        {{ 'properties.compare.hideDeletedProperties' | translate }}
     </md-switch>
 </div>
