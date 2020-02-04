@@ -1,20 +1,21 @@
--   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.9.1
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
     hooks:
     -   id: check-merge-conflict
     -   id: trailing-whitespace
-        args:
-        - --no-markdown-linebreak-ext
--   repo: git://github.com/Lucas-C/pre-commit-hooks
-    sha: v1.0.1
+        exclude: ^docs/assets/|^src/app/fonts/
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.7
     hooks:
     -   id: remove-crlf
-        exclude: npp/.*\.xml
     -   id: remove-tabs
--   repo: https://github.com/Lucas-C/pre-commit-hooks-java
-    sha: v1.3.5
+        exclude: ^docs/assets/
+-   repo: local
     hooks:
-    -   id: validate-html
-        files: ^docs/[^/]+\.html$
-        args:
-        - "--ignore=An \"img\" element must have an \"alt\" attribute"
+    -   id: forbid-variables-starting-with-nb
+        name: Forbid nb-prefixed variables, use a Count suffix instead, cf. tech_docs/javascript.md
+        language: pygrep
+        entry: " nb[A-Z]"
+        files: \.js$
+        exclude: ^docs/assets/

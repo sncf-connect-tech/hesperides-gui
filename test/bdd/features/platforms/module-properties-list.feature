@@ -39,7 +39,7 @@ Feature: Filter properties and display them as a list
     {{ default-property | @default toto }}
     {{ pattern-property | @pattern [0-9] }}
     {{ global-property}}
-    """  
+    """
     And an existing module with this template
     And an existing platform with this module
     And the platform has these global properties
