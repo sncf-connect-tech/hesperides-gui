@@ -62,6 +62,13 @@ angular.module('hesperides.diff', [])
         },
     ])
 
+    .filter('hideDeletedProperties', function () {
+        return function (items, scope) {
+            return _.filter(items, (item) => (!scope.toggleDeletedProperty &&
+                _.filter(scope.moduleModel, (model) => (model.name === item.property_name)).length === 0));
+        };
+    })
+
     .controller('DiffController', function ($filter, $scope, $routeParams, $timeout, $route, $q, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform, Properties, notify) {
         var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
             // 0 -> only on to_modify
@@ -76,10 +83,9 @@ angular.module('hesperides.diff', [])
             this.selected = false;
         };
 
-        console.log('$scope : ', $scope);
-
         $scope.application_name = $routeParams.application;
         $scope.platform_name = $routeParams.platform;
+        $scope.propertiesPath = $routeParams.properties_path;
 
         $scope.compare_application = $routeParams.compare_application;
         $scope.compare_platform = $routeParams.compare_platform;
@@ -88,6 +94,8 @@ angular.module('hesperides.diff', [])
         $scope.timestamp = $routeParams.timestamp;
 
         $scope.show_only_modified = false;
+        $scope.toggleDeletedProperty = false;
+        $scope.isHideDeletedProperties = false;
 
         $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
         $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
@@ -113,7 +121,6 @@ angular.module('hesperides.diff', [])
 
         $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
-        $scope.toggleDeletedProperty = false;
 
         $scope.toggleCharsDiff = true;
 
@@ -122,7 +129,6 @@ angular.module('hesperides.diff', [])
          */
         $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
             $scope.diff_containers.filter(function (container) {
-                console.log('container : ', container);
                 // If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
                 if (propertiesKeyFilter) {
                     try {
@@ -147,10 +153,6 @@ angular.module('hesperides.diff', [])
                 // Finally, we change the selection of the selected containers
                 container.selected = selected;
             });
-        };
-
-        $scope.toggleDeletedProperties = function () {
-
         };
 
         $scope.previewChanges = function () {
@@ -225,7 +227,6 @@ angular.module('hesperides.diff', [])
 
         $scope.loadingDiff = true;
         ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $scope.compareStoredValues, $routeParams.timestamp).then((diff) => {
-            console.log('/diff response:', diff);
             const diffContainers = [];
             diff.common.forEach((commonProperty) => {
                 diffContainers.push(new DiffContainer(1, commonProperty.name, { value: commonProperty.left }, { value: commonProperty.right }));
@@ -242,6 +243,12 @@ angular.module('hesperides.diff', [])
             $scope.diff_containers = diffContainers;
             $scope.loadingDiff = false;
         });
+
+        if ($scope.module && $scope.module.name) {
+            ModuleService.get_model($scope.module).then((moduleModel) => {
+                $scope.moduleModel = moduleModel;
+            });
+        }
     })
 
     .controller('PropertiesDiffWizardController', function ($scope, $window, $mdDialog, ApplicationService, PlatformColorService) {
