@@ -244,6 +244,7 @@
   "properties.compare.previewChanges.part1": "Prévisualiser les changements",
   "properties.compare.previewChanges.part2": "ne sauvegarde pas",
   "properties.compare.hideDeletedProperties": "Cacher les propriétés supprimés",
+  "properties.compare.hideDeletedProperties.tooltip": "Propriétés valorisées au niveau platform mais supprimées dans le model de template",
   "properties.compare.saveChanges.part1": "Sauvegarder",
   "properties.compare.saveChanges.part2": "les changements (il faut avoir prévisualisé avant)",
   "properties.compare.toggleCharsDiff": "Surligner les différences",

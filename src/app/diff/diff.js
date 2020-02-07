@@ -64,8 +64,11 @@ angular.module('hesperides.diff', [])
 
     .filter('hideDeletedProperties', function () {
         return function (items, scope) {
-            return _.filter(items, (item) => (!scope.toggleDeletedProperty &&
-                _.filter(scope.moduleModel, (model) => (model.name === item.property_name)).length === 0));
+            if (scope.toggleDeletedProperty && items && items.length > 0) {
+                return _.filter(items, (item) => (_.filter(scope.moduleModel.key_value_properties,
+                    (keyValue) => (keyValue.name === item.property_name)).length > 0));
+            }
+            return items;
         };
     })
 
@@ -85,7 +88,6 @@ angular.module('hesperides.diff', [])
 
         $scope.application_name = $routeParams.application;
         $scope.platform_name = $routeParams.platform;
-        $scope.propertiesPath = $routeParams.properties_path;
 
         $scope.compare_application = $routeParams.compare_application;
         $scope.compare_platform = $routeParams.compare_platform;
@@ -95,7 +97,6 @@ angular.module('hesperides.diff', [])
 
         $scope.show_only_modified = false;
         $scope.toggleDeletedProperty = false;
-        $scope.isHideDeletedProperties = false;
 
         $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
         $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
@@ -128,7 +129,7 @@ angular.module('hesperides.diff', [])
          * Select the containers that corresponds to the filters (ex: status = 2).
          */
         $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
-            $scope.diff_containers.filter(function (container) {
+            $scope.diffContainers.filter(function (container) {
                 // If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
                 if (propertiesKeyFilter) {
                     try {
@@ -164,39 +165,39 @@ angular.module('hesperides.diff', [])
                  if status == 2 : this is when we want to apply modification from source platform to destination platform
                  if status == 3 : same behavior as status == 2
              */
-            $scope.diff_containers.filter((diff_container) => diff_container.selected)
-                .forEach((diff_container) => {
-                    switch (diff_container.status) {
+            $scope.diffContainers.filter((diffContainer) => diffContainer.selected)
+                .forEach((diffContainer) => {
+                    switch (diffContainer.status) {
                     case 0: // only left
                         break;
                     case 1: // common
                         // Revert modifs
-                        diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
-                        delete diff_container.property_to_modify.old_value;
+                        diffContainer.property_to_modify.value = diffContainer.property_to_modify.old_value;
+                        delete diffContainer.property_to_modify.old_value;
 
                         // Change status and reset markers. Keep selected for user experience
                         // Status depends on old_value, if it was empty status is 3 otherwise it is 2
-                        diff_container.status = diff_container.property_to_modify.value ? 2 : 3;
-                        diff_container.modified = false;
+                        diffContainer.status = diffContainer.property_to_modify.value ? 2 : 3;
+                        diffContainer.modified = false;
                         break;
                     case 2: // differing
                     case 3: // only right
                         // Store old value and apply modifs
-                        diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                        diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
+                        diffContainer.property_to_modify.old_value = diffContainer.property_to_modify.value;
+                        diffContainer.property_to_modify.value = diffContainer.property_to_compare_to.value;
 
                         // Change status and reset markers. Keep selected for user experience
-                        diff_container.modified = true;
-                        diff_container.status = 1;
+                        diffContainer.modified = true;
+                        diffContainer.status = 1;
                         break;
                     default:
-                        throw new Error(`Diff container with invalid status -> ${ diff_container.status }. It will be ignored`);
+                        throw new Error(`Diff container with invalid status -> ${ diffContainer.status }. It will be ignored`);
                     }
                 });
         };
 
         $scope.saveChanges = function () { // Is some diff item selected ?
-            const hasSomeDiffSelected = _.some($scope.diff_containers, { selected: true });
+            const hasSomeDiffSelected = _.some($scope.diffContainers, { selected: true });
             if (!hasSomeDiffSelected) {
                 $translate('properties-not-changed.message').then(function (label) {
                     notify({ classes: [ 'error' ], message: label });
@@ -205,9 +206,9 @@ angular.module('hesperides.diff', [])
             }
 
             // Get all the properties modified
-            const keyValueProperties = $scope.diff_containers
-                .filter((diff_container) => diff_container.property_to_modify.value && !_.isNull(diff_container.property_to_modify.value.storedValue))
-                .map((diff_container) => ({ name: diff_container.property_name, value: diff_container.property_to_modify.value.storedValue }));
+            const keyValueProperties = $scope.diffContainers
+                .filter((diffContainer) => diffContainer.property_to_modify.value && !_.isNull(diffContainer.property_to_modify.value.storedValue))
+                .map((diffContainer) => ({ name: diffContainer.property_name, value: diffContainer.property_to_modify.value.storedValue }));
 
             // Save the properties
             HesperidesModalFactory.displaySavePropertiesModal($scope, $routeParams.application, (comment) =>
@@ -240,7 +241,7 @@ angular.module('hesperides.diff', [])
             diff.differing.forEach((differingProperty) => {
                 diffContainers.push(new DiffContainer(2, differingProperty.name, { value: differingProperty.left }, { value: differingProperty.right }));
             });
-            $scope.diff_containers = diffContainers;
+            $scope.diffContainers = diffContainers;
             $scope.loadingDiff = false;
         });
 
