@@ -42,7 +42,7 @@ Feature: Module properties diff
     And I choose module "b" to compare with the selected module
     And I launch the diff of module properties
     Then I get a new page with the module properties diff between module "a" and module "b"
-  
+
   Scenario: Option to hide the deleted properties in the diff
     Given an existing template with this content
     """
@@ -63,4 +63,3 @@ Feature: Module properties diff
     And I launch the diff of module properties
     And I click on the switch to hide deleted properties
     Then The deleted properties are successfull hide
-    
