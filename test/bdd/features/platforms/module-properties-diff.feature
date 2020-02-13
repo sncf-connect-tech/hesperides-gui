@@ -62,4 +62,4 @@ Feature: Module properties diff
     And I click on the NEXT button
     And I launch the diff of module properties
     And I click on the switch to hide deleted properties
-    Then The deleted properties are successfull hide
+    Then The deleted properties are successfully hidden

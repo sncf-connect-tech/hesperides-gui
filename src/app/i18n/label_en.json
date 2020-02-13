@@ -245,6 +245,7 @@
   "properties.compare.previewChanges.part2": "does not save them",
   "properties.compare.hideDeletedProperties": "Hide deleted properties",
   "properties.compare.hideDeletedProperties.tooltip": "Properties valued on platform but deleted in the template model",
+  "properties.compare.hideDeletedProperties.disabled.tooltip": "There are no properties to hide",
   "properties.compare.saveChanges.part1": "Saving",
   "properties.compare.saveChanges.part2": "changes (you have to preview them before saving them)",
   "properties.compare.togglePropertyDetails": "Detailed display",

@@ -54,7 +54,7 @@ When('I click on the switch to hide deleted properties', async function () {
     await send.clickById('e2e-diff-toggle-deleted-property-top');
 });
 
-Then('The deleted properties are successfull hide', async function () {
+Then('The deleted properties are successfully hidden', async function () {
     await assert.isNotPresentByCss('.e2e-diff-property-name');
 });
 
