@@ -18,7 +18,7 @@ jobs:
 
     - name: pre-commit hooks
       stage: test
-      before_install: pip install --upgrade six
+      before_install: pip install --user --upgrade six
       install: pip install --user pre-commit
       script: pre-commit run --all-files
 
