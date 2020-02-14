@@ -37,7 +37,18 @@
         <toggle-deleted-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
         <toggle-unspecified-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties>
         <toggle-global-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties>
-        <md-switch id="e2e-properties-required-only-switch-button" ng-model="onlyRequiredPropertiesSwitchChanged" class="md-primary md-block" aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}">
+        <md-switch id="e2e-hide-global-properties-switch-button"
+                   ng-model="hiddenGlobalProperties"
+                   class="md-primary md-block"
+                   aria-label="{{'properties.hide.globalProperties.switch' | translate : {globalPropertiesCount:getTheNumberOfGlobalProperties(properties)} }}"
+                   ng-disabled="getTheNumberOfGlobalProperties(properties)<=0">
+            {{'properties.hide.globalProperties.switch' | translate : {globalPropertiesCount:getTheNumberOfGlobalProperties(properties)} }}
+        </md-switch>
+        <md-switch
+                id="e2e-properties-required-only-switch-button"
+                ng-model="onlyRequiredPropertiesSwitchChanged" class="md-primary md-block"
+                aria-label="{{'properties.onlyRequiredProperties.switch' | translate}}"
+                ng-disabled="getNumberOfrequiredProperties(properties) <=0">
             {{'properties.onlyRequiredProperties.switch' | translate : {numberOfRequired:getNumberOfrequiredProperties(properties)} }}
         </md-switch>
     </div>
@@ -65,6 +76,7 @@
                     | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter}
                     | includeDeletedProperties:displayDeletedProperties
                     | displayOnlyRequiredProperties:onlyRequiredPropertiesSwitchChanged
+                    | hideGlobalProperties:hiddenGlobalProperties
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"

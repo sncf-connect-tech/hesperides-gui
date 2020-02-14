@@ -1202,6 +1202,14 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         }
                         return count;
                     };
+
+                    scope.getTheNumberOfGlobalProperties = function (properties) {
+                        let count = 0;
+                        if(properties) {
+                            count = properties.filter((property) => property.valuedByAGlobal).length;
+                        }
+                        return count;
+                    };
                 },
             };
         },
@@ -1882,15 +1890,27 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     })
 
     /**
-     * Display only the not globals properties
+     * Display only the globals properties
      */
     .filter('displayGlobalProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
-                return display || (!display && !item.valuedByAGlobal);
+                return !display || (display && item.valuedByAGlobal);
             });
         };
     })
+
+    /**
+     * Filter the globals properties
+     */
+    .filter('hideGlobalProperties', function () {
+        return function (items, display) {
+            return _.filter(items, function (item) {
+                return !display || (display && !item.valuedByAGlobal);
+            });
+        };
+    })
+
 
     /**
      * This is used to filter the 'hesperides predefined properties'.
