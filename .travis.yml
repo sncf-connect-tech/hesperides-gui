@@ -5,6 +5,8 @@ matrix:
     - language: python
       python: 3.6
 
+install: pip install --user pre-commit
+
 env:
   global:
     - secure: YQpgwAZBTQNcqEPz1jqDyFHi5SIn3OEx/Rmob8/g0FWQFxMs/hW4di4AVmKfYVgVxOSQS5NjmvvXZfBSO9NrL9FHlVlwDo7HBs2qPxakJHQhhejnEeUHAQUAcmymOkGpH10UVI3xYBBjfS2DywN6TQtaQGOke59II/APsM2l3fanC4SQOqq3z44xJ5B74NOPEH3r/bu0+BBCNLR/00aAdzJjshNeXvTsx0zszPQ3cOt2guBqsTNHGkZiVg4135pqSfTn5W60109EbzgfxgG0Wbxnll81M79CXLc/OZcGa0TJbQo3QqklscY+MJ9BKdXX/mgS4kNjZcYXgXd7sLwxdRWZRqsLIa2mEOotJAKKUThfD4Df0HMrpRdrRqaCig+PvdpFXeeTT9ITNiaBwN9hQD35tYju9JFUJ6qLgdjj5/PLMge6NmfoVSp1Q8dzSfZJsbPt4suR8X39rrwSMdw5lbhk4jsSkWD90eZjhzKc+dcLulxxjMFZGrMueR34tGYG17a9U/s9qNSxQ/K0bDRr8z2Jxt/dAsL/1kOKEvyM1ewXhMV9YZ3k1VsgUOsiDRRhJZ7RoUCJNLAkrI0BgrYzblmCofVOigAM8GB5rrSAPHVaPy7FyrV8M0yfHQ1Vw7URFKDHDEb24VZLsOipqUgCQqO2doTVF5wL+c75euQzz68= # DOCKER_USER
@@ -22,7 +24,6 @@ jobs:
 
     - name: pre-commit hooks
       stage: test
-      install: pip3 install --user pre-commit
       script: pre-commit run --all-files
 
     - name: JS Linter
