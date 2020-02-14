@@ -1,5 +1,9 @@
-language: node_js
-node_js: 12
+matrix:
+  include:
+    - language: node_js
+      node_js: 12
+    - language: python
+      python: 3.6
 
 env:
   global:
@@ -18,7 +22,7 @@ jobs:
 
     - name: pre-commit hooks
       stage: test
-      install: pip install --user pre-commit
+      install: pip3 install --user pre-commit
       script: pre-commit run --all-files
 
     - name: JS Linter
