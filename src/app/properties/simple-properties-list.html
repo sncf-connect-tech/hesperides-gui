@@ -100,7 +100,7 @@
                                   ng-readonly="!key_value_property.inModel"
                                   ng-focus="focusthis = true"
                                   ng-blur="focusthis = false"
-                                  ng-class="{'text-stroke':(!key_value_property.inModel || key_value_property.valuedByAGlobal), 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                                  ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                   placeholder="{{key_value_property.tooltip}}"
                                   ng-pattern="key_value_property.pattern"
                                   ng-required="key_value_property.required"
