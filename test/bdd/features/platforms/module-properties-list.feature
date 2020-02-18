@@ -62,6 +62,7 @@ Feature: Filter properties and display them as a list
     And I open the deployed module properties
     And I click on the switch to display only the global properties
     Then the property "global-property" is displayed
+    And the property "simple-property" is not displayed
 
   Scenario: Hide the global properties
     Given an existing template with this content
@@ -77,6 +78,7 @@ Feature: Filter properties and display them as a list
     And I open the deployed module properties
     And I click on the switch to hide the global properties
     Then the property "global-property" is not displayed
+    And the property "simple-property" is displayed
 
 #  Scenario: Find the default value in the placeholder
 

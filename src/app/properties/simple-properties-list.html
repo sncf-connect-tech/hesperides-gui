@@ -36,13 +36,13 @@
         <toggle-sort-properties sort-order="order" class="margin-right-2pc"></toggle-sort-properties>
         <toggle-deleted-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
         <toggle-unspecified-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties>
-        <toggle-global-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayGlobal"></toggle-global-properties>
+        <toggle-global-properties class="margin-right-2pc" key-value-properties="properties" toggle="displayGlobal" disable="globalPropertiesHidden"></toggle-global-properties>
         <md-switch id="e2e-hide-global-properties-switch-button"
-                   ng-model="hiddenGlobalProperties"
+                   ng-model="globalPropertiesHidden"
                    class="md-primary md-block"
-                   aria-label="{{'properties.hide.globalProperties.switch' | translate : {globalPropertiesCount:getTheNumberOfGlobalProperties(properties)} }}"
-                   ng-disabled="getTheNumberOfGlobalProperties(properties)<=0">
-            {{'properties.hide.globalProperties.switch' | translate : {globalPropertiesCount:getTheNumberOfGlobalProperties(properties)} }}
+                   aria-label="{{'properties.hide.globalProperties.switch' | translate : {globalPropertiesCount:getGlobalPropertiesCount(properties)} }}"
+                   ng-disabled="displayGlobal || getGlobalPropertiesCount(properties)<=0">
+            {{'properties.hide.globalProperties.switch' | translate : {globalPropertiesCount:getGlobalPropertiesCount(properties)} }}
         </md-switch>
         <md-switch
                 id="e2e-properties-required-only-switch-button"
@@ -71,12 +71,12 @@
         <md-virtual-repeat-container id="vertical-container" class="height-300px">
             <div md-virtual-repeat="key_value_property in properties
                     | hideHesperidesPredefinedProperties
-                    | displayGlobalProperties:displayGlobal
+                    | displayOnlyGlobalProperties:displayGlobal
                     | displayUnspecifiedProperties:displayUnspecified
                     | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter}
                     | includeDeletedProperties:displayDeletedProperties
                     | displayOnlyRequiredProperties:onlyRequiredPropertiesSwitchChanged
-                    | hideGlobalProperties:hiddenGlobalProperties
+                    | hideGlobalProperties:globalPropertiesHidden
                     | orderBy:'name':order" class="repeated-item" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"

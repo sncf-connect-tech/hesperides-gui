@@ -1203,7 +1203,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         return count;
                     };
 
-                    scope.getTheNumberOfGlobalProperties = function (properties) {
+                    scope.getGlobalPropertiesCount = function (properties) {
                         let count = 0;
                         if(properties) {
                             count = properties.filter((property) => property.valuedByAGlobal).length;
@@ -1845,10 +1845,11 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             scope: {
                 keyValueProperties: '=',
                 toggle: '=',
+                disable: '='
             },
             template: '<md-switch id="toggle-global-properties_switch" class="md-primary md-block" ' +
                 'ng-model="toggle"' +
-                'ng-disabled="(getNumberOfGlobalProperties(keyValueProperties) <= 0)" ' +
+                'ng-disabled="(getNumberOfGlobalProperties(keyValueProperties) <= 0) || disable" ' +
                 'aria-label="{{ \'properties.globalPropertiesValues.switch\' | translate }}">' +
                 '{{ \'properties.globalPropertiesValues.switch\' | translate }} ({{ getNumberOfGlobalProperties(keyValueProperties) }})' +
                 '</md-switch>',
@@ -1859,7 +1860,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                      */
                     $scope.getNumberOfGlobalProperties = function (tab) {
                         var count = 0;
-                        tab = $filter('displayGlobalProperties')(tab, true);
+                        tab = $filter('displayOnlyGlobalProperties')(tab, true);
                         if (tab) {
                             _.each(tab, function (item) {
                                 if (item.valuedByAGlobal) {
@@ -1892,7 +1893,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
     /**
      * Display only the globals properties
      */
-    .filter('displayGlobalProperties', function () {
+    .filter('displayOnlyGlobalProperties', function () {
         return function (items, display) {
             return _.filter(items, function (item) {
                 return !display || (display && item.valuedByAGlobal);
