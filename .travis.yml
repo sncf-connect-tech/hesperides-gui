@@ -18,6 +18,7 @@ jobs:
 
     - name: pre-commit hooks
       stage: test
+      # Ce work-around est mis pour corriger une issue du type https://github.com/pypa/virtualenv/issues/1551#issuecomment-584284214 sur travis.
       before_install: pip install --user --upgrade six
       install: pip install --user pre-commit
       script: pre-commit run --all-files
