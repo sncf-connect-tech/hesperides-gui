@@ -1206,7 +1206,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     scope.getGlobalPropertiesCount = function (properties) {
                         let count = 0;
                         // ce test est nécessaire car à l'initialisation de la page platform.global_properties est falsy
-                        if(properties) {
+                        if (properties) {
                             count = properties.filter((property) => property.valuedByAGlobal).length;
                         }
                         return count;
@@ -1846,7 +1846,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             scope: {
                 keyValueProperties: '=',
                 toggle: '=',
-                disabled: '='
+                disabled: '=',
             },
             template: '<md-switch id="toggle-global-properties_switch" class="md-primary md-block" ' +
                 'ng-model="toggle"' +

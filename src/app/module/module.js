@@ -252,12 +252,12 @@ angular.module('hesperides.module', [ 'hesperides.application' ])
 
             // Class methods:
             Module.fromPropertiesPath = function (propertiesPath) {
-                let pathFragments = propertiesPath.split('#');
-                let name = pathFragments[pathFragments.length - 3];
-                let version = pathFragments[pathFragments.length - 2];
-                let moduleType = pathFragments[pathFragments.length - 1];
-                if (pathFragments[0] !== '' || pathFragments.length < 5 || !['RELEASE', 'WORKINGCOPY'].includes(moduleType)) {
-                    throw new Error(`Invalid propertiesPath provided: ${propertiesPath}`);
+                const pathFragments = propertiesPath.split('#');
+                const name = pathFragments[pathFragments.length - 3];
+                const version = pathFragments[pathFragments.length - 2];
+                const moduleType = pathFragments[pathFragments.length - 1];
+                if (pathFragments[0] !== '' || pathFragments.length < 5 || ![ 'RELEASE', 'WORKINGCOPY' ].includes(moduleType)) {
+                    throw new Error(`Invalid propertiesPath provided: ${ propertiesPath }`);
                 }
                 return new Module({
                     name, version,

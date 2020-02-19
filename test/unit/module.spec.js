@@ -24,7 +24,7 @@ describe('Testing hesperides module', function () {
     beforeEach(module('hesperides.module'));
 
     describe('Testing the ModuleController', function () {
-        let injected = {};
+        const injected = {};
 
         beforeEach(inject(function ($injector, $rootScope, $controller, TechnoService, ModuleService, Module, HesperidesTemplateModal, Template, Page, FileService, Platform) {
             injected.Page = Page;
@@ -48,20 +48,20 @@ describe('Testing hesperides module', function () {
         }));
 
         it('should check the page title is set to "Module"', function () {
-            let { Page } = injected;
-            let title = Page.title();
+            const { Page } = injected;
+            const title = Page.title();
             expect(title).toBe('Hesperides > Module');
         });
 
         it('can build a "Module" instance from a properties path', function () {
-            let { Module } = injected;
+            const { Module } = injected;
             expect(Module.fromPropertiesPath('#ABC-1#module-a#1.0#WORKINGCOPY')).toEqual(jasmine.objectContaining({
                 name: 'module-a',
                 version: '1.0',
                 is_working_copy: true,
                 properties_path: '#ABC-1#module-a#1.0#WORKINGCOPY',
                 title: 'module-a, 1.0 (working copy)',
-                technos: [  ],
+                technos: [ ],
                 version_id: -1,
             }));
             expect(Module.fromPropertiesPath('#ABC#DEF#module-b#1.2.3#RELEASE')).toEqual(jasmine.objectContaining({
@@ -70,7 +70,7 @@ describe('Testing hesperides module', function () {
                 is_working_copy: false,
                 properties_path: '#ABC#DEF#module-b#1.2.3#RELEASE',
                 title: 'module-b, 1.2.3',
-                technos: [  ],
+                technos: [ ],
                 version_id: -1,
             }));
             expect(() => Module.fromPropertiesPath('#module-b#1.0#WORKINGCOPY')).toThrow();
