@@ -14,8 +14,12 @@ When('I click on the switch to also display the deleted properties', async funct
     await send.clickById('toggle-deleted-properties_switch');
 });
 
-When('I click on the switch to display also the global properties', async function () {
+When('I click on the switch to display only the global properties', async function () {
     await send.clickById('toggle-global-properties_switch');
+});
+
+When('I click on the switch to hide the global properties', async function () {
+    await send.clickById('e2e-hide-global-properties-switch-button');
 });
 
 Then('only the required properties are displayed', async function () {
