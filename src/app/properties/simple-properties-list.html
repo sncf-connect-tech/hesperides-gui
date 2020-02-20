@@ -99,15 +99,25 @@
                                   ng-model="key_value_property.value"
                                   ng-trim="true"
                                   ng-readonly="!key_value_property.inModel"
-                                  ng-focus="focusthis = true"
-                                  ng-blur="focusthis = false"
-                                  ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                                  ng-focus="textareaFocused = true"
+                                  ng-blur="textareaFocused = false"
+                                  ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': textareaFocused}"
                                   placeholder="{{key_value_property.tooltip}}"
                                   ng-pattern="key_value_property.pattern"
                                   ng-required="key_value_property.required"
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>
+                        <ul flex class="autocomplete-items-container"
+                            ng-mouseenter="autocompleteHovered = true"
+                            ng-mouseleave="autocompleteHovered = false">
+                            <li class="md-whiteframe-3dp autocomplete-item"
+                                ng-if="textareaFocused || autocompleteHovered"
+                                ng-repeat="globalPropertyName in getGlobalPropertiesAutocomplete(key_value_property.value)"
+                                ng-click="fillAutoCompletedGlobalProperty(key_value_property, globalPropertyName)"  aria-label="{{globalPropertyName}}">
+                                {{globalPropertyName}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
