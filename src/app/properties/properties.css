@@ -176,4 +176,5 @@ md-content.properties-container {
     color:  rgb(0,150,136);
     background-color: white;
     border-top: 1px solid rgb(0,150,136);
+    cursor: url(hand.cur), pointer;
 }
