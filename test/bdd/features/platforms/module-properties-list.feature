@@ -101,6 +101,21 @@ Feature: Filter properties and display them as a list
     Then the tooltip of property "property" should contain
       |instance-1|instance-value-1|
       |instance-2|instance-value-2|
+  Scenario: Autocompletion of global properties in the valuation field of other properties
+    Given an existing template with this content
+    """
+    {{ simple-property }}
+    {{ global-property }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+      | global-property | global-value |
+    When I open this platform
+    And I open the deployed module properties
+    And I enter "foo-{{" in the valuation field of the property "simple-property"
+    Then The autocompletion list suggestions is displayed
+    And the textarea of the property "simple-property" should contain "foo-{{ global-property }}"
 
 #  Scenario: Find the default value in the placeholder
 

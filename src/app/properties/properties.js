@@ -1215,7 +1215,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         return count;
                     };
 
-                    scope.getGlobalPropertiesAutocomplete = function (term) {
+                    scope.getGlobalPropertiesSuggestions = function (term) {
                         if (!term || !term.includes('{{')) {
                             return [];
                         }
@@ -1227,7 +1227,7 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
                     scope.fillAutoCompletedGlobalProperty = function (selectedProperty, propertyName) {
                         const extractPrefix = selectedProperty.value.split('{{')[0];
-                        selectedProperty.value = `${ extractPrefix } {{ ${ propertyName } }}`;
+                        selectedProperty.value = `${ extractPrefix }{{ ${ propertyName } }}`;
                     };
                 },
             };
