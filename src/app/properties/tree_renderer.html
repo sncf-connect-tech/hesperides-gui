@@ -55,6 +55,10 @@
             <span class="fa fa-trash"></span>
             <md-tooltip>{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}</md-tooltip>
         </md-button>
+        <md-button class="md-xs" aria-label="{{ 'properties.logicGroup.copy' | translate }}" ng-click="showDialogCopyLogicGroup(application, platform, box)">
+            <span class="fa fa-copy"></span>
+            <md-tooltip>{{ 'properties.logicGroup.copy' | translate }}</md-tooltip>
+        </md-button>
     </div>
 </div>
 <!-- fin bloc logic -->
