@@ -35,10 +35,3 @@ Then(/^the tooltip of property "([^"]*)" should contain$/, async function (prope
         await assert.elementAttributeContainsText(propertyLabel, 'aria-label', `${ instanceName } = ${ instancePropertyValue }`);
     }
 });
-
-Then(/^the tooltip of property "([^"]*)" should contain$/, async function (propertyName, dataTable) {
-    const propertyLabel = await get.elementByCss(`label#simple-properties-list_key-property-input-${ propertyName } i.e2e-property-tooltip`);
-    for (const [ instanceName, instancePropertyValue ] of dataTable.raw()) {
-        await assert.elementAttributeContainsText(propertyLabel, 'aria-label', `${ instanceName } = ${ instancePropertyValue }`);
-    }
-});
