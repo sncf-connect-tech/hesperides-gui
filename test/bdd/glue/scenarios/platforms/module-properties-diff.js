@@ -49,6 +49,15 @@ When(/^I choose module "([^"]*)" to compare with the selected module$/, async fu
     await send.clickById(`e2e-module-properties-diff-choose-other-module-${ toModuleName }`);
 });
 
+When('I click on the switch to hide deleted properties', async function () {
+    await navigate.toNewTab();
+    await send.clickById('e2e-diff-toggle-deleted-property-top');
+});
+
+Then('The deleted properties are successfully hidden', async function () {
+    await assert.isNotPresentByCss('.e2e-diff-property-name');
+});
+
 Then(/^I get a new page with the module properties( stored values)? diff(?: between platform "([^"]*)" and platform "([^"]*)")?(?: between module "([^"]*)" and module "([^"]*)")?$/,
     /** @this CustomWorld */async function (storedValues, fromPlatformName, toPlatformName, fromModuleName, toModuleName) {
         await navigate.toNewTab();

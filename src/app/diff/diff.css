@@ -3,8 +3,10 @@
     font-weight: bold;
 }
 
-.diff-togglePropertyDetails {
-    padding-left: 20%;
+.diff-toggle-container{
+    margin-left: 20%;
+    justify-content: space-between;
+    height: 36px;
 }
 
 .diff-property-name {
