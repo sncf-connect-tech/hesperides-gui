@@ -43,7 +43,7 @@ Feature: Filter properties and display them as a list
     And an existing module with this template
     And an existing platform with this module
     And the platform has these global properties
-      | global-property | global-value |
+     | global-property | global-value |
     When I open this platform
     And I open the deployed module properties
     Then the properties are displayed with dedicated icons
@@ -88,15 +88,19 @@ Feature: Filter properties and display them as a list
     And an existing module with this template
     And an existing platform with this module
     And the platform has these valued properties
-      | property-1 | {{instance-property-1}} |
-      | property-2 | {{instance-property-2}} |
-    And the platform has these instance properties
-      | instance-property-1 | instance-valu-1 |
-      | instance-property-2 | instance-valu-2 |
-    When I open this platform
-    And I open the deployed module properties
-    And I move mouse pointer to the tooltip icon info on property that valued by instance properties
-    Then The tooltip shoul appears and it should contained internationalized message
+      | property| {{instance-property}} |
+    And the deployed module has these instances
+      |instance-1|
+      |instance-2|
+    And the instance "instance-1" has these valued properties
+      | instance-property | instance-value-1 |
+    And the instance "instance-2" has these valued properties
+      | instance-property| instance-value-2 |
+    And I open this platform
+    When I open the deployed module properties
+    Then the tooltip of property "property" should contain
+      |instance-1|instance-value-1|
+      |instance-2|instance-value-2|
 
 #  Scenario: Find the default value in the placeholder
 
