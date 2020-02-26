@@ -12,3 +12,9 @@
     padding-right: 0px !important;
     min-width: 80px !important;
 }
+
+.btn-add-group{
+    margin-top: 10px;
+    max-height: 40px;
+    margin-left: 50px;
+}

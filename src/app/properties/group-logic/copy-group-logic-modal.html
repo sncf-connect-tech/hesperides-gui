@@ -27,13 +27,24 @@
   </md-toolbar>
     <md-dialog-content>
       <div class="logic-groups-container">
-        <label><strong>{{ 'properties.logicGroup.copy.with' | translate }}</strong></label>
+         <label><strong>{{ 'properties.logicGroup.copy.with.new' | translate }}</strong></label>
+         <div layout="row" flex="100">
+             <md-input-container>
+                 <label>{{ 'properties.logicGroup.copy.new.logicGroup' | translate }}</label>
+                 <input type="text" ng-model="boxNames" >
+             </md-input-container>
+             <md-button ng-click="copyLogicGroupToNewBox(boxNames)"
+                        class="md-raised md-primary btn-add-group">
+                 {{'properties.logicGroup.copy.button.label' | translate }}
+             </md-button>
+         </div>
+        <label><strong>{{ 'properties.logicGroup.copy.with.existing' | translate }}</strong></label>
         <div layout="row" flex="100">
           <ul class="shared-list-inline list-logic-group" flex>
-              <li ng-repeat="logicGroup in logicGroups">
-                  <md-button ng-click="copyLogicGroup(logicGroup)"
+              <li ng-repeat="suggestedBox in getBoxes()">
+                  <md-button ng-click="copyLogicGroup(box, suggestedBox)"
                              class="md-raised md-mini logic-group-source">
-                      {{logicGroup.logicGroupName}}
+                      {{suggestedBox.name}}
                   </md-button>
               </li>
           </ul>

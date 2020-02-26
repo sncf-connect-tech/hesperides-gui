@@ -473,11 +473,12 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
             });
         };
 
-        $scope.showDialogCopyLogicGroup = function (providedApplication, providedplatform, box) {
-            var modalScope = $scope.$new();
-            modalScope.providedApplication = providedApplication;
+        $scope.showDialogCopyLogicGroup = function (providedplatform, box, mainBox) {
+            const modalScope = $scope.$new();
             modalScope.platform = providedplatform;
             modalScope.box = box;
+            modalScope.mainBox = mainBox;
+            modalScope.Box = Box;
             $mdDialog.show({
                 templateUrl: 'properties/group-logic/copy-group-logic-modal.html',
                 controller: 'GroupLogicController',

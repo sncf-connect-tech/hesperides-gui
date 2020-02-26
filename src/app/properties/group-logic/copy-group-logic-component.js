@@ -23,19 +23,36 @@ angular.module('hesperides.properties.groupLogic', [ 'hesperides.properties', 'c
     })
     .controller('GroupLogicController', function ($scope, $mdDialog) {
         $scope.logicGroups = [];
-        $scope.platform.modules.forEach((module) => {
-            const group_name = module.properties_path.split('#')[1];
-            if (group_name !== $scope.box.name) {
-                $scope.logicGroups.push({ logicGroupName: group_name, module: module });
-            }
-        });
+        $scope.getBoxes = function () {
+            const boxes = [];
+            Object.keys($scope.mainBox.children).forEach(function (key) {
+                const box = $scope.mainBox.children[key];
+                if (box.name !== $scope.box.name) {
+                    boxes.push(box);
+                }
+            });
+            return boxes;
+        };
 
-        $scope.copyLogicGroup = function (logicGroupToCopy) {
-            console.log('logicGroupToCopy : ', logicGroupToCopy);
+        $scope.copyLogicGroupToNewBox = function (logicGroupNames) {
+            let parentBox = $scope.mainBox;
+            const localLogicGroups = logicGroupNames.split('#').filter(_.identity);
+            localLogicGroups.forEach((logicGroupName) => {
+                parentBox.children[logicGroupName] = new $scope.Box({ parent_box: parentBox, name: logicGroupName.trim() });
+                parentBox = parentBox.children[logicGroupName];
+            });
+            $scope.copyLogicGroup($scope.box, parentBox);
+        };
+
+        $scope.copyLogicGroup = function (boxSource, boxDestination) {
             if ($scope.$parent && _.isFunction($scope.$parent.add_module)) {
                 const confirmation = confirm('Confirm!');
                 if (confirmation) {
-                    $scope.$parent.add_module(logicGroupToCopy.module.name, logicGroupToCopy.module.version, logicGroupToCopy.module.is_working_copy, $scope.box);
+                    if (boxSource && boxSource.modules) {
+                        boxSource.modules.forEach((module) => {
+                            $scope.$parent.add_module(module.name, module.version, module.is_working_copy, boxDestination);
+                        });
+                    }
                 }
             }
         };
