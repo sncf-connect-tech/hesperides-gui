@@ -117,6 +117,21 @@ Feature: Filter properties and display them as a list
     Then The autocompletion list suggestions is displayed
     And the textarea of the property "simple-property" should contain "foo-{{ global-property }}"
 
+  Scenario: Double autocomplete of global properties in the valuation field should not crash the application
+    Given an existing template with this content
+    """
+    {{ simple-property }}
+    {{ global-property }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+      | global-property | global-value |
+    When I open this platform
+    And I open the deployed module properties
+    And I enter "foo-{{global-property}}-bar-{{" in the valuation field of the property "simple-property"
+    Then The autocompletion list suggestions is not displayed
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder

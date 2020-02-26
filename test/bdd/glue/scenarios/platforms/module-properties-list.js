@@ -66,3 +66,6 @@ Then(/^the textarea of the property "([^"]+)" should contain "([^"]*-\{\{ [^"]* 
     const textAreaElement = await get.elementById(textAreaId);
     await assert.containsValue(textAreaElement, inputText);
 });
+Then(/^The autocompletion list suggestions is not displayed$/, async function () {
+    await assert.isNotPresentByCss('.e2e-autocomplete-list-suggestions');
+});

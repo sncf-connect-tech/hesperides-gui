@@ -108,10 +108,10 @@
                                   class="property-value inLocal_{{key_value_property.inLocal}}"
                                   adjust-height-to-text-content property="key_value_property"
                         ></textarea>
-                        <ul flex class="autocomplete-items-container"
+                        <ul flex class="PropertiesList__valueAutocomplete"
                             ng-mouseenter="autocompleteHovered = true"
                             ng-mouseleave="autocompleteHovered = false">
-                            <li class="e2e-autocomplete-list-suggestions md-whiteframe-3dp autocomplete-item"
+                            <li class="e2e-autocomplete-list-suggestions md-whiteframe-3dp PropertiesList__valueAutocomplete__choice"
                                 ng-if="textareaFocused || autocompleteHovered"
                                 ng-repeat="globalPropertyName in getGlobalPropertiesSuggestions(key_value_property.value)"
                                 ng-click="fillAutoCompletedGlobalProperty(key_value_property, globalPropertyName)"  aria-label="{{globalPropertyName}}">

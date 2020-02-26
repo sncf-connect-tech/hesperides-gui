@@ -160,13 +160,13 @@ md-content.properties-container {
   }
 
 
-.autocomplete-items-container {
+.PropertiesList__valueAutocomplete {
     padding-inline-start: 3%;
     margin-block-start: 0em;
     margin-block-end: 0em;
 }
 
-.autocomplete-item {
+.PropertiesList__valueAutocomplete__choice {
     list-style-type: none;
     height: 25px;
     padding-top: 10px;
