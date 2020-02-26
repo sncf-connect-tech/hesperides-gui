@@ -28,3 +28,10 @@ Then('the properties of this deployed module are displayed', /** @this CustomWor
     const formTitle = get.elementById('e2e-tree-properties-form-title');
     await assert.containsText(formTitle, `Properties attached to | ${ name }, ${ version }${ isWorkingCopy ? ' (working copy)' : '' }`);
 });
+
+Then(/^the tooltip of property "([^"]*)" should contain$/, async function (propertyName, dataTable) {
+    const propertyLabel = await get.elementByCss(`label#simple-properties-list_key-property-input-${ propertyName } i.e2e-property-tooltip`);
+    for (const [ instanceName, instancePropertyValue ] of dataTable.raw()) {
+        await assert.elementAttributeContainsText(propertyLabel, 'aria-label', `${ instanceName } = ${ instancePropertyValue }`);
+    }
+});

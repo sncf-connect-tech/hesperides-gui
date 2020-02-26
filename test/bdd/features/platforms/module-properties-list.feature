@@ -80,6 +80,28 @@ Feature: Filter properties and display them as a list
     Then the property "global-property" is not displayed
     And the property "simple-property" is displayed
 
+  Scenario: Display a tooltip when property is valued by instances
+    Given an existing template with this content
+    """
+    {{ property }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these valued properties
+      | property| {{instance-property}} |
+    And the deployed module has these instances
+      |instance-1|
+      |instance-2|
+    And the instance "instance-1" has these valued properties
+      | instance-property | instance-value-1 |
+    And the instance "instance-2" has these valued properties
+      | instance-property| instance-value-2 |
+    And I open this platform
+    When I open the deployed module properties
+    Then the tooltip of property "property" should contain
+      |instance-1|instance-value-1|
+      |instance-2|instance-value-2|
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder

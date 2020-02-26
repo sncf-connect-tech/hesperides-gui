@@ -812,6 +812,9 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         $scope.properties = properties.mergeWithModel(model);
                         $scope.model = model;
                         $scope.properties = properties.mergeWithGlobalProperties(globalProperties);
+                        if (module.instances) {
+                            $scope.properties = properties.mergeWithInstanceProperties(module.instances, $translate);
+                        }
                         $scope.oldProperties = angular.copy($scope.properties);
                         $scope.properties = LocalChanges.mergeWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.properties);
                         $scope.oldProperties = LocalChanges.tagWithLocalProperties($routeParams.application, platform.name, module.properties_path, $scope.oldProperties);
@@ -1390,12 +1393,17 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                 _.remove(this.key_value_properties, key_value_property);
             };
 
-            function buildTooltip(key_value) {
+            function buildInstanceTooltip(instances) {
+                return instances.map((instance) => `${ instance.instanceName } = ${ instance.instancePropertyValue }`).join(', ');
+            }
+
+            function buildTooltip(key_value, instancesInUseTooltipMsg = '') {
                 return (key_value.defaultValue ? `[default=${ key_value.defaultValue }] ` : '') +
                     (key_value.pattern ? ` [pattern=${ key_value.pattern }] ` : '') +
                     (key_value.password ? ' *password*' : '') +
                     (key_value.comment ? ` ${ key_value.comment }` : '') +
                     (key_value.valuedByAGlobal ? ` [ Valued by a global property with same name: ${ key_value.globalValue } ]` : '') +
+                    (_.isEmpty(key_value.instances) ? '' : `${ instancesInUseTooltipMsg } [ ${ buildInstanceTooltip(key_value.instances) } ]`) +
                     (_.isEmpty(key_value.globalsUsed) ? '' : ` [globals used: ${ _.map(key_value.globalsUsed, (value, name) => `${ name }=${ value }`).join(', ') }]`);
             }
 
@@ -1419,6 +1427,33 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                     key_value.tooltip = buildTooltip(key_value);
                 });
 
+                return this;
+            };
+
+            this.mergeWithInstanceProperties = function (instanceProperties, $translate) {
+                _.each(this.key_value_properties, function (property) {
+                    var instancePropertyValue = property.value;
+                    instancePropertyValue = _.replace(instancePropertyValue, new RegExp('{{', 'g'), '');
+                    instancePropertyValue = _.replace(instancePropertyValue, new RegExp('}}', 'g'), '');
+                    instanceProperties.forEach(function (instance) {
+                        property.valuedByInstance = Boolean(_.find(instance.key_values, { name: instancePropertyValue }));
+                        if (property.valuedByInstance) {
+                            property.instancePropertyValue = _.find(instance.key_values, { name: instancePropertyValue }).value;
+                        }
+                        property.instances = [];
+                        _.forEach(instanceProperties, (instanceProperty) => {
+                            _.forEach(instanceProperty.key_values, (kvp) => {
+                                if (new RegExp(`{{ *${ kvp.name } *}}`).test(property.value)) {
+                                    property.instances.push({ instanceName: instanceProperty.name, instancePropertyValue: kvp.value });
+                                }
+                            });
+                        });
+                    });
+                    $translate('properties.instance.tooltip.message', { instancePropertiesCount: property.instances ? property.instances.length : 0 })
+                        .then(function (translationLabel) {
+                            property.tooltip = buildTooltip(property, translationLabel);
+                        });
+                });
                 return this;
             };
 
