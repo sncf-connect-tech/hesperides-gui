@@ -38,13 +38,17 @@ Feature: Global properties diff
       | p2-global        | only-p2      |
       | common-global    | common-value |
       | differing-global | p2-value     |
-    When I open the diff of global properties
+    When I open the diff of global properties between platform "P1" and "P2"
+    And I open the left properties panel
     Then I get the following properties only on left platform
       | p1-global | only-p1 |
+    And I open the common properties panel
     And I get the following common properties
       | common-global | common-value |
+    And I open the differing properties panel
     And I get the following differing properties
       | differing-global | p1-value | p2-value |
+    And I open the right properties panel
     And I get the following properties only on right platform
       | p2-global | only-p2 |
 
@@ -56,7 +60,7 @@ Feature: Global properties diff
     And an existing platform named "P2"
     And the platform has these global properties
       | property | value-y |
-    When I open the diff of global properties
+    When I open the diff of global properties between platform "P1" and "P2"
     And I open the differing properties panel
     Then the property "property" value has "x" highlighted on the left
     And the property "property" value has "y" highlighted on the right
@@ -69,7 +73,7 @@ Feature: Global properties diff
     And an existing platform named "P2"
     And the platform has these global properties
       | property | value-y |
-    When I open the diff of global properties
+    When I open the diff of global properties between platform "P1" and "P2"
     And I open the differing properties panel
     And I disable differing characters highlight
     Then the property "property" has no highlighted characters

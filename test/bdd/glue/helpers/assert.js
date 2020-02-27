@@ -49,13 +49,6 @@ exports.containsValue = async function (elem, text) {
     await expect(elem.getAttribute('value')).to.eventually.have.string(text);
 };
 
-exports.elementAtIndexContainsTextByCss = async function (selector, index, text) {
-    const assert = this;
-    await get.elementsByCss(selector).then(async function (items) {
-        await assert.containsText(items[index], text);
-    });
-};
-
 exports.notification = async function (success, message) {
     const successClassName = success ? '.success' : '';
     const elements = get.elementsByCss(`.cg-notify-message${ successClassName }`);

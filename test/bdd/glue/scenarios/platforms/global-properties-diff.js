@@ -7,7 +7,6 @@ const moment = require('moment');
 
 let selectedTimestamp = null;
 const globalPropertiesPath = '#';
-const toggleDifferingPropertiesButtonId = 'e2e-diff-differing-toggle-button';
 
 When('I open the modal to compare global properties', async function () {
     selectedTimestamp = null;
@@ -42,19 +41,11 @@ When('I select a specific date to compare global properties', async function () 
     });
 });
 
-When('I open the diff of global properties', /** @this CustomWorld */ async function () {
-    const fromPlatformBuilder = this.platformHistory.platformBuilders[0];
-    const toPlatformBuilder = this.platformHistory.platformBuilders[1];
+When('I open the diff of global properties between platform {string} and {string}', /** @this CustomWorld */ async function (fromPlatformName, toPlatformName) {
+    const fromPlatformBuilder = this.platformHistory.findPlatformBuilderByName(fromPlatformName);
+    const toPlatformBuilder = this.platformHistory.findPlatformBuilderByName(toPlatformName);
     await browser.get(api.buildDiffUrl(fromPlatformBuilder, toPlatformBuilder, globalPropertiesPath, globalPropertiesPath));
     await browser.waitForAngular();
-});
-
-When('I open the differing properties panel', async function () {
-    await send.clickById(toggleDifferingPropertiesButtonId);
-});
-
-When('I disable differing characters highlight', async function () {
-    await send.clickById('e2e-highlight-differing-characters-button');
 });
 
 Then(/^I get a new page with the global properties( stored values)? diff$/, /** @this CustomWorld */ async function (storedValues) {
@@ -71,63 +62,4 @@ Then('I get a new page with the global properties diff with timestamp', /** @thi
     const expectedUrl = api.buildDiffUrl(this.platformBuilder, this.platformBuilder, globalPropertiesPath, globalPropertiesPath, false, selectedTimestamp);
     await assert.currentUrlEquals(expectedUrl);
     await navigate.backToFirstTab();
-});
-
-Then('I get the following properties only on left platform', async function (dataTable) {
-    const toggleButtonId = 'e2e-diff-onlyleft-toggle-button';
-    await send.clickById(toggleButtonId);
-    let index = 0;
-    for (const [ name, value ] of dataTable.raw()) {
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-onlyleft-properties .diff-property-name', index, name);
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-onlyleft-properties .diff-property-final-value', index, value);
-        index++;
-    }
-    await send.clickById(toggleButtonId);
-});
-
-Then('I get the following common properties', async function (dataTable) {
-    const toggleButtonId = 'e2e-diff-common-toggle-button';
-    await send.clickById(toggleButtonId);
-    let index = 0;
-    for (const [ name, value ] of dataTable.raw()) {
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-common-properties .diff-property-name', index, name);
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-common-properties .diff-property-final-value-left', index, value);
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-common-properties .diff-property-final-value-right', index, value);
-        index++;
-    }
-    await send.clickById(toggleButtonId);
-});
-
-Then('I get the following differing properties', async function (dataTable) {
-    await send.clickById(toggleDifferingPropertiesButtonId);
-    let index = 0;
-    for (const [ name, leftValue, rightValue ] of dataTable.raw()) {
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-differing-properties .diff-property-name', index, name);
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-differing-properties .diff-property-final-value-left', index, leftValue);
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-differing-properties .diff-property-final-value-right', index, rightValue);
-        index++;
-    }
-    await send.clickById(toggleDifferingPropertiesButtonId);
-});
-
-Then('I get the following properties only on right platform', async function (dataTable) {
-    const toggleButtonId = 'e2e-diff-onlyright-toggle-button';
-    await send.clickById(toggleButtonId);
-    let index = 0;
-    for (const [ name, value ] of dataTable.raw()) {
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-onlyright-properties .diff-property-name', index, name);
-        await assert.elementAtIndexContainsTextByCss('#e2e-diff-onlyright-properties .diff-property-final-value', index, value);
-        index++;
-    }
-    await send.clickById(toggleButtonId);
-});
-
-Then(/^the property "([^"]*)" value has "([^"]*)" highlighted on the (left|right)?$/, async function (propertyName, highlightedPart, side) {
-    const elem = get.elementByCss(`#e2e-diff-differing-properties-${ side }-${ propertyName } .diff-property-final-value-${ side } .diff-char-highlight-${ side }`);
-    await assert.equalsText(elem, highlightedPart);
-});
-
-Then(/^the property "([^"]*)" has no highlighted characters$/, async function (propertyName) {
-    await assert.isNotPresentByCss(`#e2e-diff-differing-properties-left-${ propertyName } .diff-property-final-value-left .diff-char-highlight-left`);
-    await assert.isNotPresentByCss(`#e2e-diff-differing-properties-right-${ propertyName } .diff-property-final-value-right .diff-char-highlight-right`);
 });
