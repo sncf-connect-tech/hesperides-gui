@@ -1214,6 +1214,21 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         }
                         return count;
                     };
+
+                    scope.getGlobalPropertiesSuggestions = function (term) {
+                        if (!term || !term.includes('{{')) {
+                            return [];
+                        }
+                        const termPrefix = _.toLower(term).split('{{')[1].trim();
+                        return scope.platform.global_properties.key_value_properties
+                            .filter((property) => _.toLower(property.name).startsWith(termPrefix))
+                            .map((property) => property.name);
+                    };
+
+                    scope.fillAutoCompletedGlobalProperty = function (selectedProperty, propertyName) {
+                        const extractPrefix = selectedProperty.value.split('{{')[0];
+                        selectedProperty.value = `${ extractPrefix }{{ ${ propertyName } }}`;
+                    };
                 },
             };
         },
