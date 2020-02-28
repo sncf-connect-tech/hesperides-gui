@@ -40,7 +40,7 @@ Feature: Global properties diff
       | differing-global | p2-value     |
     When I open the diff of global properties between platform "P1" and "P2"
     And I open the left properties panel
-    Then I get the following properties only on left platform
+    Then I get the following properties only on the left platform
       | p1-global | only-p1 |
     And I open the common properties panel
     And I get the following common properties
@@ -49,7 +49,7 @@ Feature: Global properties diff
     And I get the following differing properties
       | differing-global | p1-value | p2-value |
     And I open the right properties panel
-    And I get the following properties only on right platform
+    And I get the following properties only on the right platform
       | p2-global | only-p2 |
 
   # Issue 308

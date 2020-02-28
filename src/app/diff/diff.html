@@ -98,7 +98,6 @@
     </div>
     <md-divider ng-show="toggle0" class="diff-divider"></md-divider>
     <div id="e2e-diff-onlyleft-property-{{diffContainer.property_name}}"
-         class="e2e-diff-onlyleft-property"
          layout="row" ng-show="toggle0"
          ng-repeat="diffContainer in (diffContainers
          | filter:{'status':0, 'property_name': propertiesKeyFilter0}
@@ -217,7 +216,6 @@
     <md-divider ng-show="toggle1" class="diff-divider"></md-divider>
     <div id="e2e-diff-common-properties">
         <div id="e2e-diff-common-property-{{diffContainer.property_name}}"
-             class="e2e-diff-common-property"
              layout="row" ng-show="toggle1"
              ng-repeat="diffContainer in (diffContainers
              | filter: show_only_modified ? {'status':1, 'modified': true, 'property_name': propertiesKeyFilter1} : {'status':1, 'property_name': propertiesKeyFilter1}
@@ -355,7 +353,6 @@
     </div>
     <md-divider ng-show="toggle2" class="diff-divider"></md-divider>
     <div id="e2e-diff-differing-property-{{diffContainer.property_name}}"
-         class="e2e-diff-differing-property"
          layout="row" ng-show="toggle2"
          ng-repeat="diffContainer in (diffContainers
          | filter:{'status':2, 'property_name': propertiesKeyFilter2}
@@ -495,7 +492,6 @@
     </div>
     <md-divider ng-show="toggle3" class="diff-divider"></md-divider>
     <div id="e2e-diff-onlyright-property-{{diffContainer.property_name}}"
-         class="e2e-diff-onlyright-property"
          layout="row" ng-show="toggle3"
          ng-repeat="diffContainer in (diffContainers
          | filter:{'status':3, 'property_name': propertiesKeyFilter3}

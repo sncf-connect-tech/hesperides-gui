@@ -47,7 +47,7 @@ Then('the properties are displayed with dedicated icons', async function () {
     await assert.containsText(globalElement, '🌍');
 });
 
-Then(/the property "([^"]+)" is( not)? displayed/, async function (propertyName, notDisplayed) {
+Then(/^the property "([^"]+)" is( not)? displayed$/, async function (propertyName, notDisplayed) {
     const propertyId = `simple-properties-list_key-property-input-${ propertyName }`;
     if (notDisplayed) {
         await assert.isNotPresentById(propertyId);

@@ -11,17 +11,20 @@ exports.isPresentById = async function (id) {
     await expect(get.elementById(id).isPresent()).to.eventually.be.true;
 };
 
+exports.isNotPresentById = async function (id) {
+    await expect(get.elementById(id).isPresent()).to.eventually.be.false;
+};
+
 exports.isPresentByCss = async function (selector) {
     await expect(get.elementByCss(selector).isPresent()).to.eventually.be.true;
 };
 
-exports.isNotPresentById = async function (id) {
-    const elem = get.elementById(id);
-    await expect(elem.isPresent()).to.eventually.be.false;
-};
-
 exports.isNotPresentByCss = async function (selector) {
     await expect(get.elementByCss(selector).isPresent()).to.eventually.be.false;
+};
+
+exports.isDisplayedById = async function (id) {
+    await expect(get.elementById(id).isDisplayed()).to.eventually.be.true;
 };
 
 exports.elementsCount = async function (elements, count) {
@@ -77,8 +80,4 @@ exports.codeMirrorContains = async function (expectedContent) {
 
 exports.isDisabledById = async function (id) {
     await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
-};
-
-exports.isDisplayedById = async function (id) {
-    await expect(get.elementById(id).isDisplayed()).to.eventually.be.true;
 };

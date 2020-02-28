@@ -51,12 +51,15 @@ Feature: Module properties diff
     """
     And an existing module with this template
     And an existing platform named "P1" with this module
+    And the platform has these valued properties
+      | property         | value |
+      | deleted-property | value |
     And an existing platform named "P2" with this module
     And the platform has these valued properties
-      | property | value |
+      | property         | value |
       | deleted-property | value |
     When I open the diff of properties for this module between platform "P1" and "P2"
     And I open the common properties panel
-    And the property "deleted-property" is displayed
+    And the property "deleted-property" is displayed in the common properties panel
     And I click on the switch to hide the deleted properties
-    Then the property "deleted-property" is not displayed
+    Then the property "deleted-property" is not displayed in the common properties panel

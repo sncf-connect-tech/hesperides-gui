@@ -43,7 +43,7 @@ Feature: Filter properties and display them as a list
     And an existing module with this template
     And an existing platform with this module
     And the platform has these global properties
-      | global-property | global-value |
+     | global-property | global-value |
     When I open this platform
     And I open the deployed module properties
     Then the properties are displayed with dedicated icons
@@ -88,20 +88,19 @@ Feature: Filter properties and display them as a list
     And an existing module with this template
     And an existing platform with this module
     And the platform has these valued properties
-      | property | {{ instance-property }} |
+      | property| {{instance-property}} |
     And the deployed module has these instances
-      | instance-1 |
-      | instance-2 |
+      |instance-1|
+      |instance-2|
     And the instance "instance-1" has these valued properties
       | instance-property | instance-value-1 |
     And the instance "instance-2" has these valued properties
-      | instance-property | instance-value-2 |
+      | instance-property| instance-value-2 |
     And I open this platform
     When I open the deployed module properties
     Then the tooltip of property "property" should contain
-      | instance-1 |instance-value-1 |
-      | instance-2 |instance-value-2 |
-
+      |instance-1|instance-value-1|
+      |instance-2|instance-value-2|
   Scenario: Autocompletion of global properties in the valuation field of other properties
     Given an existing template with this content
     """

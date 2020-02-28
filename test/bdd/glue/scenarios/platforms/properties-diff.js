@@ -22,7 +22,7 @@ When('I disable differing characters highlight', async function () {
     await send.clickById('e2e-highlight-differing-characters-button');
 });
 
-Then('I get the following properties only on left platform', async function (dataTable) {
+Then('I get the following properties only on the left platform', async function (dataTable) {
     for (const [ name, value ] of dataTable.raw()) {
         await assert.containsText(get.elementByCss(`#e2e-diff-onlyleft-property-${ name } .diff-property-name`), name);
         await assert.containsText(get.elementByCss(`#e2e-diff-onlyleft-property-${ name } .diff-property-final-value`), value);
@@ -45,7 +45,7 @@ Then('I get the following differing properties', async function (dataTable) {
     }
 });
 
-Then('I get the following properties only on right platform', async function (dataTable) {
+Then('I get the following properties only on the right platform', async function (dataTable) {
     for (const [ name, value ] of dataTable.raw()) {
         await assert.containsText(get.elementByCss(`#e2e-diff-onlyright-property-${ name } .diff-property-name`), name);
         await assert.containsText(get.elementByCss(`#e2e-diff-onlyright-property-${ name } .diff-property-final-value`), value);
@@ -62,7 +62,12 @@ Then(/^the property "([^"]*)" has no highlighted characters$/, async function (p
     await assert.isNotPresentByCss(`#e2e-diff-differing-properties-right-${ propertyName } .diff-property-final-value-right .diff-char-highlight-right`);
 });
 
-Then('the common properties panel is empty', async function () {
-    const commonProperties = get.elementsByCss('#e2e-diff-common-properties .e2e-diff-common-property');
-    await assert.elementsCount(commonProperties, 0);
+Then(/^the property "([^"]+)" is( not)? displayed in the common properties panel$/, async function (propertyName, notDisplayed) {
+    const propertyId = `e2e-diff-common-property-${ propertyName }`;
+    if (notDisplayed) {
+        await assert.isDisplayedById('e2e-diff-common-properties');
+        await assert.isNotPresentById(propertyId);
+    } else {
+        await assert.isDisplayedById(propertyId);
+    }
 });
