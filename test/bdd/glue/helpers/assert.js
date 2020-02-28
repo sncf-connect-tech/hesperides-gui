@@ -7,6 +7,10 @@ exports.elementsExist = async function (elements) {
     await expect(elements.count()).to.eventually.be.gt(0);
 };
 
+exports.elementsDoNotExist = async function (elements) {
+    await expect(elements.count()).to.eventually.be.equal(0);
+};
+
 exports.isPresentById = async function (id) {
     await expect(get.elementById(id).isPresent()).to.eventually.be.true;
 };
@@ -57,6 +61,12 @@ exports.notification = async function (success, message) {
     const elements = get.elementsByCss(`.cg-notify-message${ successClassName }`);
     await this.elementsExist(elements);
     await this.containsText(elements.get(0), message);
+};
+
+exports.noNotification = async function (success) {
+    const successClassName = success ? '.success' : '';
+    const elements = get.elementsByCss(`.cg-notify-message${ successClassName }`);
+    await this.elementsDoNotExist(elements);
 };
 
 exports.itemsAreRequired = async function (items) {

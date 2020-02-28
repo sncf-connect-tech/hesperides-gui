@@ -36,12 +36,14 @@ exports.inputById = async function (id, text) {
 };
 
 exports.inputByCss = async function (selector, text) {
+    await get.elementByCss(selector).getAttribute('ng-model').clear();
     await get.elementByCss(selector).sendKeys(text);
 };
 
 exports.searchAndSelectFirstByCss = async function (selector, text) {
     await this.inputByCss(selector, text);
     await browser.waitForAngular();
+
     // eslint-disable-next-line no-undef
     await get.elementByCss(selector).sendKeys(protractor.Key.TAB);
 };

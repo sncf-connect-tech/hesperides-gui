@@ -27,13 +27,17 @@
   </md-toolbar>
     <md-dialog-content>
       <div class="logic-groups-container">
+          <div class="newFeature"><!-- Lucas: j'insère ceci le 2019/09/25, à enelever d'ici quelques mois -->
+              <p><i class="fa fa-star fa-2x"></i>{{ 'newFeature.label' | translate }}</p>
+              </p>{{ 'newFeature.createSeveralLogicalGroupsAtOnce' | translate }}</p>
+          </div>
          <label><strong>{{ 'properties.logicGroup.copy.with.new' | translate }}</strong></label>
          <div layout="row" flex="100">
              <md-input-container>
                  <label>{{ 'properties.logicGroup.copy.new.logicGroup' | translate }}</label>
-                 <input type="text" ng-model="boxNames" >
+                 <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="boxNames" name="logicGroupCopyTarget" autocomplete="off">
              </md-input-container>
-             <md-button ng-click="copyLogicGroupToNewBox(boxNames)"
+             <md-button id="e2e-copy-to-new-logic-group-button" ng-click="copyLogicGroupToNewBox(boxNames)" ng-disabled="!boxNames"
                         class="md-raised md-primary btn-add-group">
                  {{'properties.logicGroup.copy.button.label' | translate }}
              </md-button>
@@ -42,7 +46,7 @@
         <div layout="row" flex="100">
           <ul class="shared-list-inline list-logic-group" flex>
               <li ng-repeat="suggestedBox in getBoxes()">
-                  <md-button ng-click="copyLogicGroup(box, suggestedBox)"
+                  <md-button id="e2e-logic-group-to-select-{{suggestedBox.name}}" ng-click="copyLogicGroup(box, suggestedBox)"
                              class="md-raised md-mini logic-group-source">
                       {{suggestedBox.name}}
                   </md-button>

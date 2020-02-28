@@ -21,7 +21,7 @@ angular.module('hesperides.properties.groupLogic', [ 'hesperides.properties', 'c
         templateUrl: 'copy-group-logic-modal.html',
         controller: 'GroupLogicController',
     })
-    .controller('GroupLogicController', function ($scope, $mdDialog) {
+    .controller('GroupLogicController', function ($scope, $mdDialog, ApplicationModule) {
         $scope.logicGroups = [];
         $scope.getBoxes = function () {
             const boxes = [];
@@ -34,28 +34,64 @@ angular.module('hesperides.properties.groupLogic', [ 'hesperides.properties', 'c
             return boxes;
         };
 
+        function containModule(box, moduleToFind) {
+            return _.filter(box.modules, function (module) {
+                return (_.isMatch(module, { name: moduleToFind.name, version: moduleToFind.version,
+                    is_working_copy: moduleToFind.is_working_copy }));
+            }).length > 0;
+        }
+
+        function containModuleWithDifferentVersionOrWorkingCopy(box, moduleToFind) {
+            return _.filter(box.modules, function (module) {
+                return (module.name === moduleToFind.name) && (module.version !== moduleToFind.version ||
+                    module.is_working_copy !== moduleToFind.is_working_copy);
+            }).length > 0;
+        }
+
         $scope.copyLogicGroupToNewBox = function (logicGroupNames) {
             let parentBox = $scope.mainBox;
             const localLogicGroups = logicGroupNames.split('#').filter(_.identity);
             localLogicGroups.forEach((logicGroupName) => {
-                parentBox.children[logicGroupName] = new $scope.Box({ parent_box: parentBox, name: logicGroupName.trim() });
+                if (!parentBox.children[logicGroupName]) {
+                    parentBox.children[logicGroupName] = new $scope.Box({ parent_box: parentBox, name: logicGroupName.trim() });
+                }
                 parentBox = parentBox.children[logicGroupName];
             });
             $scope.copyLogicGroup($scope.box, parentBox);
         };
 
         $scope.copyLogicGroup = function (boxSource, boxDestination) {
-            if ($scope.$parent && _.isFunction($scope.$parent.add_module)) {
-                const confirmation = confirm('Confirm!');
-                if (confirmation) {
-                    if (boxSource && boxSource.modules) {
-                        boxSource.modules.forEach((module) => {
-                            $scope.$parent.add_module(module.name, module.version, module.is_working_copy, boxDestination);
-                        });
+            let isCopied = false;
+            boxSource.modules.forEach((module) => {
+                if (!containModule(boxDestination, module)) {
+                    isCopied = true;
+                    boxDestination.modules.push(new ApplicationModule({
+                        name: module.name,
+                        version: module.version,
+                        is_working_copy: module.is_working_copy,
+                        path: boxDestination.get_path(),
+                    }));
+                } else if (containModuleWithDifferentVersionOrWorkingCopy(boxDestination, module)) {
+                    const confirmation = confirm('Confirmation!');
+                    if (confirmation) {
+                        isCopied = true;
+                        boxDestination.modules.push(new ApplicationModule({
+                            name: module.name,
+                            version: module.version,
+                            is_working_copy: module.is_working_copy,
+                            path: boxDestination.get_path(),
+                        }));
                     }
                 }
+            });
+            if (isCopied) {
+                $scope.save_platform_from_box($scope.mainBox).then(function () {
+                    $scope.properties = null;
+                    $scope.instance = null;
+                });
             }
         };
+
 
         $scope.closeDialog = function () {
             $mdDialog.cancel();

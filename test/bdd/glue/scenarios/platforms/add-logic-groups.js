@@ -1,5 +1,6 @@
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
+var { When } = require('cucumber');
 
 const addLogicGroupToPlatform = async function (deployedModuleBuilder) {
     await send.clickById('e2e-tree-properties-add-first-box-dialog-button');
@@ -33,4 +34,9 @@ Then('the logic groups are successfully added', /** @this CustomWorld */ async f
     for (const logicGroup of logicGroups) {
         await assert.isPresentById(`e2e-tree-renderer-edit-logic-group-${ logicGroup }`);
     }
+});
+
+When(/^I add a logic group "([^"]*)" to this platform$/, /** @this CustomWorld */ async function (logicGroup) {
+    this.deployedModuleBuilder.withLogicGroup(logicGroup);
+    await addLogicGroupToPlatform(this.deployedModuleBuilder);
 });
