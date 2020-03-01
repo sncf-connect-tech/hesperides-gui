@@ -19,6 +19,6 @@ When('I submit valid values to copy the existing platform', /** @this CustomWorl
     await send.clickByCss('#e2e-modal-platform-create-from button[type="submit"]');
 });
 
-Then(/^the platform's module is also copied$/, /** @this CustomWorld */ async function () {
+Then('the platform\'s module is also copied', /** @this CustomWorld */ async function () {
     await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
 });

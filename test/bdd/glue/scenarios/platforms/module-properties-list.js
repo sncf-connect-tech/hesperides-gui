@@ -1,8 +1,6 @@
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const get = require('../../helpers/get');
-var { Then } = require('cucumber');
-var { When } = require('cucumber');
 
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
     await send.clickById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
@@ -24,10 +22,8 @@ When('I click on the switch to hide the global properties', async function () {
     await send.clickById('e2e-hide-global-properties-switch-button');
 });
 
-When(/^I enter "([^"]*-\{\{)" in the valuation field of the property "([^"]+)"$/, async function (inputValue, property) {
-    const textAreaId = `e2e-simple-properties-list_value-property-input-${ property }`;
-    await send.clickById(textAreaId);
-    await send.inputById(textAreaId, inputValue);
+When('I select the first suggested global property', async function () {
+    await send.clickByCss('.e2e-autocomplete-list-suggestions');
 });
 
 Then('only the required properties are displayed', async function () {
@@ -56,16 +52,21 @@ Then(/^the property "([^"]+)" is( not)? displayed$/, async function (propertyNam
     }
 });
 
-Then(/^The autocompletion list suggestions is displayed$/, async function () {
-    await assert.isPresentByCss('.e2e-autocomplete-list-suggestions');
-    await send.clickByCss('.e2e-autocomplete-list-suggestions');
+Then(/^the global properties suggestion list is( not)? displayed$/, async function (notDisplayed) {
+    if (notDisplayed) {
+        await assert.isNotPresentByCss('.e2e-autocomplete-list-suggestions');
+    } else {
+        await assert.isPresentByCss('.e2e-autocomplete-list-suggestions');
+    }
 });
 
-Then(/^the textarea of the property "([^"]+)" should contain "([^"]*-\{\{ [^"]* }})"$/, async function (property, inputText) {
-    const textAreaId = `e2e-simple-properties-list_value-property-input-${ property }`;
-    const textAreaElement = await get.elementById(textAreaId);
-    await assert.containsValue(textAreaElement, inputText);
+Then('the property {string} should have the value {string}', async function (propertyName, propertyValue) {
+    await assert.containsValue(get.elementById(`e2e-simple-properties-list_value-property-input-${ propertyName }`), propertyValue);
 });
-Then(/^The autocompletion list suggestions is not displayed$/, async function () {
-    await assert.isNotPresentByCss('.e2e-autocomplete-list-suggestions');
+
+Then('the tooltip of property {string} should contain', async function (propertyName, dataTable) {
+    const propertyLabel = await get.elementByCss(`label#simple-properties-list_key-property-input-${ propertyName } i.e2e-property-tooltip`);
+    for (const [ instanceName, instancePropertyValue ] of dataTable.raw()) {
+        await assert.elementAttributeContainsText(propertyLabel, 'aria-label', `${ instanceName } = ${ instancePropertyValue }`);
+    }
 });

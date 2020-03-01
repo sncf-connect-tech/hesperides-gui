@@ -43,7 +43,7 @@ Feature: Filter properties and display them as a list
     And an existing module with this template
     And an existing platform with this module
     And the platform has these global properties
-     | global-property | global-value |
+      | global-property | global-value |
     When I open this platform
     And I open the deployed module properties
     Then the properties are displayed with dedicated icons
@@ -88,24 +88,25 @@ Feature: Filter properties and display them as a list
     And an existing module with this template
     And an existing platform with this module
     And the platform has these valued properties
-      | property| {{instance-property}} |
+      | property | {{instance-property}} |
     And the deployed module has these instances
-      |instance-1|
-      |instance-2|
+      | instance-1 |
+      | instance-2 |
     And the instance "instance-1" has these valued properties
       | instance-property | instance-value-1 |
     And the instance "instance-2" has these valued properties
-      | instance-property| instance-value-2 |
+      | instance-property | instance-value-2 |
     And I open this platform
     When I open the deployed module properties
     Then the tooltip of property "property" should contain
-      |instance-1|instance-value-1|
-      |instance-2|instance-value-2|
-  Scenario: Autocompletion of global properties in the valuation field of other properties
+      | instance-1 | instance-value-1 |
+      | instance-2 | instance-value-2 |
+
+  # Issue 148
+  Scenario: Display global properties suggestions when typing mustaches in a property value input
     Given an existing template with this content
     """
     {{ simple-property }}
-    {{ global-property }}
     """
     And an existing module with this template
     And an existing platform with this module
@@ -113,15 +114,16 @@ Feature: Filter properties and display them as a list
       | global-property | global-value |
     When I open this platform
     And I open the deployed module properties
-    And I enter "foo-{{" in the valuation field of the property "simple-property"
-    Then The autocompletion list suggestions is displayed
-    And the textarea of the property "simple-property" should contain "foo-{{ global-property }}"
+    And I type the value "foo-{{" for the property "simple-property"
+    Then the global properties suggestion list is displayed
+    When I select the first suggested global property
+    Then the property "simple-property" should have the value "foo-{{ global-property }}"
 
+  # Issue 148
   Scenario: Double autocomplete of global properties in the valuation field should not crash the application
     Given an existing template with this content
     """
     {{ simple-property }}
-    {{ global-property }}
     """
     And an existing module with this template
     And an existing platform with this module
@@ -129,8 +131,8 @@ Feature: Filter properties and display them as a list
       | global-property | global-value |
     When I open this platform
     And I open the deployed module properties
-    And I enter "foo-{{global-property}}-bar-{{" in the valuation field of the property "simple-property"
-    Then The autocompletion list suggestions is not displayed
+    And I type the value "foo-{{global-property}}-bar-{{" for the property "simple-property"
+    Then the global properties suggestion list is not displayed
 
 #  Scenario: Find the default value in the placeholder
 

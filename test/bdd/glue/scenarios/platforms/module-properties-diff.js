@@ -44,7 +44,7 @@ When('I select a specific date to compare this module properties', async functio
     });
 });
 
-When(/^I choose module "([^"]*)" to compare with the selected module$/, async function (toModuleName) {
+When('I choose module {string} to compare with the selected module', async function (toModuleName) {
     await send.clickById('e2e-module-properties-diff-choose-other-module');
     await send.clickById(`e2e-module-properties-diff-choose-other-module-${ toModuleName }`);
 });

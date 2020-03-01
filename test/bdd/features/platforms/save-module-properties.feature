@@ -31,8 +31,7 @@ Feature: Save module properties
     And an existing platform with this module
     When I open this platform
     And I open the deployed module properties
-    And I enter the following module properties
-      | pattern-property | 12 |
+    And I type the value "12" for the property "pattern-property"
     Then the save button is disabled
 
   Scenario: Try to save an empty required property
@@ -45,8 +44,7 @@ Feature: Save module properties
     And an existing platform with this module
     When I open this platform
     And I open the deployed module properties
-    And I enter the following module properties
-      | simple-property   | other-value |
+    And I type the value "other-value" for the property "simple-property"
     Then the save button is disabled
 
     # Le bouton ne devrait pas être grisé => #334

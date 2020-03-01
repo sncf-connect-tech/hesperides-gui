@@ -25,7 +25,6 @@ When('I enter the following values for the first block of the iterable property 
 });
 
 When('I remove the first block of the iterable property {string}', async function (iterablePropertyName) {
-    // e2e-iterable-property-loop-bloc-1576507928286-remove-bloc-button
     await get.elementsByCss(`#e2e-iterable-property-${ iterablePropertyName }-blocks .iterable-bloc`).then(async function (blocks) {
         await blocks[0].getAttribute('block-id').then(async function (blockId) {
             selectedBlockId = blockId;

@@ -5,7 +5,7 @@ When('I click on the button to edit global properties', async function () {
     await send.clickById('e2e-tree-properties-display-global-properties-button');
 });
 
-When('I enter the following global properties', /** @this CustomWorld */ async function (dataTable) {
+When('I enter the following global properties', async function (dataTable) {
     for (const [ name, value ] of dataTable.raw()) {
         await send.inputById('new_kv_name', name);
         await send.inputById('new_kv_value', value);
