@@ -12,8 +12,8 @@ When(/^I open the modal to compare (?:this|the) module(?: "([^"]*)")? properties
     if (!moduleName) {
         moduleName = this.moduleBuilder.name;
     }
-    const box = this.deployedModuleBuilder.modulePath.split('#')[2];
-    await send.mouseOnById(`e2e-tree-renderer-edit-module-button-${ box }-${ moduleName }`);
+    const logicGroup = this.deployedModuleBuilder.modulePath.split('#')[2];
+    await send.mouseOnById(`e2e-tree-renderer-edit-module-button-${ logicGroup }-${ moduleName }`);
     await send.clickById(`e2e-deployed-module-controls-diff-properties-button-${ moduleName }`);
 });
 

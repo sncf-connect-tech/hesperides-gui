@@ -1,6 +1,5 @@
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
-var { Given } = require('cucumber');
 
 When('I add the existing module to this logic group', /** @this CustomWorld */ async function () {
     await send.mouseOnById('e2e-tree-renderer-edit-logic-group-ABC');
@@ -10,8 +9,8 @@ When('I add the existing module to this logic group', /** @this CustomWorld */ a
 });
 
 Then('the module is successfully added to the logic group', /** @this CustomWorld */ async function () {
-    const box = this.deployedModuleBuilder.modulePath.split('#')[1];
-    await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ box }-${ this.moduleBuilder.name }`);
+    const logicGroup = this.deployedModuleBuilder.modulePath.split('#')[1];
+    await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ logicGroup }-${ this.moduleBuilder.name }`);
 });
 
 Given('I add the existing module named {string} to logic group {string}', async function (moduleName, logicGroup) {

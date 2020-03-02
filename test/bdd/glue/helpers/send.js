@@ -4,6 +4,14 @@ const mouseOn = async function (elem) {
     await browser.actions().mouseMove(elem).perform();
 };
 
+async function clearInputById(id) {
+    await get.elementById(id).getAttribute('ng-model').clear();
+}
+
+async function clearInputByCss(selector) {
+    await get.elementByCss(selector).getAttribute('ng-model').clear();
+}
+
 exports.mouseOnById = async function (id) {
     await mouseOn(get.elementById(id));
 };
@@ -32,18 +40,18 @@ exports.clickByCssContainingText = async function (selector, text) {
 };
 
 exports.inputById = async function (id, text) {
+    await clearInputById(id);
     await get.elementById(id).sendKeys(text);
 };
 
 exports.inputByCss = async function (selector, text) {
-    await get.elementByCss(selector).getAttribute('ng-model').clear();
+    await clearInputByCss(selector);
     await get.elementByCss(selector).sendKeys(text);
 };
 
 exports.searchAndSelectFirstByCss = async function (selector, text) {
     await this.inputByCss(selector, text);
     await browser.waitForAngular();
-
     // eslint-disable-next-line no-undef
     await get.elementByCss(selector).sendKeys(protractor.Key.TAB);
 };

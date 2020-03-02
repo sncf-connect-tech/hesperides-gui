@@ -1,8 +1,6 @@
 
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
-const { Then } = require('cucumber');
-const { When } = require('cucumber');
 
 When('I copy this logic group {string} to the existing logic group {string}', async function (logicGroupSource, logicGroupDestination) {
     await send.mouseOnById(`e2e-tree-renderer-edit-logic-group-${ logicGroupSource }`);
