@@ -70,3 +70,21 @@ Then('the tooltip of property {string} should contain', async function (property
         await assert.elementAttributeContainsText(propertyLabel, 'aria-label', `${ instanceName } = ${ instancePropertyValue }`);
     }
 });
+
+Then('only the property {string} and not {string} has dedicated icon check mark button', async function (firstGlobalProperty, secondGlobalProperty) {
+    const firstGlobalPropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ firstGlobalProperty }`);
+    const secondGlobalPropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ secondGlobalProperty }`);
+    await assert.containsText(firstGlobalPropertyElement, '🌍');
+    await assert.containsText(secondGlobalPropertyElement, '🌍');
+    await assert.containsText(firstGlobalPropertyElement, '✅');
+    await assert.noContainText(secondGlobalPropertyElement, '✅');
+});
+
+Then('only the property {string} and not {string} has dedicated icon check mark', async function (firstSimpleProperty, secondSimpleProperty) {
+    const firstSimplePropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ firstSimpleProperty }`);
+    const secondSimplePropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ secondSimpleProperty }`);
+    await assert.containsText(firstSimplePropertyElement, '🛡️');
+    await assert.containsText(secondSimplePropertyElement, '🛡️');
+    await assert.containsText(firstSimplePropertyElement, '✔');
+    await assert.noContainText(secondSimplePropertyElement, '✔');
+});
