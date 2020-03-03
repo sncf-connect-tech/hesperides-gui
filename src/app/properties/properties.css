@@ -159,6 +159,10 @@ md-content.properties-container {
     font-weight: bold;
   }
 
+.check-mark-icon {
+    color: #266f71;
+    font-weight: bold;
+}
 .properties-container__defaultValueEqualIcon {
     color: #266f71;
     font-weight: bold;
