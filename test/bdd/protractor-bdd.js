@@ -29,7 +29,7 @@ exports.config = {
         ],
         // retry: 1,
         strict: true, // fail if there are pending or undefined steps
-        // tags: '@wip',
+        tags: '@wip',
     },
     onPrepare() {
         const { Given, Then, When } = require('cucumber');
