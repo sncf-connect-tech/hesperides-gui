@@ -74,6 +74,8 @@
   "module.technoList": "Technos of this module",
   "module.platformList": "List of platform using this module",
   "modules.propertiesList.tooltip": "Display or hide the list of module properties (model)",
+  "modules.propertiesList.tooltip.defaultValueEqualityWithValue": "the default value ({{defaultValue}}) is equal with overloaded value ({{value}})",
+  "modules.propertiesList.tooltip.globalValueEqualityWithValue": "the global value ({{globalValue}}) is equal with overloaded value ({{value}})",
   "module.propertiesList.showButton": "Show properties",
   "module.propertiesList.hideButton": "Hide properties",
   "module.propertiesList.headers.name": "Name",
