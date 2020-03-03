@@ -41,7 +41,7 @@ exports.containsText = async function (elem, text) {
     await expect(elem.getText()).to.eventually.have.string(text);
 };
 
-exports.noContainText = async function (elem, text) {
+exports.doesNotContainText = async function (elem, text) {
     await expect(elem.getText()).to.eventually.not.contain.string(text);
 };
 
