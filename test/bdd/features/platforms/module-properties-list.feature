@@ -80,6 +80,7 @@ Feature: Filter properties and display them as a list
     Then the property "global-property" is not displayed
     And the property "simple-property" is displayed
 
+    @wip
   Scenario: Display a tooltip when property is valued by instances
     Given an existing template with this content
     """

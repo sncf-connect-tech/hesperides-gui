@@ -97,7 +97,7 @@ Then('only the property {string} and not {string} has dedicated icon check mark 
     await assert.containsText(firstGlobalPropertyElement, '🌍');
     await assert.containsText(secondGlobalPropertyElement, '🌍');
     await assert.containsText(firstGlobalPropertyElement, '✅');
-    await assert.noContainText(secondGlobalPropertyElement, '✅');
+    await assert.doesNotContainText(secondGlobalPropertyElement, '✅');
 });
 
 Then('only the property {string} and not {string} has dedicated icon check mark', async function (firstSimpleProperty, secondSimpleProperty) {
@@ -106,5 +106,5 @@ Then('only the property {string} and not {string} has dedicated icon check mark'
     await assert.containsText(firstSimplePropertyElement, '🛡️');
     await assert.containsText(secondSimplePropertyElement, '🛡️');
     await assert.containsText(firstSimplePropertyElement, '✔');
-    await assert.noContainText(secondSimplePropertyElement, '✔');
+    await assert.doesNotContainText(secondSimplePropertyElement, '✔');
 });
