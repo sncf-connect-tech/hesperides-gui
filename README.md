@@ -45,6 +45,15 @@ $ npm start
 
 It should launch a server available at http://localhost:80 using a backend on http://localhost:8080
 
+Doc
+===
+
+```shell 
+$ npm run serve-doc
+````
+
+It should launch a server-doc at  http://127.0.0.1:8081
+
 Tests
 =====
 

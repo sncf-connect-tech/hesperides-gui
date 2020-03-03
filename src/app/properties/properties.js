@@ -1229,6 +1229,14 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
                         const extractPrefix = selectedProperty.value.split('{{')[0];
                         selectedProperty.value = `${ extractPrefix }{{ ${ propertyName } }}`;
                     };
+
+                    scope.isValuationEqualsDefaultValuation = function (property) {
+                        return !_.isEmpty(property.defaultValue) && (_.isEqual(property.value, property.defaultValue));
+                    };
+
+                    scope.isGlobalValueEqualsOverloadedValue = function (property) {
+                        return property.valuedByAGlobal && (_.isEqual(property.value, property.globalValue));
+                    };
                 },
             };
         },

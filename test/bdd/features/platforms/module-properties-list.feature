@@ -132,6 +132,36 @@ Feature: Filter properties and display them as a list
     And I enter "foo-{{global-property}}-bar-{{" in the valuation field of the property "simple-property"
     Then The autocompletion list suggestions is not displayed
 
+  Scenario: Display dedicated icon check mark button if global property value is equal to overloaded value
+    Given an existing template with this content
+     """
+    {{ global-property-1 }}
+    {{ global-property-2 }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+      | global-property-1 | global-value |
+      | global-property-2 |  |
+    When I open this platform
+    And I open the deployed module properties
+    Then only the property "global-property-2" and not "global-property-1" has dedicated icon check mark button
+
+  Scenario: Display dedicated icon check mark if default property value is equal to overloaded value
+    Given an existing template with this content
+    """
+    {{ simple-property-1 | @default 45 }}
+    {{ simple-property-2 | @default aa }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these valued properties
+      | simple-property-1 | simple-value |
+      | simple-property-2 | aa |
+    When I open this platform
+    And I open the deployed module properties
+    Then only the property "simple-property-2" and not "simple-property-1" has dedicated icon check mark
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder

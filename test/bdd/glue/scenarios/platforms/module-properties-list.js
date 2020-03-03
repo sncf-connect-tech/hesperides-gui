@@ -1,8 +1,6 @@
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const get = require('../../helpers/get');
-var { Then } = require('cucumber');
-var { When } = require('cucumber');
 
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
     await send.clickById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
@@ -66,6 +64,25 @@ Then(/^the textarea of the property "([^"]+)" should contain "([^"]*-\{\{ [^"]* 
     const textAreaElement = await get.elementById(textAreaId);
     await assert.containsValue(textAreaElement, inputText);
 });
+
 Then(/^The autocompletion list suggestions is not displayed$/, async function () {
     await assert.isNotPresentByCss('.e2e-autocomplete-list-suggestions');
+});
+
+Then('only the property {string} and not {string} has dedicated icon check mark button', async function (firstGlobalProperty, secondGlobalProperty) {
+    const firstGlobalPropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ firstGlobalProperty }`);
+    const secondGlobalPropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ secondGlobalProperty }`);
+    await assert.containsText(firstGlobalPropertyElement, '🌍');
+    await assert.containsText(secondGlobalPropertyElement, '🌍');
+    await assert.containsText(firstGlobalPropertyElement, '✅');
+    await assert.noContainText(secondGlobalPropertyElement, '✅');
+});
+
+Then('only the property {string} and not {string} has dedicated icon check mark', async function (firstSimpleProperty, secondSimpleProperty) {
+    const firstSimplePropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ firstSimpleProperty }`);
+    const secondSimplePropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ secondSimpleProperty }`);
+    await assert.containsText(firstSimplePropertyElement, '🛡️');
+    await assert.containsText(secondSimplePropertyElement, '🛡️');
+    await assert.containsText(firstSimplePropertyElement, '✔');
+    await assert.noContainText(secondSimplePropertyElement, '✔');
 });
