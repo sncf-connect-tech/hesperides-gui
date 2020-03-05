@@ -11,7 +11,7 @@ Then('the techno is successfully added to the module', /** @this CustomWorld */ 
     await assert.isPresentById(`e2e-module-technos-${ this.technoBuilder.name }`);
 });
 
-Then(/^the first techno of this module is "(.+)"$/, /** @this CustomWorld */ async function (technoDesc) {
+Then('the first techno of this module is {string}', async function (technoDescription) {
     const technos = await get.elementsByCss('#e2e-module-technos button');
-    assert.containsText(technos[0], technoDesc);
+    assert.containsText(technos[0], technoDescription);
 });

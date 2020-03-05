@@ -16,7 +16,7 @@ Given(/^the platform has these (valued|global) properties$/, /** @this CustomWor
     }
 });
 
-Given(/^the platform has these iterable properties$/, /** @this CustomWorld */ async function (dataTable) {
+Given('the platform has these iterable properties', /** @this CustomWorld */ async function (dataTable) {
     const iterableProperties = [];
     for (const [ iterableName, blockName, propertyName, propertyValue ] of dataTable.raw()) {
         iterableProperties.push(new IterableProperty(iterableName, blockName, propertyName, propertyValue));
@@ -25,7 +25,7 @@ Given(/^the platform has these iterable properties$/, /** @this CustomWorld */ a
     await api.saveValuedProperties(this.platformBuilder, this.deployedModuleBuilder, this.platformHistory);
 });
 
-Given(/^the deployed module has these instances$/, /** @this CustomWorld  */ async function (dataTable) {
+Given('the deployed module has these instances', /** @this CustomWorld  */ async function (dataTable) {
     for (const [ instanceName ] of dataTable.raw()) {
         this.deployedModuleBuilder.addInstance(instanceName);
     }
@@ -33,7 +33,7 @@ Given(/^the deployed module has these instances$/, /** @this CustomWorld  */ asy
     await api.updatePlatform(this.platformBuilder, this.platformHistory, this.platformBuilder.build());
 });
 
-Given(/^the instance "([^"]*)" has these valued properties$/, /** @this CustomWorld */ async function (instanceName, dataTable) {
+Given('the instance {string} has these valued properties', /** @this CustomWorld */ async function (instanceName, dataTable) {
     const properties = [];
     for (const [ name, value ] of dataTable.raw()) {
         properties.push(new ValuedProperty(name, value));
