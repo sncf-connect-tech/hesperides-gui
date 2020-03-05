@@ -13,7 +13,7 @@ When('I open the modal to compare global properties', async function () {
     await send.clickById('e2e-tree-properties-display-global-properties-diff-button');
 });
 
-When(/^I select the platform to compare(?: "([^"]*)")$/, async function (platformName) {
+When('I select the platform to compare {string}', async function (platformName) {
     await send.clickById(`e2e-platform-to-compare-button-${ platformName }`);
 });
 

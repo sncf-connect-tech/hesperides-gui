@@ -57,7 +57,7 @@ Then(/^the property "([^"]*)" value has "([^"]*)" highlighted on the (left|right
     await assert.equalsText(elem, highlightedPart);
 });
 
-Then(/^the property "([^"]*)" has no highlighted characters$/, async function (propertyName) {
+Then('the property {string} has no highlighted characters', async function (propertyName) {
     await assert.isNotPresentByCss(`#e2e-diff-differing-properties-left-${ propertyName } .diff-property-final-value-left .diff-char-highlight-left`);
     await assert.isNotPresentByCss(`#e2e-diff-differing-properties-right-${ propertyName } .diff-property-final-value-right .diff-char-highlight-right`);
 });

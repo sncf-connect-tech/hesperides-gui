@@ -1,6 +1,8 @@
-# Guide de style des tests Cucumber
+# Guide de style
 
-## Expressions régulières et expressions Cucumber
+## Tests
+
+### Expressions régulières et expressions Cucumber
 
 Pour définir les étapes dans la glue, il est possible d'utiliser 2 syntaxes :
 * Expression régulière
@@ -24,7 +26,7 @@ Car bien qu'on puisse définir des caractères optionnels (ici ` not`), il n'est
 
 Voir la [documentation officielle](https://cucumber.io/docs/cucumber/cucumber-expressions/).
 
-## /** @this CustomWorld */
+### /** @this CustomWorld */
 
 Ce commentaire est utilisé en préfixe des fonctions de définitions d'étapes pour indiquer à ESLint (et au développeur) que `this` fait référence à l'objet CustomWorld.
 
