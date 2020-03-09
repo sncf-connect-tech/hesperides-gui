@@ -4,12 +4,13 @@ const mouseOn = async function (elem) {
     await browser.actions().mouseMove(elem).perform();
 };
 
-async function clearInputById(id) {
-    await get.elementById(id).getAttribute('ng-model').clear();
+async function clearInput(elem) {
+    await elem.getAttribute('ng-model').clear();
 }
 
-async function clearInputByCss(selector) {
-    await get.elementByCss(selector).getAttribute('ng-model').clear();
+async function cleanInput(elem, text) {
+    await clearInput(elem);
+    await elem.sendKeys(text);
 }
 
 exports.mouseOnById = async function (id) {
@@ -40,13 +41,11 @@ exports.clickByCssContainingText = async function (selector, text) {
 };
 
 exports.inputById = async function (id, text) {
-    await clearInputById(id);
-    await get.elementById(id).sendKeys(text);
+    await cleanInput(get.elementById(id), text);
 };
 
 exports.inputByCss = async function (selector, text) {
-    await clearInputByCss(selector);
-    await get.elementByCss(selector).sendKeys(text);
+    await cleanInput(get.elementByCss(selector), text);
 };
 
 exports.searchAndSelectFirstByCss = async function (selector, text) {

@@ -26,8 +26,8 @@
       </div>
   </md-toolbar>
     <md-dialog-content>
-      <div class="logic-groups-container">
-          <div class="newFeature"><!-- Lucas: j'insère ceci le 2019/09/25, à enelever d'ici quelques mois -->
+      <div class="logicGroupCopier">
+          <div class="newFeature"><!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
               <p><i class="fa fa-star fa-2x"></i>{{ 'newFeature.label' | translate }}</p>
               </p>{{ 'newFeature.createSeveralLogicalGroupsAtOnce' | translate }}</p>
           </div>
@@ -38,16 +38,16 @@
                  <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="boxNames" name="logicGroupCopyTarget" autocomplete="off">
              </md-input-container>
              <md-button id="e2e-copy-to-new-logic-group-button" ng-click="copyLogicGroupToNewBox(boxNames)" ng-disabled="!boxNames"
-                        class="md-raised md-primary btn-add-group">
+                        class="md-raised md-primary logicGroupCopier__submit">
                  {{'properties.logicGroup.copy.button.label' | translate }}
              </md-button>
          </div>
         <label><strong>{{ 'properties.logicGroup.copy.with.existing' | translate }}</strong></label>
         <div layout="row" flex="100">
           <ul class="shared-list-inline list-logic-group" flex>
-              <li ng-repeat="suggestedBox in getBoxes()">
+              <li ng-repeat="suggestedBox in getSuggestedLogicGroupDestinations()">
                   <md-button id="e2e-logic-group-to-select-{{suggestedBox.name}}" ng-click="copyLogicGroup(box, suggestedBox)"
-                             class="md-raised md-mini logic-group-source">
+                             class="md-raised md-mini logicGroupCopier__suggestion">
                       {{suggestedBox.name}}
                   </md-button>
               </li>
@@ -56,7 +56,7 @@
       </div>
     </md-dialog-content>
     <md-dialog-actions class="dialog-actions" layout="row">
-      <md-button ng-click="closeDialog()" class="md-raised md-primary">
+      <md-button ng-click="closeLogicGroupCopierDialog()" class="md-raised md-primary">
           {{'properties.logicGroup.cancel.button.message'| translate }}</md-button>
   </md-dialog-actions>
   </md-dialog>

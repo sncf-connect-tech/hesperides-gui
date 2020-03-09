@@ -42,3 +42,18 @@ Feature: Copy logic groups
      And I get the following success notification: "The platform has been updated"
      When I copy this logic group "LOGIC-1" to the existing logic group "LOGIC-2"
      Then I do not get any "success" notification
+     And I do not get any "error" notification
+
+    Scenario:  Copy logic group to an existing logic group with same deployed modules names but different versions or releaseType should display a confirmation popIn
+      Given an existing module named "module-1" with version "1.0"
+      And an existing module named "module-1" with version "2.0"
+      And an existing platform
+      And I open this platform
+      And I add a logic group "LOGIC-1" to this platform
+      And I add the existing module named "module-1 1.0" to logic group "LOGIC-1"
+      And I get the following success notification: "The platform has been updated"
+      And I add a logic group "LOGIC-2" to this platform
+      And I add the existing module named "module-1 2.0" to logic group "LOGIC-2"
+      And I get the following success notification: "The platform has been updated"
+      When I copy this logic group "LOGIC-1" to the existing logic group "LOGIC-2"
+      Then I get a confirmation popIn

@@ -1,20 +1,21 @@
-.logic-groups-container{
-    padding-top: 20px;
-    padding-left: 20px;
-}
-.logic-group-source {
-    height: 5px !important;
-    margin-top: 0px !important;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-    padding-top: 0px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    min-width: 80px !important;
+.logicGroupCopier {
+    padding-top: 1.25rem;
+    padding-left: 1.25rem;
 }
 
-.btn-add-group{
-    margin-top: 10px;
-    max-height: 40px;
-    margin-left: 50px;
+.logicGroupCopier__suggestion {
+    height: 5px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    min-width: 80px;
+}
+
+.logicGroupCopier__submit {
+    margin-top: 0.625rem;
+    max-height: 2.5rem;
+    margin-left: 3.125rem;
 }

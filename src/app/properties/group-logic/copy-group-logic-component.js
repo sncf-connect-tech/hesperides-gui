@@ -16,40 +16,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('hesperides.properties.groupLogic', [ 'hesperides.properties', 'cgNotify', 'hesperides.localChanges' ])
-    .component('groupLogicComponent', {
+angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'cgNotify', 'hesperides.localChanges' ])
+    .component('logicGroupComponent', {
         templateUrl: 'copy-group-logic-modal.html',
-        controller: 'GroupLogicController',
+        controller: 'LogicGroupController',
     })
-    .controller('GroupLogicController', function ($scope, $mdDialog, ApplicationModule) {
-        $scope.logicGroups = [];
-        $scope.getBoxes = function () {
-            const boxes = [];
-            Object.keys($scope.mainBox.children).forEach(function (key) {
-                const box = $scope.mainBox.children[key];
-                if (box.name !== $scope.box.name) {
-                    boxes.push(box);
-                }
-            });
-            return boxes;
+    .controller('LogicGroupController', function ($scope, $mdDialog, ApplicationModule, $translate) {
+        $scope.getSuggestedLogicGroupDestinations = function () {
+            return Object.values($scope.mainBox.children)
+                .filter((logicGroup) => logicGroup.name !== $scope.box.name);
         };
 
-        function containModule(box, moduleToFind) {
-            return _.filter(box.modules, function (module) {
-                return (_.isMatch(module, { name: moduleToFind.name, version: moduleToFind.version,
-                    is_working_copy: moduleToFind.is_working_copy }));
-            }).length > 0;
+        function containModule(logicGroup, moduleToFind) {
+            return _.filter(logicGroup.modules,
+                { name: moduleToFind.name }).length > 0;
         }
 
-        function containModuleWithDifferentVersionOrWorkingCopy(box, moduleToFind) {
-            return _.filter(box.modules, function (module) {
+        function containModuleWithDifferentVersionOrWorkingCopy(logicGroup, moduleToFind) {
+            return _.filter(logicGroup.modules, function (module) {
                 return (module.name === moduleToFind.name) && (module.version !== moduleToFind.version ||
                     module.is_working_copy !== moduleToFind.is_working_copy);
             }).length > 0;
         }
 
         $scope.copyLogicGroupToNewBox = function (logicGroupNames) {
-            let parentBox = $scope.mainBox;
+            let parentBox = $scope.rootBox;
             const localLogicGroups = logicGroupNames.split('#').filter(_.identity);
             localLogicGroups.forEach((logicGroupName) => {
                 if (!parentBox.children[logicGroupName]) {
@@ -60,40 +51,44 @@ angular.module('hesperides.properties.groupLogic', [ 'hesperides.properties', 'c
             $scope.copyLogicGroup($scope.box, parentBox);
         };
 
-        $scope.copyLogicGroup = function (boxSource, boxDestination) {
-            let isCopied = false;
-            boxSource.modules.forEach((module) => {
-                if (!containModule(boxDestination, module)) {
-                    isCopied = true;
-                    boxDestination.modules.push(new ApplicationModule({
+        $scope.copyLogicGroup = function (logicGroupSource, logicGroupDestination) {
+            let shouldPerformPlatformUpdate = false;
+            logicGroupSource.modules.forEach((module) => {
+                if (!containModule(logicGroupDestination, module)) {
+                    shouldPerformPlatformUpdate = true;
+                    logicGroupDestination.modules.push(new ApplicationModule({
                         name: module.name,
                         version: module.version,
                         is_working_copy: module.is_working_copy,
-                        path: boxDestination.get_path(),
+                        path: logicGroupDestination.get_path(),
                     }));
-                } else if (containModuleWithDifferentVersionOrWorkingCopy(boxDestination, module)) {
-                    const confirmation = confirm('Confirmation!');
-                    if (confirmation) {
-                        isCopied = true;
-                        boxDestination.modules.push(new ApplicationModule({
-                            name: module.name,
-                            version: module.version,
-                            is_working_copy: module.is_working_copy,
-                            path: boxDestination.get_path(),
-                        }));
-                    }
+                } else if (containModuleWithDifferentVersionOrWorkingCopy(logicGroupDestination, module)) {
+                    $translate('properties.logicGroup.copy.with.existing.confirmation').then(function (label) {
+                        const confirmation = confirm(label);
+                        if (confirmation) {
+                            logicGroupDestination.modules.push(new ApplicationModule({
+                                name: module.name,
+                                version: module.version,
+                                is_working_copy: module.is_working_copy,
+                                path: logicGroupDestination.get_path(),
+                            }));
+                            $scope.save_platform_from_box($scope.rootBox).then(function () {
+                                $scope.properties = null;
+                                $scope.instance = null;
+                            });
+                        }
+                    });
                 }
             });
-            if (isCopied) {
-                $scope.save_platform_from_box($scope.mainBox).then(function () {
+            if (shouldPerformPlatformUpdate) {
+                $scope.save_platform_from_box($scope.rootBox).then(function () {
                     $scope.properties = null;
                     $scope.instance = null;
                 });
             }
         };
 
-
-        $scope.closeDialog = function () {
+        $scope.closeLogicGroupCopierDialog = function () {
             $mdDialog.cancel();
         };
     });

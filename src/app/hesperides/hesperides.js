@@ -36,7 +36,7 @@ const MODULE_DEPS = [
     'hesperides.techno',
     'hesperides.template',
     'hesperides.user',
-    'hesperides.properties.groupLogic',
+    'hesperides.properties.logicGroup',
 // cf. https://github.com/sc-date-time/sc-date-time#options pour les 2 configs ci-dessous :
 ];
 if (SENTRY_DSN) {

@@ -25,6 +25,7 @@ exports.generateAppBundles = function () {
         'src/app/techno/techno.js',
         'src/app/template/template.js',
         'src/app/user/user.js',
+        'src/app/properties/group-logic/copy-group-logic-component.js',
       ]).save('src/app/app.js');
     buildify().concat([
         'src/app/hesperides.css',
@@ -38,6 +39,7 @@ exports.generateAppBundles = function () {
         'src/app/local_changes/localChanges.css',
         'src/app/sc-date-time/sc-date-time.css',
         'src/app/user/user.css',
+        'src/app/properties/group-logic/copy-group-logic-modal.css',
       ]).save('src/app/app.css');
 };
 

@@ -187,6 +187,7 @@
   "properties.logicGroup.copy.with.new": "Copier vers un nouveau groupe logique",
   "properties.logicGroup.cancel.button.message": "Fermer la fenêtre",
   "properties.logicGroup.copy.new.logicGroup": "Nom du groupe logique",
+  "properties.logicGroup.copy.with.existing.confirmation": "Un module avec le même nom mais avec des versions ou workingCopy différents existent déja! Voulez vous vraiment continuer la copie?",
   "properties.module.add": "Ajouter un module",
   "properties.module.version.modal.title": "Changer la version de ",
   "properties.module.version.modal.newVersion": "Nouvelle version",

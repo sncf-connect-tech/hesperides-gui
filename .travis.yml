@@ -339,6 +339,16 @@ jobs:
       provider: script
       script: travis_retry bash .travis/run_bdd_test.sh platforms/search-applications.feature
 
+     - name: BDD Tests - Platforms - Copy logic group
+       stage: test
+       services:
+         - docker
+         - xvfb
+       addons:
+         chrome: stable
+       provider: script
+       script: travis_retry bash .travis/run_bdd_test.sh platforms/copy-group-logic.feature
+
     - name: Deploy to Docker hub
       stage: deploy
       if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"

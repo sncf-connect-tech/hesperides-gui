@@ -5,6 +5,7 @@ exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
     capabilities: {
         browserName: 'chrome',
+        unexpectedAlertBehaviour: 'accept',
         chromeOptions: {
             // Avoid "unknown error: DevToolsActivePort file doesn't exist"
             args: [ '--no-sandbox' ],
