@@ -150,7 +150,6 @@ Feature: Filter properties and display them as a list
     Then only the property "global-property-2" and not "global-property-1" has dedicated icon check mark button
 
   # Issue 380
-  @wip
   Scenario: Display an icon showing that the value of a property is the same as the default value
     Given an existing template with this content
     """
