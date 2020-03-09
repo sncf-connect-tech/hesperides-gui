@@ -166,6 +166,39 @@ Feature: Filter properties and display them as a list
     Then the value of property "simple-property-1" is not marked as being the same as the default value
     And the value of property "simple-property-2" is marked as being the same as the default value
 
+  # Issue 387
+  Scenario: Display an icon showing that the value of global property is the same as the default value
+    Given an existing template with this content
+     """
+    {{ global-property-1 }}
+    {{ global-property-2 }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+      | global-property-1 | global-value |
+      | global-property-2 |              |
+    When I open this platform
+    And I open the deployed module properties
+    Then only the property "global-property-2" and not "global-property-1" has dedicated icon check mark button
+
+  # Issue 380
+  Scenario: Display an icon showing that the value of a property is the same as the default value
+    Given an existing template with this content
+    """
+    {{ simple-property-1 | @default 45 }}
+    {{ simple-property-2 | @default aa }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these valued properties
+      | simple-property-1 | simple-value |
+      | simple-property-2 | aa           |
+    When I open this platform
+    And I open the deployed module properties
+    Then the value of property "simple-property-1" is not marked as being the same as the default value
+    And the value of property "simple-property-2" is marked as being the same as the default value
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder
