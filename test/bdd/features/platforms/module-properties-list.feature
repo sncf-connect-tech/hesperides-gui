@@ -80,7 +80,6 @@ Feature: Filter properties and display them as a list
     Then the property "global-property" is not displayed
     And the property "simple-property" is displayed
 
-    @wip
   Scenario: Display a tooltip when property is valued by instances
     Given an existing template with this content
     """
@@ -167,7 +166,8 @@ Feature: Filter properties and display them as a list
     Then the value of property "simple-property-1" is not marked as being the same as the default value
     And the value of property "simple-property-2" is marked as being the same as the default value
 
-  Scenario: Display dedicated icon check mark button if global property value is equal to overloaded value
+  # Issue 387
+  Scenario: Display an icon showing that the value of global property is the same as the default value
     Given an existing template with this content
      """
     {{ global-property-1 }}
@@ -177,12 +177,14 @@ Feature: Filter properties and display them as a list
     And an existing platform with this module
     And the platform has these global properties
       | global-property-1 | global-value |
-      | global-property-2 |  |
+      | global-property-2 |              |
     When I open this platform
     And I open the deployed module properties
     Then only the property "global-property-2" and not "global-property-1" has dedicated icon check mark button
 
-  Scenario: Display dedicated icon check mark if default property value is equal to overloaded value
+  # Issue 380
+  @wip
+  Scenario: Display an icon showing that the value of a property is the same as the default value
     Given an existing template with this content
     """
     {{ simple-property-1 | @default 45 }}
@@ -192,10 +194,11 @@ Feature: Filter properties and display them as a list
     And an existing platform with this module
     And the platform has these valued properties
       | simple-property-1 | simple-value |
-      | simple-property-2 | aa |
+      | simple-property-2 | aa           |
     When I open this platform
     And I open the deployed module properties
-    Then only the property "simple-property-2" and not "simple-property-1" has dedicated icon check mark
+    Then the value of property "simple-property-1" is not marked as being the same as the default value
+    And the value of property "simple-property-2" is marked as being the same as the default value
 
 #  Scenario: Find the default value in the placeholder
 
