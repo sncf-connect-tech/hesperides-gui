@@ -71,22 +71,21 @@ Then('the tooltip of property {string} should contain', async function (property
     }
 });
 
-Then('only the property {string} and not {string} has dedicated icon check mark button', async function (firstGlobalProperty, secondGlobalProperty) {
-    const firstGlobalPropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ firstGlobalProperty }`);
-    const secondGlobalPropertyElement = await get.elementById(`simple-properties-list_key-property-input-${ secondGlobalProperty }`);
-    await assert.containsText(firstGlobalPropertyElement, '🌍');
-    await assert.containsText(secondGlobalPropertyElement, '🌍');
-    await assert.containsText(firstGlobalPropertyElement, '✅');
-    await assert.doesNotContainText(secondGlobalPropertyElement, '✅');
+Then(/^the value of( global)? property "([^"]*)" is not marked as being the same as the default value$/, async function (global, property) {
+    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
+    if (global) {
+        await assert.doesNotContainText(propertyElement, '✅');
+    } else {
+        await assert.doesNotContainText(propertyElement, '✔');
+    }
 });
 
-Then('the value of property {string} is not marked as being the same as the default value', async function (property) {
+Then(/^the value of( global)? property "([^"]*)" is marked as being the same as the default value$/, async function (global, property) {
     const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.doesNotContainText(propertyElement, '✔');
-});
-
-Then('the value of property {string} is marked as being the same as the default value', async function (property) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.containsText(propertyElement, '✔');
-    await assert.containsText(propertyElement, '🛡️');
+    if (global) {
+        await assert.containsText(propertyElement, '✅');
+    } else {
+        await assert.containsText(propertyElement, '✔');
+        await assert.containsText(propertyElement, '🛡️');
+    }
 });
