@@ -21,5 +21,5 @@ When('I submit valid values to copy the existing platform', /** @this CustomWorl
 
 Then(/^the platform's module is also copied$/, /** @this CustomWorld */ async function () {
     const logicGroup = this.deployedModuleBuilder.modulePath.split('#')[2];
-    await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ logicGroup }-${ this.moduleBuilder.name }`);
+    await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ logicGroup }-${ this.moduleBuilder.name }-${ this.moduleBuilder.version }`);
 });
