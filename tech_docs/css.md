@@ -10,6 +10,7 @@ Quelques règles de base :
 - on n'utilise pas de sélecteur d'`#id` en CSS
 - on limite le cumul de sélecteurs en employant des classes dédiés,
 en employant [la convention de nommage BEM](http://getbem.com/naming/): `.block__elem--modifier`
+Exemples : `.User__appList`, `.PropertiesList__valueAutocomplete__choice`
 - les termes à proscrire pour nomme les classes CSS : `hesperides`
 
 ## Autres
