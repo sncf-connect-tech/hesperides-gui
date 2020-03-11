@@ -4,6 +4,9 @@ Feature: Search technos
     Given an existing techno
     When I open the techno menu
     And I search and select this techno in the menu
+    And I am redirected to the selected techno page
+    And I reopen the techno menu
+    And I search and select this techno in the menu
     Then I am redirected to the selected techno page
 
   # Issue 347
