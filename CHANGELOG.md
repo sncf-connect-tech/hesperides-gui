@@ -25,6 +25,22 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## _(unreleased)_
+### Added
+
+- Autocomplétion des propriétés globales dans le champ de valorisation des autres propriétés - close #148. [Bhoye05]
+
+- Info qu'une propriété est valorisée au niveau instance - close #341 (#366) [Bhoye05]
+
+- Option pour cacher les propriétés "supprimées" dans le diff - close #288 (#379) [Bhoye05]
+
+
+### Fixed
+
+- #327 Modifier le switch de sélection des globales dans la liste d… (#383) [Bhoye05]
+
+
+
 ## 2020-01-24
 ### Added
 
