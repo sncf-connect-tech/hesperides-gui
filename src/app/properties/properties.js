@@ -476,8 +476,8 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
         $scope.showDialogCopyLogicGroup = function (platform, box, mainBox) {
             const modalScope = $scope.$new();
             modalScope.platform = platform;
-            modalScope.box = box;
-            modalScope.rootBox = mainBox;
+            modalScope.selectedLogicGroup = box;
+            modalScope.logicGroupsRoot = mainBox;
             modalScope.Box = Box;
             $mdDialog.show({
                 templateUrl: 'properties/group-logic/copy-group-logic-modal.html',

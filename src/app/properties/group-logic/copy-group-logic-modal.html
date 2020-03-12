@@ -35,9 +35,9 @@
          <div layout="row" flex="100">
              <md-input-container>
                  <label>{{ 'properties.logicGroup.copy.new.logicGroup' | translate }}</label>
-                 <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="boxNames" name="logicGroupCopyTarget" autocomplete="off">
+                 <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="logicGroupNames" name="logicGroupCopyTarget" autocomplete="off">
              </md-input-container>
-             <md-button id="e2e-copy-to-new-logic-group-button" ng-click="copyLogicGroupToNewBox(boxNames)" ng-disabled="!boxNames"
+             <md-button id="e2e-copy-to-new-logic-group-button" ng-click="copyLogicGroupToNewBox(logicGroupNames)" ng-disabled="!logicGroupNames"
                         class="md-raised md-primary logicGroupCopier__submit">
                  {{'properties.logicGroup.copy.button.label' | translate }}
              </md-button>
@@ -45,10 +45,10 @@
         <label><strong>{{ 'properties.logicGroup.copy.with.existing' | translate }}</strong></label>
         <div layout="row" flex="100">
           <ul class="shared-list-inline list-logic-group" flex>
-              <li ng-repeat="suggestedBox in getSuggestedLogicGroupDestinations()">
-                  <md-button id="e2e-logic-group-to-select-{{suggestedBox.name}}" ng-click="copyLogicGroup(box, suggestedBox)"
+              <li ng-repeat="suggestedLogicGroup in getSuggestedLogicGroupDestinations()">
+                  <md-button id="e2e-logic-group-to-select-{{suggestedLogicGroup.name}}" ng-click="copyLogicGroup(selectedLogicGroup, suggestedLogicGroup)"
                              class="md-raised md-mini logicGroupCopier__suggestion">
-                      {{suggestedBox.name}}
+                      {{suggestedLogicGroup.name}}
                   </md-button>
               </li>
           </ul>
@@ -58,5 +58,5 @@
     <md-dialog-actions class="dialog-actions" layout="row">
       <md-button ng-click="closeLogicGroupCopierDialog()" class="md-raised md-primary">
           {{'properties.logicGroup.cancel.button.message'| translate }}</md-button>
-  </md-dialog-actions>
+    </md-dialog-actions>
   </md-dialog>

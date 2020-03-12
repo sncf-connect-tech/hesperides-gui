@@ -22,9 +22,23 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
         controller: 'LogicGroupController',
     })
     .controller('LogicGroupController', function ($scope, $mdDialog, ApplicationModule, $translate) {
+        const extractedLogicGroups = [];
+
+        function extractLogicGroups(logicGroupToExplode) {
+            const logicGroupsList = Object.values(logicGroupToExplode.children);
+            logicGroupsList.forEach((logicGroup) => {
+                if (extractedLogicGroups.filter((extracted) => extracted.name === logicGroup.name).length === 0) {
+                    extractedLogicGroups.push(logicGroup);
+                }
+                if (!_.isEmpty(logicGroup.children)) {
+                    extractLogicGroups(logicGroup);
+                }
+            });
+        }
+
         $scope.getSuggestedLogicGroupDestinations = function () {
-            return Object.values($scope.mainBox.children)
-                .filter((logicGroup) => logicGroup.name !== $scope.box.name);
+            extractLogicGroups($scope.logicGroupsRoot);
+            return extractedLogicGroups.filter((logicGroup) => logicGroup.name !== $scope.selectedLogicGroup.name);
         };
 
         function containModule(logicGroup, moduleToFind) {
@@ -40,15 +54,15 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
         }
 
         $scope.copyLogicGroupToNewBox = function (logicGroupNames) {
-            let parentBox = $scope.rootBox;
+            let logicGroupsRoot = $scope.logicGroupsRoot;
             const localLogicGroups = logicGroupNames.split('#').filter(_.identity);
             localLogicGroups.forEach((logicGroupName) => {
-                if (!parentBox.children[logicGroupName]) {
-                    parentBox.children[logicGroupName] = new $scope.Box({ parent_box: parentBox, name: logicGroupName.trim() });
+                if (!logicGroupsRoot.children[logicGroupName]) {
+                    logicGroupsRoot.children[logicGroupName] = new $scope.Box({ parent_box: logicGroupsRoot, name: logicGroupName.trim() });
                 }
-                parentBox = parentBox.children[logicGroupName];
+                logicGroupsRoot = logicGroupsRoot.children[logicGroupName];
             });
-            $scope.copyLogicGroup($scope.box, parentBox);
+            $scope.copyLogicGroup($scope.selectedLogicGroup, logicGroupsRoot);
         };
 
         $scope.copyLogicGroup = function (logicGroupSource, logicGroupDestination) {
@@ -72,7 +86,7 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
                                 is_working_copy: module.is_working_copy,
                                 path: logicGroupDestination.get_path(),
                             }));
-                            $scope.save_platform_from_box($scope.rootBox).then(function () {
+                            $scope.save_platform_from_box($scope.logicGroupsRoot).then(function () {
                                 $scope.properties = null;
                                 $scope.instance = null;
                             });
@@ -81,7 +95,7 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
                 }
             });
             if (shouldPerformPlatformUpdate) {
-                $scope.save_platform_from_box($scope.rootBox).then(function () {
+                $scope.save_platform_from_box($scope.logicGroupsRoot).then(function () {
                     $scope.properties = null;
                     $scope.instance = null;
                 });
