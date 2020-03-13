@@ -137,7 +137,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         $scope.open_properties_page = function (application_name, platform_name) {
             $scope.applicationSearched = '';
             // cas nominal pour md-autocomplete: une fois un item selectionné l'autocompletion ne fonctionne plus
-            // si le text de l'item sélectionné n'est pas vidé du champ ou au moins un caratère supprimé
+            // si le texte de l'item sélectionné n'est pas vidé du champ ou au moins un caratère supprimé
             $scope.ctrl.searchText = '';
             const search = {};
             if (platform_name) {
