@@ -4,14 +4,14 @@
 }
 
 .logicGroupCopier__suggestion {
-    height: 5px;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-top: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    min-width: 80px;
+    height: 0.313rem;
+    margin-top: 0rem;
+    margin-left: 0rem;
+    margin-right: 0rem;
+    padding-top: 0rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    min-width: 5rem;
 }
 
 .logicGroupCopier__submit {

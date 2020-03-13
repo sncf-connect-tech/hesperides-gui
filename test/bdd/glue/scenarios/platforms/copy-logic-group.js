@@ -24,7 +24,6 @@ Then('the deployed module {string} of logic group {string} are successful copied
     await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ logicGroupDestination }-${ module }-${ this.moduleBuilder.version }`);
 });
 
-
 Then('the deployed module {string} with version {string} is successful copied to logic group {string}', async function (module, version, logicGroupDestination) {
     await assert.isPresentById(`e2e-tree-renderer-edit-module-button-${ logicGroupDestination }-${ module }-${ version }`);
 });
