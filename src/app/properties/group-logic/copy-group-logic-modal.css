@@ -1,6 +1,11 @@
+md-dialog {
+    min-height: 300px !important;
+}
+
 .logicGroupCopier {
     padding-top: 1.25rem;
     padding-left: 1.25rem;
+
 }
 
 .logicGroupCopier__suggestion {
@@ -18,4 +23,15 @@
     margin-top: 0.625rem;
     max-height: 2.5rem;
     margin-left: 3.125rem;
+}
+
+.selectionType__radioGroup{
+    margin-bottom: 0.938rem;
+    display: flex;
+    justify-content: center;
+}
+
+.copy__outline {
+    display: flex;
+    justify-content: center;
 }

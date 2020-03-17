@@ -1,0 +1,3 @@
+[0311/171230.395:ERROR:file_io_win.cc(161)] CreateFile C:\Temp\scoped_dir16964_823025831\Crashpad\settings.dat: Le chemin d’accès spécifié est introuvable. (0x3)
+[0311/171230.396:ERROR:file_io_win.cc(170)] CreateFile C:\Temp\scoped_dir16964_823025831\Crashpad\reports\6f9453e2-3afd-4b08-a433-20ab1f3564d6.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0311/171230.396:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed

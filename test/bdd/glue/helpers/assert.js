@@ -63,6 +63,13 @@ exports.notification = async function (success, message) {
     await this.containsText(elements.get(0), message);
 };
 
+exports.warnNotification = async function (warn, message) {
+    const warnClassName = warn ? '.warn' : '';
+    const elements = get.elementsByCss(`.cg-notify-message${ warnClassName }`);
+    await this.elementsExist(elements);
+    await this.containsText(elements.get(0), message);
+};
+
 exports.thereAreNoNotifications = async function (success) {
     const successClassName = success ? '.success' : '';
     const elements = get.elementsByCss(`.cg-notify-message${ successClassName }`);

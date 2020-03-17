@@ -21,8 +21,12 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
         templateUrl: 'copy-group-logic-modal.html',
         controller: 'LogicGroupController',
     })
-    .controller('LogicGroupController', function ($scope, $mdDialog, ApplicationModule, $translate) {
+    .controller('LogicGroupController', function ($scope, $mdDialog, ApplicationModule, $translate, notify) {
         const extractedLogicGroups = [];
+        $scope.shouldPerformPlatformUpdate = false;
+        $scope.displayCopyOutline = false;
+        $scope.destinationLogicGroup = null;
+        $scope.suggestedLogicGroupButtonArray = [];
 
         function extractLogicGroups(logicGroupToExplode) {
             const logicGroupsList = Object.values(logicGroupToExplode.children);
@@ -41,6 +45,23 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
             return extractedLogicGroups.filter((logicGroup) => logicGroup.name !== $scope.selectedLogicGroup.name);
         };
 
+        $scope.getSuggestedLogicGroupButtons = function () {
+            $scope.getSuggestedLogicGroupDestinations().forEach((logicGroup) => {
+                $scope.suggestedLogicGroupButtonArray.push({ name: logicGroup.name, clicked: false });
+            });
+        };
+
+        $scope.setClickedStatus = function (logicGroupName) {
+            $scope.suggestedLogicGroupButtonArray.forEach(function (suggestedLogicGroupButton) {
+                suggestedLogicGroupButton.clicked = suggestedLogicGroupButton.name === logicGroupName;
+            });
+        };
+
+        $scope.getClickedStatus = function (logicGroupName) {
+            return $scope.suggestedLogicGroupButtonArray
+                .filter((suggestedLogicGroupButton) => suggestedLogicGroupButton.name === logicGroupName)[0].clicked;
+        };
+
         function containModule(logicGroup, moduleToFind) {
             return _.filter(logicGroup.modules,
                 { name: moduleToFind.name }).length > 0;
@@ -53,6 +74,12 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
             }).length > 0;
         }
 
+        $scope.prepareCopy = function (logicGroupSource, logicGroupDestination) {
+            $scope.fromLogicGroup = logicGroupSource;
+            $scope.destinationLogicGroup = logicGroupDestination;
+            $scope.displayCopyOutline = true;
+        };
+
         $scope.copyLogicGroupToNewBox = function (logicGroupNames) {
             let logicGroupsRoot = $scope.logicGroupsRoot;
             const localLogicGroups = logicGroupNames.split('#').filter(_.identity);
@@ -62,14 +89,15 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
                 }
                 logicGroupsRoot = logicGroupsRoot.children[logicGroupName];
             });
-            $scope.copyLogicGroup($scope.selectedLogicGroup, logicGroupsRoot);
+            // $scope.copyLogicGroup($scope.selectedLogicGroup, logicGroupsRoot);
+            $scope.prepareCopy($scope.selectedLogicGroup, logicGroupsRoot);
         };
 
         $scope.copyLogicGroup = function (logicGroupSource, logicGroupDestination) {
-            let shouldPerformPlatformUpdate = false;
             logicGroupSource.modules.forEach((module) => {
                 if (!containModule(logicGroupDestination, module)) {
-                    shouldPerformPlatformUpdate = true;
+                    $scope.shouldPerformPlatformUpdate = true;
+                    $scope.destinationLogicGroup = logicGroupDestination;
                     logicGroupDestination.modules.push(new ApplicationModule({
                         name: module.name,
                         version: module.version,
@@ -80,25 +108,32 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
                     $translate('properties.logicGroup.copy.with.existing.confirmation').then(function (label) {
                         const confirmation = confirm(label);
                         if (confirmation) {
+                            $scope.shouldPerformPlatformUpdate = true;
+                            $scope.destinationLogicGroup = logicGroupDestination;
                             logicGroupDestination.modules.push(new ApplicationModule({
                                 name: module.name,
                                 version: module.version,
                                 is_working_copy: module.is_working_copy,
                                 path: logicGroupDestination.get_path(),
                             }));
-                            $scope.save_platform_from_box($scope.logicGroupsRoot).then(function () {
-                                $scope.properties = null;
-                                $scope.instance = null;
-                            });
                         }
+                    });
+                } else {
+                    $translate('properties.logicGroup.copy.message').then(function (label) {
+                        notify({ classes: [ 'warn' ], message: label });
                     });
                 }
             });
-            if (shouldPerformPlatformUpdate) {
+        };
+
+        $scope.save = function () {
+            $scope.copyLogicGroup($scope.fromLogicGroup, $scope.destinationLogicGroup);
+            if ($scope.shouldPerformPlatformUpdate) {
                 $scope.save_platform_from_box($scope.logicGroupsRoot).then(function () {
                     $scope.properties = null;
                     $scope.instance = null;
                 });
+                $scope.shouldPerformPlatformUpdate = false;
             }
         };
 
