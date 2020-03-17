@@ -98,14 +98,3 @@ Then('only the property {string} and not {string} has dedicated icon check mark 
     await assert.containsText(firstGlobalPropertyElement, '✅');
     await assert.doesNotContainText(secondGlobalPropertyElement, '✅');
 });
-
-Then('the value of property {string} is not marked as being the same as the default value', async function (property) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.doesNotContainText(propertyElement, '✔');
-});
-
-Then('the value of property {string} is marked as being the same as the default value', async function (property) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.containsText(propertyElement, '✔');
-    await assert.containsText(propertyElement, '🛡️');
-});
