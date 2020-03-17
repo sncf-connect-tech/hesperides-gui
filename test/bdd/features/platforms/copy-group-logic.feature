@@ -45,7 +45,6 @@ Feature: Copy logic groups
     And I do not get any "success" notification
     And I do not get any "error" notification
 
-  @wip
   Scenario:  Copy logic group to an existing logic group with same deployed modules names but different versions or releaseType
     Given an existing module named "module-1" with version "1.0"
     And an existing module named "module-1" with version "2.0"
