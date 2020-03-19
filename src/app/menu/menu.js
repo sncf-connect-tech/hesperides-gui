@@ -56,6 +56,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                 $location.path(`/techno/${ name }/${ version }`).search({});
             }
             $scope.technoSearched = '';
+            $scope.ctrl.searchText = '';
             $mdMenu.destroy(); // dans le cas où on est appelé par l'autocomplete de menu.html
             $scope.closeTechnoDialog(); // dans le cas où on est appelé par techno-menu-modal*.html
         };
@@ -90,6 +91,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             if (is_working_copy) {
                 $location.search({ type: 'workingcopy' });
             }
+            $scope.ctrl.searchText = '';
             $scope.moduleSearched = '';
             $mdMenu.destroy();
         };
@@ -134,6 +136,9 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
         $scope.open_properties_page = function (application_name, platform_name) {
             $scope.applicationSearched = '';
+            // cas nominal pour md-autocomplete: une fois un item selectionné l'autocompletion ne fonctionne plus
+            // si le texte de l'item sélectionné n'est pas vidé du champ ou au moins un caratère supprimé
+            $scope.ctrl.searchText = '';
             const search = {};
             if (platform_name) {
                 search.platform = platform_name;
