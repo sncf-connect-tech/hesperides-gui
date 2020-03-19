@@ -20,7 +20,6 @@ When('I copy this logic group {string} to a new logic group {string}', async fun
     await send.clickById(`e2e-tree-renderer-copy-box-button-${ logicGroupSource }`);
     await send.clickById('e2e-copyToNewLogicGroup__radio');
     await send.inputById('e2e-copy-to-new-logic-group-input', newLogicGroup);
-    await send.clickById('e2e-copy-to-new-logic-group-button');
     await send.clickById('e2e-saveButton');
 });
 

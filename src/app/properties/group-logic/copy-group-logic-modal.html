@@ -22,15 +22,11 @@
 <md-dialog flex="50">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>{{ 'properties.logicGroup.copy' | translate }}</h2>
+            <h2>{{ 'properties.logicGroup.copy' | translate: {logicGroupName: selectedLogicGroup.name } }}</h2>
         </div>
     </md-toolbar>
     <md-dialog-content>
         <div class="logicGroupCopier">
-            <div class="newFeature"><!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
-                <p><i class="fa fa-star fa-2x"></i>{{ 'newFeature.label' | translate }}</p>
-                </p>{{ 'newFeature.createSeveralLogicalGroupsAtOnce' | translate }}</p>
-            </div>
             <div layout="row" flex="100" class="selectionType__radioGroup">
                 <md-radio-group ng-model="selected" layout="row" ng-change="getSuggestedLogicGroupButtons()">
                     <md-radio-button value="new" class="md-primary" id="e2e-copyToNewLogicGroup__radio">
@@ -41,18 +37,18 @@
                     </md-radio-button>
                 </md-radio-group>
             </div>
-            <label ng-if="selected === 'new'"><strong>{{ 'properties.logicGroup.copy.with.new' | translate }}</strong></label>
+            <div class="newFeature" ng-if="selected === 'new'">
+                <!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
+                </p>{{ 'newFeature.createSeveralLogicalGroupsAtOnce' | translate }}</p>
+            </div>
+            <label ng-if="selected === 'new'"><strong>{{ 'properties.logicGroup.copy.with.new' | translate
+                }}</strong></label>
             <div layout="row" flex="100" ng-if="selected === 'new'">
                 <md-input-container>
                     <label>{{ 'properties.logicGroup.copy.new.logicGroup' | translate }}</label>
-                    <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="logicGroupNames"
+                    <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="formDatas.logicGroupNames"
                            name="logicGroupCopyTarget" autocomplete="off">
                 </md-input-container>
-                <md-button id="e2e-copy-to-new-logic-group-button" ng-click="copyLogicGroupToNewBox(logicGroupNames)"
-                           ng-disabled="!logicGroupNames"
-                           class="md-raised md-primary logicGroupCopier__submit">
-                    {{'properties.logicGroup.copy.button.label' | translate }}
-                </md-button>
             </div>
             <label ng-if="selected ==='existing'"><strong>{{ 'properties.logicGroup.copy.with.existing' | translate
                 }}</strong></label>
@@ -70,13 +66,15 @@
             </div>
             <div layout="row" class="copy__outline">
                 <label ng-if="displayCopyOutline && destinationLogicGroup">
-                    <strong>{{'properties.logicGroup.copy.outline' | translate: {logicGroupSource: selectedLogicGroup.name, destinationLogicGroup: destinationLogicGroup.name} }}</strong>
+                    <strong>{{'properties.logicGroup.copy.outline' | translate: {logicGroupSource:
+                        selectedLogicGroup.name, destinationLogicGroup: destinationLogicGroup.name} }}</strong>
                 </label>
             </div>
         </div>
     </md-dialog-content>
     <md-dialog-actions class="dialog-actions" layout="row">
-        <md-button id="e2e-saveButton" ng-click="save()" class="md-raised md-primary" ng-disabled="!destinationLogicGroup">
+        <md-button id="e2e-saveButton" ng-click="save()" class="md-raised md-primary"
+                   ng-disabled="isButtonSaveDisabled()">
             {{'properties.logicGroup.save.button.label' | translate }}
         </md-button>
         <md-button ng-click="closeLogicGroupCopierDialog()" class="md-raised md-primary">

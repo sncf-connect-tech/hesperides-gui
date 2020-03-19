@@ -27,6 +27,9 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
         $scope.displayCopyOutline = false;
         $scope.destinationLogicGroup = null;
         $scope.suggestedLogicGroupButtonArray = [];
+        $scope.formDatas = {
+            'logicGroupNames': ''
+        };
 
         function extractLogicGroups(logicGroupToExplode) {
             const logicGroupsList = Object.values(logicGroupToExplode.children);
@@ -46,6 +49,9 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
         };
 
         $scope.getSuggestedLogicGroupButtons = function () {
+            $scope.suggestedLogicGroupButtonArray = [];
+            $scope.destinationLogicGroup = null;
+            $scope.formDatas.logicGroupNames = '';
             $scope.getSuggestedLogicGroupDestinations().forEach((logicGroup) => {
                 $scope.suggestedLogicGroupButtonArray.push({ name: logicGroup.name, clicked: false });
             });
@@ -80,17 +86,16 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
             $scope.displayCopyOutline = true;
         };
 
-        $scope.copyLogicGroupToNewBox = function (logicGroupNames) {
+        $scope.copyLogicGroupToNewBox = function () {
             let logicGroupsRoot = $scope.logicGroupsRoot;
-            const localLogicGroups = logicGroupNames.split('#').filter(_.identity);
+            const localLogicGroups = $scope.formDatas.logicGroupNames.split('#').filter(_.identity);
             localLogicGroups.forEach((logicGroupName) => {
                 if (!logicGroupsRoot.children[logicGroupName]) {
                     logicGroupsRoot.children[logicGroupName] = new $scope.Box({ parent_box: logicGroupsRoot, name: logicGroupName.trim() });
                 }
                 logicGroupsRoot = logicGroupsRoot.children[logicGroupName];
             });
-            // $scope.copyLogicGroup($scope.selectedLogicGroup, logicGroupsRoot);
-            $scope.prepareCopy($scope.selectedLogicGroup, logicGroupsRoot);
+            $scope.copyLogicGroup($scope.selectedLogicGroup, logicGroupsRoot);
         };
 
         $scope.copyLogicGroup = function (logicGroupSource, logicGroupDestination) {
@@ -126,8 +131,16 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
             });
         };
 
+        $scope.isButtonSaveDisabled = function() {
+            return !$scope.destinationLogicGroup && $scope.formDatas.logicGroupNames.length === 0;
+        };
+
         $scope.save = function () {
-            $scope.copyLogicGroup($scope.fromLogicGroup, $scope.destinationLogicGroup);
+            if($scope.selected === 'new') {
+                $scope.copyLogicGroupToNewBox();
+            } else {
+                $scope.copyLogicGroup($scope.fromLogicGroup, $scope.destinationLogicGroup);
+            }
             if ($scope.shouldPerformPlatformUpdate) {
                 $scope.save_platform_from_box($scope.logicGroupsRoot).then(function () {
                     $scope.properties = null;
