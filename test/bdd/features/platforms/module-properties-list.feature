@@ -102,7 +102,7 @@ Feature: Filter properties and display them as a list
       | instance-1 | instance-value-1 |
       | instance-2 | instance-value-2 |
 
-  Scenario: Autocompletion of global properties in the valuation field of other properties
+  Scenario: Display global properties suggestions when typing mustaches in a property value input
     Given an existing template with this content
     """
     {{ simple-property }}
@@ -151,7 +151,8 @@ Feature: Filter properties and display them as a list
     And the value of property "simple-property-2" is marked as being the same as the default value
 
   # Issue 387
-  Scenario: Display an icon showing that the value of global property is the same as the default value
+  Scenario: Display an icon indicating that the value of a global property overriding a valued property is the same as the default value
+
     Given an existing template with this content
      """
     {{ global-property-1 }}
@@ -167,25 +168,8 @@ Feature: Filter properties and display them as a list
       | global-property-2 | global-value-2 |
     When I open this platform
     And I open the deployed module properties
-    Then the value of global property "global-property-1" is not marked as being the same as the default value
-    And the value of global property "global-property-2" is marked as being the same as the default value
-
-  # Issue 380
-  Scenario: Display an icon showing that the value of a property is the same as the default value
-    Given an existing template with this content
-    """
-    {{ simple-property-1 | @default 45 }}
-    {{ simple-property-2 | @default aa }}
-    """
-    And an existing module with this template
-    And an existing platform with this module
-    And the platform has these valued properties
-      | simple-property-1 | simple-value |
-      | simple-property-2 | aa           |
-    When I open this platform
-    And I open the deployed module properties
-    Then the value of property "simple-property-1" is not marked as being the same as the default value
-    And the value of property "simple-property-2" is marked as being the same as the default value
+    Then the value of global property "global-property-1" overriding a valued property is not marked as being the same as the default value
+    And the value of global property "global-property-2" overriding a valued property is marked as being the same as the default value
 
 #  Scenario: Find the default value in the placeholder
 
