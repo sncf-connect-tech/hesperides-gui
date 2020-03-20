@@ -28,8 +28,9 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
         $scope.destinationLogicGroup = null;
         $scope.suggestedLogicGroupButtonArray = [];
         $scope.formDatas = {
-            'logicGroupNames': ''
+            'logicGroupNames': '',
         };
+        $scope.selected = 'new';
 
         function extractLogicGroups(logicGroupToExplode) {
             const logicGroupsList = Object.values(logicGroupToExplode.children);
@@ -131,12 +132,12 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
             });
         };
 
-        $scope.isButtonSaveDisabled = function() {
+        $scope.isButtonSaveDisabled = function () {
             return !$scope.destinationLogicGroup && $scope.formDatas.logicGroupNames.length === 0;
         };
 
         $scope.save = function () {
-            if($scope.selected === 'new') {
+            if ($scope.selected === 'new') {
                 $scope.copyLogicGroupToNewBox();
             } else {
                 $scope.copyLogicGroup($scope.fromLogicGroup, $scope.destinationLogicGroup);
