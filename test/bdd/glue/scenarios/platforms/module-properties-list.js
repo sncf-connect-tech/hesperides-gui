@@ -73,19 +73,21 @@ Then('the tooltip of property {string} should contain', async function (property
 
 Then(/^the value of global property "([^"]*)" overriding a valued property is( not)? marked as being the same as the module value$/, async function (property, isNotMarked) {
     const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
+    const textToEvaluate = '✅';
     if (isNotMarked) {
-        await assert.doesNotContainText(propertyElement, '✅');
+        await assert.doesNotContainText(propertyElement, textToEvaluate);
     } else {
-        await assert.containsText(propertyElement, '✅');
+        await assert.containsText(propertyElement, textToEvaluate);
     }
 });
 
 Then(/^the value of property "([^"]*)" is( not)? marked as being the same as the default value$/, async function (property, isNotMarked) {
     const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
+    const textToEvaluate = '✔';
     if (isNotMarked) {
-        await assert.doesNotContainText(propertyElement, '✔');
+        await assert.doesNotContainText(propertyElement, textToEvaluate);
     } else {
-        await assert.containsText(propertyElement, '✔');
+        await assert.containsText(propertyElement, textToEvaluate);
         await assert.containsText(propertyElement, '🛡️');
     }
 });
