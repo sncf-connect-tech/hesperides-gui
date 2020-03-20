@@ -71,23 +71,21 @@ Then('the tooltip of property {string} should contain', async function (property
     }
 });
 
-Then('the value of global property {string} overriding a valued property is not marked as being the same as the default value', async function (property) {
+Then(/^the value of global property "([^"]*)" overriding a valued property is( not)? marked as being the same as the module value$/, async function (property, isNotMarked) {
     const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.doesNotContainText(propertyElement, '✅');
+    if (isNotMarked) {
+        await assert.doesNotContainText(propertyElement, '✅');
+    } else {
+        await assert.containsText(propertyElement, '✅');
+    }
 });
 
-Then('the value of property {string} is not marked as being the same as the default value', async function (property) {
+Then(/^the value of property "([^"]*)" is( not)? marked as being the same as the default value$/, async function (property, isNotMarked) {
     const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.doesNotContainText(propertyElement, '✔');
-});
-
-Then('the value of global property {string} overriding a valued property is marked as being the same as the default value', async function (property) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.containsText(propertyElement, '✅');
-});
-
-Then('the value of property {string} is marked as being the same as the default value', async function (property) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    await assert.containsText(propertyElement, '✔');
-    await assert.containsText(propertyElement, '🛡️');
+    if (isNotMarked) {
+        await assert.doesNotContainText(propertyElement, '✔');
+    } else {
+        await assert.containsText(propertyElement, '✔');
+        await assert.containsText(propertyElement, '🛡️');
+    }
 });

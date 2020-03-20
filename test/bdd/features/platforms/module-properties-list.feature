@@ -102,6 +102,7 @@ Feature: Filter properties and display them as a list
       | instance-1 | instance-value-1 |
       | instance-2 | instance-value-2 |
 
+  # Issue 148
   Scenario: Display global properties suggestions when typing mustaches in a property value input
     Given an existing template with this content
     """
@@ -151,8 +152,7 @@ Feature: Filter properties and display them as a list
     And the value of property "simple-property-2" is marked as being the same as the default value
 
   # Issue 387
-  Scenario: Display an icon indicating that the value of a global property overriding a valued property is the same as the default value
-
+  Scenario: Display an icon indicating that the value of a global property overriding a valued property is the same as the module value
     Given an existing template with this content
      """
     {{ global-property-1 }}
@@ -168,8 +168,8 @@ Feature: Filter properties and display them as a list
       | global-property-2 | global-value-2 |
     When I open this platform
     And I open the deployed module properties
-    Then the value of global property "global-property-1" overriding a valued property is not marked as being the same as the default value
-    And the value of global property "global-property-2" overriding a valued property is marked as being the same as the default value
+    Then the value of global property "global-property-1" overriding a valued property is not marked as being the same as the module value
+    And the value of global property "global-property-2" overriding a valued property is marked as being the same as the module value
 
 #  Scenario: Find the default value in the placeholder
 
