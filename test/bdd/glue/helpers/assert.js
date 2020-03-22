@@ -101,6 +101,6 @@ exports.isSelectedOptionById = async function (id) {
     await expect(get.elementById(id).getAttribute('aria-checked')).to.eventually.equal('true');
 };
 
-exports.isReadOnlyById = async function (id) {
-    await expect(get.elementById(id).getAttribute('readonly')).to.eventually.equal('true');
+exports.isDisabledById = async function (id) {
+    await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
 };
