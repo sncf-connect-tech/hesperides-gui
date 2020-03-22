@@ -171,6 +171,20 @@ Feature: Filter properties and display them as a list
     Then the module property "global-property-1" is not marked as being overridden by a global with the same value
     And the module property "global-property-2" is marked as being overridden by a global with the same value
 
+  #Issue 395
+  Scenario: Prevent modification of the value of a module property overloaded by a global property
+    Given an existing template with this content
+    """
+    {{ property }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+      | property |  |
+    When I open this platform
+    And I open the deployed module properties
+    Then the modification of the value of the module property "property" is prevented
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder

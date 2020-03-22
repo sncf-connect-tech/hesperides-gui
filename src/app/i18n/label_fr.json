@@ -222,6 +222,7 @@
   "properties.module.editProperties.iterableProperties.addBlock": "Ajouter un bloc",
   "properties.module.editProperties.iterableProperties.deleteBlock": "Supprimer le bloc",
   "properties.module.editProperties.iterableProperties.blocTitle": "Le titre du bloc ...",
+  "properties.module.editProperties.valuedProperties.valuedByGlobal.disabled.tooltip": "La propriété de module est surchargée par une propriété globale donc elle est en lecture seule",
   "properties.module.instance.add": "Ajouter une instance",
   "properties.module.instance.name": "Nom",
   "properties.module.instance.editProperties.tooltip": "Editer les propriétés de l'instance ({{instancePropertiesCount}})",

@@ -96,3 +96,7 @@ Then(/^the module property "([^"]*)" is( not)? marked as being overridden by a g
         await assert.containsText(propertyElement, icon);
     }
 });
+
+Then('the modification of the value of the module property {string} is prevented', async function (propertyName) {
+    await assert.isReadOnlyById(`e2e-simple-properties-list_value-property-input-${ propertyName }`);
+});

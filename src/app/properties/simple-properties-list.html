@@ -95,7 +95,12 @@
                                     </md-tooltip>
                                 </span>
                                 <span ng-if="key_value_property.password">🔒<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
-                                <span ng-if="key_value_property.valuedByAGlobal">🌍<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
+                                <span ng-if="key_value_property.valuedByAGlobal">🌍
+                                    <md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip>
+                                    <md-tooltip md-direction="right">
+                                        {{ 'properties.module.editProperties.valuedProperties.valuedByGlobal.disabled.tooltip' | translate }}
+                                    </md-tooltip>
+                                </span>
                                 <span ng-if="isGlobalValueEqualsOverloadedValue(key_value_property)">
                                     ✅
                                     <md-tooltip md-direction="left">
@@ -110,7 +115,7 @@
                         <textarea id="e2e-simple-properties-list_value-property-input-{{key_value_property.name}}"
                                   ng-model="key_value_property.value"
                                   ng-trim="true"
-                                  ng-readonly="!key_value_property.inModel"
+                                  ng-readonly="!key_value_property.inModel || key_value_property.valuedByAGlobal"
                                   ng-focus="textareaFocused = true"
                                   ng-blur="textareaFocused = false"
                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': textareaFocused}"
