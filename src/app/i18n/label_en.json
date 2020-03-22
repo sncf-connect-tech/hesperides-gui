@@ -187,7 +187,7 @@
   "properties.logicGroup.copy.with.new": "Enter the name of the logic group below",
   "properties.logicGroup.copy.new.logicGroup": "Logic group name",
   "properties.logicGroup.copy.with.existing.confirmation": "A module with the same name but with different versions or workingCopy already exists. Are you sure you want to continue copying?",
-  "properties.logicGroup.copy.message": "The logic groups already contain the same modules",
+  "properties.logicGroup.copy.moduleAlreadyThere": "The logic group {{logicGroupName}} already contains the same module(s)",
   "properties.logicGroup.copy.radioButton.toNewLogicGroup": "To a new one",
   "properties.logicGroup.copy.radioButton.toExistingLogicGroup": "Into an existing one",
   "properties.logicGroup.copy.outline": "The logic group {{logicGroupSource}} will be copied into logic group {{destinationLogicGroup}}",

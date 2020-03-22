@@ -19,7 +19,7 @@
   ~
   -->
 
-<md-dialog flex="50">
+<md-dialog flex="50" id="e2e-copy-logical-group-modal">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>{{ 'properties.logicGroup.copy' | translate: {logicGroupName: selectedLogicGroup.name } }}</h2>
@@ -29,10 +29,10 @@
         <div class="logicGroupCopier">
             <div layout="row" flex="100" class="selectionType__radioGroup">
                 <md-radio-group ng-model="selected" layout="row" ng-change="getSuggestedLogicGroupButtons()">
-                    <md-radio-button value="new" class="md-primary" id="e2e-copyToNewLogicGroup__radio">
+                    <md-radio-button value="new" class="md-primary" id="e2e-copy-logical-group-to-new-one-option">
                         {{'properties.logicGroup.copy.radioButton.toNewLogicGroup' | translate }}
                     </md-radio-button>
-                    <md-radio-button value="existing" class="md-primary" id="e2e-copyToExistingLogicGroup__radio">
+                    <md-radio-button value="existing" class="md-primary" id="e2e-copy-logical-group-to-existing-one-option">
                         {{'properties.logicGroup.copy.radioButton.toExistingLogicGroup' | translate }}
                     </md-radio-button>
                 </md-radio-group>
@@ -65,7 +65,7 @@
                 </ul>
             </div>
             <div layout="row" class="copy__outline">
-                <label ng-if="displayCopyOutline && destinationLogicGroup">
+                <label id="e2e-copy-logical-group-summary" ng-if="displayCopyOutline && destinationLogicGroup">
                     <strong>{{'properties.logicGroup.copy.outline' | translate: {logicGroupSource:
                         selectedLogicGroup.name, destinationLogicGroup: destinationLogicGroup.name} }}</strong>
                 </label>
@@ -73,11 +73,11 @@
         </div>
     </md-dialog-content>
     <md-dialog-actions class="dialog-actions" layout="row">
-        <md-button id="e2e-saveButton" ng-click="save()" class="md-raised md-primary"
+        <md-button id="e2e-copy-logical-group-save-button" ng-click="save()" class="md-raised md-primary"
                    ng-disabled="isButtonSaveDisabled()">
             {{'properties.logicGroup.save.button.label' | translate }}
         </md-button>
-        <md-button ng-click="closeLogicGroupCopierDialog()" class="md-raised md-primary">
+        <md-button id="e2e-copy-logical-group-close-button" ng-click="closeLogicGroupCopierDialog()" class="md-raised md-primary">
             {{'properties.logicGroup.cancel.button.message'| translate }}
         </md-button>
     </md-dialog-actions>

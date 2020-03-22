@@ -192,7 +192,7 @@
   "properties.logicGroup.copy.outline": "Le groupe logique {{logicGroupSource}} va être copié dans le groupe logique {{destinationLogicGroup}}",
   "properties.logicGroup.copy.radioButton.toNewLogicGroup": "Copier vers un nouveau groupe logique",
   "properties.logicGroup.copy.radioButton.toExistingLogicGroup": "Copier vers un groupe logique existant",
-  "properties.logicGroup.copy.message": "Les groupes logiques contiennent déja les mêmes modules",
+  "properties.logicGroup.copy.moduleAlreadyThere": "Le groupe logique {{logicGroupName}} contient déja le(s) même(s) module(s)",
   "properties.module.add": "Ajouter un module",
   "properties.module.version.modal.title": "Changer la version de ",
   "properties.module.version.modal.newVersion": "Nouvelle version",

@@ -70,12 +70,6 @@ exports.warnNotification = async function (warn, message) {
     await this.containsText(elements.get(0), message);
 };
 
-exports.thereAreNoNotifications = async function (success) {
-    const successClassName = success ? '.success' : '';
-    const elements = get.elementsByCss(`.cg-notify-message${ successClassName }`);
-    await this.elementsDoNotExist(elements);
-};
-
 exports.itemsAreRequired = async function (items) {
     for (const item of items) {
         await expect(item.getAttribute('required')).to.eventually.equal('true');
@@ -97,4 +91,8 @@ exports.codeMirrorContains = async function (expectedContent) {
 
 exports.isDisabledById = async function (id) {
     await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
+};
+
+exports.isSelectedOptionById = async function (id) {
+    await expect(get.elementById(id).getAttribute('aria-checked')).to.eventually.equal('true');
 };

@@ -125,7 +125,7 @@ angular.module('hesperides.properties.logicGroup', [ 'hesperides.properties', 'c
                         }
                     });
                 } else {
-                    $translate('properties.logicGroup.copy.message').then(function (label) {
+                    $translate('properties.logicGroup.copy.moduleAlreadyThere', { logicGroupName: logicGroupDestination.get_path() }).then(function (label) {
                         notify({ classes: [ 'warn' ], message: label });
                     });
                 }
