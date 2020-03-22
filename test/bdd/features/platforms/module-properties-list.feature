@@ -1,4 +1,3 @@
-@wip
 Feature: Filter properties and display them as a list
 
   Scenario: Filter only requested properties
