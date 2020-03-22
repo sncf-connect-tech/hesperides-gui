@@ -55,6 +55,13 @@
             <span class="fa fa-trash"></span>
             <md-tooltip>{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}</md-tooltip>
         </md-button>
+        <md-button id="e2e-tree-renderer-copy-box-button-{{box.name}}" class="md-xs" aria-label="{{ 'properties.logicGroup.copy' | translate }}" ng-click="showDialogCopyLogicGroup(platform, box, mainBox)">
+            <div class="newFeature"><!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
+                <span class="fa fa-copy"></span>
+                {{ 'newFeature.label' | translate }}
+            </div>
+            <md-tooltip>{{ 'properties.logicGroup.copy.this' | translate }}</md-tooltip>
+        </md-button>
     </div>
 </div>
 <!-- fin bloc logic -->
@@ -92,7 +99,7 @@
 
             <div flex="noshrink" layout="row" layout-align="none center">
                 <deployed-module-controls-popover></deployed-module-controls-popover>
-                <a id="e2e-tree-renderer-edit-module-button-{{module.title.split(',')[0]}}" class="module-link has_model_{{is_module_has_model(module)}}"
+                <a id="e2e-tree-renderer-edit-module-button-{{box.name}}-{{module.name}}-{{module.version}}" class="module-link has_model_{{is_module_has_model(module)}}"
                    href="" ng-click="edit_properties(platform, module)">
                     {{module.title}}
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>

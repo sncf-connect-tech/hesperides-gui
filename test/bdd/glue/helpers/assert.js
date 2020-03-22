@@ -7,6 +7,10 @@ exports.elementsExist = async function (elements) {
     await expect(elements.count()).to.eventually.be.gt(0);
 };
 
+exports.elementsDoNotExist = async function (elements) {
+    await expect(elements.count()).to.eventually.be.equal(0);
+};
+
 exports.isPresentById = async function (id) {
     await expect(get.elementById(id).isPresent()).to.eventually.be.true;
 };
@@ -59,6 +63,13 @@ exports.notification = async function (success, message) {
     await this.containsText(elements.get(0), message);
 };
 
+exports.warnNotification = async function (warn, message) {
+    const warnClassName = warn ? '.warn' : '';
+    const elements = get.elementsByCss(`.cg-notify-message${ warnClassName }`);
+    await this.elementsExist(elements);
+    await this.containsText(elements.get(0), message);
+};
+
 exports.itemsAreRequired = async function (items) {
     for (const item of items) {
         await expect(item.getAttribute('required')).to.eventually.equal('true');
@@ -80,4 +91,8 @@ exports.codeMirrorContains = async function (expectedContent) {
 
 exports.isDisabledById = async function (id) {
     await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
+};
+
+exports.isSelectedOptionById = async function (id) {
+    await expect(get.elementById(id).getAttribute('aria-checked')).to.eventually.equal('true');
 };

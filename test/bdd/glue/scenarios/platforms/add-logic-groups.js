@@ -34,3 +34,8 @@ Then('the logic groups are successfully added', /** @this CustomWorld */ async f
         await assert.isPresentById(`e2e-tree-renderer-edit-logic-group-${ logicGroup }`);
     }
 });
+
+When('I add a logic group {string} to this platform', /** @this CustomWorld */ async function (logicGroup) {
+    this.deployedModuleBuilder.withLogicGroup(logicGroup);
+    await addLogicGroupToPlatform(this.deployedModuleBuilder);
+});

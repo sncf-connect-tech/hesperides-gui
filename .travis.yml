@@ -217,7 +217,17 @@ jobs:
       addons:
         chrome: stable
       provider: script
-      script: travis_retry bash .travis/run_bdd_test.sh platforms/add-logic-groups.feature
+      script: travis_retry bash .travis/run_bdd_test.sh platforms/add-logical-groups.feature
+
+    - name: BDD Tests - Platforms - Copy logic group
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: travis_retry bash .travis/run_bdd_test.sh platforms/copy-logical-groups.feature
 
     - name: BDD Tests - Platforms - Copy platforms
       stage: test

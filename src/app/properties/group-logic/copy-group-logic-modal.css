@@ -1,0 +1,45 @@
+md-dialog {
+    min-height: 18.75rem !important;
+}
+
+.logicGroupCopier {
+    padding-top: 1.25rem;
+    padding-left: 1.25rem;
+
+}
+
+.logicGroupCopier__suggestion {
+    height: 0.313rem;
+    margin-top: 0rem;
+    margin-left: 0rem;
+    margin-right: 0rem;
+    padding-top: 0rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    min-width: 5rem;
+}
+
+.logicGroupCopier__submit {
+    margin-top: 0.625rem;
+    max-height: 2.5rem;
+    margin-left: 3.125rem;
+}
+
+.selectionType__radioGroup{
+    margin-bottom: 0.938rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.copy__outline {
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 3.75rem;
+    background-color: #F5F5F5;
+}

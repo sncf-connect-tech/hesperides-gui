@@ -3,7 +3,8 @@ const send = require('../../helpers/send');
 const get = require('../../helpers/get');
 
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
-    await send.clickById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
+    const logicGroup = this.deployedModuleBuilder.modulePath.split('#')[2];
+    await send.clickById(`e2e-tree-renderer-edit-module-button-${ logicGroup }-${ this.moduleBuilder.name }-${ this.moduleBuilder.version }`);
 });
 
 When('I click on the switch to display nothing but the required properties', async function () {

@@ -1,8 +1,17 @@
 const get = require('./get');
 
-const mouseOn = async function (elem) {
+async function mouseOn(elem) {
     await browser.actions().mouseMove(elem).perform();
-};
+}
+
+async function clearInput(elem) {
+    await elem.getAttribute('ng-model').clear();
+}
+
+async function cleanInput(elem, text) {
+    await clearInput(elem);
+    await elem.sendKeys(text);
+}
 
 exports.mouseOnById = async function (id) {
     await mouseOn(get.elementById(id));
@@ -32,11 +41,11 @@ exports.clickByCssContainingText = async function (selector, text) {
 };
 
 exports.inputById = async function (id, text) {
-    await get.elementById(id).sendKeys(text);
+    await cleanInput(get.elementById(id), text);
 };
 
 exports.inputByCss = async function (selector, text) {
-    await get.elementByCss(selector).sendKeys(text);
+    await cleanInput(get.elementByCss(selector), text);
 };
 
 exports.searchAndSelectFirstByCss = async function (selector, text) {
@@ -48,6 +57,10 @@ exports.searchAndSelectFirstByCss = async function (selector, text) {
 
 exports.clickByIdAndAcceptAlert = async function (id) {
     await get.elementById(id).click();
+    await this.acceptAlert();
+};
+
+exports.acceptAlert = async function () {
     await browser.switchTo().alert().accept();
     await browser.waitForAngular();
 };

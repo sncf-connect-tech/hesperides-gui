@@ -88,7 +88,7 @@ var addFromModel = function (property, model) {
 /**
  * Hesperides properties module
  */
-angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify' ])
+angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localChanges', 'hesperides.modals', 'cgNotify', 'hesperides.properties.logicGroup' ])
 
     .controller('PlatformVersionController', [
         '$scope', '$mdDialog',
@@ -468,6 +468,20 @@ angular.module('hesperides.properties', [ 'hesperides.diff', 'hesperides.localCh
 
             $mdDialog.show({
                 templateUrl: 'properties/change_module_version.html',
+                clickOutsideToClose: true,
+                scope: modalScope,
+            });
+        };
+
+        $scope.showDialogCopyLogicGroup = function (platform, box, mainBox) {
+            const modalScope = $scope.$new();
+            modalScope.platform = platform;
+            modalScope.selectedLogicGroup = box;
+            modalScope.logicGroupsRoot = mainBox;
+            modalScope.Box = Box;
+            $mdDialog.show({
+                templateUrl: 'properties/group-logic/copy-group-logic-modal.html',
+                controller: 'LogicGroupController',
                 clickOutsideToClose: true,
                 scope: modalScope,
             });

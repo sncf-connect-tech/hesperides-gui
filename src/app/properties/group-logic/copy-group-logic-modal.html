@@ -1,0 +1,84 @@
+<!--
+  ~ /*
+  ~  * This file is part of the Hesperides distribution.
+  ~  * (https://github.com/voyages-sncf-technologies/hesperides)
+  ~  * Copyright (c) 2016 VSCT.
+  ~  *
+  ~  * Hesperides is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as
+  ~  * published by the Free Software Foundation, version 3.
+  ~  *
+  ~  * Hesperides is distributed in the hope that it will be useful, but
+  ~  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~  * General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  ~
+  -->
+
+<md-dialog flex="50" id="e2e-copy-logical-group-modal">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{ 'properties.logicGroup.copy' | translate: {logicGroupName: selectedLogicGroup.name } }}</h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="logicGroupCopier">
+            <div layout="row" flex="100" class="selectionType__radioGroup">
+                <md-radio-group ng-model="selected" layout="row" ng-change="getSuggestedLogicGroupButtons()">
+                    <md-radio-button value="new" class="md-primary" id="e2e-copy-logical-group-to-new-one-option">
+                        {{'properties.logicGroup.copy.radioButton.toNewLogicGroup' | translate }}
+                    </md-radio-button>
+                    <md-radio-button value="existing" class="md-primary" id="e2e-copy-logical-group-to-existing-one-option">
+                        {{'properties.logicGroup.copy.radioButton.toExistingLogicGroup' | translate }}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+            <div class="newFeature" ng-if="selected === 'new'">
+                <!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
+                </p>{{ 'newFeature.createSeveralLogicalGroupsAtOnce' | translate }}</p>
+            </div>
+            <label ng-if="selected === 'new'"><strong>{{ 'properties.logicGroup.copy.with.new' | translate
+                }}</strong></label>
+            <div layout="row" flex="100" ng-if="selected === 'new'">
+                <md-input-container>
+                    <label>{{ 'properties.logicGroup.copy.new.logicGroup' | translate }}</label>
+                    <input id="e2e-copy-to-new-logic-group-input" type="search" ng-model="formDatas.logicGroupNames"
+                           name="logicGroupCopyTarget" autocomplete="off">
+                </md-input-container>
+            </div>
+            <label ng-if="selected ==='existing'"><strong>{{ 'properties.logicGroup.copy.with.existing' | translate
+                }}</strong></label>
+            <div layout="row" flex="100" ng-if="selected ==='existing'">
+                <ul class="shared-list-inline list-logic-group" flex>
+                    <li ng-repeat="suggestedLogicGroup in getSuggestedLogicGroupDestinations()">
+                        <md-button id="e2e-logic-group-to-select-{{suggestedLogicGroup.name}}"
+                                   ng-click="prepareCopy(selectedLogicGroup, suggestedLogicGroup); setClickedStatus(suggestedLogicGroup.name)"
+                                   class="md-raised md-mini logicGroupCopier__suggestion"
+                                   ng-class="{'md-primary': getClickedStatus(suggestedLogicGroup.name)}">
+                            {{suggestedLogicGroup.name}}
+                        </md-button>
+                    </li>
+                </ul>
+            </div>
+            <div layout="row" class="copy__outline">
+                <label id="e2e-copy-logical-group-summary" ng-if="displayCopyOutline && destinationLogicGroup">
+                    <strong>{{'properties.logicGroup.copy.outline' | translate: {logicGroupSource:
+                        selectedLogicGroup.name, destinationLogicGroup: destinationLogicGroup.name} }}</strong>
+                </label>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="dialog-actions" layout="row">
+        <md-button id="e2e-copy-logical-group-save-button" ng-click="save()" class="md-raised md-primary"
+                   ng-disabled="isButtonSaveDisabled()">
+            {{'properties.logicGroup.save.button.label' | translate }}
+        </md-button>
+        <md-button id="e2e-copy-logical-group-close-button" ng-click="closeLogicGroupCopierDialog()" class="md-raised md-primary">
+            {{'properties.logicGroup.cancel.button.message'| translate }}
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
