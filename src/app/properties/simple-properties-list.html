@@ -88,9 +88,21 @@
                                     >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span>
                                 <span ng-if="key_value_property.pattern"><span class="pattern-icon">(.*)</span><md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
                                 <span ng-if="key_value_property.defaultValue">🛡️<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
+                                <span ng-if="isValuationEqualsDefaultValuation(key_value_property)" class="properties-container__defaultValueEqualIcon">
+                                    ✔
+                                    <md-tooltip md-direction="left">
+                                        {{'modules.propertiesList.tooltip.defaultValueEqualityWithValue' | translate : {defaultValue:key_value_property.defaultValue, value:key_value_property.value} }}
+                                    </md-tooltip>
+                                </span>
                                 <span ng-if="key_value_property.password">🔒<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
                                 <span ng-if="key_value_property.valuedByAGlobal">🌍<md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></span>
-                                <i class="fa fa-info-circle e2e-property-tooltip" ng-if="key_value_property.tooltip"><md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></i>
+                                <span ng-if="isGlobalValueEqualsOverloadedValue(key_value_property)">
+                                    ✅
+                                    <md-tooltip md-direction="left">
+                                        {{'modules.propertiesList.tooltip.globalValueEqualityWithValue' | translate : {globalValue:key_value_property.globalValue, value:key_value_property.value} }}
+                                    </md-tooltip>
+                                </span>
+                                <i class="fa fa-info-circle e2e-property-tooltip" ng-if="key_value_property.valuedByInstance"><md-tooltip md-direction="left">{{key_value_property.tooltip}}</md-tooltip></i>
                             </label>
                         </div>
                     </div>

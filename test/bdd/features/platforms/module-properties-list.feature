@@ -134,6 +134,43 @@ Feature: Filter properties and display them as a list
     And I type the value "foo-{{global-property}}-bar-{{" for the property "simple-property"
     Then the global properties suggestion list is not displayed
 
+  # Issue 380
+  Scenario: Display an icon showing that the value of a property is the same as the default value
+    Given an existing template with this content
+    """
+    {{ simple-property-1 | @default 45 }}
+    {{ simple-property-2 | @default aa }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these valued properties
+      | simple-property-1 | simple-value |
+      | simple-property-2 | aa           |
+    When I open this platform
+    And I open the deployed module properties
+    Then the module property "simple-property-1" is not marked as having the same value as the default value
+    And the module property "simple-property-2" is marked as having the same value as the default value
+
+  # Issue 387
+  Scenario: Display an icon indicating that a module property is overridden by a global with the same value
+    Given an existing template with this content
+     """
+    {{ global-property-1 }}
+    {{ global-property-2 }}
+    """
+    And an existing module with this template
+    And an existing platform with this module
+    And the platform has these global properties
+      | global-property-1 | global-value-1 |
+      | global-property-2 | global-value-2 |
+    And the platform has these valued properties
+      | global-property-1 |                |
+      | global-property-2 | global-value-2 |
+    When I open this platform
+    And I open the deployed module properties
+    Then the module property "global-property-1" is not marked as being overridden by a global with the same value
+    And the module property "global-property-2" is marked as being overridden by a global with the same value
+
 #  Scenario: Find the default value in the placeholder
 
 #  Scenario: Find the comment in the placeholder
