@@ -2,6 +2,10 @@ const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const get = require('../../helpers/get');
 
+const getPropertyId = function (propertyName) {
+    return `simple-properties-list_key-property-input-${ propertyName }`;
+};
+
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
     await send.clickById(`e2e-tree-renderer-edit-module-button-${ this.moduleBuilder.name }`);
 });
@@ -31,11 +35,11 @@ Then('only the required properties are displayed', async function () {
 });
 
 Then('the properties are displayed with dedicated icons', async function () {
-    const defaultElement = await get.elementById('simple-properties-list_key-property-input-default-property');
-    const passwordElement = await get.elementById('simple-properties-list_key-property-input-password-property');
-    const patternElement = await get.elementById('simple-properties-list_key-property-input-pattern-property');
-    const requiredElement = await get.elementById('simple-properties-list_key-property-input-required-property');
-    const globalElement = await get.elementById('simple-properties-list_key-property-input-global-property');
+    const defaultElement = await get.elementById(getPropertyId('default-property'));
+    const passwordElement = await get.elementById(getPropertyId('password-property'));
+    const patternElement = await get.elementById(getPropertyId('pattern-property'));
+    const requiredElement = await get.elementById(getPropertyId('required-property'));
+    const globalElement = await get.elementById(getPropertyId('global-property'));
     await assert.containsText(defaultElement, '🛡️');
     await assert.containsText(passwordElement, '🔒');
     await assert.containsText(patternElement, '(.*)');
@@ -44,7 +48,7 @@ Then('the properties are displayed with dedicated icons', async function () {
 });
 
 Then(/^the property "([^"]+)" is( not)? displayed$/, async function (propertyName, notDisplayed) {
-    const propertyId = `simple-properties-list_key-property-input-${ propertyName }`;
+    const propertyId = getPropertyId(propertyName);
     if (notDisplayed) {
         await assert.isNotPresentById(propertyId);
     } else {
@@ -65,29 +69,29 @@ Then('the property {string} should have the value {string}', async function (pro
 });
 
 Then('the tooltip of property {string} should contain', async function (propertyName, dataTable) {
-    const propertyLabel = await get.elementByCss(`label#simple-properties-list_key-property-input-${ propertyName } i.e2e-property-tooltip`);
+    const propertyLabel = await get.elementByCss(`label#${ getPropertyId(propertyName) } i.e2e-property-tooltip`);
     for (const [ instanceName, instancePropertyValue ] of dataTable.raw()) {
         await assert.elementAttributeContainsText(propertyLabel, 'aria-label', `${ instanceName } = ${ instancePropertyValue }`);
     }
 });
 
-Then(/^the value of global property "([^"]*)" overriding a valued property is( not)? marked as being the same as the module value$/, async function (property, isNotMarked) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    const textToEvaluate = '✅';
+Then(/^the module property "([^"]*)" is( not)? marked as having the same value as the default value$/, async function (propertyName, isNotMarked) {
+    const propertyElement = await get.elementById(getPropertyId(propertyName));
+    const icon = '✔';
     if (isNotMarked) {
-        await assert.doesNotContainText(propertyElement, textToEvaluate);
+        await assert.doesNotContainText(propertyElement, icon);
     } else {
-        await assert.containsText(propertyElement, textToEvaluate);
+        await assert.containsText(propertyElement, icon);
+        await assert.containsText(propertyElement, '🛡️');
     }
 });
 
-Then(/^the value of property "([^"]*)" is( not)? marked as being the same as the default value$/, async function (property, isNotMarked) {
-    const propertyElement = await get.elementById(`simple-properties-list_key-property-input-${ property }`);
-    const textToEvaluate = '✔';
+Then(/^the module property "([^"]*)" is( not)? marked as being overridden by a global with the same value$/, async function (propertyName, isNotMarked) {
+    const propertyElement = await get.elementById(getPropertyId(propertyName));
+    const icon = '✅';
     if (isNotMarked) {
-        await assert.doesNotContainText(propertyElement, textToEvaluate);
+        await assert.doesNotContainText(propertyElement, icon);
     } else {
-        await assert.containsText(propertyElement, textToEvaluate);
-        await assert.containsText(propertyElement, '🛡️');
+        await assert.containsText(propertyElement, icon);
     }
 });

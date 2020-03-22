@@ -148,11 +148,11 @@ Feature: Filter properties and display them as a list
       | simple-property-2 | aa           |
     When I open this platform
     And I open the deployed module properties
-    Then the value of property "simple-property-1" is not marked as being the same as the default value
-    And the value of property "simple-property-2" is marked as being the same as the default value
+    Then the module property "simple-property-1" is not marked as having the same value as the default value
+    And the module property "simple-property-2" is marked as having the same value as the default value
 
   # Issue 387
-  Scenario: Display an icon indicating that the value of a global property overriding a valued property is the same as the module value
+  Scenario: Display an icon indicating that a module property is overridden by a global with the same value
     Given an existing template with this content
      """
     {{ global-property-1 }}
@@ -168,8 +168,8 @@ Feature: Filter properties and display them as a list
       | global-property-2 | global-value-2 |
     When I open this platform
     And I open the deployed module properties
-    Then the value of global property "global-property-1" overriding a valued property is not marked as being the same as the module value
-    And the value of global property "global-property-2" overriding a valued property is marked as being the same as the module value
+    Then the module property "global-property-1" is not marked as being overridden by a global with the same value
+    And the module property "global-property-2" is marked as being overridden by a global with the same value
 
 #  Scenario: Find the default value in the placeholder
 
