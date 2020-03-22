@@ -6,6 +6,10 @@ const getPropertyId = function (propertyName) {
     return `simple-properties-list_key-property-input-${ propertyName }`;
 };
 
+const getPropertyInputId = function (propertyName) {
+    return `e2e-simple-properties-list_value-property-input-${ propertyName }`;
+};
+
 When('I open the deployed module properties', /** @this CustomWorld */ async function () {
     const logicGroup = this.deployedModuleBuilder.modulePath.split('#')[2];
     await send.clickById(`e2e-tree-renderer-edit-module-button-${ logicGroup }-${ this.moduleBuilder.name }-${ this.moduleBuilder.version }`);
@@ -66,7 +70,7 @@ Then(/^the global properties suggestion list is( not)? displayed$/, async functi
 });
 
 Then('the property {string} should have the value {string}', async function (propertyName, propertyValue) {
-    await assert.containsValue(get.elementById(`e2e-simple-properties-list_value-property-input-${ propertyName }`), propertyValue);
+    await assert.containsValue(get.elementById(getPropertyInputId(propertyName)), propertyValue);
 });
 
 Then('the tooltip of property {string} should contain', async function (propertyName, dataTable) {
@@ -95,4 +99,8 @@ Then(/^the module property "([^"]*)" is( not)? marked as being overridden by a g
     } else {
         await assert.containsText(propertyElement, icon);
     }
+});
+
+Then('the input of the property {string} is disabled', async function (propertyName) {
+    await assert.isDisplayedById(getPropertyInputId(propertyName));
 });

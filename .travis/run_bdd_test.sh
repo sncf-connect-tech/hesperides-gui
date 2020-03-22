@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 google-chrome-stable --version
 npm install
 export DISPLAY=:99.0
