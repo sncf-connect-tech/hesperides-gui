@@ -37,6 +37,12 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 ### Fixed
 
+- #394 Empêcher la modification de la valeur d'une propriété de module qui a le même nom qu'une propriété globale (#395) [Bhoye05]
+
+- #153: Bouton de copie de groupe logique (#389) [Bhoye05]
+
+- #38: Remaining text in search field causes autocomplete list malfunction (#393) [Bhoye05]
+
 - #327 Modifier le switch de sélection des globales dans la liste d… (#383) [Bhoye05]
 
 
