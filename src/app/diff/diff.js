@@ -123,7 +123,7 @@ angular.module('hesperides.diff', [])
         $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
 
-        $scope.toggleCharsDiff = true;
+        $scope.toggleCharsDiff = Boolean(!$routeParams.hightlight_diff || $routeParams.hightlight_diff === 'true')
 
         /*
          * Select the containers that corresponds to the filters (ex: status = 2).
