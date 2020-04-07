@@ -108,7 +108,7 @@
         </div>
         <div flex="80" layout="row" layout-align="space-around center" class="diff-text-modifiable diff-value" ng-class="{'diff-column-break-word': togglePropertyDetails}">
             <div flex="30" class="diff-property-final-value">
-                <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                 {{ compareStoredValues ? diffContainer.property_to_modify.value.storedValue : diffContainer.property_to_modify.value.finalValue }}
             </div>
             <div flex="30" ng-if="togglePropertyDetails">{{ compareStoredValues ? diffContainer.property_to_modify.value.finalValue : diffContainer.property_to_modify.value.storedValue }}</div>
@@ -228,7 +228,7 @@
                 <div flex="30" ng-if="togglePropertyDetails">{{ diffContainer.property_to_modify.value.defaultValue }}</div>
                 <div flex="30" ng-if="togglePropertyDetails">{{ compareStoredValues ? diffContainer.property_to_modify.value.finalValue : diffContainer.property_to_modify.value.storedValue }}</div>
                 <div class="diff-property-final-value-left" ng-class="{'flex-30': togglePropertyDetails}">
-                    <span ng-if="!isGlobalDiff && diffContainer.property_to_modify.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                    <span ng-if="!isGlobalDiff && diffContainer.property_to_modify.value.transformations.includes('OVERRIDDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                     {{ compareStoredValues ? diffContainer.property_to_modify.value.storedValue : diffContainer.property_to_modify.value.finalValue }}
                 </div>
             </div>
@@ -240,7 +240,7 @@
             </div>
             <div flex="40" layout="row" layout-align="space-around center" class="diff-text-unmodifiable diff-value diff-line" ng-class="{'diff-column-break-word': togglePropertyDetails}">
                 <div class="diff-property-final-value-right" ng-class="{'flex-30': togglePropertyDetails}">
-                    <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                    <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                     {{ compareStoredValues ? diffContainer.property_to_compare_to.value.storedValue : diffContainer.property_to_compare_to.value.finalValue }}
                 </div>
                 <div flex="30" ng-if="togglePropertyDetails">{{ compareStoredValues ? diffContainer.property_to_compare_to.value.finalValue : diffContainer.property_to_compare_to.value.storedValue }}</div>
@@ -374,7 +374,7 @@
                 </span>
             </div>
             <div class="diff-property-final-value-left" ng-class="{'flex-30': togglePropertyDetails}">
-                <span ng-if="!isGlobalDiff && diffContainer.property_to_modify.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                <span ng-if="!isGlobalDiff && diffContainer.property_to_modify.value.transformations.includes('OVERRIDDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                 <span ng-bind-html="compareStoredValues ?
                 diffContainer.property_to_modify.value.storedValue :
                 diffContainer.property_to_modify.value.finalValue |
@@ -390,7 +390,7 @@
         <div id="e2e-diff-differing-properties-right-{{diffContainer.property_name}}" flex="40" layout="row" layout-align="space-around center"
              class="diff-text-unmodifiable diff-value diff-line" ng-class="{'diff-column-break-word': togglePropertyDetails}">
             <div class="diff-property-final-value-right" ng-class="{'flex-30': togglePropertyDetails}">
-                <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                 <span ng-bind-html="compareStoredValues ?
                 diffContainer.property_to_compare_to.value.storedValue :
                 diffContainer.property_to_compare_to.value.finalValue |
@@ -507,7 +507,7 @@
         </div>
         <div flex="40" layout="row" layout-align="space-around center" class="diff-text-unmodifiable diff-value diff-line" ng-class="{'diff-column-break-word': togglePropertyDetails}">
             <div class="diff-property-final-value" ng-class="{'flex-30': togglePropertyDetails}">
-                <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                <span ng-if="!isGlobalDiff && diffContainer.property_to_compare_to.value.transformations.includes('OVERRIDDEN_BY_GLOBAL')"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
                 {{ compareStoredValues ? diffContainer.property_to_compare_to.value.storedValue : diffContainer.property_to_compare_to.value.finalValue }}
             </div>
             <div flex="30" ng-if="togglePropertyDetails">{{ compareStoredValues ? diffContainer.property_to_compare_to.value.finalValue : diffContainer.property_to_compare_to.value.storedValue }}</div>

@@ -9,7 +9,7 @@ env:
 jobs:
   include:
     - stage: build
-      env: BUILD DOCKER IMAGE
+      name: Build Docker image
       install: echo Not performing default install step
       script: |
         docker build -t hesperides/hesperides-gui:$TRAVIS_COMMIT \
@@ -21,7 +21,7 @@ jobs:
         # We validate that the image built can start without any error at the entrypoint level:
         docker run --rm hesperides/hesperides-gui:$TRAVIS_COMMIT true
 
-    - name: HTML Linter for user manual
+    - name: HTML linter for user manual
       stage: test
       install:
         # Installing a more recent version than the one in the distro:
@@ -29,7 +29,7 @@ jobs:
         - sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
       script: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
 
-    - name: pre-commit hooks
+    - name: Pre-commit hooks
       stage: test
       # Ce work-around est mis pour corriger une issue du type https://github.com/pypa/virtualenv/issues/1551#issuecomment-584284214 sur travis.
       before_install: pip install --user --upgrade six
