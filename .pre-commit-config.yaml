@@ -22,5 +22,5 @@ repos:
     -   id: forbid-artifactory-in-package-lock
         name: Forbid artifactory domain in package-lock.json resolved dependencies
         language: pygrep
-        entry: vsct.fr
+        entry: artifactory
         files: package-lock.json

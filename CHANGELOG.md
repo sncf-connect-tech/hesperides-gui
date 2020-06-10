@@ -28,6 +28,8 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ## _(unreleased)_
 ### Added
 
+- Pre-commit hook forbid-artifactory-in-package-lock. [Lucas Cimon]
+
 - Autocomplétion des propriétés globales dans le champ de valorisation des autres propriétés - close #148. [Bhoye05]
 
 - Info qu'une propriété est valorisée au niveau instance - close #341 (#366) [Bhoye05]
@@ -36,6 +38,12 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 
 ### Fixed
+
+- #398 : Ajout d'un paramètre d'URL pour désactiver la mise en surbrillance du diff. [Thomas L'Hostis]
+
+- Docker image build by bumping NodeJS engine version (#397) [Lucas Cimon]
+
+- Docker image build by restoring package-lock.json (#396) [Lucas Cimon]
 
 - #394 Empêcher la modification de la valeur d'une propriété de module qui a le même nom qu'une propriété globale (#395) [Bhoye05]
 
