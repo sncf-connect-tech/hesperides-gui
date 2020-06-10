@@ -19,3 +19,8 @@ repos:
         entry: " nb[A-Z]"
         files: \.js$
         exclude: ^docs/assets/
+    -   id: forbid-artifactory-in-package-lock
+        name: Forbid artifactory domain in package-lock.json resolved dependencies
+        language: pygrep
+        entry: vsct.fr
+        files: package-lock.json
