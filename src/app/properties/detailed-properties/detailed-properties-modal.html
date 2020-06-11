@@ -1,0 +1,165 @@
+<md-dialog flex="95">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                {{ 'detailed.properties.modal.title' | translate }}
+                {{ $ctrl.applicationName }} / {{ $ctrl.platformName }}
+            </h2>
+            <div flex></div>
+
+            <md-input-container class="DetailedProperties__filter-block">
+                <label class="DetailedProperties__filter-label-style">
+                    {{ 'detailed.properties.modal.search' | translate }}
+                </label>
+                <input id="e2e-detailed-properties-search"
+                       type="text" class="DetailedProperties__filter-input-style" ng-trim="true"
+                       ng-model="searchProperty"
+                       aria-label="{{ 'detailed.properties.modal.search' | translate }}"/>
+            </md-input-container>
+            <div flex></div>
+
+            <md-switch id="e2e-detailed-properties-show-globals" ng-model="showGlobalProperties"
+                       class="md-warn md-block"
+                       aria-label="{{'detailed.properties.modal.showglobalproperties' | translate}}">
+                <span class="switch-label-style">{{'detailed.properties.modal.globalproperties' | translate}}</span>
+            </md-switch>
+            <div flex></div>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.closeModal()">
+                <md-icon class="fa fa-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div ng-if="$ctrl.loading">
+            <div class="DetailedProperties__loading"><i class="fa fa-circle-o-notch fa-spin fa-3x"></i></div>
+        </div>
+
+        <md-content layout-padding>
+            <div ng-if="!$ctrl.loading">
+                <div ng-if="showGlobalProperties && !$ctrl.globalProperties.length">
+                    <h2 class="no-entries">{{ 'detailed.properties.no.globalproperties' | translate }}</h2>
+                </div>
+
+                <table class="DetailedProperties__table-properties-list"
+                       ng-if="showGlobalProperties && $ctrl.globalProperties.length">
+                    <thead class="head-table-properties-list">
+                    <tr class="row-head-table-properties-list">
+                        <th class="DetailedProperties__col-tab-titles">
+                            {{ 'detailed.properties.column.globalproperties' | translate }}
+                        </th>
+                        <th class="DetailedProperties__col-tab-titles">
+                            {{ 'detailed.properties.column.value' | translate }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="property in $ctrl.globalProperties | filter:searchProperty | orderBy:'name'"
+                        id="e2e-detailed-global-property-{{ property.name }}"
+                        class="DetailedProperties__table-row">
+                        <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-name">
+                            <strong>{{ property.name }}</strong>
+                        </td>
+                        <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-value">
+                            {{ property.stored_value }}
+                            <span ng-if="property.stored_value != property.final_value">
+                            => <strong>{{ property.final_value }}</strong>
+                        </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div ng-if="!$ctrl.properties.length">
+                    <h2 class="no-entries">{{ 'detailed.properties.no.moduleproperties' | translate }}</h2>
+                </div>
+                <table class="DetailedProperties__table-properties-list" ng-if="$ctrl.properties.length">
+                    <thead class="head-table-properties-list">
+                    <tr class="row-head-table-properties-list">
+                        <th class="DetailedProperties__col-tab-titles">
+                            {{ 'detailed.properties.column.moduleproperties' | translate }}
+                        </th>
+                        <th class="DetailedProperties__col-tab-titles">
+                            {{ 'detailed.properties.column.module' | translate }}
+                        </th>
+                        <th class="DetailedProperties__col-tab-titles">
+                            {{ 'detailed.properties.column.value' | translate}}
+                        </th>
+                        <th class="DetailedProperties__col-tab-titles">
+                            {{ 'detailed.properties.column.infos' | translate }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="e2e-detailed-module-properties">
+                    <tr ng-repeat="property in $ctrl.properties | filter:searchProperty | orderBy:['name','properties_path']"
+                        id="e2e-detailed-property-{{ property.name }}"
+                    class="DetailedProperties__table-row">
+                        <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-name">
+                            <strong>{{ property.name }}</strong>
+                        </td>
+                        <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-module">
+                            {{ $ctrl.getModulePath(property.properties_path) }} >
+                            {{ $ctrl.getModule(property.properties_path) }}
+                        </td>
+                        <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-value">
+                            {{ property.stored_value }}
+                            <span ng-if="property.final_value && property.stored_value != property.final_value">
+                                => <strong>{{ property.final_value }}</strong>
+                            </span>
+                        </td>
+                        <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-infos">
+                            <span ng-if="property.comment">
+                                <span class="icon">💬</span>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.comment' | translate }} "{{ property.comment }}"
+                                </md-tooltip>
+                            </span>
+                            <span ng-if="property.is_required">
+                                <span class="icon">❗</span>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.required' | translate }}
+                                </md-tooltip>
+                            </span>
+                            <span ng-if="property.is_password">
+                                <span class="icon">🔒</span>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.password' | translate }}
+                                </md-tooltip>
+                            </span>
+                            <span ng-if="property.default_value">
+                                <span class="icon">🛡</span>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.default' | translate }} {{ property.default_value }}
+                                </md-tooltip>
+                            </span>
+                            <span ng-if="property.pattern">
+                                <strong class="icon">(.*)</strong>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.pattern' | translate }} {{ property.pattern }}
+                                </md-tooltip>
+                            </span>
+                            <span ng-if="property.is_unused">
+                                <span class="icon">❌</span>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.unused' | translate }}
+                                </md-tooltip>
+                            </span>
+                            <span ng-if="property.referenced_global_properties.length">
+                                <span class="icon">🌍</span>
+                                <md-tooltip md-direction="top">
+                                    {{ 'detailed.properties.tooltip.refglobal' | translate }}
+                                    <span ng-repeat="globalProperty in property.referenced_global_properties | orderBy:'name'">
+                                        {{ globalProperty.name }} = {{ globalProperty.stored_value }}
+                                        <span ng-if="globalProperty.final_value && globalProperty.stored_value != globalProperty.final_value">
+                                            => {{ globalProperty.final_value }}</span>;
+                                    </span>
+                                </md-tooltip>
+                            </span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+        </md-content>
+    </md-dialog-content>
+</md-dialog>
