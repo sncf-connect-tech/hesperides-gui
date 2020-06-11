@@ -2,7 +2,7 @@
 const buildify = require('buildify');
 
 exports.generateAppBundles = function () {
-    console.log('Generating app bundles:')
+    console.log('Generating app bundles:');
     buildify().concat([
         'src/app/utils.js',
         'src/app/hesperides/hesperides.js',
@@ -26,7 +26,8 @@ exports.generateAppBundles = function () {
         'src/app/template/template.js',
         'src/app/user/user.js',
         'src/app/properties/group-logic/copy-group-logic-component.js',
-      ]).save('src/app/app.js');
+        'src/app/properties/detailed-properties/detailed-properties.js',
+    ]).save('src/app/app.js');
     buildify().concat([
         'src/app/hesperides.css',
         'src/app/welcome_screen.css',
@@ -40,11 +41,12 @@ exports.generateAppBundles = function () {
         'src/app/sc-date-time/sc-date-time.css',
         'src/app/user/user.css',
         'src/app/properties/group-logic/copy-group-logic-modal.css',
-      ]).save('src/app/app.css');
+        'src/app/properties/detailed-properties/detailed-properties.css',
+    ]).save('src/app/app.css');
 };
 
 exports.generateVendorBundles = function () {
-    console.log('Generating vendor bundles:')
+    console.log('Generating vendor bundles:');
     buildify().concat([
         'node_modules/angular/angular.js', // Doit être chargé avant les libs ci-dessous :
         'node_modules/angular-animate/angular-animate.js',
@@ -84,8 +86,8 @@ exports.generateVendorBundles = function () {
         'node_modules/@sentry/browser/build/bundle.min.js',
         'node_modules/@sentry/integrations/build/angular.min.js',
         'node_modules/diff/dist/diff.js',
-      ]).save('src/app/vendor.js')
-      .uglify().save('src/app/vendor.min.js');
+    ]).save('src/app/vendor.js')
+        .uglify().save('src/app/vendor.min.js');
     buildify().concat([
         'node_modules/angular-material/angular-material.css',
         'node_modules/angular-wizard/dist/angular-wizard.css',
@@ -94,7 +96,7 @@ exports.generateVendorBundles = function () {
         'node_modules/codemirror/addon/display/fullscreen.css',
         'node_modules/codemirror/lib/codemirror.css',
         'node_modules/font-awesome/css/font-awesome.min.css',
-      ]).save('src/app/vendor.css');
+    ]).save('src/app/vendor.css');
 };
 
 if (require.main === module) { // means we are executed as a script, not loaded as a lib

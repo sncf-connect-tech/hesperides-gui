@@ -56,10 +56,7 @@
             <md-tooltip>{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}</md-tooltip>
         </md-button>
         <md-button id="e2e-tree-renderer-copy-box-button-{{box.name}}" class="md-xs" aria-label="{{ 'properties.logicGroup.copy' | translate }}" ng-click="showDialogCopyLogicGroup(platform, box, mainBox)">
-            <div class="newFeature"><!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
-                <span class="fa fa-copy"></span>
-                {{ 'newFeature.label' | translate }}
-            </div>
+            <div><span class="fa fa-copy"></span></div>
             <md-tooltip>{{ 'properties.logicGroup.copy.this' | translate }}</md-tooltip>
         </md-button>
     </div>

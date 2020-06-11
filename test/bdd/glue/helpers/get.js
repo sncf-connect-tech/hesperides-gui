@@ -15,6 +15,6 @@ exports.elementsByCss = function (selector) {
     return element.all(by.css(selector));
 };
 
-exports.getUniqueComment = function () {
+exports.uniqueComment = function () {
     return `${ new Date().getTime() }-this is a unique comment`;
 };

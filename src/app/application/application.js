@@ -490,6 +490,18 @@ angular.module('hesperides.application', [])
 
                     return updatedModules;
                 },
+                getDetailedProperties(applicationName, platformName, propertiesPath) {
+                    let url = `rest/applications/${ encodeURIComponent(applicationName) }/platforms/${ encodeURIComponent(platformName) }/detailed_properties`;
+                    if (propertiesPath) {
+                        url += `?properties_path=${ encodeURIComponent(propertiesPath) }`;
+                    }
+                    return $http.get(url, {cache: true}).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.getDetailedProperties' });
+                        throw error;
+                    });
+                },
             };
         },
     ])

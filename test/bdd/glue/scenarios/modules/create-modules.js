@@ -3,8 +3,8 @@ const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const { ModuleBuilder } = require('../../builders/ModuleBuilder');
 
-Given(/^an existing(?: workingcopy)? module(?: named "([^"]*)")?(?: with version "([^"]*)")?( (?:and|with) (?:this|a|those) templates?)?( (?:and|with) required and not required properties)?( (?:and|with) this techno)?$/,
-    /** @this CustomWorld */ async function (moduleName, moduleVersion, withTemplates, withRequiredAndNotRequiredProperties, withTechno) {
+Given(/^an existing(?: workingcopy)? module(?: named "([^"]*)")?(?: with version "([^"]*)")?( (?:and|with) (this|a)? template)?( (?:and|with) (these)? templates)?( (?:and|with) required and not required properties)?( (?:and|with) this techno)?$/,
+    /** @this CustomWorld */ async function (moduleName, moduleVersion, withThisTemplate, withTheseTemplates, withRequiredAndNotRequiredProperties, withTechno) {
         this.moduleBuilder = new ModuleBuilder();
         if (moduleName) {
             this.moduleBuilder.withName(moduleName);
@@ -16,13 +16,11 @@ Given(/^an existing(?: workingcopy)? module(?: named "([^"]*)")?(?: with version
             this.templateBuilder.setContent('{{ simple-property }}{{ required-property | @required }}');
             this.moduleBuilder.withTemplateBuilder(this.templateBuilder);
         }
-        if (withTemplates) {
-            if (this.templateHistory.templateBuilders.length > 0) {
-                for (const templateBuilder of this.templateHistory.templateBuilders) {
-                    this.moduleBuilder.withTemplateBuilder(templateBuilder);
-                }
-            } else {
-                this.moduleBuilder.withTemplateBuilder(this.templateBuilder);
+        if (withThisTemplate) {
+            this.moduleBuilder.withTemplateBuilder(this.templateBuilder);
+        } else if (withTheseTemplates) {
+            for (const templateBuilder of this.templateHistory.templateBuilders) {
+                this.moduleBuilder.withTemplateBuilder(templateBuilder);
             }
         }
         if (withTechno) {

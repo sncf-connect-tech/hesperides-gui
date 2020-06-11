@@ -14,6 +14,6 @@ When('I enter the following global properties', async function (dataTable) {
 
 When('I save the global properties', async function () {
     await send.clickById('e2e-tree-properties-save-global-properties-button');
-    await send.inputById('e2e-save-properties-modal_input-comment-autocomplete', get.getUniqueComment());
+    await send.inputById('e2e-save-properties-modal_input-comment-autocomplete', get.uniqueComment());
     await send.clickById('e2e-save-properties-modal_save-comment-button');
 });

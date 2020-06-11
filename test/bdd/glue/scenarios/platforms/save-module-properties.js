@@ -18,7 +18,7 @@ When('I type the value {string} for the property {string}', async function (prop
 
 When('I save the module properties', async function () {
     await send.clickById('e2e-tree-properties-save-module-properties-button');
-    await send.inputById('e2e-save-properties-modal_input-comment-autocomplete', get.getUniqueComment());
+    await send.inputById('e2e-save-properties-modal_input-comment-autocomplete', get.uniqueComment());
     await send.clickById('e2e-save-properties-modal_save-comment-button');
 });
 

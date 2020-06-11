@@ -272,6 +272,16 @@ jobs:
       provider: script
       script: travis_retry bash .travis/run_bdd_test.sh platforms/deployed-modules.feature
 
+    - name: BDD Tests - Platforms - Detailed properties
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: travis_retry bash .travis/run_bdd_test.sh platforms/detailed-properties.feature
+
     - name: BDD Tests - Platforms - Get platforms
       stage: test
       services:

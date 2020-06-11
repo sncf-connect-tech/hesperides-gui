@@ -37,8 +37,7 @@
                     </md-radio-button>
                 </md-radio-group>
             </div>
-            <div class="newFeature" ng-if="selected === 'new'">
-                <!-- Mamadou: j'insère ceci le 2020/03/09, à enlever d'ici quelques mois -->
+            <div ng-if="selected === 'new'">
                 </p>{{ 'newFeature.createSeveralLogicalGroupsAtOnce' | translate }}</p>
             </div>
             <label ng-if="selected === 'new'"><strong>{{ 'properties.logicGroup.copy.with.new' | translate
