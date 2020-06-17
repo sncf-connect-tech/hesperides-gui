@@ -41,10 +41,7 @@
     <span class="fa fa-tag"></span>
 </md-button>
 
-<md-button aria-label="{{ 'properties.module.history' | translate }}" ng-click="show_events(box, module, 'module')" class="md-xs">
-    <span class="fa fa-history"></span>
-    <md-tooltip>{{ 'properties.module.history' | translate }}</md-tooltip>
-</md-button>
+<properties-events application-name="platform.application_name" platform-name="platform.name" properties-path="module.properties_path"></properties-events>
 
 <md-button ng-really-message="{{ 'properties.module.delete.message' | translate : {name:module.title} }}" aria-label="{{ 'properties.module.delete' | translate }}" ng-really-click="delete_module(module, box)" class="md-xs md-warn">
     <span class="fa fa-trash"></span>

@@ -373,11 +373,14 @@ angular.module('hesperides.application', [])
                         throw error;
                     });
                 },
-                get_diff(application_name, platform_name, path, to_application, to_platform, to_path, compare_stored_values, timestamp) {
+                get_diff(application_name, platform_name, path, to_application, to_platform, to_path, compare_stored_values, timestamp, origin_timestamp) {
                     var url = `rest/applications/${ encodeURIComponent(application_name) }/platforms/${ encodeURIComponent(platform_name) }/properties/diff?path=${ encodeURIComponent(path) }`;
                     url += `&to_application=${ encodeURIComponent(to_application) }&to_platform=${ encodeURIComponent(to_platform) }&to_path=${ encodeURIComponent(to_path) }&compare_stored_values=${ encodeURIComponent(compare_stored_values) }`;
                     if (timestamp) {
                         url += `&timestamp=${ timestamp }`;
+                    }
+                    if (origin_timestamp) {
+                        url += `&origin_timestamp=${ origin_timestamp }`;
                     }
                     return $http.get(url).then(function (response) {
                         return response.data;
@@ -499,6 +502,22 @@ angular.module('hesperides.application', [])
                         return response.data;
                     }, function (error) {
                         notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.getDetailedProperties' });
+                        throw error;
+                    });
+                },
+                getPropertiesEvents(applicationName, platformName, propertiesPath, page, size) {
+                    let url = `rest/applications/${ encodeURIComponent(applicationName) }/platforms/${ encodeURIComponent(platformName) }/properties/events`;
+                    url += `?properties_path=${ encodeURIComponent(propertiesPath) }`;
+                    if (page) {
+                        url += `&page=${ page }`;
+                    }
+                    if (size) {
+                        url += `&size=${ size }`;
+                    }
+                    return $http.get(url, { cache: true }).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.getPropertiesEvents' });
                         throw error;
                     });
                 },

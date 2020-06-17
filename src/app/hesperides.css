@@ -297,7 +297,7 @@ repeated-item
 }
 
 .max-width-none{
-    max-width: none !important:
+    max-width: none !important;
 }
 
 .vertical-align-middle {
@@ -368,7 +368,7 @@ repeated-item
 }
 
 .newFeature {
-    color: rgb(255,87,34);
+    color: rgb(0, 255, 16);
 }
 
 button.preview {

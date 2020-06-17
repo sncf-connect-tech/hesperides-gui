@@ -44,7 +44,7 @@ function DetailedPropertiesController($mdDialog) {
 
 angular.module('hesperides.detailedProperties', [ 'ngMaterial' ])
     .component('detailedProperties', {
-        templateUrl: 'properties/detailed-properties/detailed-properties.html',
+        templateUrl: 'properties/detailed-properties/detailed-properties-button.html',
         bindings: {
             applicationName: '<',
             platformName: '<',

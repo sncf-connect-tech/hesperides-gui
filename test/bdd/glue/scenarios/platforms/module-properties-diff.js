@@ -82,7 +82,14 @@ Then(/^I get a new page with the module properties( stored values)? diff(?: betw
 
 Then('I get a new page with the module properties diff with timestamp', /** @this CustomWorld */ async function () {
     await navigate.toNewTab();
-    const expectedUrl = api.buildDiffUrl(this.platformBuilder, this.platformBuilder, this.deployedModuleBuilder.buildPropertiesPath(), false, selectedTimestamp);
+    const propertiesPath = this.deployedModuleBuilder.buildPropertiesPath();
+    const expectedUrl = api.buildDiffUrl(
+        this.platformBuilder,
+        this.platformBuilder,
+        propertiesPath,
+        propertiesPath,
+        false,
+        selectedTimestamp);
     await assert.currentUrlEquals(expectedUrl);
     await navigate.backToFirstTab();
 });

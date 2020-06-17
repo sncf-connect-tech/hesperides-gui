@@ -40,29 +40,29 @@ exports.updatePlatform = async function (platformBuilder, platformHistory, platf
     platformHistory.updatePlatformBuilder(platformBuilder);
 };
 
-const saveProperties = async function (api, platformBuilder, propertiesPath, properties) {
+const saveProperties = async function (api, platformBuilder, propertiesPath, properties, comment = 'comment', urlPrefix = baseUrl) {
     propertiesPath = encodeHashSymbol(propertiesPath);
-    let url = `${ baseUrl }/rest/applications/${ platformBuilder.applicationName }`;
+    let url = `${ urlPrefix }/rest/applications/${ platformBuilder.applicationName }`;
     url += `/platforms/${ platformBuilder.platformName }`;
     url += `/properties?path=${ propertiesPath }`;
     url += `&platform_vid=${ platformBuilder.versionId }`;
-    url += '&comment=fake-comment';
+    url += `&comment=${ comment }`;
     await api.put(url, properties);
 };
 
-exports.saveValuedProperties = async function (platformBuilder, deployedModuleBuilder, platformHistory) {
-    await saveProperties(this, platformBuilder, deployedModuleBuilder.buildPropertiesPath(), deployedModuleBuilder.buildValuedProperties());
+exports.saveValuedProperties = async function (platformBuilder, deployedModuleBuilder, platformHistory, comment, urlPrefix) {
+    await saveProperties(this, platformBuilder, deployedModuleBuilder.buildPropertiesPath(), deployedModuleBuilder.buildValuedProperties(), comment, urlPrefix);
     platformBuilder.updateDeployedModuleBuilder(deployedModuleBuilder);
     platformHistory.updatePlatformBuilder(platformBuilder);
 };
 
-exports.saveGlobalProperties = async function (platformBuilder, platformHistory) {
-    await saveProperties(this, platformBuilder, '#', platformBuilder.buildGlobalProperties());
+exports.saveGlobalProperties = async function (platformBuilder, platformHistory, comment, urlPrefix) {
+    await saveProperties(this, platformBuilder, '#', platformBuilder.buildGlobalProperties(), comment, urlPrefix);
     platformBuilder.incrementGlobalPropertiesVersionId();
     platformHistory.updatePlatformBuilder(platformBuilder);
 };
 
-exports.buildDiffUrl = function (fromPlatformBuilder, toPlatformBuilder, fromPropertiesPath, toPropertiesPath, storedValues, timestamp) {
+exports.buildDiffUrl = function (fromPlatformBuilder, toPlatformBuilder, fromPropertiesPath, toPropertiesPath, storedValues, timestamp, originTimestamp) {
     fromPropertiesPath = encodeHashSymbol(fromPropertiesPath);
     toPropertiesPath = encodeHashSymbol(toPropertiesPath);
     let url = `${ baseUrl }/#/diff?application=${ fromPlatformBuilder.applicationName }`;
@@ -74,6 +74,9 @@ exports.buildDiffUrl = function (fromPlatformBuilder, toPlatformBuilder, fromPro
     url += `&compare_stored_values=${ Boolean(storedValues) }`;
     if (timestamp) {
         url += `&timestamp=${ timestamp }`;
+    }
+    if (originTimestamp) {
+        url += `&origin_timestamp=${ originTimestamp }`;
     }
     return url;
 };

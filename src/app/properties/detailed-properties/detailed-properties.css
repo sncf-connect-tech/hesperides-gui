@@ -6,7 +6,7 @@
 }
 
 .DetailedProperties__filter-label-style {
-    color: white !important;
+    color: var(--modal-title-input-text-color) !important;
     font-size: medium !important;
 }
 
@@ -49,11 +49,11 @@
 }
 
 .DetailedProperties__table-row:nth-child(even) {
-    background-color: #fff;
+    background-color: var(--table-row-even-background-color);
 }
 
 .DetailedProperties__table-row:hover {
-    background-color: #f5f5f5 !important;
+    background-color: var(--table-row-hover-background-color) !important;
 }
 
 .DetailedProperties__col-tab-properties-datas .icon {
