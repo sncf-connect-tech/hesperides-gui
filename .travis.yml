@@ -322,6 +322,16 @@ jobs:
       provider: script
       script: travis_retry bash .travis/run_bdd_test.sh platforms/module-properties-list.feature
 
+    - name: BDD Tests - Platforms - Navigate
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: travis_retry bash .travis/run_bdd_test.sh platforms/navigate.feature
+
     - name: BDD Tests - Platforms - Preview files
       stage: test
       services:
@@ -331,6 +341,16 @@ jobs:
         chrome: stable
       provider: script
       script: travis_retry bash .travis/run_bdd_test.sh platforms/preview-files.feature
+
+    - name: BDD Tests - Platforms - Properties events
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: travis_retry bash .travis/run_bdd_test.sh platforms/properties-events.feature
 
     - name: BDD Tests - Platforms - Save global properties
       stage: test
@@ -377,5 +397,5 @@ jobs:
       if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
       script: .travis/docker_build_push.sh
 
-notifications:
-  email: false
+#notifications:
+#  email: false

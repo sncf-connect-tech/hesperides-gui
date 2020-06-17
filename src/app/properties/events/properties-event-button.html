@@ -1,0 +1,14 @@
+<md-button ng-click="$ctrl.showPropertiesEventsModal()"
+           aria-label="{{ 'properties.events.title' | translate }}"
+           id="e2e{{ $ctrl.isGlobalProperties ? '-global' : '' }}-properties-events-open-modal-button"
+           class="md-xs">
+    <i class="fa fa-history newFeature"></i>
+    <md-tooltip>
+        <span ng-if="$ctrl.isGlobalProperties">
+            {{ 'properties.events.modal.title.global.properties' | translate }}
+        </span>
+        <span ng-if="!$ctrl.isGlobalProperties">
+            {{ 'properties.events.title' | translate }}
+        </span>
+    </md-tooltip>
+</md-button>

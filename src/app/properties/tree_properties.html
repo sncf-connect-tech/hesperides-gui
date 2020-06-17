@@ -46,6 +46,7 @@
                     <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
+                <properties-events application-name="platform.application_name" platform-name="platform.name"></properties-events>
                 <md-button id="e2e-tree-properties-display-global-properties-diff-button" class="md-xs"
                            aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}"
                            ng-click="diffGlobalProperties()">

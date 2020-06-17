@@ -1,0 +1,171 @@
+<md-dialog flex="70" id="e2e-properties-events-modal">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 id="e2e-properties-events-modal-title">
+                <span ng-if="$ctrl.isGlobalProperties">
+                    {{ 'properties.events.modal.title.global.properties' | translate }}
+                </span>
+                <span ng-if="!$ctrl.isGlobalProperties">
+                    {{ 'properties.events.modal.title.module.properties' | translate }}
+                    <strong>{{ $ctrl.getModuleAsString() }}</strong>
+                </span>
+            </h2>
+            <div flex></div>
+
+            <md-input-container class="PropertiesEvents__filter-block">
+                <label class="PropertiesEvents__filter-label-style">
+                    {{ 'properties.events.modal.search' | translate }}
+                </label>
+                <input type="text" ng-trim="true" ng-model="search"
+                       class="PropertiesEvents__filter-input-style"
+                       id="e2e-properties-events-search-input"
+                       aria-label="{{ 'properties.events.modal.search' | translate }}"/>
+            </md-input-container>
+            <div flex></div>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.closeModal()"
+                       title="{{ 'button.modal.close' | translate }}"
+                       id="e2e-properties-events-close-cross">
+                <md-icon class="fa fa-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <md-content ng-if="$ctrl.loading">
+            <div class="PropertiesEvents__loading"><i class="fa fa-circle-o-notch fa-spin fa-3x"></i></div>
+        </md-content>
+
+        <md-content layout-padding>
+            <div ng-if="!$ctrl.loading">
+                <div ng-if="!$ctrl.events.length" id="e2e-properties-events-no-events">
+                    <h2 class="no-entries">{{ 'properties.events.modal.no.history' | translate }}</h2>
+                </div>
+
+                <div ng-repeat="event in $ctrl.events | filter:search | filter:$ctrl.filterUserEvents"
+                     ng-if="$ctrl.events.length">
+                    <div layout="row" class="PropertiesEvents__properties-panel-header">
+                        <div flex="5">
+                            <md-checkbox ng-model="event.isChecked" ng-disabled="$ctrl.disableCheckbox(event)"
+                                         title="{{ 'properties.events.modal.diff.instructions' | translate }}"
+                                         class="PropertiesEvents__left-column-checkbox"
+                                         data-timestamp="{{ event.timestamp }}"></md-checkbox>
+                        </div>
+                        <div flex class="PropertiesEvents__properties-panel-title"
+                             ng-click="event.isOpen = !event.isOpen">
+                            <i class="fa" ng-class="event.isOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i> &nbsp;
+                            <strong>{{ 'properties.events.modal.event.timestamp' | translate: {timestamp: event.timestamp} }}</strong>
+                            / {{ 'properties.events.modal.event.author' | translate: {author: event.author} }}
+                            {{ event.comment }}
+                        </div>
+                    </div>
+                    <div layout="row" class="PropertiesEvents__properties-panel-content" ng-if="event.isOpen">
+                        <div flex="5"></div>
+                        <div flex>
+                            <table class="PropertiesEvents__table-properties-list"
+                                   id="e2e-properties-events-added-properties"
+                                   ng-if="event.added_properties.length">
+                                <thead class="head-table-properties-list">
+                                <tr class="row-head-table-properties-list">
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.added.properties' | translate }}
+                                    </th>
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.property.value' | translate }}
+                                    </th>
+                                    <th class="PropertiesEvents__col-tab-titles"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="property in event.added_properties | filter:search | orderBy:'name'"
+                                    class="PropertiesEvents__table-row">
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.name }}</td>
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.value }}</td>
+                                    <td class="PropertiesEvents__col-tab-properties-datas"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="PropertiesEvents__table-properties-list"
+                                   id="e2e-properties-events-updated-properties"
+                                   ng-if="event.updated_properties.length">
+                                <thead class="head-table-properties-list">
+                                <tr class="row-head-table-properties-list">
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.updated.properties' | translate }}
+                                    </th>
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.old.value' | translate }}
+                                    </th>
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.new.value' | translate }}
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="property in event.updated_properties | filter:search | orderBy:'name'"
+                                    class="PropertiesEvents__table-row">
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.name }}</td>
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.old_value }}</td>
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.new_value }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="PropertiesEvents__table-properties-list"
+                                   id="e2e-properties-events-removed-properties"
+                                   ng-if="event.removed_properties.length">
+                                <thead class="head-table-properties-list">
+                                <tr class="row-head-table-properties-list">
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.removed.properties' | translate }}
+                                    </th>
+                                    <th class="PropertiesEvents__col-tab-titles">
+                                        {{ 'properties.events.modal.property.value' | translate }}
+                                    </th>
+                                    <th class="PropertiesEvents__col-tab-titles"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="property in event.removed_properties | filter:search | orderBy:'name'"
+                                    class="PropertiesEvents__table-row">
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.name }}</td>
+                                    <td class="PropertiesEvents__col-tab-properties-datas">{{ property.value }}</td>
+                                    <td class="PropertiesEvents__col-tab-properties-datas"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="$ctrl.events.length && $ctrl.noMoreEvents" id="e2e-properties-events-no-more-events">
+                    <h2 class="no-entries">{{ 'properties.events.modal.no.more.entries' | translate }}</h2>
+                </div>
+            </div>
+        </md-content>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-switch ng-model="$ctrl.onlyUserEvents" class="md-warn md-block"
+                   id="e2e-properties-events-my-events-switch">
+            {{ 'properties.events.modal.my.events' | translate }}
+        </md-switch>
+        <md-switch ng-model="expanded" ng-click="$ctrl.expandAll(expanded)" ng- class="md-warn md-block"
+                   id="e2e-properties-events-expand-switch">
+            <span ng-if="!expanded">{{ 'properties.events.modal.expand.all' | translate }}</span>
+            <span ng-if="expanded">{{ 'properties.events.modal.collapse.all' | translate }}</span>
+        </md-switch>
+        <div flex></div>
+        <md-button ng-disabled="!$ctrl.enoughEventsChecked()" ng-click="$ctrl.openDiff()" class="md-raised md-default"
+                   id="e2e-properties-events-diff-button">
+            {{ 'properties.events.modal.diff.button' | translate }}
+            <md-tooltip md-direction="top" ng-if="!$ctrl.enoughEventsChecked()">
+                <span>{{ 'properties.events.modal.diff.instructions' | translate }}</span>
+            </md-tooltip>
+        </md-button>
+        <md-button ng-disabled="$ctrl.noMoreEvents" ng-click="$ctrl.loadMoreEvents()" class="md-raised md-primary"
+                   id="e2e-properties-events-load-more-button">
+            <span ng-if="!$ctrl.loadingMore">{{ 'properties.events.modal.load.more.button' | translate }}</span>
+            <span ng-if="$ctrl.loadingMore"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        </md-button>
+        <md-button ng-click="$ctrl.closeModal()" class="md-raised md-warn" id="e2e-properties-events-close-button">
+            {{ 'button.modal.close' | translate }}
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

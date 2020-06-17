@@ -27,9 +27,11 @@ exports.generateAppBundles = function () {
         'src/app/user/user.js',
         'src/app/properties/group-logic/copy-group-logic-component.js',
         'src/app/properties/detailed-properties/detailed-properties.js',
+        'src/app/properties/events/properties-events.js',
     ]).save('src/app/app.js');
     buildify().concat([
         'src/app/hesperides.css',
+        'src/app/colors.css',
         'src/app/welcome_screen.css',
         'src/app/datepicker/datepicker.css',
         'src/app/diff/diff.css',
@@ -42,6 +44,7 @@ exports.generateAppBundles = function () {
         'src/app/user/user.css',
         'src/app/properties/group-logic/copy-group-logic-modal.css',
         'src/app/properties/detailed-properties/detailed-properties.css',
+        'src/app/properties/events/properties-events.css',
     ]).save('src/app/app.css');
 };
 

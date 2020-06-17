@@ -227,7 +227,7 @@ angular.module('hesperides.diff', [])
         };
 
         $scope.loadingDiff = true;
-        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $scope.compareStoredValues, $routeParams.timestamp).then((diff) => {
+        ApplicationService.get_diff($routeParams.application, $routeParams.platform, $routeParams.properties_path, $routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $scope.compareStoredValues, $routeParams.timestamp, $routeParams.origin_timestamp).then((diff) => {
             const diffContainers = [];
             diff.common.forEach((commonProperty) => {
                 diffContainers.push(new DiffContainer(1, commonProperty.name, { value: commonProperty.left }, { value: commonProperty.right }));

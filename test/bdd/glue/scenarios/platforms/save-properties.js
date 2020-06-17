@@ -2,19 +2,21 @@ const api = require('../../helpers/api');
 const { ValuedProperty } = require('../../builders/ValuedProperty');
 const { IterableProperty } = require('../../builders/IterableProperty');
 
-Given(/^the platform has these (valued|global) properties$/, /** @this CustomWorld */ async function (propertiesNature, dataTable) {
-    const valuedProperties = [];
-    for (const [ name, value ] of dataTable.raw()) {
-        valuedProperties.push(new ValuedProperty(name, value));
-    }
-    if (propertiesNature === 'valued') {
-        this.deployedModuleBuilder.setValuedProperties(valuedProperties);
-        await api.saveValuedProperties(this.platformBuilder, this.deployedModuleBuilder, this.platformHistory);
-    } else if (propertiesNature === 'global') {
-        this.platformBuilder.setGlobalProperties(valuedProperties);
-        await api.saveGlobalProperties(this.platformBuilder, this.platformHistory);
-    }
-});
+Given(/^the platform has these (valued|global) properties( saved by production user)?(?: with comment "([^"]*)")?$/,
+    /** @this CustomWorld */ async function (propertiesNature, productionUser, comment, dataTable) {
+        const valuedProperties = [];
+        for (const [ name, value ] of dataTable.raw()) {
+            valuedProperties.push(new ValuedProperty(name, value));
+        }
+        const urlPrefix = productionUser ? this.productionUserUrl : baseUrl;
+        if (propertiesNature === 'valued') {
+            this.deployedModuleBuilder.setValuedProperties(valuedProperties);
+            await api.saveValuedProperties(this.platformBuilder, this.deployedModuleBuilder, this.platformHistory, comment, urlPrefix);
+        } else if (propertiesNature === 'global') {
+            this.platformBuilder.setGlobalProperties(valuedProperties);
+            await api.saveGlobalProperties(this.platformBuilder, this.platformHistory, comment, urlPrefix);
+        }
+    });
 
 Given('the platform has these iterable properties', /** @this CustomWorld */ async function (dataTable) {
     const iterableProperties = [];
@@ -41,4 +43,13 @@ Given('the instance {string} has these valued properties', /** @this CustomWorld
     this.deployedModuleBuilder.setInstancesProperties(instanceName, properties);
     this.platformBuilder.updateDeployedModuleBuilder(this.deployedModuleBuilder);
     await api.updatePlatform(this.platformBuilder, this.platformHistory, this.platformBuilder.build());
+});
+
+Given('the platform has a property that is updated {int} times', /** @this CustomWorld */ async function (updatesCount) {
+    for (let index = 0; index <= updatesCount; index++) {
+        const valuedProperties = [];
+        valuedProperties.push(new ValuedProperty('property', index));
+        this.deployedModuleBuilder.setValuedProperties(valuedProperties);
+        await api.saveValuedProperties(this.platformBuilder, this.deployedModuleBuilder, this.platformHistory);
+    }
 });

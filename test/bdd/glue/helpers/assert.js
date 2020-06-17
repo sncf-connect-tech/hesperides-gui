@@ -40,24 +40,24 @@ exports.currentUrlEquals = async function (expectedUrl) {
     await expect(browser.driver.getCurrentUrl()).to.eventually.be.equal(expectedUrl);
 };
 
-exports.equalsText = async function (elem, text) {
-    await expect(elem.getText()).to.eventually.be.equal(text);
+exports.equalsText = async function (element, text) {
+    await expect(element.getText()).to.eventually.be.equal(text);
 };
 
-exports.containsText = async function (elem, text) {
-    await expect(elem.getText()).to.eventually.have.string(text);
+exports.containsText = async function (element, text) {
+    await expect(element.getText()).to.eventually.have.string(text);
 };
 
-exports.doesNotContainText = async function (elem, text) {
-    await expect(elem.getText()).to.eventually.not.contain.string(text);
+exports.doesNotContainText = async function (element, text) {
+    await expect(element.getText()).to.eventually.not.contain.string(text);
 };
 
 exports.elementAttributeContainsText = async function (element, attribute, text) {
     await expect(element.getAttribute(attribute)).to.eventually.have.string(text);
 };
 
-exports.containsValue = async function (elem, text) {
-    await expect(elem.getAttribute('value')).to.eventually.have.string(text);
+exports.containsValue = async function (element, text) {
+    await expect(element.getAttribute('value')).to.eventually.have.string(text);
 };
 
 exports.notification = async function (success, message) {
@@ -93,14 +93,22 @@ exports.codeMirrorContains = async function (expectedContent) {
     await expect(actualContent).to.eventually.be.equal(expectedContent);
 };
 
-exports.isDisabledById = async function (id) {
-    await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
-};
-
 exports.isSelectedOptionById = async function (id) {
     await expect(get.elementById(id).getAttribute('aria-checked')).to.eventually.equal('true');
 };
 
+exports.isNotDisabled = async function (element) {
+    await expect(element.getAttribute('disabled')).to.eventually.not.equal('true');
+};
+
+exports.isEnabledById = async function (id) {
+    await this.isNotDisabled(get.elementById(id));
+};
+
+exports.isDisabled = async function (element) {
+    await expect(element.getAttribute('disabled')).to.eventually.equal('true');
+};
+
 exports.isDisabledById = async function (id) {
-    await expect(get.elementById(id).getAttribute('disabled')).to.eventually.equal('true');
+    await this.isDisabled(get.elementById(id));
 };
