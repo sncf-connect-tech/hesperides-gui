@@ -10,9 +10,18 @@ class ModuleHistory {
     }
 
     findModuleBuilder(moduleName, moduleVersion) {
-        return this.moduleBuilders.filter((moduleBuilder) =>
+        const existingModuleBuilder = this.moduleBuilders.find((moduleBuilder) =>
             moduleBuilder.name === moduleName &&
-            (!moduleVersion || moduleBuilder.version === moduleVersion))[0];
+            (!moduleVersion || moduleBuilder.version === moduleVersion));
+
+        if (!existingModuleBuilder) {
+            let message = `Can't find module builder by name "${ moduleName }"`;
+            if (moduleVersion) {
+                message += ` and version "${ moduleVersion }"`;
+            }
+            throw new Error(message);
+        }
+        return existingModuleBuilder;
     }
 }
 

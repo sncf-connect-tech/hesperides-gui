@@ -11,7 +11,13 @@ class PlatformHistory {
     }
 
     findPlatformBuilderByName(platformName) {
-        return this.platformBuilders.filter((platformBuilder) => platformBuilder.platformName === platformName)[0];
+        const existingPlatformBuilder = this.platformBuilders.find((platformBuilder) =>
+            platformBuilder.platformName === platformName);
+
+        if (!existingPlatformBuilder) {
+            throw new Error(`Can't find platform builder by name "${ platformName }"`);
+        }
+        return existingPlatformBuilder;
     }
 
     updatePlatformBuilder(platformBuilder) {

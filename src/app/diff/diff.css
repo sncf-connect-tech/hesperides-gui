@@ -3,12 +3,6 @@
     font-weight: bold;
 }
 
-.diff-toggle-container{
-    margin-left: 20%;
-    justify-content: space-between;
-    height: 36px;
-}
-
 .diff-property-name {
     font-weight: bold;
     overflow: hidden;
@@ -75,8 +69,8 @@
     color: rgb(255, 87, 34) !important;;
 }
 
-.diff-left-title > div {
-    text-align: right;
+.diff-left-title {
+    justify-content: end;
 }
 
 .diff-char-highlight-right,

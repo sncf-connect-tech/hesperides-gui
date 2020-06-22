@@ -40,12 +40,14 @@ function dateToTimestamp(lookPast, date) {
     return timestamp;
 }
 
+const highlightedValueMaxLength = 100;
+
 angular.module('hesperides.diff', [])
 
     .filter('highlightDiff', [
         '$sce', function ($sce) {
             return function (value, compareTo, side, toggleCharsDiff) {
-                if (toggleCharsDiff) {
+                if (toggleCharsDiff && value.length < highlightedValueMaxLength && compareTo.length < highlightedValueMaxLength) {
                     var diff = Diff.diffChars(compareTo, value);
                     var diffStr = '';
                     for (var partId in diff) {
@@ -106,6 +108,8 @@ angular.module('hesperides.diff', [])
         $scope.propertiesKeyFilter2 = '';
         $scope.propertiesKeyFilter3 = '';
 
+        $scope.highlightedValueMaxLength = highlightedValueMaxLength;
+
         var splitedPropertiesPath = $routeParams.properties_path.split('#');
         $scope.module = {
             'name': splitedPropertiesPath[splitedPropertiesPath.length - 3],
@@ -123,7 +127,7 @@ angular.module('hesperides.diff', [])
         $scope.isGlobalDiff = $routeParams.properties_path === '#';
         $scope.togglePropertyDetails = false;
 
-        $scope.toggleCharsDiff = Boolean(!$routeParams.highlight_diff || $routeParams.highlight_diff === 'true')
+        $scope.toggleCharsDiff = Boolean(!$routeParams.highlight_diff || $routeParams.highlight_diff === 'true');
 
         /*
          * Select the containers that corresponds to the filters (ex: status = 2).
@@ -425,7 +429,7 @@ angular.module('hesperides.diff', [])
             },
             templateUrl: 'diff/compare-date-time.html',
             link(scope) {
-            // -- date for start
+                // -- date for start
                 var date = new Date();
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;

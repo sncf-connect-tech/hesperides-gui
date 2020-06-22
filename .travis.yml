@@ -332,6 +332,16 @@ jobs:
       provider: script
       script: travis_retry bash .travis/run_bdd_test.sh platforms/navigate.feature
 
+    - name: BDD Tests - Platforms - Platform events
+      stage: test
+      services:
+        - docker
+        - xvfb
+      addons:
+        chrome: stable
+      provider: script
+      script: travis_retry bash .travis/run_bdd_test.sh platforms/platform-events.feature
+
     - name: BDD Tests - Platforms - Preview files
       stage: test
       services:

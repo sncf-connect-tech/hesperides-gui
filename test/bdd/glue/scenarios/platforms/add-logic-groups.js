@@ -12,14 +12,14 @@ When('I add a logic group to this platform', /** @this CustomWorld */ async func
 });
 
 When('I add several logic groups at once to this platform', /** @this CustomWorld */ async function () {
-    this.deployedModuleBuilder.withLogicGroup('ABC#DEF#GHI');
+    this.deployedModuleBuilder.withLogicGroup('G1#G2#G3');
     await addLogicGroupToPlatform(this.deployedModuleBuilder);
 });
 
 When('I add a logic group to this logic group', /** @this CustomWorld */ async function () {
-    await send.mouseOnById('e2e-tree-renderer-edit-logic-group-ABC');
+    await send.mouseOnById(`e2e-tree-renderer-edit-logic-group-${ this.deployedModuleBuilder.logicGroup }`);
     await send.clickById(`e2e-tree-renderer-add-logic-group-button-${ this.deployedModuleBuilder.logicGroup }`);
-    this.deployedModuleBuilder.withLogicGroup('DEF');
+    this.deployedModuleBuilder.withLogicGroup('G2');
     await send.inputById('e2e-add-box-new-logic-group-name', this.deployedModuleBuilder.logicGroup);
     await send.clickById('e2e-add-box-create-logic-group-button');
 });

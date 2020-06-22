@@ -521,6 +521,21 @@ angular.module('hesperides.application', [])
                         throw error;
                     });
                 },
+                getPlatformEvents(applicationName, platformName, page, size) {
+                    let url = `rest/applications/${ encodeURIComponent(applicationName) }/platforms/${ encodeURIComponent(platformName) }/events`;
+                    if (page) {
+                        url += `?page=${ page }`;
+                    }
+                    if (size) {
+                        url += `&size=${ size }`;
+                    }
+                    return $http.get(url, { cache: true }).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.getPlatformEvents' });
+                        throw error;
+                    });
+                },
             };
         },
     ])

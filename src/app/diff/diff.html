@@ -34,19 +34,17 @@
     <md-button class="md-raised md-primary"  ng-click="saveChanges()" >
         2/ <span class="diff-warning-text-button">{{ 'properties.compare.saveChanges.part1' | translate }} </span>{{ 'properties.compare.saveChanges.part2' | translate }}
     </md-button>
-    <div layout="row" class="diff-toggle-container">
-        <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
-            {{ 'properties.compare.togglePropertyDetails' | translate }}
-            <md-tooltip md-direction="top">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
-            <i class="fa fa-question-circle"></i>
-        </md-switch>
-        <md-switch id="e2e-diff-toggle-deleted-property-top" class="md-primary" ng-disabled="!moduleModel" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
-            {{ 'properties.compare.hideDeletedProperties' | translate }}
-            <md-tooltip md-direction="bottom" ng-if="!moduleModel">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
-            <md-tooltip md-direction="top">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
-            <i class="fa fa-info-circle"></i>
-        </md-switch>
-    </div>
+    <div flex></div>
+    <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
+        {{ 'properties.compare.togglePropertyDetails' | translate }}
+        <md-tooltip md-direction="top">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
+        <i class="fa fa-question-circle"></i>
+    </md-switch>
+    <md-switch id="e2e-diff-toggle-deleted-property-top" class="md-primary" ng-disabled="!moduleModel" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
+        {{ 'properties.compare.hideDeletedProperties' | translate }}
+        <md-tooltip md-direction="top">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
+        <i class="fa fa-info-circle"></i>
+    </md-switch>
 </div>
 
 <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
@@ -309,7 +307,7 @@
     <div ng-show="toggle2">
         <md-switch id="e2e-highlight-differing-characters-button" layout-align="end" class="md-warn" ng-model="toggleCharsDiff" aria-label="{{ 'properties.compare.toggleCharsDiff' | translate }}">
             {{ 'properties.compare.toggleCharsDiff' | translate }}
-            <md-tooltip md-direction="top">{{ 'properties.compare.toggleCharsDiff.tooltip' | translate }}</md-tooltip>
+            <md-tooltip md-direction="top">{{ 'properties.compare.toggleCharsDiff.tooltip' | translate: {max: highlightedValueMaxLength} }}</md-tooltip>
             <i class="fa fa-question-circle"></i>
         </md-switch>
     </div>
@@ -523,18 +521,17 @@
     <md-button class="md-raised md-primary"  ng-click="saveChanges()">
         2/ <span class="diff-warning-text-button">{{ 'properties.compare.saveChanges.part1' | translate }}</span> {{ 'properties.compare.saveChanges.part2' | translate }}
     </md-button>
-    <div layout="row" class="diff-toggle-container">
-        <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
-            {{ 'properties.compare.togglePropertyDetails' | translate }}
-            <md-tooltip md-direction="top">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
-            <i class="fa fa-question-circle"></i>
-        </md-switch>
-        <md-switch id="e2e-diff-toggle-deleted-property-bottom" class="md-primary" ng-disabled="!moduleModel" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
-            {{ 'properties.compare.hideDeletedProperties' | translate }}
-            <md-tooltip md-direction="bottom" ng-if="!moduleModel">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
-            <md-tooltip md-direction="top">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
-            <i class="fa fa-info-circle"></i>
-        </md-switch>
-    </div>
+    <div flex></div>
+    <md-switch class="md-primary diff-togglePropertyDetails" ng-model="togglePropertyDetails" aria-label="{{ 'properties.compare.togglePropertyDetails' | translate }}">
+        {{ 'properties.compare.togglePropertyDetails' | translate }}
+        <md-tooltip md-direction="top">{{ 'properties.compare.togglePropertyDetails.tooltip' | translate }}</md-tooltip>
+        <i class="fa fa-question-circle"></i>
+    </md-switch>
+    <md-switch id="e2e-diff-toggle-deleted-property-bottom" class="md-primary" ng-disabled="!moduleModel" ng-model="toggleDeletedProperty" aria-label="{{ 'properties.compare.hideDeletedProperties' | translate }}">
+        {{ 'properties.compare.hideDeletedProperties' | translate }}
+        <md-tooltip md-direction="bottom" ng-if="!moduleModel">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
+        <md-tooltip md-direction="top">{{ 'properties.compare.hideDeletedProperties.tooltip' | translate }}</md-tooltip>
+        <i class="fa fa-info-circle"></i>
+    </md-switch>
 
 </div>

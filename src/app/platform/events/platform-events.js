@@ -1,4 +1,4 @@
-function PropertiesEventsModalController($mdDialog, $window, ApplicationService, UserService, applicationName, platformName, propertiesPath, isGlobalProperties) {
+function PlatformEventsModalController($mdDialog, $window, ApplicationService, UserService, applicationName, platformName) {
     const ctrl = this;
     const PAGE_SIZE = 20;
     const MAX_CHECKED_EVENTS_COUNT = 2;
@@ -9,7 +9,8 @@ function PropertiesEventsModalController($mdDialog, $window, ApplicationService,
     ctrl.events = [];
 
     ctrl.$onInit = function () {
-        ctrl.isGlobalProperties = isGlobalProperties;
+        ctrl.applicationName = applicationName;
+        ctrl.platformName = platformName;
         ctrl.loadMoreEvents();
         UserService.authenticate().then(function (data) {
             ctrl.currentUser = data.username;
@@ -18,7 +19,7 @@ function PropertiesEventsModalController($mdDialog, $window, ApplicationService,
 
     ctrl.loadMoreEvents = function () {
         ctrl.loadingMore = true;
-        ApplicationService.getPropertiesEvents(applicationName, platformName, propertiesPath, pageNumber++, PAGE_SIZE).then((data) => {
+        ApplicationService.getPlatformEvents(applicationName, platformName, pageNumber++, PAGE_SIZE).then((data) => {
             ctrl.loading = false;
             ctrl.loadingMore = false;
             if (data.length) {
@@ -28,14 +29,6 @@ function PropertiesEventsModalController($mdDialog, $window, ApplicationService,
                 ctrl.noMoreEvents = true;
             }
         });
-    };
-
-    ctrl.getModuleAsString = function () {
-        const moduleInfos = propertiesPath.split('#');
-        const moduleName = moduleInfos[moduleInfos.length - 3];
-        const moduleVersion = moduleInfos[moduleInfos.length - 2];
-        const versionType = moduleInfos[moduleInfos.length - 1].toLowerCase();
-        return `${ moduleName } ${ moduleVersion } (${ versionType })`;
     };
 
     ctrl.expandAll = function (expanded) {
@@ -61,16 +54,25 @@ function PropertiesEventsModalController($mdDialog, $window, ApplicationService,
         return ctrl.findCheckedEvents().length >= MAX_CHECKED_EVENTS_COUNT;
     };
 
+    ctrl.printModule = function (propertiesPath) {
+        const moduleInfos = propertiesPath.split('#');
+        const modulePath = moduleInfos.slice(1, moduleInfos.length - 3).join(' / ');
+        const moduleName = moduleInfos[moduleInfos.length - 3];
+        const moduleVersion = moduleInfos[moduleInfos.length - 2];
+        const versionType = moduleInfos[moduleInfos.length - 1].toLowerCase();
+        return `${ modulePath } / ${ moduleName } ${ moduleVersion } (${ versionType })`;
+    };
+
     ctrl.openDiff = function () {
         const checkedEvents = ctrl.findCheckedEvents();
         if (checkedEvents.length === MAX_CHECKED_EVENTS_COUNT) {
             const urlParams = {
                 application: applicationName,
                 platform: platformName,
-                properties_path: propertiesPath,
+                properties_path: '#',
                 compare_application: applicationName,
                 compare_platform: platformName,
-                compare_path: propertiesPath,
+                compare_path: '#',
                 compare_stored_values: false,
                 timestamp: checkedEvents[0].timestamp,
                 origin_timestamp: checkedEvents[1].timestamp,
@@ -87,35 +89,28 @@ function PropertiesEventsModalController($mdDialog, $window, ApplicationService,
     };
 }
 
-function PropertiesEventsController($mdDialog) {
+function PlatformEventsController($mdDialog) {
     const ctrl = this;
-    ctrl.$onInit = function () {
-        ctrl.propertiesPath = ctrl.propertiesPath || '#';
-        ctrl.isGlobalProperties = ctrl.propertiesPath === '#';
-    };
-    ctrl.showPropertiesEventsModal = function () {
+    ctrl.showPlatformEventsModal = function () {
         $mdDialog.show({
-            templateUrl: 'properties/events/properties-events-modal.html',
-            controller: PropertiesEventsModalController,
+            templateUrl: 'platform/events/platform-events-modal.html',
+            controller: PlatformEventsModalController,
             controllerAs: '$ctrl',
             clickOutsideToClose: true,
             locals: {
                 applicationName: ctrl.applicationName,
                 platformName: ctrl.platformName,
-                propertiesPath: ctrl.propertiesPath,
-                isGlobalProperties: ctrl.isGlobalProperties,
             },
         });
     };
 }
 
-angular.module('hesperides.propertiesEvents', [ 'ngMaterial' ])
-    .component('propertiesEvents', {
-        templateUrl: 'properties/events/properties-events-button.html',
-        controller: PropertiesEventsController,
+angular.module('hesperides.platformEvents', [ 'ngMaterial' ])
+    .component('platformEvents', {
+        templateUrl: 'platform/events/platform-events-button.html',
+        controller: PlatformEventsController,
         bindings: {
             applicationName: '<',
             platformName: '<',
-            propertiesPath: '<',
         },
     });
