@@ -39,6 +39,8 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 ### Fixed
 
+- #283: Historique des valorisations de propriétés. [Thomas L'Hostis]
+
 - #345: Détail des propriétés d'une plateforme (#402) [Thomas L'Hostis]
 
 - #398 : Ajout d'un paramètre d'URL pour désactiver la mise en surbrillance du diff. [Thomas L'Hostis]
