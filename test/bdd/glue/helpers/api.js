@@ -35,8 +35,8 @@ exports.createPlatform = async function (platform, urlPrefix) {
     await this.post(`${ urlPrefix }/rest/applications`, platform);
 };
 
-exports.updatePlatform = async function (platformBuilder, platformHistory, platform) {
-    await this.put(`${ baseUrl }/rest/applications/${ platformBuilder.applicationName }/platforms`, platform);
+exports.updatePlatform = async function (platformBuilder, platformHistory, platform, urlPrefix = baseUrl) {
+    await this.put(`${ urlPrefix }/rest/applications/${ platformBuilder.applicationName }/platforms`, platform);
     platformHistory.updatePlatformBuilder(platformBuilder);
 };
 

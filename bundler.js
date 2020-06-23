@@ -10,7 +10,6 @@ exports.generateAppBundles = function () {
         'src/app/application/application.js',
         'src/app/datepicker/datepicker.js',
         'src/app/diff/diff.js',
-        'src/app/event/event.js',
         'src/app/file/file.js',
         'src/app/local_changes/localChanges.js', // doit venir avant les fichier suivants
         'src/app/local_changes/localChangeFactory.js',
@@ -28,6 +27,7 @@ exports.generateAppBundles = function () {
         'src/app/properties/group-logic/copy-group-logic-component.js',
         'src/app/properties/detailed-properties/detailed-properties.js',
         'src/app/properties/events/properties-events.js',
+        'src/app/platform/events/platform-events.js',
     ]).save('src/app/app.js');
     buildify().concat([
         'src/app/hesperides.css',
@@ -45,6 +45,7 @@ exports.generateAppBundles = function () {
         'src/app/properties/group-logic/copy-group-logic-modal.css',
         'src/app/properties/detailed-properties/detailed-properties.css',
         'src/app/properties/events/properties-events.css',
+        'src/app/platform/events/platform-events.css',
     ]).save('src/app/app.css');
 };
 

@@ -3,7 +3,7 @@ const cloneDeep = require('lodash/cloneDeep');
 class PlatformBuilder {
     constructor() {
         this.platformName = 'DEV';
-        this.applicationName = 'APP';
+        this.applicationName = 'ABC';
         this.version = '1.0';
         this.isProduction = false;
         this.deployedModuleBuilders = [];
@@ -17,8 +17,25 @@ class PlatformBuilder {
         this.platformName = platformName;
     }
 
+    withApplicationName(applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    withVersion(version) {
+        this.version = version;
+    }
+
+    setDeployedModuleBuilders(deployedModuleBuilders) {
+        this.deployedModuleBuilders = deployedModuleBuilders;
+    }
+
     withDeployedModuleBuilder(deployedModuleBuilder) {
         this.deployedModuleBuilders.push(cloneDeep(deployedModuleBuilder));
+    }
+
+    removeDeployedModuleBuilderByName(moduleName) {
+        this.deployedModuleBuilders = this.deployedModuleBuilders.filter((deployedModuleBuilder) =>
+            deployedModuleBuilder.name !== moduleName);
     }
 
     withProductionFlag(isProduction) {

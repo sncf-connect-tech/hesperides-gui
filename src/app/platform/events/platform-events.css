@@ -1,0 +1,46 @@
+.PlatformEvents__filter-block {
+    margin-bottom: 10px;
+    width: 300px;
+    height: 40px;
+    margin-top: 20px;
+}
+
+PlatformEvents__filter-label-style {
+    color: var(--modal-title-input-text-color) !important; /* Surcharge d'Angular Material */
+    font-size: medium !important;  /* Surcharge d'Angular Material */
+}
+
+.PlatformEvents__filter-input-style {
+    border-bottom: 1px solid white !important;  /* Surcharge d'Angular Material */
+}
+
+.PlatformEvents__loading {
+    margin: 70px auto 60px;
+    text-align: center;
+}
+
+.PlatformEvents__platform-panel-header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.PlatformEvents__left-column-checkbox .md-container {
+    margin-left: 13px;
+    margin-top: 9px;
+}
+
+.PlatformEvents__platform-panel-title {
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--panel-title-color);
+    background-color: var(--panel-title-background-color);
+    margin-bottom: 1px;
+    padding: 10px 13px;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.7);
+}
+
+.PlatformEvents__platform-events-list-element {
+    list-style: none;
+    font-size: 14px;
+    line-height: 24px;
+}

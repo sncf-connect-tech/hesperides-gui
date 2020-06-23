@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties' ])
+angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.properties' ])
 
     .controller('MenuTechnoController', function ($scope, $mdDialog, $mdMenu, $location, $timeout, TechnoService) {
         $scope.find_technos_by_name = function (name) {

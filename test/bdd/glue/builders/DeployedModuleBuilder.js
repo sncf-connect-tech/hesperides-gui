@@ -5,9 +5,9 @@ class DeployedModuleBuilder {
         this.name = '';
         this.version = '';
         this.isWorkingCopy = true;
-        this.modulePath = '#ABC#DEF';
+        this.modulePath = '#G1#G2';
         this.instances = [];
-        this.logicGroup = 'ABC';
+        this.logicGroup = 'G1';
         this.valuedProperties = [];
         this.iterableProperties = [];
     }

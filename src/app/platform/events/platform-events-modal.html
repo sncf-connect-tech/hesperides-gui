@@ -1,0 +1,115 @@
+<md-dialog flex="70" id="e2e-platform-events-modal">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 id="e2e-platform-events-modal-title">
+                {{ 'platform.events.modal.title' | translate }}
+                <strong>{{ $ctrl.applicationName }} / {{ $ctrl.platformName }}</strong>
+            </h2>
+            <div flex></div>
+
+            <md-input-container class="PlatformEvents__filter-block">
+                <label class="PlatformEvents__filter-label-style">
+                    {{ 'platform.events.modal.search' | translate }}
+                </label>
+                <input type="text" ng-trim="true" ng-model="search"
+                       class="PlatformEvents__filter-input-style"
+                       id="e2e-platform-events-search-input"
+                       aria-label="{{ 'platform.events.modal.search' | translate }}"/>
+            </md-input-container>
+            <div flex></div>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.closeModal()"
+                       title="{{ 'button.modal.close' | translate }}"
+                       id="e2e-platform-events-close-cross">
+                <md-icon class="fa fa-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <md-content ng-if="$ctrl.loading">
+            <div class="PlatformEvents__loading"><i class="fa fa-circle-o-notch fa-spin fa-3x"></i></div>
+        </md-content>
+
+        <md-content layout-padding>
+            <div ng-if="!$ctrl.loading">
+                <div ng-repeat="event in $ctrl.events | filter:search | filter:$ctrl.filterUserEvents">
+                    <div layout="row" class="PlatformEvents__platform-panel-header">
+                        <div flex="5">
+                            <md-checkbox ng-model="event.isChecked" ng-disabled="$ctrl.disableCheckbox(event)"
+                                         title="{{ 'platform.events.modal.diff.instructions' | translate }}"
+                                         class="PlatformEvents__left-column-checkbox"
+                                         data-timestamp="{{ event.timestamp }}"></md-checkbox>
+                        </div>
+                        <div flex class="PlatformEvents__platform-panel-title"
+                             ng-click="event.isOpen = !event.isOpen">
+                            <i class="fa" ng-class="event.isOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i> &nbsp;
+                            <strong>
+                                {{ 'platform.events.modal.event.timestamp' | translate: {timestamp: event.timestamp} }}
+                            </strong> / {{ event.author }}
+                        </div>
+                    </div>
+                    <div layout="row" ng-if="event.isOpen" class="PlatformEvents__platform-panel-content">
+                        <div flex="5"></div>
+                        <ul flex class="PlatformEvents__platform-events-list">
+                            <li ng-repeat="change in event.changes | filter:search" ng-if="event.isOpen"
+                                class="PlatformEvents__platform-events-list-element"
+                                ng-switch="change.change_name">
+                                <span ng-switch-when="platform_created">
+                                    {{ 'platform.events.modal.event.platform.created' | translate }}
+                                </span>
+                                <span ng-switch-when="platform_version_updated">
+                                    {{ 'platform.events.modal.event.platform.version.updated' | translate }}
+                                    {{ change.old_version }} => {{ change.new_version }}
+                                </span>
+                                <span ng-switch-when="deployed_module_added">
+                                    {{ 'platform.events.modal.event.module.added' | translate }}
+                                    {{ $ctrl.printModule(change.properties_path) }}
+                                </span>
+                                <span ng-switch-when="deployed_module_removed">
+                                    {{ 'platform.events.modal.event.module.deleted' | translate }}
+                                    {{ $ctrl.printModule(change.properties_path) }}
+                                </span>
+                                <span ng-switch-when="deployed_module_updated">
+                                    {{ 'platform.events.modal.event.module.updated' | translate }}
+                                    {{ $ctrl.printModule(change.old_properties_path) }}
+                                    => {{ $ctrl.printModule(change.new_properties_path) }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-if="$ctrl.events.length && $ctrl.noMoreEvents" id="e2e-platform-events-no-more-events">
+                    <h2 class="no-entries">{{ 'platform.events.modal.no.more.entries' | translate }}</h2>
+                </div>
+            </div>
+        </md-content>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-switch ng-model="$ctrl.onlyUserEvents" class="md-warn md-block"
+                   id="e2e-platform-events-my-events-switch">
+            {{ 'platform.events.modal.my.events' | translate }}
+        </md-switch>
+        <md-switch ng-model="expanded" ng-click="$ctrl.expandAll(expanded)" ng- class="md-warn md-block"
+                   id="e2e-platform-events-expand-switch">
+            <span ng-if="!expanded">{{ 'platform.events.modal.expand.all' | translate }}</span>
+            <span ng-if="expanded">{{ 'platform.events.modal.collapse.all' | translate }}</span>
+        </md-switch>
+        <div flex></div>
+        <md-button ng-disabled="!$ctrl.enoughEventsChecked()" ng-click="$ctrl.openDiff()" class="md-raised md-default"
+                   id="e2e-platform-events-diff-button">
+            {{ 'platform.events.modal.diff.button' | translate }}
+            <md-tooltip md-direction="top">
+                <span ng-if="!$ctrl.enoughEventsChecked()">{{ 'platform.events.modal.diff.instructions' | translate }}</span>
+                <span ng-if="$ctrl.enoughEventsChecked()">{{ 'platform.events.modal.diff.launch' | translate }}</span>
+            </md-tooltip>
+        </md-button>
+        <md-button ng-disabled="$ctrl.noMoreEvents" ng-click="$ctrl.loadMoreEvents()" class="md-raised md-primary"
+                   id="e2e-platform-events-load-more-button">
+            <span ng-if="!$ctrl.loadingMore">{{ 'platform.events.modal.load.more.button' | translate }}</span>
+            <span ng-if="$ctrl.loadingMore"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        </md-button>
+        <md-button ng-click="$ctrl.closeModal()" class="md-raised md-warn" id="e2e-platform-events-close-button">
+            {{ 'button.modal.close' | translate }}
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
