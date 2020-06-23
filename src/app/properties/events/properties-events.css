@@ -6,12 +6,12 @@
 }
 
 .PropertiesEvents__filter-label-style {
-    color: var(--modal-title-input-text-color) !important;
-    font-size: medium !important;
+    color: var(--modal-title-input-text-color) !important; /* Surcharge d'Angular Material */
+    font-size: medium !important; /* Surcharge d'Angular Material */
 }
 
 .PropertiesEvents__filter-input-style {
-    border-bottom: 1px solid white !important;
+    border-bottom: 1px solid white !important; /* Surcharge d'Angular Material */
 }
 
 .PropertiesEvents__loading {

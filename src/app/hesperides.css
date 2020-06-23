@@ -801,7 +801,7 @@ h4.contain_empty_module {
     cursor: pointer;
 }
 
-.sticky-top {
+.TreeProperties__sticky-top {
     position: sticky;
     top: 0;
 }

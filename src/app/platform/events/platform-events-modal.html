@@ -52,6 +52,7 @@
                         <div flex="5"></div>
                         <ul flex class="PlatformEvents__platform-events-list">
                             <li ng-repeat="change in event.changes | filter:search" ng-if="event.isOpen"
+                                class="PlatformEvents__platform-events-list-element"
                                 ng-switch="change.change_name">
                                 <span ng-switch-when="platform_created">
                                     {{ 'platform.events.modal.event.platform.created' | translate }}

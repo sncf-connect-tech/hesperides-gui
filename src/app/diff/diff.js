@@ -40,14 +40,14 @@ function dateToTimestamp(lookPast, date) {
     return timestamp;
 }
 
-const highlightedValueMaxLength = 100;
+const HIGHLIGHTED_VALUE_MAX_LENGTH = 100;
 
 angular.module('hesperides.diff', [])
 
     .filter('highlightDiff', [
         '$sce', function ($sce) {
             return function (value, compareTo, side, toggleCharsDiff) {
-                if (toggleCharsDiff && value.length < highlightedValueMaxLength && compareTo.length < highlightedValueMaxLength) {
+                if (toggleCharsDiff && value.length < HIGHLIGHTED_VALUE_MAX_LENGTH && compareTo.length < HIGHLIGHTED_VALUE_MAX_LENGTH) {
                     var diff = Diff.diffChars(compareTo, value);
                     var diffStr = '';
                     for (var partId in diff) {
@@ -108,7 +108,7 @@ angular.module('hesperides.diff', [])
         $scope.propertiesKeyFilter2 = '';
         $scope.propertiesKeyFilter3 = '';
 
-        $scope.highlightedValueMaxLength = highlightedValueMaxLength;
+        $scope.highlightedValueMaxLength = HIGHLIGHTED_VALUE_MAX_LENGTH;
 
         var splitedPropertiesPath = $routeParams.properties_path.split('#');
         $scope.module = {
