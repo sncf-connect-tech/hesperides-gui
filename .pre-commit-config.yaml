@@ -1,6 +1,6 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.4.0
+    rev: v3.1.0
     hooks:
     -   id: check-merge-conflict
     -   id: trailing-whitespace
@@ -24,3 +24,8 @@ repos:
         language: pygrep
         entry: artifactory
         files: package-lock.json
+    -   id: find-unused-i18n-strings
+        name: Find unused i18n strings
+        language: system
+        entry: ./list_unused_i18n.py
+        files: ^src/app/
