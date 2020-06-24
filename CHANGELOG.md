@@ -25,35 +25,94 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
-## _(unreleased)_
+## 2020-06-24
+### Fixed
+
+- Pre-commit CI step. [Lucas Cimon]
+
+
+
+## 2020-06-23
 ### Added
 
-- Pre-commit hook forbid-artifactory-in-package-lock. [Lucas Cimon]
-
-- Autocomplétion des propriétés globales dans le champ de valorisation des autres propriétés - close #148. [Bhoye05]
-
-- Info qu'une propriété est valorisée au niveau instance - close #341 (#366) [Bhoye05]
-
-- Option pour cacher les propriétés "supprimées" dans le diff - close #288 (#379) [Bhoye05]
+- Historique des évènements d'une plateforme (#406) [Thomas L'Hostis]
 
 
+
+## 2020-06-17
 ### Fixed
 
 - #283: Historique des valorisations de propriétés. [Thomas L'Hostis]
 
+
+
+## 2020-06-11
+### Fixed
+
 - #345: Détail des propriétés d'une plateforme (#402) [Thomas L'Hostis]
 
+
+
+## 2020-06-10
+### Added
+
+- Pre-commit hook forbid-artifactory-in-package-lock. [Lucas Cimon]
+
+
+
+## 2020-04-07
+### Fixed
+
 - #398 : Ajout d'un paramètre d'URL pour désactiver la mise en surbrillance du diff. [Thomas L'Hostis]
+
+
+
+## 2020-03-31
+### Fixed
 
 - Docker image build by bumping NodeJS engine version (#397) [Lucas Cimon]
 
 - Docker image build by restoring package-lock.json (#396) [Lucas Cimon]
 
+
+
+## 2020-03-22
+### Fixed
+
 - #394 Empêcher la modification de la valeur d'une propriété de module qui a le même nom qu'une propriété globale (#395) [Bhoye05]
 
 - #153: Bouton de copie de groupe logique (#389) [Bhoye05]
 
+
+
+## 2020-03-19
+### Fixed
+
 - #38: Remaining text in search field causes autocomplete list malfunction (#393) [Bhoye05]
+
+
+
+## 2020-02-27
+### Added
+
+- Autocomplétion des propriétés globales dans le champ de valorisation des autres propriétés - close #148. [Bhoye05]
+
+
+
+## 2020-02-26
+### Added
+
+- Info qu'une propriété est valorisée au niveau instance - close #341 (#366) [Bhoye05]
+
+
+
+## 2020-02-25
+### Added
+
+- Option pour cacher les propriétés "supprimées" dans le diff - close #288 (#379) [Bhoye05]
+
+
+### Fixed
 
 - #327 Modifier le switch de sélection des globales dans la liste d… (#383) [Bhoye05]
 

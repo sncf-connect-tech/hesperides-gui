@@ -6,6 +6,15 @@ env:
     - secure: YQpgwAZBTQNcqEPz1jqDyFHi5SIn3OEx/Rmob8/g0FWQFxMs/hW4di4AVmKfYVgVxOSQS5NjmvvXZfBSO9NrL9FHlVlwDo7HBs2qPxakJHQhhejnEeUHAQUAcmymOkGpH10UVI3xYBBjfS2DywN6TQtaQGOke59II/APsM2l3fanC4SQOqq3z44xJ5B74NOPEH3r/bu0+BBCNLR/00aAdzJjshNeXvTsx0zszPQ3cOt2guBqsTNHGkZiVg4135pqSfTn5W60109EbzgfxgG0Wbxnll81M79CXLc/OZcGa0TJbQo3QqklscY+MJ9BKdXX/mgS4kNjZcYXgXd7sLwxdRWZRqsLIa2mEOotJAKKUThfD4Df0HMrpRdrRqaCig+PvdpFXeeTT9ITNiaBwN9hQD35tYju9JFUJ6qLgdjj5/PLMge6NmfoVSp1Q8dzSfZJsbPt4suR8X39rrwSMdw5lbhk4jsSkWD90eZjhzKc+dcLulxxjMFZGrMueR34tGYG17a9U/s9qNSxQ/K0bDRr8z2Jxt/dAsL/1kOKEvyM1ewXhMV9YZ3k1VsgUOsiDRRhJZ7RoUCJNLAkrI0BgrYzblmCofVOigAM8GB5rrSAPHVaPy7FyrV8M0yfHQ1Vw7URFKDHDEb24VZLsOipqUgCQqO2doTVF5wL+c75euQzz68= # DOCKER_USER
     - secure: eN1Z1h98ux+F+RubsI3w4NeIFpNw8QI6fzBD7U/01KRHGdD3PzQldfK3fxRRENu8tSDEpmbqMqJO17OKdUxOJPSbn8sAJXMXB88vkqBmKRT5n0pYvQKRCAEy9DO/OiFhvi5IFUX1fvyMb3wQyK/N8YTYoVA6Phg/+R6fVophkBfVeyf3YdxB8yUHB7etaepPOjbcG8XCFp6UVuhLA0eExCY0P6KjYnWV4Mhah218uXpfboFV9ONNo2Ysy//q0liYMYIHnlSKNMynMzuXQiT2QWx6N23A7XQTrn8QwRbsD0JGVXvuuQSU4imH2Oc6EOqrr4OqfVy+8nuKoKbMsscABsnrJC0RqfX0rHJA3JWtM1PZ5KgAzqr4ADHe+qk/SpXno2EyIWohjr6twHWbxycxhAFy4HH9INVRWmrtg0/bD4vKah25msqj6en37UV0nUVsrnf3Rnfjc0LJlTlkR1G0j9uiI3HjHE+U1ABtXg8V31/Py4BqDenztdRHbqS6k0v2EX8tTLSPen6GT6ikG5lgq5yTFGhDtIGewDPFw0otsbATC6A6dPe2b2qn8lhlExchOjtT15zouqMgPY2pqSf5JlL2+DAkNjMSreaURZDTrr2LbraN3Y6UWDMQJYaTH1DZgaDsJXaPKez3G7/Q8mQ786JJYbwbwcLbxmW1W4Lx+YM= # DOCKER_PASS
 
+addons:
+  apt:
+    sources:
+      - deadsnakes # https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+    packages:
+      - python3.8
+      - python3.8-dev
+      - python3.8-distutils
+
 jobs:
   include:
     - stage: build
@@ -31,9 +40,10 @@ jobs:
 
     - name: Pre-commit hooks
       stage: test
-      # Ce work-around est mis pour corriger une issue du type https://github.com/pypa/virtualenv/issues/1551#issuecomment-584284214 sur travis.
-      before_install: pip install --user --upgrade six
-      install: pip install --user pre-commit
+      install:
+      - wget https://bootstrap.pypa.io/get-pip.py
+      - python3.8 get-pip.py
+      - pip3 install pre-commit
       script: pre-commit run --all-files
 
     - name: JS Linter
