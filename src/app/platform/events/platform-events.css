@@ -5,13 +5,13 @@
     margin-top: 20px;
 }
 
-PlatformEvents__filter-label-style {
+.PlatformEvents__filter-label-style {
     color: var(--modal-title-input-text-color) !important; /* Surcharge d'Angular Material */
-    font-size: medium !important;  /* Surcharge d'Angular Material */
+    font-size: medium !important; /* Surcharge d'Angular Material */
 }
 
 .PlatformEvents__filter-input-style {
-    border-bottom: 1px solid white !important;  /* Surcharge d'Angular Material */
+    border-bottom: 1px solid white !important; /* Surcharge d'Angular Material */
 }
 
 .PlatformEvents__loading {
