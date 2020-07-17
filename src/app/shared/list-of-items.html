@@ -71,6 +71,7 @@
                     md-item-text="item.name + ' ' + item.version + ' ' + ((item.is_working_copy) ? '(working copy)' : '')"
                     md-selected-item-change="(item) ? selfAdd(item) : false"
                     md-min-length="0"
+                    md-delay="500"
                     md-autoselect="true"
                     md-autofocus="true"
                     placeholder="{{ 'placeholder.search' | translate }}">

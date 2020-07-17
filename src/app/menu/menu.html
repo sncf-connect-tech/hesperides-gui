@@ -85,6 +85,7 @@
                                     md-item-text="item.name"
                                     md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy) : false"
                                     md-min-length="0"
+                                    md-delay="500"
                                     md-autoselect="true"
                                     placeholder="{{ 'placeholder.search' | translate}}">
                                 <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>

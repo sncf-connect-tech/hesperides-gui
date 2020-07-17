@@ -39,6 +39,7 @@
                                 md-item-text="module.name + ' ' + module.version + ' ' + ((module.is_working_copy) ? '(working copy)' : '')"
                                 md-selected-item-change="(module) ? moduleSearched = module : false"
                                 md-min-length="0"
+                                md-delay="500"
                                 md-autoselect="true"
                                 md-autofocus="true"
                                 placeholder="{{ 'properties.module.search.placeholder' | translate }}">

@@ -91,6 +91,8 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
             if (is_working_copy) {
                 $location.search({ type: 'workingcopy' });
             }
+            // cas nominal pour md-autocomplete: une fois un item selectionné l'autocompletion ne fonctionne plus
+            // si le texte de l'item sélectionné n'est pas vidé du champ ou au moins un caratère supprimé
             $scope.ctrl.searchText = '';
             $scope.moduleSearched = '';
             $mdMenu.destroy();
@@ -136,9 +138,9 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
 
         $scope.open_properties_page = function (application_name, platform_name) {
             $scope.applicationSearched = '';
-            // cas nominal pour md-autocomplete: une fois un item selectionné l'autocompletion ne fonctionne plus
-            // si le texte de l'item sélectionné n'est pas vidé du champ ou au moins un caratère supprimé
-            $scope.ctrl.searchText = '';
+            // $scope.ctrl.searchText = ''; => Provoque un bug : lorsqu'on sélectionne une application via
+            // le menu, la page de l'application s'affiche mais nécessite un clic supplémentaire n'importe
+            // où sur la page pour accéder à ses fonctionnalités (par exemple, afficher une plateforme).
             const search = {};
             if (platform_name) {
                 search.platform = platform_name;
