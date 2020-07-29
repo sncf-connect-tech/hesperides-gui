@@ -216,6 +216,10 @@ repeated-item
     height: 300px !important;
 }
 
+.properties-list-min-height {
+    min-height: 18.75rem;
+}
+
 .height-30px {
     height: 30px !important;
 }
@@ -804,4 +808,8 @@ h4.contain_empty_module {
 .TreeProperties__sticky-top {
     position: sticky;
     top: 0;
+}
+
+.vertically-resizable {
+    resize: vertical;
 }

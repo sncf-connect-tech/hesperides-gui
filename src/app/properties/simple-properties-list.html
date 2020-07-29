@@ -68,7 +68,7 @@
     </div>
     <md-content layout="column" class="properties-container">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
-        <md-virtual-repeat-container id="vertical-container" class="height-300px">
+        <md-virtual-repeat-container id="vertical-container" class="properties-list-min-height vertically-resizable">
             <div md-virtual-repeat="key_value_property in properties
                     | hideHesperidesPredefinedProperties
                     | displayOnlyGlobalProperties:displayGlobal
