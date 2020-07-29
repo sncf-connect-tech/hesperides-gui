@@ -216,8 +216,8 @@ repeated-item
     height: 300px !important;
 }
 
-.min-height-300px {
-    min-height: 300px !important;
+.properties-list-min-height {
+    min-height: 18.75rem;
 }
 
 .height-30px {
