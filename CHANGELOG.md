@@ -25,6 +25,27 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2020-07-29
+### Fixed
+
+- #150: Liste des propriétés de modules et globales redimensionnable verticalement (#412) [Thomas L'Hostis]
+
+
+
+## 2020-07-21
+### Added
+
+- Ajout d'un délais de 500ms entre chaque appel lors de la recherche de module. [Thomas L'Hostis]
+
+
+
+## 2020-06-25
+### Fixed
+
+- Pre-commit CI step. [Lucas Cimon]
+
+
+
 ## 2020-06-24
 ### Fixed
 
