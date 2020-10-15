@@ -104,6 +104,71 @@
                             </section><!--//doc-section-->
                             <section id="ecosystem" class="doc-section">
                                 <h2 class="section-title">Ecosystem</h2>
+                                <div id="ecosystem-cli" class="section-block">
+                                    <h3 class="block-title">Command Line Interface</h3>
+<p><a href="https://github.com/voyages-sncf-technologies/hesperides-cli">hesperides-cli</a> is written in Python,
+comes up with a few usage examples as a Docker entrypoint or in a Gitlab CD/CI pipeline,
+and is as easy to install as:</p>
+                                    <pre><code class="language-shell">pip install hesperides-cli</code></pre>
+                                    <p>Here is a glimpse of its feature set:</p>
+                                    <pre><code>Commands:
+  create-application-platform
+  create-module
+  create-module-release
+  create-module-workingcopy-template
+  create-techno
+  create-techno-workingcopy
+  delete-application-platform
+  delete-module-release
+  delete-module-workingcopy
+  delete-module-workingcopy-template
+  delete-profile
+  delete-techno-release
+  delete-techno-workingcopy
+  delete-templates-packages-cache
+  get-application
+  get-application-platform
+  get-applications-using-module
+  get-conf
+  get-events
+  get-files
+  get-global-properties
+  get-global-properties-usage
+  get-module
+  get-module-release
+  get-module-release-template
+  get-module-release-templates
+  get-module-workingcopy
+  get-module-workingcopy-template
+  get-module-workingcopy-templates
+  get-modules
+  get-profile
+  get-properties
+  get-properties-instance-model
+  get-techno-release
+  get-techno-release-model
+  get-techno-workingcopy
+  get-techno-workingcopy-model
+  get-technos-release
+  get-technos-workingcopy
+  get-user
+  get-versions
+  local-generate-files
+  local-validate-files
+  perform-search-application-platforms
+  perform-search-applications
+  perform-search-modules
+  perform-search-technos
+  search-module
+  set-conf
+  update-application-platform
+  update-module
+  update-module-workingcopy-template
+  update-techno-workingcopy
+  upsert-module-workingcopy-template
+  use-profile
+  write-files</code></pre>
+                                </div><!--//section-block-->
                                 <div id="ecosystem-jenkins-pipelines" class="section-block">
                                     <h3 class="block-title">Jenkins pipelines</h3>
                                     <p>If you need to instrument Hesperides from Jenkins pipelines, a <a href="https://jenkins.io/doc/book/pipeline/shared-libraries/">Groovy shared libray</a> is available for you on Github: <a href="https://github.com/voyages-sncf-technologies/hesperides-jenkins-lib">voyages-sncf-technologies/hesperides-jenkins-lib</a>.</p><img class="img-responsive" src="assets/images/hesperides-jenkins-lib-logo.png" alt="Logo hesperides-jenkins-lib">
@@ -265,6 +330,9 @@ node {
                                 <li>
                                     <a class="scrollto" href="#ecosystem">Ecosystem</a>
                                     <ul class="nav doc-sub-menu">
+                                        <li>
+                                            <a class="scrollto" href="#ecosystem-cli">Command Line Interface</a>
+                                        </li>
                                         <li>
                                             <a class="scrollto" href="#ecosystem-jenkins-pipelines">Jenkins pipelines</a>
                                         </li>
