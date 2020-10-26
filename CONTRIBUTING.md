@@ -70,7 +70,7 @@ Afin d'effectuer certaines validations automatisées à chaque commit,
 ce projet emploie des _hooks_ `git` de `pre-commit`, via [l'outil Python du même nom](http://pre-commit.com).
 
 Les _hooks_ configurés sont listés dans le fichier de configuration [.pre-commit-config.yaml](.pre-commit-config.yaml),
-et sont exécutés via [Travis CI](https://travis-ci.org/voyages-sncf-technologies/vboard).
+et sont exécutés via [Travis CI](https://travis-ci.com/voyages-sncf-technologies/vboard).
 Aucune PR ne sera mergée si ces _hooks_ remontent des erreurs.
 
 Dans la mesure du possible, installez ces _hooks_ sur votre poste de développement.
@@ -91,7 +91,7 @@ Si besoin, vous pouvez lancer manuellement les _hooks_ :
 
 
 ## Intégration continue
-[Travis CI](https://travis-ci.org/voyages-sncf-technologies/hesperides-gui) est configuré via le fichier `.travis.yml` pour exécuter les validations suivantes sur chaque _pull request_:
+[Travis CI](https://travis-ci.com/voyages-sncf-technologies/hesperides-gui) est configuré via le fichier `.travis.yml` pour exécuter les validations suivantes sur chaque _pull request_:
 - analyse statique du code avec `eslint`
 - exécutions de tous les _hooks_ de `pre-commit`
 - tests unitaires avec Karma
