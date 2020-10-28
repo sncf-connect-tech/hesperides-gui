@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -o pipefail -o errexit -o nounset -o xtrace
+cd $(dirname ${BASH_SOURCE[0]})
 google-chrome-stable --version
 npm install
 export DISPLAY=:99.0

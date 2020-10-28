@@ -34,6 +34,7 @@ Feature: Save module properties
     And I type the value "12" for the property "pattern-property"
     Then the save button is disabled
 
+  # Issue 334
   Scenario: Try to save an empty required property
     Given an existing template with this content
     """
