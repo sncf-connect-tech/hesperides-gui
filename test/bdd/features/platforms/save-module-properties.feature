@@ -45,6 +45,4 @@ Feature: Save module properties
     When I open this platform
     And I open the deployed module properties
     And I type the value "other-value" for the property "simple-property"
-    Then the save button is disabled
-
-    # Le bouton ne devrait pas être grisé => #334
+    Then the save button is enabled
