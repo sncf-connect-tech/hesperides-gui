@@ -1,6 +1,3 @@
-const chai = require('chai').use(require('chai-as-promised'));
-const expect = chai.expect;
-
 const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const get = require('../../helpers/get');
@@ -41,9 +38,7 @@ When('I select the first suggested global property', async function () {
 Then('only the required properties are displayed', async function () {
     await get.elementsByCss('.property-label').then(async function (propertyLabels) {
         for (const propertyLabel of propertyLabels) {
-            const childSpan = propertyLabel.$('span');
-            await expect(childSpan.isPresent()).to.eventually.be.true;
-            await expect(childSpan.getAttribute('class')).to.eventually.equal('property-required');
+            assert.isPresentWithClass(propertyLabel.$('span'), 'property-required');
         }
     });
 });

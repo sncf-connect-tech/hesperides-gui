@@ -98,3 +98,8 @@ exports.isDisabled = async function (element) {
 exports.isDisabledById = async function (id) {
     await this.isDisabled(get.elementById(id));
 };
+
+exports.isPresentWithClass = function(elem, className) {
+    await expect(elem.isPresent()).to.eventually.be.true;
+    await expect(elem.getAttribute('class')).to.eventually.equal(className);
+};
