@@ -56,6 +56,9 @@ Before(/** @this CustomWorld */ async function () {
         });
     }).then(async function () {
         await rest.get(`${ baseUrl }/rest/modules`).then(async function (modules) {
+            if (modules.data.length > 10) {
+                throw new Error('You are probably connected to a real database. Be careful which data you are trying to erase.');
+            }
             for (const moduleName of modules.data) {
                 await rest.get(`${ baseUrl }/rest/modules/${ moduleName }`).then(async function (moduleVersions) {
                     for (const moduleVersion of moduleVersions.data) {
@@ -70,6 +73,9 @@ Before(/** @this CustomWorld */ async function () {
         });
     }).then(async function () {
         await rest.get(`${ baseUrl }/rest/technos`).then(async function (technos) {
+            if (technos.data.length > 10) {
+                throw new Error('You are probably connected to a real database. Be careful which data you are trying to erase.');
+            }
             for (const technoName of technos.data) {
                 await rest.get(`${ baseUrl }/rest/technos/${ technoName }`).then(async function (technoVersions) {
                     for (const technoVersion of technoVersions.data) {

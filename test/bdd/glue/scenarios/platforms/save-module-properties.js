@@ -22,6 +22,10 @@ When('I save the module properties', async function () {
     await send.clickById('e2e-save-properties-modal_save-comment-button');
 });
 
+Then('the save button is enabled', async function () {
+    await assert.isEnabledById('e2e-tree-properties-save-module-properties-button');
+});
+
 Then('the save button is disabled', async function () {
     await assert.isDisabledById('e2e-tree-properties-save-module-properties-button');
 });

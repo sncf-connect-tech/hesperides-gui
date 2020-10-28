@@ -36,7 +36,11 @@ When('I select the first suggested global property', async function () {
 });
 
 Then('only the required properties are displayed', async function () {
-    await get.elementsByCss('textarea.property-value').then(assert.itemsAreRequired);
+    await get.elementsByCss('.property-label').then(async function (propertyLabels) {
+        for (const propertyLabel of propertyLabels) {
+            assert.isPresentWithClass(propertyLabel.$('span'), 'property-required');
+        }
+    });
 });
 
 Then('the properties are displayed with dedicated icons', async function () {

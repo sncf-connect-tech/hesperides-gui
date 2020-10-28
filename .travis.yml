@@ -416,6 +416,3 @@ jobs:
       stage: deploy
       if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
       script: .travis/docker_build_push.sh
-
-#notifications:
-#  email: false

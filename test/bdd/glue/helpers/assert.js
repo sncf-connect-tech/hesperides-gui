@@ -66,12 +66,6 @@ exports.notification = async function (success, message) {
     await this.containsText(elements.get(0), message);
 };
 
-exports.itemsAreRequired = async function (items) {
-    for (const item of items) {
-        await expect(item.getAttribute('required')).to.eventually.equal('true');
-    }
-};
-
 exports.fileContains = async function (filename, content) {
     const filePath = downloadsPath + filename;
     // eslint-disable-next-line no-sync
@@ -103,4 +97,9 @@ exports.isDisabled = async function (element) {
 
 exports.isDisabledById = async function (id) {
     await this.isDisabled(get.elementById(id));
+};
+
+exports.isPresentWithClass = function(elem, className) {
+    await expect(elem.isPresent()).to.eventually.be.true;
+    await expect(elem.getAttribute('class')).to.eventually.equal(className);
 };
