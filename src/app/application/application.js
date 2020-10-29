@@ -498,7 +498,7 @@ angular.module('hesperides.application', [])
                     if (propertiesPath) {
                         url += `?properties_path=${ encodeURIComponent(propertiesPath) }`;
                     }
-                    return $http.get(url, {cache: true}).then(function (response) {
+                    return $http.get(url, { cache: true }).then(function (response) {
                         return response.data;
                     }, function (error) {
                         notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.getDetailedProperties' });
