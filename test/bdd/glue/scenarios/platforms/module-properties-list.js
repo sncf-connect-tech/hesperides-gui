@@ -38,7 +38,9 @@ When('I select the first suggested global property', async function () {
 Then('only the required properties are displayed', async function () {
     await get.elementsByCss('.property-label').then(async function (propertyLabels) {
         for (const propertyLabel of propertyLabels) {
-            await assert.isPresentWithClass(propertyLabel.$('span'), 'property-required');
+            const span = propertyLabel.$('span');
+            await assert.isPresent(span);
+            await assert.hasClass(span, 'property-required');
         }
     });
 });

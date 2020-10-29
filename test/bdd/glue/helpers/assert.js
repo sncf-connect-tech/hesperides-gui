@@ -11,8 +11,12 @@ exports.elementsDoNotExist = async function (elements) {
     await expect(elements.count()).to.eventually.be.equal(0);
 };
 
+exports.isPresent = async function (element) {
+    await expect(element.isPresent()).to.eventually.be.true;
+};
+
 exports.isPresentById = async function (id) {
-    await expect(get.elementById(id).isPresent()).to.eventually.be.true;
+    await this.isPresent(get.elementById(id));
 };
 
 exports.isNotPresentById = async function (id) {
@@ -20,7 +24,7 @@ exports.isNotPresentById = async function (id) {
 };
 
 exports.isPresentByCss = async function (selector) {
-    await expect(get.elementByCss(selector).isPresent()).to.eventually.be.true;
+    await this.isPresent(get.elementByCss(selector));
 };
 
 exports.isNotPresentByCss = async function (selector) {
@@ -99,7 +103,6 @@ exports.isDisabledById = async function (id) {
     await this.isDisabled(get.elementById(id));
 };
 
-exports.isPresentWithClass = async function (elem, className) {
-    await expect(elem.isPresent()).to.eventually.be.true;
-    await expect(elem.getAttribute('class')).to.eventually.equal(className);
+exports.hasClass = async function (element, className) {
+    await expect(element.getAttribute('class')).to.eventually.equal(className);
 };
