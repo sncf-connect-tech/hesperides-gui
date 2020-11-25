@@ -414,5 +414,5 @@ jobs:
 
     - name: Deploy to Docker hub
       stage: deploy
-      if: (branch = master OR branch =~ ^v[0-9]) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
+      if: (branch = master OR branch =~ ^v[0-9] or env(PUBLISH_BRANCH)) AND type != pull_request AND repo = "voyages-sncf-technologies/hesperides-gui"
       script: .travis/docker_build_push.sh
