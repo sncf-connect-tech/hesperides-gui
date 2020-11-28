@@ -46,7 +46,6 @@
         // Substitué par docker_entrypoint.sh :
         let substOrDefault = (e, v) => (e && e[0] !== '$' ? e : v);
         const DOCUMENTATION_LINK    =  substOrDefault('$DOCUMENTATION_LINK',    'https://voyages-sncf-technologies.github.io/hesperides-gui/');
-        const EVENT_PAGINATION_SIZE = +substOrDefault('$EVENT_PAGINATION_SIZE', '25');
         const LOCALCHANGES_TTL      = +substOrDefault('$LOCALCHANGES_TTL',      '50');
         const SUPPORT_URL           =  substOrDefault('$SUPPORT_URL',           '');
         const SWAGGER_LINK          =  substOrDefault('$SWAGGER_LINK',          '/rest/swagger-ui.html');
@@ -95,6 +94,7 @@
     <script src="properties/properties.js"></script>
     <script src="properties/iterable-properties-container.js"></script>
     <script src="properties/events/properties-events.js"></script>
+    <script src="search-properties/search-properties.js"></script>
     <script src="shared/components.js"></script>
     <script src="techno/techno.js"></script>
     <script src="template/template.js"></script>
@@ -113,6 +113,7 @@
     <link rel="stylesheet" href="properties/events/properties-events.css">
     <link rel="stylesheet" href="properties/iterable-properties-container.css">
     <link rel="stylesheet" href="properties/properties.css">
+    <link rel="stylesheet" href="search-properties/search-properties.css">
     <link rel="stylesheet" href="sc-date-time/sc-date-time.css">
     <link rel="stylesheet" href="user/user.css">
     <link rel="stylesheet" href="properties/group-logic/copy-group-logic-modal.css">

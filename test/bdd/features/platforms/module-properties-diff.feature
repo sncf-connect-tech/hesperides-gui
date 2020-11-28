@@ -35,7 +35,7 @@ Feature: Module properties diff
   Scenario: Select another module to compare with
     Given an existing module named "a"
     And an existing module named "b"
-    And an existing platform with those modules
+    And an existing platform with these modules
     When I open this platform
     And I open the modal to compare the module "a" properties
     And I click on the NEXT button

@@ -3,8 +3,8 @@ const assert = require('../../helpers/assert');
 const send = require('../../helpers/send');
 const { PlatformBuilder } = require('../../builders/PlatformBuilder');
 
-Given(/^a(?:n existing)?( production)? (?:application|platform)(?: named "([^"]*)")?(?: with application name "([^"]*)")?( with (?:this|those) modules?)?$/,
-    /** @this CustomWorld */ async function (production, platformName, applicationName, withModules) {
+Given(/^a(?:n existing)?( production)? (?:application|platform)(?: named "([^"]*)")?(?: with application name "([^"]*)")?( with (?:this|these) modules?)?(?: within logical group "([^"]*)")?$/,
+    /** @this CustomWorld */ async function (production, platformName, applicationName, withModules, logicalGroup) {
         this.platformBuilder = new PlatformBuilder();
         this.platformBuilder.withProductionFlag(Boolean(production));
         if (platformName) {
@@ -12,6 +12,9 @@ Given(/^a(?:n existing)?( production)? (?:application|platform)(?: named "([^"]*
         }
         if (applicationName) {
             this.platformBuilder.withApplicationName(applicationName);
+        }
+        if (logicalGroup) {
+            this.deployedModuleBuilder.withModulePath(`#${ logicalGroup }`);
         }
         if (withModules) {
             for (const moduleBuilder of this.moduleHistory.moduleBuilders) {

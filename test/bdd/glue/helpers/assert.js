@@ -35,6 +35,10 @@ exports.isDisplayedById = async function (id) {
     await expect(get.elementById(id).isDisplayed()).to.eventually.be.true;
 };
 
+exports.isNotDisplayedById = async function (id) {
+    await expect(get.elementById(id).isDisplayed()).to.eventually.be.false;
+};
+
 exports.elementsCount = async function (elements, count) {
     await expect(elements.count()).to.eventually.be.equal(count);
 };

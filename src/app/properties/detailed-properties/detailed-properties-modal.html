@@ -11,9 +11,9 @@
                 <label class="DetailedProperties__filter-label-style">
                     {{ 'detailed.properties.modal.search' | translate }}
                 </label>
-                <input id="e2e-detailed-properties-search"
-                       type="text" class="DetailedProperties__filter-input-style" ng-trim="true"
-                       ng-model="searchProperty"
+                <input ng-model="searchProperty" ng-trim="true"
+                       id="e2e-detailed-properties-search"
+                       type="text" class="DetailedProperties__filter-input-style"
                        aria-label="{{ 'detailed.properties.modal.search' | translate }}"/>
             </md-input-container>
             <div flex></div>
@@ -99,8 +99,7 @@
                             <strong>{{ property.name }}</strong>
                         </td>
                         <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-module">
-                            {{ $ctrl.getModulePath(property.properties_path) }} >
-                            {{ $ctrl.getModule(property.properties_path) }}
+                            {{ $ctrl.buildPrettyPropertiesPath(property.properties_path) }}
                         </td>
                         <td class="DetailedProperties__col-tab-properties-datas e2e-detailed-property-value">
                             {{ property.stored_value }}

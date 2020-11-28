@@ -1,6 +1,6 @@
 const api = require('../../helpers/api');
-const { ValuedProperty } = require('../../builders/ValuedProperty');
-const { IterableProperty } = require('../../builders/IterableProperty');
+const { ValuedProperty } = require('../../entities/ValuedProperty');
+const { IterableProperty } = require('../../entities/IterableProperty');
 
 Given(/^the platform has these (valued|global) properties( saved by production user)?(?: with comment "([^"]*)")?$/,
     /** @this CustomWorld */ async function (propertiesNature, productionUser, comment, dataTable) {
