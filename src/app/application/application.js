@@ -38,28 +38,13 @@ angular.module('hesperides.application', [])
 
     .factory('Platform', [
         'ApplicationModule', 'Properties', function (Module, Properties) {
-            var prettify_path = function (path) {
-                // Remove the first '#' if present
-                if (path.charAt(0) === '#') {
-                    path = path.substring(1, path.length);
-                }
-
-                if (path.length === 0) {
-                    return '';
-                }
-
-                var splitted_path = path.split('#');
-
-                var last_pos = splitted_path.length - 1;
-
-                var prettify_module = `${ splitted_path[last_pos - 2] }, ${ splitted_path[last_pos - 1]
-                }${ splitted_path[last_pos] === 'WORKINGCOPY' ? ' (working copy) ' : '' }`;
-
-                splitted_path = splitted_path.slice(0, splitted_path.length - 3);
-
-                path = `${ splitted_path.join(' > ') } > ${ prettify_module }`;
-
-                return path;
+            const prettify_path = function (propertiesPath) {
+                const moduleInfos = propertiesPath.split('#');
+                const groups = moduleInfos.slice(1, moduleInfos.length - 3).join(' > ');
+                const moduleName = moduleInfos[moduleInfos.length - 3];
+                const moduleVersion = moduleInfos[moduleInfos.length - 2];
+                const versionType = moduleInfos[moduleInfos.length - 1].toLowerCase();
+                return `${ groups } > ${ moduleName } ${ moduleVersion } (${ versionType })`;
             };
 
             var Platform = function (data) {
@@ -533,6 +518,15 @@ angular.module('hesperides.application', [])
                         return response.data;
                     }, function (error) {
                         notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.getPlatformEvents' });
+                        throw error;
+                    });
+                },
+                searchProperties(propertyName, propertyValue) {
+                    const url = `rest/applications/search_properties?property_name=${ encodeURIComponent(propertyName) }&property_value=${ encodeURIComponent(propertyValue) }`;
+                    return $http.get(url, { cache: true }).then(function (response) {
+                        return response.data;
+                    }, function (error) {
+                        notify({ classes: [ 'error' ], message: (error.data && error.data.message) || error.data || 'Unknown API error in ApplicationService.searchProperties' });
                         throw error;
                     });
                 },

@@ -250,6 +250,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
     })
 
     .controller('MenuHelpController', function ($scope, $mdDialog, $http, $translate, $parse, $location, $window, ApplicationService, PlatformColorService, UserService, notify) {
+        $scope.documentationLink = DOCUMENTATION_LINK;
         $scope.supportUrl = SUPPORT_URL;
         $scope.swaggerLink = SWAGGER_LINK;
         $scope.logout = UserService.logout;
@@ -267,18 +268,6 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
                     return !_.some($scope.applications, (application) => application === matchingApplication.name);
                 });
             });
-        };
-
-        $scope.openDocumentation = function () {
-            $window.open(DOCUMENTATION_LINK);
-        };
-
-        $scope.openSwagger = function () {
-            $window.open($scope.swaggerLink);
-        };
-
-        $scope.navigateToUserPage = function () {
-            $location.url('/user');
         };
 
         $scope.openAboutModal = function () {
@@ -316,7 +305,7 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
          *
          * Added by Sahar CHAILLOU
          */
-        $scope.display_settings = function () {
+        $scope.displaySettings = function () {
             $scope.settings_unfoldInstancesByDefault = store.get('unfoldInstancesByDefault');
             $scope.settings_copy = store.get('copy_properties');
             $scope.settings_color = store.get('color_active');

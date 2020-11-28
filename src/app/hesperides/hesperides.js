@@ -36,6 +36,7 @@ const MODULE_DEPS = [
     'hesperides.techno',
     'hesperides.template',
     'hesperides.user',
+    'hesperides.searchProperties',
     'hesperides.properties.logicGroup',
     'hesperides.detailedProperties',
     'hesperides.propertiesEvents',
@@ -98,13 +99,16 @@ angular.module('hesperides', MODULE_DEPS)
                     templateUrl: 'techno/techno.html',
                     controller: 'TechnoController',
                 })
-                .otherwise({
-                    templateUrl: 'welcome_screen.html',
-                    controller: 'WelcomeController',
-                })
                 .when('/user', {
                     templateUrl: 'user/user.html',
                     controller: 'UserController',
+                })
+                .when('/search-properties', {
+                    template: '<search-properties></search-properties>',
+                })
+                .otherwise({
+                    templateUrl: 'welcome_screen.html',
+                    controller: 'WelcomeController',
                 });
 
             // Material design theming
@@ -192,10 +196,10 @@ angular.module('hesperides', MODULE_DEPS)
             $http.get(BANNER_URL).then((response) => {
                 bannerMsg = response.data.trim();
             }, (error) => {
-                console.warn(`[Hesperides] Banner file could not be retrieved from ${ BANNER_URL }:`, error);
+                console.warn(`[Hespérides] Banner file could not be retrieved from ${ BANNER_URL }:`, error);
             });
         }
-        const base = 'Hesperides';
+        const base = 'Hespérides';
         let title = base;
         return {
             isBannerPresent() {

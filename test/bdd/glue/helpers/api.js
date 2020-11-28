@@ -4,7 +4,7 @@ const onError = function (error) {
     console.error(error.message, error.statusCode, error.data);
 };
 
-const encodeHashSymbol = function (text) {
+exports.encodeHashSymbol = function (text) {
     return text.replace(/#/g, '%23');
 };
 
@@ -41,7 +41,7 @@ exports.updatePlatform = async function (platformBuilder, platformHistory, platf
 };
 
 const saveProperties = async function (api, platformBuilder, propertiesPath, properties, comment = 'comment', urlPrefix = baseUrl) {
-    propertiesPath = encodeHashSymbol(propertiesPath);
+    propertiesPath = api.encodeHashSymbol(propertiesPath);
     let url = `${ urlPrefix }/rest/applications/${ platformBuilder.applicationName }`;
     url += `/platforms/${ platformBuilder.platformName }`;
     url += `/properties?path=${ propertiesPath }`;
@@ -63,8 +63,8 @@ exports.saveGlobalProperties = async function (platformBuilder, platformHistory,
 };
 
 exports.buildDiffUrl = function (fromPlatformBuilder, toPlatformBuilder, fromPropertiesPath, toPropertiesPath, storedValues, timestamp, originTimestamp) {
-    fromPropertiesPath = encodeHashSymbol(fromPropertiesPath);
-    toPropertiesPath = encodeHashSymbol(toPropertiesPath);
+    fromPropertiesPath = this.encodeHashSymbol(fromPropertiesPath);
+    toPropertiesPath = this.encodeHashSymbol(toPropertiesPath);
     let url = `${ baseUrl }/#/diff?application=${ fromPlatformBuilder.applicationName }`;
     url += `&platform=${ fromPlatformBuilder.platformName }`;
     url += `&properties_path=${ fromPropertiesPath }`;

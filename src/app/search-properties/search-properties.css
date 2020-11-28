@@ -1,0 +1,67 @@
+.SearchPropertiesForm {
+    max-width: 480px;
+    margin: 32px auto;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+}
+
+.SearchPropertiesResults__loading {
+    margin: 70px auto 60px;
+    text-align: center;
+}
+
+.SearchPropertiesResults {
+    max-width: 1600px;
+    margin: 32px auto;
+}
+
+.SearchPropertiesResults__table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+}
+
+.SearchPropertiesResults__col-tab-titles {
+    width: 10%;
+    max-width: 400px;
+    word-wrap: break-word;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgb(0, 150, 136);
+    height: 30px;
+}
+
+.SearchPropertiesResults__clickable-title {
+    cursor: pointer;
+}
+
+.SearchPropertiesResults__col-tab-properties-datas {
+    width: 10%;
+    max-width: 400px;
+    word-wrap: break-word;
+    text-align: left;
+    padding-right: 10px;
+    border-bottom: 1px solid #ddd;
+    height: 30px;
+}
+
+.SearchPropertiesResults__col-tab-properties-datas > a {
+    color: rgba(0, 0, 0, 0.87);
+    text-decoration: none;
+}
+
+.SearchPropertiesResults__table-row:nth-child(even) {
+    background-color: var(--table-row-even-background-color);
+}
+
+.SearchPropertiesResults__table-row:hover {
+    background-color: var(--table-row-hover-background-color) !important;
+}
+
+.SearchPropertiesResults__col-tab-properties-datas .icon {
+    cursor: default;
+}

@@ -20,6 +20,7 @@ exports.generateAppBundles = function () {
         'src/app/module/module.js',
         'src/app/properties/properties.js', // doit venir le fichier ci-dessous
         'src/app/properties/iterable-properties-container.js',
+        'src/app/search-properties/search-properties.js',
         'src/app/shared/components.js',
         'src/app/techno/techno.js',
         'src/app/template/template.js',
@@ -39,6 +40,7 @@ exports.generateAppBundles = function () {
         'src/app/module/module.css',
         'src/app/properties/iterable-properties-container.css',
         'src/app/properties/properties.css',
+        'src/app/search-properties/search-properties.css',
         'src/app/local_changes/localChanges.css',
         'src/app/sc-date-time/sc-date-time.css',
         'src/app/user/user.css',

@@ -53,8 +53,18 @@ md-menu-content.md-menu-bar-menu.md-dense {
     display: flex;
     align-items: center;
 }
-.menu-header > i {
+
+.menu-header > .fa-caret-down {
     margin-left: .5rem;
+}
+
+.menu-header > .fa-cog {
+    font-size: 20px;
+}
+
+a.menu-header {
+    text-decoration: none;
+    height: 40px;
 }
 
 md-toolbar .md-menu {
@@ -73,7 +83,7 @@ md-toolbar .md-menu {
 
 .menu-language--fr, .menu-language--en {
     margin-top: 10px;
-    min-width: 40px;
+    min-width: 30px;
     max-width: 40px;
     max-height: 20px;
     min-height: 20px;

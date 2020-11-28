@@ -8,7 +8,6 @@
         "BANNER_URL": "readonly",
         "BUILD_TIME": "readonly",
         "DOCUMENTATION_LINK": "readonly",
-        "EVENT_PAGINATION_SIZE": "readonly",
         "GIT_BRANCH": "readonly",
         "GIT_COMMIT": "readonly",
         "GIT_TAG": "readonly",

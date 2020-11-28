@@ -1,4 +1,4 @@
-function DetailedPropertiesModalController($mdDialog, ApplicationService, applicationName, platformName) {
+function DetailedPropertiesModalController($mdDialog, ApplicationService, Platform, applicationName, platformName) {
     const ctrl = this;
     ctrl.applicationName = applicationName;
     ctrl.platformName = platformName;
@@ -10,16 +10,8 @@ function DetailedPropertiesModalController($mdDialog, ApplicationService, applic
             ctrl.loading = false;
         });
     };
-    ctrl.getModulePath = function (propertiesPath) {
-        const moduleInfos = propertiesPath.split('#');
-        return moduleInfos.slice(1, moduleInfos.length - 3).join(' > ');
-    };
-    ctrl.getModule = function (propertiesPath) {
-        const moduleInfos = propertiesPath.split('#');
-        const moduleName = moduleInfos[moduleInfos.length - 3];
-        const moduleVersion = moduleInfos[moduleInfos.length - 2];
-        const versionType = moduleInfos[moduleInfos.length - 1].toLowerCase();
-        return `${ moduleName } ${ moduleVersion } (${ versionType })`;
+    ctrl.buildPrettyPropertiesPath = function (propertiesPath) {
+        return Platform.prettify_path(propertiesPath);
     };
     ctrl.closeModal = function () {
         $mdDialog.cancel();

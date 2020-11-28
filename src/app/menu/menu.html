@@ -24,7 +24,7 @@
         <md-menu-bar class="menu layout-wrap" layout="row" layout-align="space-between">
             <div layout="row" class="menu-side">
                 <a class="menu-title" href="/">{{ Page.title() }}</a>
-                <div class="menu-header"> / {{ 'menu.template.title' | translate }} <i class="fa fa-arrow-right"></i></div>
+                <div class="menu-header"></div>
                 <md-menu ng-controller="MenuTechnoController" md-position-mode="target bottom">
                     <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-techno">
                         {{ 'menu.techno.title' | translate }} <i class="fa fa-caret-down"></i>
@@ -94,7 +94,6 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <div class="menu-header">{{ 'menu.properties.title' | translate }} <i class="fa fa-arrow-right"></i></div>
                 <md-menu ng-controller="MenuPropertiesController" md-position-mode="target bottom">
                     <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-app">
                         {{ 'menu.platform.title' | translate }} <i class="fa fa-caret-down"></i>
@@ -128,47 +127,68 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
+                <a href="#/search-properties" class="menu-header" id="e2e-navbar-search-properties">
+                    <i class="fa fa-search"></i>&nbsp;
+                    {{ 'menu.search-properties.title' | translate }}
+                </a>
             </div>
 
             <div layout="row" class="menu-side" ng-controller="MenuHelpController">
-                <md-button class="menu-settings" ng-click="display_settings()" id="e2e-navbar-settings">
-                    <i class="fa fa-cog" aria-label="{{ 'menu.help.settings' | translate }}"></i>
-                </md-button>
                 <md-menu md-position-mode="target bottom">
                     <button class="menu-header" ng-click="$mdMenu.open()" id="e2e-navbar-help">
-                        {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
+                        <i class="fa fa-cog"></i>
                     </button>
                     <md-menu-content class="menu-item">
                         <md-menu-item>
-                            <md-button ng-click="openDocumentation()">
+                            <md-button ng-href="{{ documentationLink }}" target="_blank">
+                                <i class="fa fa-book"></i>
                                 {{ 'menu.help.documentation' | translate}}
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button id="e2e-navbar-help-about" ng-click="openAboutModal()" id="e2e-about-menu">
-                                {{ 'menu.help.about' | translate}}
+                            <md-button ng-click="displaySettings()">
+                                <i class="fa fa-wrench"></i>
+                                {{ 'menu.help.settings' | translate}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button href="#/user">
+                                <i class="fa fa-user"></i>
+                                {{ 'menu.link.userPage' | translate}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-href="{{ swaggerLink }}" target="_blank" ng-if="swaggerLink">
+                                {...}
+                                Swagger
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="logout()">
+                                <i class="fa fa-sign-out"></i>
+                                {{ 'menu.help.logout' | translate}}
                             </md-button>
                         </md-menu-item>
                         <md-menu-item ng-if="supportUrl">
-                            <md-button href="{{ supportUrl }}" target="_blank">
+                            <md-button ng-href="{{ supportUrl }}" target="_blank">
+                                <i class="fa fa-question"></i>
                                 {{ 'menu.help.support' | translate}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button id="e2e-navbar-help-about" ng-click="openAboutModal()" id="e2e-about-menu">
+                                <i class="fa fa-info-circle"></i>
+                                {{ 'menu.help.about' | translate}}
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <button class="menu-header" ng-if="swaggerLink" ng-click="openSwagger()">
-                    Swagger
-                </button>
-                <button class="menu-header" ng-click="navigateToUserPage()">
-                    {{ 'menu.link.userPage' | translate}}
-                </button>
-                <button class="menu-header" ng-click="logout()">
-                    {{ 'menu.help.logout' | translate}}
-                </button>
-                <md-button ng-click="change_language('fr')" class="menu-language--fr" aria-label="{{ 'menu.language.fr.aria' | translate }}" id="e2e-navbar-lang-fr">
+                <md-button ng-click="change_language('fr')" class="menu-language--fr"
+                           aria-label="{{ 'menu.language.fr.aria' | translate }}" id="e2e-navbar-lang-fr">
                     fr
                 </md-button>
-                <md-button ng-click="change_language('en')" class="menu-language--en" aria-label="{{ 'menu.language.en.aria' | translate }}" id="e2e-navbar-lang-en">
+                <md-button ng-click="change_language('en')" class="menu-language--en"
+                           aria-label="{{ 'menu.language.en.aria' | translate }}" id="e2e-navbar-lang-en">
                     en
                 </md-button>
             </div>

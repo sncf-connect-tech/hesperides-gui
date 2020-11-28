@@ -1,0 +1,128 @@
+<div class="SearchPropertiesForm">
+    <form ng-submit="$ctrl.submitSearch()">
+        <label for="search_property_name" autofocus>
+            {{ 'search-properties.form.input.name' | translate }}
+            <input type="text" id="search_property_name" ng-model="$ctrl.form.name">
+        </label>&nbsp;
+        <label for="search_property_value">
+            {{ 'search-properties.form.input.value' | translate }}
+            <input type="text" id="search_property_value" ng-model="$ctrl.form.value">
+        </label>
+        &nbsp;<input type="submit" id="e2e-search-properties-submit-button"
+                     value="{{ 'search-properties.form.button.submit' | translate }}">
+    </form>
+</div>
+
+<div ng-if="$ctrl.loading">
+    <div class="SearchPropertiesResults__loading"><i class="fa fa-circle-o-notch fa-spin fa-3x"></i></div>
+</div>
+
+<div ng-if="!$ctrl.loading && ($ctrl.submittedName || $ctrl.submittedValue)"
+     class="SearchPropertiesResults">
+    <span id="e2e-search-properties-result-count">
+        <span ng-if="$ctrl.properties.length == 0">
+            <span ng-if="$ctrl.submittedName && $ctrl.submittedValue">
+                {{ 'search-properties.results.no-name-value' | translate:
+                    { name: $ctrl.submittedName, value: $ctrl.submittedValue }
+                }}
+            </span>
+            <span ng-if="$ctrl.submittedName && !$ctrl.submittedValue">
+                {{ 'search-properties.results.no-name' | translate: { name: $ctrl.submittedName } }}
+            </span>
+            <span ng-if="!$ctrl.submittedName && $ctrl.submittedValue">
+                {{ 'search-properties.results.no-value' | translate: { value: $ctrl.submittedValue } }}
+            </span>
+        </span>
+        <span ng-if="$ctrl.properties.length == 1">
+            {{ 'search-properties.results.properties-found.single' | translate}}
+        </span>
+        <span ng-if="$ctrl.properties.length > 1">
+            {{ $ctrl.properties.length }} {{ 'search-properties.results.properties-found.multiple' | translate }}
+        </span>
+        &nbsp;<input type="text"
+                     id="e2e-search-properties-result-filter"
+                     ng-model="filterResults"
+                     ng-show="$ctrl.properties.length > 1"
+                     placeholder="{{ 'search-properties.results.filter' | translate }}">
+    </span>
+
+    <div ng-if="$ctrl.properties.length > 0">
+        <table class="SearchPropertiesResults__table"
+               id="e2e-search-properties-result-table">
+            <thead class="head-table-properties-list">
+            <tr class="row-head-table-properties-list">
+                <th class="SearchPropertiesResults__col-tab-titles" ng-click="$ctrl.changeOrder('propertyName')">
+                    <span class="SearchPropertiesResults__clickable-title"
+                          id="e2e-search-properties-result-table-column-names">
+                        {{ 'search-properties.results.table.column.name' | translate }}
+                        <i class="fa fa-caret-{{ $ctrl.selectedOrder.charAt(0) == '-' ? 'up' : 'down' }}"
+                           ng-if="$ctrl.selectedOrder.includes('propertyName')"></i>
+                    </span>
+                </th>
+                <th class="SearchPropertiesResults__col-tab-titles" ng-click="$ctrl.changeOrder('propertyValue')">
+                    <span class="SearchPropertiesResults__clickable-title"
+                          id="e2e-search-properties-result-table-column-values">
+                        {{ 'search-properties.results.table.column.value' | translate }}
+                        <i class="fa fa-caret-{{ $ctrl.selectedOrder.charAt(0) == '-' ? 'up' : 'down' }}"
+                           ng-if="$ctrl.selectedOrder.includes('propertyValue')"></i>
+                    </span>
+                </th>
+                <th class="SearchPropertiesResults__col-tab-titles" ng-click="$ctrl.changeOrder('propertiesPath')">
+                    <span class="SearchPropertiesResults__clickable-title"
+                          id="e2e-search-properties-result-table-column-modules">
+                        {{ 'search-properties.results.table.column.module' | translate }}
+                        <i class="fa fa-caret-{{ $ctrl.selectedOrder.charAt(0) == '-' ? 'up' : 'down' }}"
+                           ng-if="$ctrl.selectedOrder.includes('propertiesPath')"></i>
+                    </span>
+                </th>
+                <th class="SearchPropertiesResults__col-tab-titles" ng-click="$ctrl.changeOrder('platformName')">
+                    <span class="SearchPropertiesResults__clickable-title"
+                          id="e2e-search-properties-result-table-column-platforms">
+                        {{ 'search-properties.results.table.column.platform' | translate }}
+                        <i class="fa fa-caret-{{ $ctrl.selectedOrder.charAt(0) == '-' ? 'up' : 'down' }}"
+                           ng-if="$ctrl.selectedOrder.includes('platformName')"></i>
+                    </span>
+                </th>
+                <th class="SearchPropertiesResults__col-tab-titles" ng-click="$ctrl.changeOrder('applicationName')">
+                    <span class="SearchPropertiesResults__clickable-title"
+                          id="e2e-search-properties-result-table-column-applications">
+                        {{ 'search-properties.results.table.column.application' | translate }}
+                        <i class="fa fa-caret-{{ $ctrl.selectedOrder.charAt(0) == '-' ? 'up' : 'down' }}"
+                           ng-if="$ctrl.selectedOrder.includes('applicationName')"></i>
+                    </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="property in $ctrl.properties | filter:filterResults | orderBy:$ctrl.sortResultTable()"
+                class="SearchPropertiesResults__table-row"
+                id="e2e-search-properties-result-table-row-{{ property.propertyName }}-{{ property.propertyValue }}-{{ property.platformName }}-{{ property.applicationName }}">
+                <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-name">
+                    {{ property.propertyName }}
+                </td>
+                <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-value">
+                    {{ property.propertyValue }}
+                </td>
+                <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-module">
+                    <a ng-href="#/properties/{{ property.applicationName }}?platform={{ property.platformName }}#{{ property.propertiesPath }}"
+                       target="_blank" title="{{ 'search-properties.results.table.open.module' | translate }}">
+                        {{ $ctrl.buildPrettyPropertiesPath(property.propertiesPath) }}
+                    </a>
+                </td>
+                <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-platform">
+                    <a ng-href="#/properties/{{ property.applicationName }}?platform={{ property.platformName }}"
+                       target="_blank" title="{{ 'search-properties.results.table.open.platform' | translate }}">
+                        {{ property.platformName }}
+                    </a>
+                </td>
+                <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-application">
+                    <a ng-href="#/properties/{{ property.applicationName }}"
+                       target="_blank" title="{{ 'search-properties.results.table.open.application' | translate }}">
+                        {{ property.applicationName }}
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
