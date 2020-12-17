@@ -27,7 +27,7 @@ exports.config = {
             'glue/*.js',
             'glue/scenarios/**/*.js',
         ],
-        // retry: 1,
+        // retry: 3,
         strict: true, // fail if there are pending or undefined steps
         // tags: '@wip',
     },

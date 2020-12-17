@@ -1,4 +1,4 @@
-[![](https://api.travis-ci.com/voyages-sncf-technologies/hesperides-gui.svg?branch=master)](https://travis-ci.com/voyages-sncf-technologies/hesperides-gui)
+[![Lint, test and publish](https://github.com/voyages-sncf-technologies/hesperides-gui/workflows/Lint,%20test%20and%20publish/badge.svg)](https://github.com/voyages-sncf-technologies/hesperides-gui/actions?query=branch%3Amaster)
 
 [![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 [![](https://img.shields.io/github/issues/voyages-sncf-technologies/hesperides-gui.svg)](https://github.com/voyages-sncf-technologies/hesperides-gui/issues)

@@ -20,6 +20,7 @@
 // Ces variables globales sont nécessaires au MenuHelpController
 const SUPPORT_URL = '';
 const SWAGGER_LINK = '';
+const DOCUMENTATION_LINK = '';
 
 describe('Testing hesperides menu', function () {
     // load the module to be tested
@@ -29,19 +30,24 @@ describe('Testing hesperides menu', function () {
     describe('Testing MenuHelpController', function () {
         let menuHelpCtrl = null;
 
-        beforeEach(inject(function ($controller, $rootScope, _$httpBackend_, $injector, PlatformColorService, ApplicationService) {
+        beforeEach(inject(function ($controller, $rootScope, _$httpBackend_, $injector, PlatformColorService, ApplicationService, UserService) {
             const $scope = $rootScope.$new();
             const $httpBackend = _$httpBackend_;
             const $mdDialog = $injector.get('$mdDialog');
             const $translate = $injector.get('$translate');
             const $parse = $injector.get('$parse');
+            const $location = $injector.get('$location');
+            const $window = $injector.get('$window');
             menuHelpCtrl = $controller('MenuHelpController', {
                 $scope,
                 $mdDialog,
                 $translate,
-                PlatformColorService,
                 $parse,
+                $location,
+                $window,
+                PlatformColorService,
                 ApplicationService,
+                UserService,
             });
         }));
 
