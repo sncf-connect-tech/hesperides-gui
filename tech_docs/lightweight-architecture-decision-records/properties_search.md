@@ -3,7 +3,7 @@
 Nous souhaitons ajouter à l'interface web d'Hesperides une fonctionnalité de recherche de propriétés,
 par nom et par valeur.
 
-<!-- Pour mettre à jour ce sommaire: 
+<!-- Pour mettre à jour ce sommaire :
     markdown-toc --indent "    " -i properties_search.md.md
 -->
 

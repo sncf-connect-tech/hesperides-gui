@@ -50,7 +50,7 @@ describe('Testing hesperides module', function () {
         it('should check the page title is set to "Module"', function () {
             const { Page } = injected;
             const title = Page.title();
-            expect(title).toBe('Hesperides > Module');
+            expect(title).toBe('Hespérides > Module');
         });
 
         it('can build a "Module" instance from a properties path', function () {
