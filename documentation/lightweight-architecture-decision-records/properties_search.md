@@ -22,10 +22,10 @@ Nous souhaitons ajouter à l'interface web d'Hesperides une fonctionnalité de r
 
 ## Design
 
-- on ajoute à la _navbar_ horizontale deux champs de recherche : par **nom** et par **valeur** de propriété
-- on ajoute un nouveau _path_ `/search-results`, qui affiche :
+- on ajoute à la _navbar_ horizontale un bouton qui redirige vers la page de recherche
+- on ajoute un nouveau _path_ `/search-properties`, qui affiche :
     * les termes de recherche employés
-    * une liste de propriétés qui _matchent_, groupées par `$APP-$PTF`, avec pour chacune les informations suivantes :
+    * une liste de propriétés qui ont le nom et/ou la valeur recherchés, groupées par `$APP-$PTF`, avec pour chacune les informations suivantes :
         + le type de propriété : globale / de module / d'instance
         + le nom, la valeur et les annotations de la propriétés
         + indiquer s'il s'agit d'une propriété supprimée
