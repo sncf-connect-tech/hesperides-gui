@@ -1,6 +1,7 @@
 # Recherches de propriétés
 
-Nous souhaitons ajouter à l'interface web d'Hesperides une fonctionnalité de recherche de propriétés,par nom et par valeur.
+Nous souhaitons ajouter à l'interface web d'Hesperides une fonctionnalité de recherche de propriétés,
+par nom et par valeur.
 
 <!-- Pour mettre à jour ce sommaire: 
     markdown-toc --indent "    " -i properties_search.md.md
@@ -18,7 +19,7 @@ Nous souhaitons ajouter à l'interface web d'Hesperides une fonctionnalité de r
 
 ## Besoin fonctionnel
 
-- mettre à disposition côté _frontend_ la fonctionnalité de recherche de propriétés du _backend_ : [hesperides #384](https://github.com/voyages-sncf-technologies/hesperides/issues/384).
+- mettre à disposition côté _frontend_ la fonctionnalité de recherche de propriétés du _backend_ : [hesperides #384](https://github.com/voyages-sncf-technologies/hesperides/issues/384). LADR backend: [Recherche de propriétés](https://github.com/voyages-sncf-technologies/hesperides/blob/master/documentation/lightweight-architecture-decision-records/search_properties.md)
 
 ## Design
 
