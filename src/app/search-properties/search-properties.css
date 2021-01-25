@@ -29,6 +29,7 @@
     word-wrap: break-word;
     text-align: left;
     position: sticky;
+    background-color: var(--panel-title-background-color);
     top: 0;
     font-size: 14px;
     border-bottom: 1px solid rgb(0, 150, 136);
