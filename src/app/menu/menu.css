@@ -81,23 +81,6 @@ md-toolbar .md-menu {
     width: 420px !important;
 }
 
-.menu-language--fr, .menu-language--en {
-    margin-top: 10px;
-    min-width: 30px;
-    max-width: 40px;
-    max-height: 20px;
-    min-height: 20px;
-    text-indent:-10000px;
-    background-size: 100% ;
-    background-repeat: no-repeat;
-}
-.menu-language--fr {
-    background-image: url('/img/french-flag-small.png');
-}
-.menu-language--en {
-    background-image: url('/img/british-flag-small.png');
-}
-
 .menu-settings {
     margin: 0;
     min-width: 25px;
