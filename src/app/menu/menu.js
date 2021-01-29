@@ -254,10 +254,12 @@ angular.module('hesperides.menu', [ 'hesperides.techno', 'hesperides.application
         $scope.supportUrl = SUPPORT_URL;
         $scope.swaggerLink = SWAGGER_LINK;
         $scope.logout = UserService.logout;
+        $scope.language = store.get('language') || 'en';
 
         $scope.change_language = function (langKey) {
             $translate.use(langKey);
             store.set('language', langKey || null);
+            $scope.language = langKey;
         };
 
         // Refactoring TO DO

@@ -140,6 +140,20 @@
                     </button>
                     <md-menu-content class="menu-item">
                         <md-menu-item>
+                            <md-button ng-if="language == 'en'"
+                                       ng-click="change_language('fr')"
+                                       id="e2e-navbar-lang-fr"
+                                       title="Version française">
+                                <img src="/img/french-flag-small.png" height="12"> FR
+                            </md-button>
+                            <md-button ng-if="language == 'fr'"
+                                       ng-click="change_language('en')"
+                                       id="e2e-navbar-lang-en"
+                                       title="English version">
+                                <img src="/img/british-flag-small.png" height="12"> EN
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
                             <md-button ng-href="{{ documentationLink }}" target="_blank">
                                 <i class="fa fa-book"></i>
                                 {{ 'menu.help.documentation' | translate}}
@@ -183,14 +197,6 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <md-button ng-click="change_language('fr')" class="menu-language--fr"
-                           aria-label="{{ 'menu.language.fr.aria' | translate }}" id="e2e-navbar-lang-fr">
-                    fr
-                </md-button>
-                <md-button ng-click="change_language('en')" class="menu-language--en"
-                           aria-label="{{ 'menu.language.en.aria' | translate }}" id="e2e-navbar-lang-en">
-                    en
-                </md-button>
             </div>
         </md-menu-bar>
     </md-toolbar>
