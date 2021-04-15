@@ -47,7 +47,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - run: npm install
+      - run: npm ci
       - run: npm run lint
 
   unit-tests:
@@ -58,7 +58,7 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - run: npm install
+      - run: npm ci
       - run: xvfb-run npm test
 
   bdd-technos-copy-technos:
