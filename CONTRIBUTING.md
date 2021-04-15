@@ -104,22 +104,6 @@ Les revues de code doivent suivre ces principes :
 - [yelp guidelines](https://engineeringblog.yelp.com/2017/11/code-review-guidelines.html)
 - [conseils de Sebastien Charrier](https://www.youtube.com/watch?v=6aQK6GoTbxM)
 
-## Problèmes rencontrés
-
-### `npm install`
-Si `npm install` vous renvoie l'erreur suivante (ou similaire) :
-
-> Could not install from "node_modules\http-server-legacy\ecstatic@git+https:\github.com\Blackbaud-ShaydeNofziger\node-ecstatic.git#d47ffccf932962295a1feb74334d3ab8d0b17a66"
-as it does not contain a package.json file
-
-Essayer avec YARN :
-
-    npm install -g yarn
-    [répertoire où yarn est installé]\yarn install
-
-
-Si cela fonctionne, réessayer avec `npm install`.
-
 # Contribuer à la documentation
 Pour visualiser la documentation sur votre machine :
 

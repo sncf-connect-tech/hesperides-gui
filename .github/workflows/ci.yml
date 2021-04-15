@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb
       - run: sudo dpkg -i --force-overwrite tidy-5.4.0-64bit.deb
-      - run: for html in docs/*.html; do echo Tidying $html; tidy -quiet -modify -config docs/htmltidy.conf $html; done
+      - run: for html in docs/*.html; do echo Tidying $html; tidy -quiet -lang en -modify -config docs/htmltidy.conf $html; done
 
   js-linter:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - run: npm install
+      - run: npm ci
       - run: npm run lint
 
   unit-tests:
@@ -58,7 +58,7 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - run: npm install
+      - run: npm ci
       - run: xvfb-run npm test
 
   bdd-technos-copy-technos:
