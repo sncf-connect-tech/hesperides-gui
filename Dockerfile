@@ -9,6 +9,7 @@ RUN mv src/app/index.html src/app/index.html.template
 RUN npm ci --production
 
 FROM nginx:1.15-alpine
+LABEL maintainer="Team Avengers @ oui.sncf"
 COPY --from=0 /usr/src/app/src/app                  /usr/share/nginx/html/
 COPY --from=0 /usr/src/app/src/app/img/favicon.ico  /usr/share/nginx/html/
 RUN rm                                              /etc/nginx/conf.d/default.conf
