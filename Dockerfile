@@ -6,14 +6,14 @@ COPY package-lock.json .
 COPY bundler.js .
 COPY src src
 RUN mv src/app/index.html src/app/index.html.template
-# Using yarn instead of npm as long as we need http-server-legacy: https://github.com/indexzero/http-server/issues/518
-RUN yarn install
+RUN npm ci --production
 
 FROM nginx:1.15-alpine
 COPY --from=0 /usr/src/app/src/app                  /usr/share/nginx/html/
 COPY --from=0 /usr/src/app/src/app/img/favicon.ico  /usr/share/nginx/html/
 RUN rm                                              /etc/nginx/conf.d/default.conf
 COPY nginx.conf                                     /etc/nginx/conf.d/hesperides.conf.template
+RUN nginx -t
 
 ARG BUILD_TIME
 ENV BUILD_TIME=$BUILD_TIME

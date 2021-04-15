@@ -24,7 +24,7 @@ Before(/** @this CustomWorld */ async function () {
 
     // Supprime le fichier téléchargé (limité à ce fichier). L'idéal serait de stocker les
     // fichiers dans un dossier spécifique pour supprimer ce dossier avant chaque scénario
-    // mais c'est à la création de ce dossire que ça plante sur Travis (problème de droits).
+    // mais c'est à la création de ce dossier que ça plante sur Travis (problème de droits).
     // Une autre solution serait de créer ce dossier à la main, le commiter et le vider
     // plutôt que le supprimer avant chaque scénario.
     await fs.promises.unlink(downloadsPath + this.templateBuilder.filename).catch(function () {
