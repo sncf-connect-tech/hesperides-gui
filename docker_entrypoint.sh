@@ -1,6 +1,7 @@
 #!/bin/sh
 set -o pipefail -o errexit -o nounset
 
+: ${API_ENDPOINT:?'This environment variable is required'}
 if [ -z "${PORT:-}" ]; then
     export PORT=80
 fi

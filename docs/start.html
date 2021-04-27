@@ -125,7 +125,8 @@
                                     <h3 class="block-title">Docker</h3>
                                     <pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides-gui
 docker build -t hesperides-gui .
-docker run --rm -it -p 80:80 hesperides-gui</code></pre>
+docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
+                                    <p><code>$API_ENDPOINT</code> must be an URL to access the backend, like <code>http://localhost:8080</code></p>
                                 </div><!--//section-block-->
                                 <div id="install-sources" class="section-block">
                                     <h3 class="block-title">Download sources</h3>
