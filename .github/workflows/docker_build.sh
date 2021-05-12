@@ -14,4 +14,4 @@ docker build -t $DOCKER_IMAGE:$GITHUB_SHA \
   --build-arg GIT_COMMIT_MSG="$GIT_COMMIT_MSG" .
 
 # We validate that the image built can start without any error at the entrypoint level:
-docker run --rm $DOCKER_IMAGE:$GITHUB_SHA true
+docker run --rm -e API_ENDPOINT=http://dummy:8080 $DOCKER_IMAGE:$GITHUB_SHA true
