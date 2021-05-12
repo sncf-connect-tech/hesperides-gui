@@ -9,5 +9,3 @@ Feature: Copy platforms
     Then I am redirected to the newly created platform page
     And I get the following success notification: "The platform has been created"
     And the platform's module is also copied
-
-  Scenario: Create a deep copy of a platform
