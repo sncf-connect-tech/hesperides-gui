@@ -8,8 +8,8 @@ const searchInputNameId = 'search_property_name';
 const searchInputValueId = 'search_property_value';
 const propertyModuleCellSelector = '.e2e-search-properties-property-module';
 const inputFilterId = 'e2e-search-properties-result-filter';
-const columnTitlePrefix = 'e2e-search-properties-result-table-column-';
 const resultCountId = 'e2e-search-properties-result-count';
+const displayMorePropertiesButtonId = 'e2e-search-properties-display-more-button';
 
 When('I click on the search properties menu button', async function () {
     await send.clickById('e2e-navbar-search-properties');
@@ -34,8 +34,12 @@ When('I open the search properties page with parameter {string}', async function
     await browser.waitForAngular();
 });
 
-When(/^I click on the search result column title for (names|values|modules|platforms|applications)$/, async function (orderType) {
-    await send.clickById(columnTitlePrefix + orderType);
+When('I click on the button to display more properties', async function () {
+    await send.clickById(displayMorePropertiesButtonId);
+});
+
+When('I filter the search results with {string}', async function (input) {
+    await send.inputById(inputFilterId, input);
 });
 
 Then('the properties search form is empty', async function () {
@@ -80,9 +84,12 @@ Then('the properties search result table contains exactly', async function (data
         const prefix = `#e2e-search-properties-result-table-row-${ name }-${ value }-${ platform }-${ application }`;
         await assert.equalsText(get.elementByCss(`${ prefix } .e2e-search-properties-property-name`), name);
         await assert.equalsText(get.elementByCss(`${ prefix } .e2e-search-properties-property-value`), value);
-        await assert.equalsText(get.elementByCss(`${ prefix } ${ propertyModuleCellSelector }`), module);
-        await assert.equalsText(get.elementByCss(`${ prefix } .e2e-search-properties-property-platform`), platform);
-        await assert.equalsText(get.elementByCss(`${ prefix } .e2e-search-properties-property-application`), application);
+        // Pour module, platform et application j'ajoute 2 espaces à la valeur parce qu'à
+        // cause de l'icône de lien externe le texte contient 2 espaces et aussi parce qu'on
+        // ne peut pas faire de `trim` sur la valeur de l'élément dans `assert.equalsText`
+        await assert.equalsText(get.elementByCss(`${ prefix } ${ propertyModuleCellSelector }`), `${ module }  `);
+        await assert.equalsText(get.elementByCss(`${ prefix } .e2e-search-properties-property-platform`), `${ platform }  `);
+        await assert.equalsText(get.elementByCss(`${ prefix } .e2e-search-properties-property-application`), `${ application }  `);
     }
 });
 
@@ -96,22 +103,6 @@ Then('a new tab opens directly to this module', /** @this CustomWorld */ async f
     await navigate.backToFirstTab();
 });
 
-const assertColumnTitleCaret = async function (orderType, descendingOrder, columnName) {
-    const columnTitleId = columnTitlePrefix + columnName;
-    const caretDirection = descendingOrder ? 'up' : 'down';
-    const caretSelector = `#${ columnTitleId } .fa-caret-${ caretDirection }`;
-    if (orderType === columnName) {
-        await assert.isPresentByCss(caretSelector);
-    } else {
-        await assert.isNotPresentByCss(caretSelector);
-    }
-};
-
-Then(/^the properties search result table is ordered by( descending)? (names|values|modules|platforms|applications)$/,
-    async function (descendingOrder, orderType) {
-        await assertColumnTitleCaret(orderType, descendingOrder, 'names');
-        await assertColumnTitleCaret(orderType, descendingOrder, 'values');
-        await assertColumnTitleCaret(orderType, descendingOrder, 'modules');
-        await assertColumnTitleCaret(orderType, descendingOrder, 'platforms');
-        await assertColumnTitleCaret(orderType, descendingOrder, 'applications');
-    });
+Then('the button to display more properties is not present anymore', async function () {
+    await assert.isNotPresentById(displayMorePropertiesButtonId);
+});

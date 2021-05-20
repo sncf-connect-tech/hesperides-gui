@@ -1,4 +1,4 @@
-function SearchPropertiesController($document, $location, $routeParams, ApplicationService, Platform) {
+function SearchPropertiesController($document, $filter, $location, $routeParams, ApplicationService, Platform) {
     const ctrl = this;
     // `ctrl.submittedName` et `ctrl.submittedValue` sont les valeurs soumises alors que `ctrl.form.name`
     // et `ctrl.form.value` sont les valeurs saisies. On distingue les deux parce qu'on se sert de la valeur
@@ -9,6 +9,9 @@ function SearchPropertiesController($document, $location, $routeParams, Applicat
     ctrl.loading = false;
     ctrl.properties = [];
     ctrl.selectedOrder = '';
+    ctrl.initialPropertiesToDisplayCount = 100;
+    ctrl.propertiesToDisplayCount = ctrl.initialPropertiesToDisplayCount;
+    ctrl.filterResults = '';
 
     const setFocus = function () {
         const inputId = ctrl.submittedValue ? 'search_property_value' : 'search_property_name';
@@ -16,17 +19,7 @@ function SearchPropertiesController($document, $location, $routeParams, Applicat
     };
 
     const setInitialOrder = function () {
-        // Le tri dépend de la recherche :
-        // * Recherche par nom : tri sur la valeur, puis le module, la plateforme et l'application
-        // * Recherche par valeur : tri sur le nom, puis le module, la plateforme et l'application
-        // * Recherche par nom et valeur : tri sur le module, la plateforme et l'application
-        if (ctrl.submittedName && ctrl.submittedValue) {
-            ctrl.selectedOrder = 'propertiesPath';
-        } else if (ctrl.submittedName) {
-            ctrl.selectedOrder = 'propertyValue';
-        } else {
-            ctrl.selectedOrder = 'propertyName';
-        }
+        ctrl.selectedOrder = 'propertyName';
     };
 
     ctrl.$onInit = function () {
@@ -44,6 +37,12 @@ function SearchPropertiesController($document, $location, $routeParams, Applicat
                 setInitialOrder();
             });
         }
+        // Permet d'afficher un nombre d'éléments initial inférieur
+        // à celui par défaut (utile pour les tests notamment)
+        if ($routeParams.limit && $routeParams.limit < ctrl.initialPropertiesToDisplayCount) {
+            ctrl.initialPropertiesToDisplayCount = parseInt($routeParams.limit, 10);
+            ctrl.propertiesToDisplayCount = ctrl.initialPropertiesToDisplayCount;
+        }
     };
 
     ctrl.submitSearch = function () {
@@ -57,6 +56,9 @@ function SearchPropertiesController($document, $location, $routeParams, Applicat
         }
         if (ctrl.submittedValue) {
             requestParameters.value = ctrl.submittedValue;
+        }
+        if ($routeParams.limit) {
+            requestParameters.limit = $routeParams.limit;
         }
         $location.search(requestParameters);
     };
@@ -93,6 +95,26 @@ function SearchPropertiesController($document, $location, $routeParams, Applicat
         } else {
             ctrl.selectedOrder = selectedOrder;
         }
+    };
+
+    ctrl.displayMore = function () {
+        ctrl.propertiesToDisplayCount += ctrl.initialPropertiesToDisplayCount;
+    };
+
+    ctrl.displayedPropertiesCount = function () {
+        const filteredProperties = $filter('filter')(ctrl.properties, ctrl.filterResults);
+        const limitedProperties = $filter('limitTo')(filteredProperties, ctrl.propertiesToDisplayCount);
+        return limitedProperties.length;
+    };
+
+    ctrl.limitedPropertiesCount = function () {
+        const limitedProperties = $filter('limitTo')(ctrl.properties, ctrl.propertiesToDisplayCount);
+        return limitedProperties.length;
+    };
+
+    ctrl.filteredPropertiesCount = function () {
+        const filteredProperties = $filter('filter')(ctrl.properties, ctrl.filterResults);
+        return filteredProperties.length;
     };
 }
 
