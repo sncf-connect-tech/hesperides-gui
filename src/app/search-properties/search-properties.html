@@ -5,6 +5,11 @@
             <input type="text" id="search_property_name" ng-model="$ctrl.form.name">
         </label>&nbsp;
         <label for="search_property_value">
+            <i class="fa fa-info-circle">
+                <md-tooltip md-direction="top">
+                    {{ 'search-properties.form.input.value.tooltip' | translate }}
+                </md-tooltip>
+            </i>
             {{ 'search-properties.form.input.value' | translate }}
             <input type="text" id="search_property_value" ng-model="$ctrl.form.value">
         </label>
@@ -17,9 +22,14 @@
     <div class="SearchPropertiesResults__loading"><i class="fa fa-circle-o-notch fa-spin fa-3x"></i></div>
 </div>
 
-<div ng-if="!$ctrl.loading && ($ctrl.submittedName || $ctrl.submittedValue)"
-     class="SearchPropertiesResults">
+<div ng-if="!$ctrl.loading && ($ctrl.submittedName || $ctrl.submittedValue)" class="SearchPropertiesResults">
     <span id="e2e-search-properties-result-count">
+        &nbsp;<input type="text"
+                     id="e2e-search-properties-result-filter"
+                     ng-model="$ctrl.filterResults"
+                     ng-show="$ctrl.properties.length > 1"
+                     placeholder="{{ 'search-properties.results.filter' | translate }}">
+
         <span ng-if="$ctrl.properties.length == 0">
             <span ng-if="$ctrl.submittedName && $ctrl.submittedValue">
                 {{ 'search-properties.results.no-name-value' | translate:
@@ -33,17 +43,26 @@
                 {{ 'search-properties.results.no-value' | translate: { value: $ctrl.submittedValue } }}
             </span>
         </span>
-        <span ng-if="$ctrl.properties.length == 1">
-            {{ 'search-properties.results.properties-found.single' | translate}}
+
+        <span ng-if="$ctrl.properties.length > 0">
+            {{ $ctrl.displayedPropertiesCount() }}
+            <span ng-if="$ctrl.displayedPropertiesCount() == 0">
+                {{ 'search-properties.results.displayed-properties.count.zero' | translate }}
+            </span>
+            <span ng-if="$ctrl.displayedPropertiesCount() == 1">
+                {{ 'search-properties.results.displayed-properties.count.one' | translate }}
+            </span>
+            <span ng-if="$ctrl.displayedPropertiesCount() > 1">
+                {{ 'search-properties.results.displayed-properties.count.multiple' | translate }}
+            </span>
+            {{ $ctrl.properties.length }}
+            <span ng-if="$ctrl.properties.length == 1">
+                {{ 'search-properties.results.found-properties.count.one' | translate }}
+            </span>
+            <span ng-if="$ctrl.properties.length > 1">
+                {{ 'search-properties.results.found-properties.count.multiple' | translate }}
+            </span>
         </span>
-        <span ng-if="$ctrl.properties.length > 1">
-            {{ $ctrl.properties.length }} {{ 'search-properties.results.properties-found.multiple' | translate }}
-        </span>
-        &nbsp;<input type="text"
-                     id="e2e-search-properties-result-filter"
-                     ng-model="filterResults"
-                     ng-show="$ctrl.properties.length > 1"
-                     placeholder="{{ 'search-properties.results.filter' | translate }}">
     </span>
 
     <div ng-if="$ctrl.properties.length > 0">
@@ -60,6 +79,11 @@
                     </span>
                 </th>
                 <th class="SearchPropertiesResults__col-tab-titles" ng-click="$ctrl.changeOrder('propertyValue')">
+                    <i class="fa fa-info-circle">
+                        <md-tooltip md-direction="top">
+                            {{ 'search-properties.results.table.column.value.tooltip' | translate }}
+                        </md-tooltip>
+                    </i>
                     <span class="SearchPropertiesResults__clickable-title"
                           id="e2e-search-properties-result-table-column-values">
                         {{ 'search-properties.results.table.column.value' | translate }}
@@ -94,7 +118,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="property in $ctrl.properties | filter:filterResults | orderBy:$ctrl.sortResultTable()"
+            <tr ng-repeat="property in $ctrl.properties | filter:$ctrl.filterResults | orderBy:$ctrl.sortResultTable() | limitTo:$ctrl.propertiesToDisplayCount"
                 class="SearchPropertiesResults__table-row"
                 id="e2e-search-properties-result-table-row-{{ property.propertyName }}-{{ property.propertyValue }}-{{ property.platformName }}-{{ property.applicationName }}">
                 <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-name">
@@ -107,22 +131,30 @@
                     <a ng-href="#/properties/{{ property.applicationName }}?platform={{ property.platformName }}#{{ property.propertiesPath }}"
                        target="_blank" title="{{ 'search-properties.results.table.open.module' | translate }}">
                         {{ $ctrl.buildPrettyPropertiesPath(property.propertiesPath) }}
+                        &nbsp;<i class="fa fa-external-link"></i>
                     </a>
                 </td>
                 <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-platform">
                     <a ng-href="#/properties/{{ property.applicationName }}?platform={{ property.platformName }}"
                        target="_blank" title="{{ 'search-properties.results.table.open.platform' | translate }}">
                         {{ property.platformName }}
+                        &nbsp;<i class="fa fa-external-link"></i>
                     </a>
                 </td>
                 <td class="SearchPropertiesResults__col-tab-properties-datas e2e-search-properties-property-application">
                     <a ng-href="#/properties/{{ property.applicationName }}"
                        target="_blank" title="{{ 'search-properties.results.table.open.application' | translate }}">
                         {{ property.applicationName }}
+                        &nbsp;<i class="fa fa-external-link"></i>
                     </a>
                 </td>
             </tr>
             </tbody>
         </table>
+
+        <a href="" id="e2e-search-properties-display-more-button"
+           ng-click="$ctrl.displayMore()"
+           ng-if="$ctrl.limitedPropertiesCount() < $ctrl.properties.length && $ctrl.filteredPropertiesCount() > $ctrl.limitedPropertiesCount()">
+            {{ 'search-properties.results.display.more' | translate }}</a>
     </div>
 </div>
