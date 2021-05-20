@@ -7,6 +7,8 @@ COPY bundler.js .
 COPY src src
 RUN mv src/app/index.html src/app/index.html.template
 RUN npm ci --production
+# postinstall needs to be called manually, cf. https://github.com/npm/npm-lifecycle/issues/49 :
+RUN npm install buildify && npm run postinstall
 
 FROM nginx:1.15-alpine
 LABEL maintainer="Team Avengers @ oui.sncf"
