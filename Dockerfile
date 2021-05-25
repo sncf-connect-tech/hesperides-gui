@@ -30,6 +30,7 @@ ARG GIT_TAG
 ENV GIT_TAG=$GIT_TAG
 ENV SENTRY_TAGS=GIT_BRANCH:$GIT_BRANCH,GIT_COMMIT:$GIT_COMMIT,GIT_TAG:$GIT_TAG
 
+RUN apk add bash
 COPY docker_entrypoint.sh                           /
 RUN chmod u+x                                       /docker_entrypoint.sh
 ENTRYPOINT ["/docker_entrypoint.sh"]
