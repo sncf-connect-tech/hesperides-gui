@@ -25,6 +25,69 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 ```
 
 <!-- gitchangelog START -->
+## 2021-05-20
+### Fixed
+
+- Missing vendor.* files in Docker image (#433) [Lucas Cimon]
+
+
+
+## 2021-05-12
+### Added
+
+- Missing doc on $API_ENDPOINT. [Lucas Cimon]
+
+- Missing labels to Docker image. [Lucas Cimon]
+
+
+
+## 2021-04-15
+### Fixed
+
+- Allow upload of large files through nginx, e.g. for module templates (#428) [Lucas Cimon]
+
+  * Fix: allow upload of large files through nginx, e.g. for module templates
+
+  + fixing Chrome browser & ChromeDriver versions mismatch
+  + getting rid of http-server-legacy
+
+
+
+## 2021-01-29
+### Fixed
+
+- Corrections CSS mineures. [Thomas L'Hostis]
+
+
+
+## 2021-01-28
+### Added
+
+- Passage de Travis à GitHub Actions. [Thomas L'Hostis]
+
+
+### Fixed
+
+- Corrections CSS mineures. [Thomas L'Hostis]
+
+
+
+## 2021-01-07
+### Added
+
+- LADR about search properties (#416) [Lucas Cimon]
+
+- Page de recherche de propriétés + Refonte du menu. [Thomas L'Hostis]
+
+
+
+## 2020-10-29
+### Fixed
+
+- Suppression du controle de surface sur les propriétés requises - close #334 & #417 (#419) [Lucas Cimon]
+
+
+
 ## 2020-07-29
 ### Fixed
 

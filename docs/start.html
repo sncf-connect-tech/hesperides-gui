@@ -121,22 +121,45 @@
                             </section><!--//doc-section-->
                             <section id="install" class="doc-section">
                                 <h2 class="section-title">Installation</h2>
-                                <div id="install-docker" class="section-block">
-                                    <h3 class="block-title">Docker</h3>
+                                <div id="dockerhub-images" class="section-block">
+                                    <h3 class="block-title">Docker Hub images</h3>
+                                    <ul>
+                                        <li>
+                                            <a href="https://hub.docker.com/r/hesperides/hesperides">hesperides/hesperides</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://hub.docker.com/r/hesperides/hesperides-gui">hesperides/hesperides-gui</a>
+                                        </li>
+                                    </ul>
+                                </div><!--//section-block-->
+                                <div id="docker-build" class="section-block">
+                                    <h3 class="block-title">Building & running the Docker image from the sources</h3>
+                                    <p><b>Backend:</b></p>
+                                    <pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides
+docker build -t hesperides .
+docker run --rm -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides</code></pre>
+                                    <p>It can also be launched along a Mongo instance using <code>docker-compose</code>:</p>
+                                    <pre><code class="language-git">docker-compose -f docker/docker-compose.yml -f docker/docker-compose-mongo.yml up -d</code></pre>
+                                    <p><b>Frontend:</b></p>
                                     <pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides-gui
 docker build -t hesperides-gui .
 docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                     <p><code>$API_ENDPOINT</code> must be an URL to access the backend, like <code>http://localhost:8080</code></p>
                                 </div><!--//section-block-->
-                                <div id="install-sources" class="section-block">
-                                    <h3 class="block-title">Download sources</h3>
-                                    <p>To install backend, follow README of <a href="https://github.com/voyages-sncf-technologies/hesperides">hesperides repository</a></p>
-                                    <p>To install frontend, follow README of <a href="https://github.com/voyages-sncf-technologies/hesperides-gui">hesperides-gui repository</a></p>
+                                <div id="configuring-ldap" class="section-block">
+                                    <h3 class="block-title">Configuring LDAP</h3>
+                                    <p>You can either use the <code>noldap</code> Spring profile, that defines some <a href="https://github.com/voyages-sncf-technologies/hesperides/blob/master/core/presentation/src/main/java/org/hesperides/core/presentation/security/LocalWebSecurityConfig.java#L37">dummy in-memory users</a>, or use the <code>ldap</code> Spring profile and configure the following environment variables:</p>
+                                    <ul>
+                                        <li><code>$LDAP_URL</code>: required, example value: <code>ldaps://ldap.example.com:636</code></li>
+                                        <li><code>$LDAP_DOMAIN</code>: optional</li>
+                                        <li><code>$LDAP_USER_SEARCH_BASE</code>: required, example value: <code>dc=example,dc=com</code></li>
+                                        <li><code>$LDAP_USER_ROLE_BASE</code>: required, example value: <code>ou=Groups,dc=example,dc=com</code></li>
+                                        <li><code>$LDAP_TECH_GROUP_DN</code>: optional, group of users with global <b>Tech</b> permissions, example value: <code>cn=HESPERIDES_TECH,ou=Groups,dc=example,dc=com</code></li>
+                                        <li><code>$LDAP_PROD_GROUP_DN</code>: optional, group of users with global <b>Prod</b> permissions, example value: <code>cn=HESPERIDES_PROD,ou=Groups,dc=example,dc=com</code></li>
+                                        <li><code>$LDAP_BIND_DN</code>: optional. If set, enable bindDn authentication; otherwise authentication on the LDAP server is performed with the credentials provided by the user when authenticating with Hesperides</li>
+                                        <li><code>$LDAP_BIND_PASSWORD</code>: optional but required if <code>$LDAP_BIND_DN</code> is set</li>
+                                    </ul>
                                 </div><!--//section-block-->
-                            </section><!--//doc-section-->
-                            <section id="faq" class="doc-section">
-                                <h2 class="section-title">FAQ</h2>
-                                <div class="section-block"></div>
                             </section><!--//doc-section-->
                         </div><!--//content-inner-->
                     </div><!--//doc-content-->
@@ -170,15 +193,15 @@ docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                     <a class="scrollto" href="#install">Installation</a>
                                     <ul class="nav doc-sub-menu">
                                         <li>
-                                            <a class="scrollto" href="#install-docker">Docker</a>
+                                            <a class="scrollto" href="#dockerhub-images">Docker Hub images</a>
                                         </li>
                                         <li>
-                                            <a class="scrollto" href="#install-sources">Download sources</a>
+                                            <a class="scrollto" href="#docker-install">Building & running the Docker image from the sources</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#configuring-ldap">Configuring LDAP</a>
                                         </li>
                                     </ul><!--//nav-->
-                                </li>
-                                <li>
-                                    <a class="scrollto" href="#faq">FAQ</a>
                                 </li>
                             </ul><!--//doc-menu-->
                         </nav>
