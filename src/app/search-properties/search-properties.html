@@ -16,6 +16,15 @@
         &nbsp;<input type="submit" id="e2e-search-properties-submit-button"
                      value="{{ 'search-properties.form.button.submit' | translate }}">
     </form>
+    <div class="SearchPropertiesHelp">
+        <div class="SearchPropertiesHelpTitle" ng-click="$ctrl.showHelp = !$ctrl.showHelp">
+            {{ 'search-properties.help.title' | translate }}
+        </div>
+        <div class="SearchPropertiesHelpDetails" ng-show="$ctrl.showHelp">
+            <p>{{ 'search-properties.help.logical-and' | translate }}</p>
+            <p>{{ 'search-properties.help.regexps' | translate }}</p>
+        </div>
+    </div>
 </div>
 
 <div ng-if="$ctrl.loading">

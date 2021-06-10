@@ -1,9 +1,26 @@
 .SearchPropertiesForm {
     max-width: 490px;
     margin: 32px auto;
-    padding: 32px;
+    padding-top: 32px;
     text-align: center;
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+}
+
+.SearchPropertiesHelpTitle {
+    margin-top: 16px;
+    padding: 1rem;
+    background-color: #ccc;
+    font-weight: bold;
+    font-style: italic;
+    cursor: pointer;
+}
+.SearchPropertiesHelpDetails {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.45s cubic-bezier(0.35, 0, 0.25, 1);
+}
+.SearchPropertiesHelpDetails:not(.ng-hide) {
+    height: 5rem;
 }
 
 .SearchPropertiesResults__loading {
