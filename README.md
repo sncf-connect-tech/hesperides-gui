@@ -13,7 +13,7 @@ and the properties it stores per environment.
 
 The backend lives in this repo: <https://github.com/voyages-sncf-technologies/hesperides>.
 
-**Development status**: this project is currently maintained by [e-Voyageurs SNCF](https://www.sncf.com/fr/groupe/newsroom/e-voyageurs-sncf).
+**Development status**: this project is currently maintained by [e-Voyageurs SNCF](https://fr.wikipedia.org/wiki/E.Voyageurs_SNCF).
 
 
 Live demo
