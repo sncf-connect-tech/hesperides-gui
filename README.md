@@ -13,8 +13,17 @@ and the properties it stores per environment.
 
 The backend lives in this repo: <https://github.com/voyages-sncf-technologies/hesperides>.
 
-**Development status**: this project is currently maintained & actively developped by [e-Voyageurs SNCF](https://www.sncf.com/fr/groupe/newsroom/e-voyageurs-sncf).
-The list of features planned is available in [ROADMAP.md](https://github.com/voyages-sncf-technologies/hesperides/blob/master/ROADMAP.md).
+**Development status**: this project is currently maintained by [e-Voyageurs SNCF](https://www.sncf.com/fr/groupe/newsroom/e-voyageurs-sncf).
+
+
+Live demo
+=========
+<https://hesperides.herokuapp.com>
+
+Credentials for the Basic Auth:
+
+* **Username**: `user` or `prod`
+* **Password**: `password`
 
 
 Documentation

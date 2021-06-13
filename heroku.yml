@@ -1,0 +1,8 @@
+build:
+  docker:
+    # Using the Docker Hub published image:
+    web: Dockerfile.heroku
+    # We can also build it from the sources:
+    # worker: Dockerfile
+run:
+  web: /docker_entrypoint.sh

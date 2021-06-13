@@ -9,6 +9,10 @@ if [ -n "${PROXY_TIMEOUT_IN_SECS:-}" ]; then
   export PROXY_TIMEOUT_DIRECTIVES="proxy_connect_timeout ${PROXY_TIMEOUT_IN_SECS}s; proxy_send_timeout ${PROXY_TIMEOUT_IN_SECS}s; proxy_read_timeout ${PROXY_TIMEOUT_IN_SECS}s; send_timeout ${PROXY_TIMEOUT_IN_SECS}s;"
 fi
 
+# Ensure there is no default nginx configuration listening on port 80,
+# as this prevents the dyno to start in Heroku:
+rm /etc/nginx/conf.d/default.conf || true
+
 # Inject env variables in hesperides.conf:
 envsubst </etc/nginx/conf.d/hesperides.conf.template >/etc/nginx/conf.d/hesperides.conf
 

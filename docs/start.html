@@ -133,7 +133,8 @@
                                     </ul>
                                 </div><!--//section-block-->
                                 <div id="docker-build" class="section-block">
-                                    <h3 class="block-title">Building & running the Docker image from the sources</h3>
+                                    <h3 class="block-title">Docker image build</h3>
+                                    <p>Building &amp; running the Docker image from the sources</p>
                                     <p><b>Backend:</b></p>
                                     <pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides
 docker build -t hesperides .
@@ -145,6 +146,37 @@ docker run --rm -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides</code></p
 docker build -t hesperides-gui .
 docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                     <p><code>$API_ENDPOINT</code> must be an URL to access the backend, like <code>http://localhost:8080</code></p>
+                                </div><!--//section-block-->
+                                <div id="heroku" class="section-block">
+                                    <h3 class="block-title">Deploying on Heroku</h3>
+                                    <p>This section provides a few guidelines on how to deploy Hesperides
+                                       on <a href="https://heroku.com">Heroku</a>, from our experience deploying the live demo.</p>
+                                    <p>An <a href="https://devcenter.heroku.com/articles/build-docker-images-heroku-yml"><code>heroku.yml</code> configuration file</a> is provided in each repository as a starting point.</p>
+                                    <p>You will need to create 2 apps:</p>
+                                    <ul>
+                                        <li><b>hesperides</b>: the <em>frontend</em>, corresponding to the <a href="https://github.com/voyages-sncf-technologies/hesperides-gui">hesperides-gui</a> repository</li>
+                                        <li><b>hesperides-back</b>: the <em>backend</em>, corresponding to the <a href="https://github.com/voyages-sncf-technologies/hesperides">hesperides</a> repository</li>
+                                    </ul>
+                                    <p>There is a reason behind this choice of Heroku apps naming:
+                                       we wanted to have the <em>frontend</em> answering on the URL <a href="https://hesperides.herokuapp.com">https://hesperides.herokuapp.com</a>.</p>
+                                    <p>For each app, there are the steps to deploy it on Heroku:</p>
+                                    <ol>
+                                        <li>Sets the required <b>Config Vars</b> on the Heroku app <b>Settings</b>:
+                                            <ul>
+                                                <li>for the <b>hesperides</b> app: <code>API_ENDPOINT: https://hesperides-back.herokuapp.com</code></li>
+                                                <li>for the <b>hesperides-back</b> app: <code>SPRING_PROFILES_ACTIVE: noldap,fake_mongo</code></li>
+                                            </ul>
+                                        </li>
+                                        <li>Run the following commands in the corresponding cloned repository:
+                                            <pre><code>heroku stack:set -a $app container
+heroku git:remote -a $app
+git push heroku master
+heroku ps:scale web=1 -a $app
+heroku ps -a hesperides
+heroku logs --tail -a hesperides</code></pre>
+                                        </li>
+                                        <li>Optionally, you can enable <a href="https://devcenter.heroku.com/articles/github-integration">Heroku GitHub Deploys</a>.</li>
+                                    </ol>
                                 </div><!--//section-block-->
                                 <div id="configuring-ldap" class="section-block">
                                     <h3 class="block-title">Configuring LDAP</h3>
@@ -196,7 +228,10 @@ docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                             <a class="scrollto" href="#dockerhub-images">Docker Hub images</a>
                                         </li>
                                         <li>
-                                            <a class="scrollto" href="#docker-install">Building & running the Docker image from the sources</a>
+                                            <a class="scrollto" href="#docker-install">Docker image build</a>
+                                        </li>
+                                        <li>
+                                            <a class="scrollto" href="#heroku">Deploying on Heroku</a>
                                         </li>
                                         <li>
                                             <a class="scrollto" href="#configuring-ldap">Configuring LDAP</a>

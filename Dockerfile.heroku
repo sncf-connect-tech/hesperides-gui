@@ -1,0 +1,11 @@
+# Recipe from: https://stackoverflow.com/a/58204409/636849
+FROM hesperides/hesperides-gui
+
+# Quoting Heroku documentation:
+# > If you would like to see streaming logs as release phase executes, your Docker image is required to have curl.
+RUN apk add curl
+
+# The two lines below are temporary for the first deploy on Heroku,
+# and could be removed as soon as a new image is released on Docker Hub:
+COPY docker_entrypoint.sh /
+RUN chmod +x /docker_entrypoint.sh
