@@ -33,4 +33,17 @@ ENV SENTRY_TAGS=GIT_BRANCH:$GIT_BRANCH,GIT_COMMIT:$GIT_COMMIT,GIT_TAG:$GIT_TAG
 RUN apk add bash
 COPY docker_entrypoint.sh                           /
 RUN chmod u+x                                       /docker_entrypoint.sh
+
+# implement changes required to run NGINX as an unprivileged user
+ARG UID=101
+ARG GID=101
+RUN sed -i '/user  nginx;/d' /etc/nginx/nginx.conf \
+    && sed -i 's,/var/run/nginx.pid,/tmp/nginx.pid,' /etc/nginx/nginx.conf \
+    && sed -i "/^http {/a \    proxy_temp_path /tmp/proxy_temp;\n    client_body_temp_path /tmp/client_temp;\n    fastcgi_temp_path /tmp/fastcgi_temp;\n    uwsgi_temp_path /tmp/uwsgi_temp;\n    scgi_temp_path /tmp/scgi_temp;\n" /etc/nginx/nginx.conf \
+# nginx user must own the cache and etc directory to write cache and tweak the nginx config
+    && chown -R $UID:$GID /var/cache/nginx /etc/nginx /usr/share/nginx/html /docker_entrypoint.sh \
+    && chmod -R g+w /var/cache/nginx /etc/nginx /usr/share/nginx/html
+
+USER $UID
+
 ENTRYPOINT ["/docker_entrypoint.sh"]
