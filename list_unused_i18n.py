@@ -43,7 +43,8 @@ def main():
                 json.dump(i18n, i18n_file, sort_keys=True, indent=2)
 
 def parse_args():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                                     description=__doc__, allow_abbrev=False)
     parser.add_argument('--remove-from-jsons', action='store_true')
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('files', nargs='*')  # ignored but needed in order to be used as a pre-commit hook

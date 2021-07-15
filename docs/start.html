@@ -167,7 +167,8 @@ docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                                 <li>for the <b>hesperides-back</b> app: <code>SPRING_PROFILES_ACTIVE: noldap,fake_mongo</code></li>
                                             </ul>
                                         </li>
-                                        <li>Run the following commands in the corresponding cloned repository:
+                                        <li>Run the following commands in the corresponding cloned repository,
+                                          using the <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>:
                                             <pre><code>heroku stack:set -a $app container
 heroku git:remote -a $app
 git push heroku master
