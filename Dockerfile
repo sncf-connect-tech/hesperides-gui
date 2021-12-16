@@ -10,7 +10,7 @@ RUN npm ci --production
 # postinstall needs to be called manually, cf. https://github.com/npm/npm-lifecycle/issues/49 :
 RUN npm install buildify && npm run postinstall
 
-FROM nginx:1.15-alpine
+FROM nginx:1.17-alpine
 LABEL maintainer="Team Avengers @ oui.sncf"
 COPY --from=0 /usr/src/app/src/app                  /usr/share/nginx/html/
 COPY --from=0 /usr/src/app/src/app/img/favicon.ico  /usr/share/nginx/html/
