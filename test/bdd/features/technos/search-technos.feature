@@ -23,4 +23,4 @@ Feature: Search technos
     When I open this module
     And I search and select this techno on the module page
     Then I get the following success notification: "The working copy of the module has been updated"
-    And the first techno of this module is "a-techno 1.0 (working-copy)"
+    And the first techno of this module is "A-TECHNO, 1.0 (WORKING COPY)"

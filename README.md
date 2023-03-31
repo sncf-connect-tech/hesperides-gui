@@ -68,8 +68,14 @@ $ npm test
 ```
 
 End-to-end tests :
+
 ```shell
 $ npm start
 $ npm run webdriver-start
 $ npm run bdd-tests
 ```
+
+Si la commande `npm run webdriver-start` renvoie une erreur de
+type `Error: Invalid filename: [...]/hesperides-gui/node_modules/webdriver-manager/selenium/chromedriver_111.0.5563.64.zip`,
+il suffit de [télécharger](https://chromedriver.chromium.org/downloads) la version demandée de ChromeDriver et de la
+copier-coller dans le répertoire indiqué, puis de relancer la commande.
