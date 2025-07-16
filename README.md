@@ -1,8 +1,8 @@
-[![Lint, test and publish](https://github.com/voyages-sncf-technologies/hesperides-gui/workflows/Lint,%20test%20and%20publish/badge.svg)](https://github.com/voyages-sncf-technologies/hesperides-gui/actions?query=branch%3Amaster)
+[![Lint, test and publish](https://github.com/sncf-connect-tech/hesperides-gui/workflows/Lint,%20test%20and%20publish/badge.svg)](https://github.com/sncf-connect-tech/hesperides-gui/actions?query=branch%3Amaster)
 
 [![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
-[![](https://img.shields.io/github/issues/voyages-sncf-technologies/hesperides-gui.svg)](https://github.com/voyages-sncf-technologies/hesperides-gui/issues)
-[![](https://img.shields.io/github/contributors/voyages-sncf-technologies/hesperides-gui.svg)](https://img.shields.io/github/contributors/voyages-sncf-technologies/hesperides-gui.svg)
+[![](https://img.shields.io/github/issues/sncf-connect-tech/hesperides-gui.svg)](https://github.com/sncf-connect-tech/hesperides-gui/issues)
+[![](https://img.shields.io/github/contributors/sncf-connect-tech/hesperides-gui.svg)](https://img.shields.io/github/contributors/sncf-connect-tech/hesperides-gui.svg)
 [![](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Hesperides frontend
@@ -11,7 +11,7 @@ Hesperides frontend
 Hesperides is an open source tool generating configuration files from a given template with [mustaches](https://mustache.github.io)
 and the properties it stores per environment.
 
-The backend lives in this repo: <https://github.com/voyages-sncf-technologies/hesperides>.
+The backend lives in this repo: <https://github.com/sncf-connect-tech/hesperides>.
 
 **Development status**: this project is currently maintained by [e-Voyageurs SNCF](https://fr.wikipedia.org/wiki/E.Voyageurs_SNCF).
 
@@ -30,13 +30,13 @@ Documentation
 =============
 
 The user manual is contained in the `docs/` directory,
-and available online here: <https://voyages-sncf-technologies.github.io/hesperides-gui/>
+and available online here: <https://sncf-connect-tech.github.io/hesperides-gui/>
 
 Technical documentation can be found in `CONTRIBUTING.md` and the `tech_docs/` directory.
 
 Changelog
 ---------
-All the last features & fixes are listed there: [CHANGELOG.md](https://github.com/voyages-sncf-technologies/hesperides-gui/blob/master/CHANGELOG.md).
+All the last features & fixes are listed there: [CHANGELOG.md](https://github.com/sncf-connect-tech/hesperides-gui/blob/master/CHANGELOG.md).
 
 Build
 =====

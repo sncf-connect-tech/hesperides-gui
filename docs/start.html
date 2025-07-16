@@ -136,13 +136,13 @@
                                     <h3 class="block-title">Docker image build</h3>
                                     <p>Building &amp; running the Docker image from the sources</p>
                                     <p><b>Backend:</b></p>
-                                    <pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides
+                                    <pre><code class="language-git">git pull https://github.com/sncf-connect-tech/hesperides
 docker build -t hesperides .
 docker run --rm -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides</code></pre>
                                     <p>It can also be launched along a Mongo instance using <code>docker-compose</code>:</p>
                                     <pre><code class="language-git">docker-compose -f docker/docker-compose.yml -f docker/docker-compose-mongo.yml up -d</code></pre>
                                     <p><b>Frontend:</b></p>
-                                    <pre><code class="language-git">git pull https://github.com/voyages-sncf-technologies/hesperides-gui
+                                    <pre><code class="language-git">git pull https://github.com/sncf-connect-tech/hesperides-gui
 docker build -t hesperides-gui .
 docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                     <p><code>$API_ENDPOINT</code> must be an URL to access the backend, like <code>http://localhost:8080</code></p>
@@ -154,8 +154,8 @@ docker run --rm -it -p 80:80 -e API_ENDPOINT=... hesperides-gui</code></pre>
                                     <p>An <a href="https://devcenter.heroku.com/articles/build-docker-images-heroku-yml"><code>heroku.yml</code> configuration file</a> is provided in each repository as a starting point.</p>
                                     <p>You will need to create 2 apps:</p>
                                     <ul>
-                                        <li><b>hesperides</b>: the <em>frontend</em>, corresponding to the <a href="https://github.com/voyages-sncf-technologies/hesperides-gui">hesperides-gui</a> repository</li>
-                                        <li><b>hesperides-back</b>: the <em>backend</em>, corresponding to the <a href="https://github.com/voyages-sncf-technologies/hesperides">hesperides</a> repository</li>
+                                        <li><b>hesperides</b>: the <em>frontend</em>, corresponding to the <a href="https://github.com/sncf-connect-tech/hesperides-gui">hesperides-gui</a> repository</li>
+                                        <li><b>hesperides-back</b>: the <em>backend</em>, corresponding to the <a href="https://github.com/sncf-connect-tech/hesperides">hesperides</a> repository</li>
                                     </ul>
                                     <p>There is a reason behind this choice of Heroku apps naming:
                                        we wanted to have the <em>frontend</em> answering on the URL <a href="https://hesperides.herokuapp.com">https://hesperides.herokuapp.com</a>.</p>
@@ -181,7 +181,7 @@ heroku logs --tail -a hesperides</code></pre>
                                 </div><!--//section-block-->
                                 <div id="configuring-ldap" class="section-block">
                                     <h3 class="block-title">Configuring LDAP</h3>
-                                    <p>You can either use the <code>noldap</code> Spring profile, that defines some <a href="https://github.com/voyages-sncf-technologies/hesperides/blob/master/core/presentation/src/main/java/org/hesperides/core/presentation/security/LocalWebSecurityConfig.java#L37">dummy in-memory users</a>, or use the <code>ldap</code> Spring profile and configure the following environment variables:</p>
+                                    <p>You can either use the <code>noldap</code> Spring profile, that defines some <a href="https://github.com/sncf-connect-tech/hesperides/blob/master/core/presentation/src/main/java/org/hesperides/core/presentation/security/LocalWebSecurityConfig.java#L37">dummy in-memory users</a>, or use the <code>ldap</code> Spring profile and configure the following environment variables:</p>
                                     <ul>
                                         <li><code>$LDAP_URL</code>: required, example value: <code>ldaps://ldap.example.com:636</code></li>
                                         <li><code>$LDAP_DOMAIN</code>: optional</li>
