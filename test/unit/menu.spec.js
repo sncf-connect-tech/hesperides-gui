@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /*
  * This file is part of the Hesperides distribution.
- * (https://github.com/voyages-sncf-technologies/hesperides)
+ * (https://github.com/sncf-connect-tech/hesperides)
  * Copyright (c) 2016 VSCT.
  *
  * Hesperides is free software: you can redistribute it and/or modify

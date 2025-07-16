@@ -4,7 +4,7 @@
 Ils sont à prioriser par rapport aux tests BDD _end to end_ tant que possible, _cf._ [Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
 Ils sont idéaux pour tester le code logique "métier", typiquement celui des _factory_ Angular JS.
 
-Ils sont implémentés dans le dossier [test/unit/](https://github.com/voyages-sncf-technologies/hesperides-gui/tree/master/test/unit)
+Ils sont implémentés dans le dossier [test/unit/](https://github.com/sncf-connect-tech/hesperides-gui/tree/master/test/unit)
 et sont lancés par la commande `npm test`, qui instrumente le navigateur Firefox.
 
 ### Options d'exécution
@@ -21,7 +21,7 @@ et sont lancés par la commande `npm test`, qui instrumente le navigateur Firefo
 Ces tests nécessitent que les composants _backend_ et _frontend_ ainsi que
 le webdriver (`npm run webdriver-start`) soient lancés.
 
-Ils sont implémentés dans le dossier [test/bdd/](https://github.com/voyages-sncf-technologies/hesperides-gui/tree/master/test/bdd)
+Ils sont implémentés dans le dossier [test/bdd/](https://github.com/sncf-connect-tech/hesperides-gui/tree/master/test/bdd)
 et sont lancés par la commande `npm run bdd-tests`, qui instrumente le navigateur Chrome.
 
 ### Bonnes pratiques

@@ -1,5 +1,5 @@
 # CHANGELOG
-Le changelog du backend est ici: [hesperides/CHANGELOG.md](https://github.com/voyages-sncf-technologies/hesperides/blob/master/CHANGELOG.md)
+Le changelog du backend est ici: [hesperides/CHANGELOG.md](https://github.com/sncf-connect-tech/hesperides/blob/master/CHANGELOG.md)
 
 Tous les changements notables sur ce projet sont documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](http://keepachangelog.com).
@@ -377,7 +377,7 @@ git fetch --tags upstream && gitchangelog && git add CHANGELOG.md
 
 - Sticky default input value in change_module_version modal (#291) [Lucas Cimon]
 
-  Will close https://github.com/voyages-sncf-technologies/hesperides/issues/747
+  Will close https://github.com/sncf-connect-tech/hesperides/issues/747
 
 - Do not use RTL to display left diff values, closes #289 (#290) [Etienne Girondel]
 

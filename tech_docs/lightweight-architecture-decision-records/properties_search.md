@@ -19,7 +19,7 @@ par nom et par valeur.
 
 ## Besoin fonctionnel
 
-- mettre à disposition côté _frontend_ la fonctionnalité de recherche de propriétés du _backend_ : [hesperides #384](https://github.com/voyages-sncf-technologies/hesperides/issues/384). LADR backend: [Recherche de propriétés](https://github.com/voyages-sncf-technologies/hesperides/blob/master/documentation/lightweight-architecture-decision-records/search_properties.md)
+- mettre à disposition côté _frontend_ la fonctionnalité de recherche de propriétés du _backend_ : [hesperides #384](https://github.com/sncf-connect-tech/hesperides/issues/384). LADR backend: [Recherche de propriétés](https://github.com/sncf-connect-tech/hesperides/blob/master/documentation/lightweight-architecture-decision-records/search_properties.md)
 
 ## Design
 

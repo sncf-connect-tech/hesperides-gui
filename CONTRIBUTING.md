@@ -25,19 +25,19 @@ Il y a plein de façons d'aider le projet :
 - suggérerez de **nouvelles fonctionnalités** ou des améliorations
 - [**contribuez au code**](#contribuer-au-code) en corrigeant des bugs ou en ajoutant des fonctionnalités via des _pull requests_
 
-Pour tout ça, le meilleure manière d'entrer en contact avec nous est via le système d'[issues](https://github.com/voyages-sncf-technologies/hesperides/issues) de GitHub,
+Pour tout ça, le meilleure manière d'entrer en contact avec nous est via le système d'[issues](https://github.com/sncf-connect-tech/hesperides/issues) de GitHub,
 même simplement si vous avez des questions.
 
 # Documentation technique
-Elle est située dans le dossier [tech_docs/](https://github.com/voyages-sncf-technologies/hesperides-gui/tree/master/tech_docs)
+Elle est située dans le dossier [tech_docs/](https://github.com/sncf-connect-tech/hesperides-gui/tree/master/tech_docs)
 et détaille la structure du code ainsi que les conventions employées pour le CSS et les tests par exemple.
 
 # Contribuer au code
-Pour les nouveaux venus, nous maintenons une liste de [tâches faciles](https://github.com/voyages-sncf-technologies/hesperides/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22),
+Pour les nouveaux venus, nous maintenons une liste de [tâches faciles](https://github.com/sncf-connect-tech/hesperides/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22),
 incluant des corrections de bugs ou des émaliorations simples, pour vous permettre de débuter doucement avec le code.
 
 Globalement voici comment procéder pour contribuer au code :
-1. Assurez-vous qu'il existe une [issue](https://github.com/voyages-sncf-technologies/hesperides/issues) détaillant la modification que vous voulez effectuer, bug ou fonctionnalité.
+1. Assurez-vous qu'il existe une [issue](https://github.com/sncf-connect-tech/hesperides/issues) détaillant la modification que vous voulez effectuer, bug ou fonctionnalité.
 Idéalement, indiquez dans cette _issue_ que vous commencez à travailler dessus.
 2. Créez un [fork de ce repo](https://help.github.com/articles/fork-a-repo/) et installez votre [environnement de développement](#environnement-de-developpement).
 3. Codez !
@@ -58,7 +58,7 @@ Et voilà !
 Vous aurez besoin d'une version récente de NodeJS et de `npm`.
 
 De plus, nous utilisons Docker pour _packager_ et déployer l'application.
-Vous en aurez besoin pour lancer le [_backend_](https://github.com/voyages-sncf-technologies/hesperides) :
+Vous en aurez besoin pour lancer le [_backend_](https://github.com/sncf-connect-tech/hesperides) :
 
     docker run --rm -p 8080:8080 -e API_ENDPOINT=... -e SPRING_PROFILES_ACTIVE=noldap,fake_mongo hesperides/hesperides
 
@@ -70,7 +70,7 @@ Afin d'effectuer certaines validations automatisées à chaque commit,
 ce projet emploie des _hooks_ `git` de `pre-commit`, via [l'outil Python du même nom](http://pre-commit.com).
 
 Les _hooks_ configurés sont listés dans le fichier de configuration [.pre-commit-config.yaml](.pre-commit-config.yaml),
-et sont exécutés via [Travis CI](https://travis-ci.com/voyages-sncf-technologies/vboard).
+et sont exécutés via [Travis CI](https://travis-ci.com/sncf-connect-tech/vboard).
 Aucune PR ne sera mergée si ces _hooks_ remontent des erreurs.
 
 Dans la mesure du possible, installez ces _hooks_ sur votre poste de développement.
@@ -91,7 +91,7 @@ Si besoin, vous pouvez lancer manuellement les _hooks_ :
 
 
 ## Intégration continue
-[Travis CI](https://travis-ci.com/voyages-sncf-technologies/hesperides-gui) est configuré via le fichier `.travis.yml` pour exécuter les validations suivantes sur chaque _pull request_:
+[Travis CI](https://travis-ci.com/sncf-connect-tech/hesperides-gui) est configuré via le fichier `.travis.yml` pour exécuter les validations suivantes sur chaque _pull request_:
 - analyse statique du code avec `eslint`
 - exécutions de tous les _hooks_ de `pre-commit`
 - tests unitaires avec Karma

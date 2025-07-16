@@ -1,12 +1,12 @@
 # Hacktoberfest
 This year, the Hesperides project takes part to [Hacktoberfest](https://hacktoberfest.digitalocean.com)!
 
-We have labeled some of our issues with [#Hacktoberfest](https://github.com/voyages-sncf-technologies/hesperides-gui/labels/Hacktoberfest)
+We have labeled some of our issues with [#Hacktoberfest](https://github.com/sncf-connect-tech/hesperides-gui/labels/Hacktoberfest)
 to make it easier for you to contribute :)
 
 Now, Hesperides is a large project, with a lot of "business logic" you probably do not want to learn before your first contribution.
 It's also maintained by French developpers 🥖 🧀.
-But we will commit to write detailed descriptions in our [#Hacktoberfest](https://github.com/voyages-sncf-technologies/hesperides-gui/labels/Hacktoberfest) issues,
+But we will commit to write detailed descriptions in our [#Hacktoberfest](https://github.com/sncf-connect-tech/hesperides-gui/labels/Hacktoberfest) issues,
 and the next sections will summarize the steps to let you quickly hack with the code.
 
 ## Start the backend API with Docker
@@ -54,7 +54,7 @@ curl --fail -u user:password http://localhost:8080/rest/applications -H 'Content
 ## Start the AngularJS frontend
 Should be as simple as:
 
-    git clone https://github.com/voyages-sncf-technologies/hesperides-gui
+    git clone https://github.com/sncf-connect-tech/hesperides-gui
     npm install
     npm start
 
